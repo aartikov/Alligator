@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/fragment_test_view_root"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="10dp">
+	
+	<TextView
+		android:id="@+id/fragment_test_text_view_counter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="5dp"
+		android:textSize="12sp"
+		tools:text="Counter" />
+	
+	<Button
+		android:id="@+id/fragment_test_button_forward"
+		android:layout_width="120dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:minHeight="40dp"
+		android:text="@string/forward"
+		android:textSize="12sp" />
+	
+	<Button
+		android:id="@+id/fragment_test_button_replace"
+		android:layout_width="120dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:minHeight="40dp"
+		android:text="@string/replace"
+		android:textSize="12sp" />
+	
+	<Button
+		android:id="@+id/fragment_test_button_reset"
+		android:layout_width="120dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:minHeight="40dp"
+		android:text="@string/reset"
+		android:textSize="12sp" />
+	
+	<Button
+		android:id="@+id/fragment_test_button_back"
+		android:layout_width="120dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:minHeight="40dp"
+		android:text="@string/back"
+		android:textSize="12sp" />
+
+	<Button
+		android:id="@+id/fragment_test_button_double_back"
+		android:layout_width="120dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:minHeight="40dp"
+		android:text="@string/double_back"
+		android:textSize="12sp" />
+</LinearLayout>

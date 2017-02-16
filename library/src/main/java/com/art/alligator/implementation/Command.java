@@ -10,5 +10,9 @@ import com.art.alligator.NavigationFactory;
  * @author Artur Artikov
  */
 public interface Command {
+	/**
+	 * Execute a command
+	 * @return true if after this command other commands can be executed, false - otherwise
+	 */
 	boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory);
 }

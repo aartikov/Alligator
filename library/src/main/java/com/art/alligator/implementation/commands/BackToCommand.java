@@ -32,7 +32,7 @@ public class BackToCommand implements Command {
 			Context context = navigationContext.getActivity();
 			Intent intent = new Intent(context, activityClass);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			navigationContext.getActivity().startActivity(intent);
+			context.startActivity(intent);
 			return false;
 		} else if (fragmentManager != null && hasFragmentInBackStack(fragmentManager, mScreenClass.getName())) {
 			fragmentManager.popBackStackImmediate(mScreenClass.getName(), 0);

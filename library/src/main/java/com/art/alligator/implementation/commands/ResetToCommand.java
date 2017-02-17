@@ -30,6 +30,7 @@ public class ResetToCommand implements Command {
 		Fragment fragment = navigationFactory.createFragment(mScreen);
 
 		if(intent != null) {
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			context.startActivity(intent);
 			return false;
 		} else if (fragment != null) {

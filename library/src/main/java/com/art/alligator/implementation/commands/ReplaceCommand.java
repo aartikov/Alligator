@@ -31,6 +31,7 @@ public class ReplaceCommand implements Command {
 
 		if(intent != null) {
 			context.startActivity(intent);
+			navigationContext.getActivity().finish();
 			return false;
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();

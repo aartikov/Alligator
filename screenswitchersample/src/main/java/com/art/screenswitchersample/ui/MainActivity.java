@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 	@Override
 	public void onTabSelected(@IdRes int tabId) {
-		mScreenSwitcher.switchTo(tabIdToScreenName(tabId));
+		mNavigator.switchTo(tabIdToScreenName(tabId));
 	}
 
 	private void initScreenSwitcher() {

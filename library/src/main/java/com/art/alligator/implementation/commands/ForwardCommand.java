@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.art.alligator.AnimationProvider;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.implementation.Command;
 
 /**
@@ -28,9 +30,14 @@ public class ForwardCommand implements Command {
 		Context context = navigationContext.getActivity();
 		Intent intent = navigationFactory.createActivityIntent(context, mScreen);
 		Fragment fragment = navigationFactory.createFragment(mScreen);
+		AnimationProvider animationProvider = navigationContext.getAnimationProvider();
 
-		if(intent != null) {
+		if (intent != null) {
 			context.startActivity(intent);
+			TransitionAnimation animation = animationProvider.getActivityForwardAnimation(mScreen.getClass());
+			if (animation != null && !animation.equals(TransitionAnimation.DEFAULT)) {
+				navigationContext.getActivity().overridePendingTransition(animation.getEnterAnimation(), animation.getExitAnimation());
+			}
 			return false;
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
@@ -38,10 +45,22 @@ public class ForwardCommand implements Command {
 				throw new IllegalStateException("Failed to add fragment. FragmentManager is not bound.");
 			}
 
+			TransitionAnimation forwardAnimation = animationProvider.getFragmentForwardAnimation(mScreen.getClass());
+			if(forwardAnimation == null || forwardAnimation.equals(TransitionAnimation.DEFAULT)) {
+				forwardAnimation = TransitionAnimation.NONE;
+			}
+
+			TransitionAnimation backAnimation = animationProvider.getFragmentBackAnimation(mScreen.getClass());
+			if(backAnimation == null || backAnimation.equals(TransitionAnimation.DEFAULT)) {
+				backAnimation = TransitionAnimation.NONE;
+			}
+
 			fragmentManager.beginTransaction()
+					.setCustomAnimations(forwardAnimation.getEnterAnimation(), forwardAnimation.getExitAnimation(), backAnimation.getEnterAnimation(), backAnimation.getExitAnimation())
 					.replace(navigationContext.getContainerId(), fragment)
 					.addToBackStack(mScreen.getClass().getName())
 					.commit();
+
 			fragmentManager.executePendingTransactions();
 			return true;
 

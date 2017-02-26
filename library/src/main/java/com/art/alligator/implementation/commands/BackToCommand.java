@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
+import com.art.alligator.TransitionAnimation;
+import com.art.alligator.AnimationProvider;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -33,6 +35,11 @@ public class BackToCommand implements Command {
 			Intent intent = new Intent(context, activityClass);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
+			AnimationProvider animationProvider = navigationContext.getAnimationProvider();
+			TransitionAnimation animation = animationProvider.getActivityBackAnimation(navigationContext.getActivity().getClass());
+			if(animation != null && !animation.equals(TransitionAnimation.DEFAULT)) {
+				navigationContext.getActivity().overridePendingTransition(animation.getEnterAnimation(), animation.getExitAnimation());
+			}
 			return false;
 		} else if (fragmentManager != null && hasFragmentInBackStack(fragmentManager, mScreenClass.getName())) {
 			fragmentManager.popBackStackImmediate(mScreenClass.getName(), 0);

@@ -10,6 +10,7 @@ import com.art.alligator.Navigator;
 import com.art.alligator.implementation.ScreenUtils;
 import com.art.simplestnavigationsample.R;
 import com.art.simplestnavigationsample.SampleApplication;
+import com.art.simplestnavigationsample.screens.MainScreen;
 import com.art.simplestnavigationsample.screens.MessageScreen;
 
 import butterknife.BindView;
@@ -55,6 +56,6 @@ public class MessageActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-		mNavigator.goBack();
+		mNavigator.resetTo(new MainScreen());
 	}
 }

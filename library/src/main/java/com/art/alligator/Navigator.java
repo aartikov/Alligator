@@ -42,4 +42,9 @@ public interface Navigator {
 	 * Switch screens by name
 	 */
 	void switchTo(String screenName);
+
+	/**
+	 * Switch screens by screen class
+	 */
+	void switchTo(Class<? extends Screen> screenClass);
 }

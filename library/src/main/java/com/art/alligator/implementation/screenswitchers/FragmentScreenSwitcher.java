@@ -1,10 +1,8 @@
-package com.art.alligator.implementation;
+package com.art.alligator.implementation.screenswitchers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.art.alligator.NavigationFactory;
-import com.art.alligator.Screen;
 import com.art.alligator.ScreenSwitcher;
 
 /**
@@ -16,17 +14,15 @@ import com.art.alligator.ScreenSwitcher;
 public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
-	private NavigationFactory mNavigationFactory;
 	private Fragment mCurrentFragment;
 
-	public FragmentScreenSwitcher(FragmentManager fragmentManager, int containerId, NavigationFactory navigationFactory) {
-		mNavigationFactory = navigationFactory;
+	public FragmentScreenSwitcher(FragmentManager fragmentManager, int containerId) {
 		mFragmentManager = fragmentManager;
 		mContainerId = containerId;
 		mCurrentFragment = mFragmentManager.findFragmentById(mContainerId);
 	}
 
-	public abstract Screen createScreen(String screenName);
+	protected abstract Fragment createFragment(String screenName);
 
 	protected void onScreenSwitched(String screenName) {
 	}
@@ -35,7 +31,7 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	public boolean switchTo(String screenName) {
 		Fragment newFragment = mFragmentManager.findFragmentByTag(screenName);
 		if (newFragment == null) {
-			newFragment = createFragment(screenName, mNavigationFactory);
+			newFragment = createFragment(screenName);
 			if(newFragment == null) {
 				return false;
 			}
@@ -68,13 +64,5 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 
 	public Fragment getCurrentFragment() {
 		return mCurrentFragment;
-	}
-
-	private Fragment createFragment(String screenName, NavigationFactory navigationFactory) {
-		Screen screen = createScreen(screenName);
-		if(screen == null) {
-			return null;
-		}
-		return navigationFactory.createFragment(screen);
 	}
 }

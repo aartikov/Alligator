@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.Command;
+import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -32,7 +33,7 @@ public class BackToCommand implements Command {
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
+	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		Class activityClass = navigationFactory.getActivityClass(mScreenClass);
 		FragmentManager fragmentManager = navigationContext.getFragmentManager();
 
@@ -55,7 +56,7 @@ public class BackToCommand implements Command {
 			}
 
 			if(index == -1) {
-				throw new RuntimeException("Failed to go back to " + mScreenClass.getSimpleName());
+				throw new CommandExecutionException("Screen " + mScreenClass.getSimpleName() + " is not found.");
 			}
 
 			if(index == fragments.size() - 1) {
@@ -73,7 +74,7 @@ public class BackToCommand implements Command {
 			transaction.commitNow();
 			return true;
 		} else {
-			throw new RuntimeException("Failed to go back to " + mScreenClass.getSimpleName());
+			throw new CommandExecutionException("Screen " + mScreenClass.getSimpleName() + " is not found.");
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.art.alligator.Command;
+import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
@@ -77,7 +78,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	protected void executeCommand(Command command) {
 		if (mCanExecuteCommands) {
-			mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
+			try {
+				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
+				mNavigationContext.getNavigationListener().onExecuted(command);
+			} catch (CommandExecutionException e) {
+				mNavigationContext.getNavigationListener().onError(command, e.getMessage());
+			}
 		} else {
 			mPendingCommands.add(command);
 		}
@@ -86,7 +92,13 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private void executePendingCommands() {
 		while (mCanExecuteCommands && !mPendingCommands.isEmpty()) {
 			Command command = mPendingCommands.remove();
-			mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
+			try {
+				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
+				mNavigationContext.getNavigationListener().onExecuted(command);
+			} catch (CommandExecutionException e) {
+				mPendingCommands.clear();
+				mNavigationContext.getNavigationListener().onError(command, e.getMessage());
+			}
 		}
 	}
 }

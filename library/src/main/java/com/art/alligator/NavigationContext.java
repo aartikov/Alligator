@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.implementation.DefaultAnimationProvider;
+import com.art.alligator.implementation.DefaultNavigationListener;
 
 /**
  * Date: 29.12.2016
@@ -17,6 +18,7 @@ public class NavigationContext {
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
 	private AnimationProvider mAnimationProvider;
+	private NavigationListener mNavigationListener;
 
 	public NavigationContext(Activity activity) {
 		this(new Builder(activity));
@@ -32,6 +34,7 @@ public class NavigationContext {
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mAnimationProvider = builder.mAnimationProvider;
+		mNavigationListener = builder.mNavigationListener;
 	}
 
 	public Activity getActivity() {
@@ -54,12 +57,17 @@ public class NavigationContext {
 		return mAnimationProvider;
 	}
 
+	public NavigationListener getNavigationListener() {
+		return mNavigationListener;
+	}
+
 	public static class Builder {
 		private Activity mActivity;
 		private FragmentManager mFragmentManager;
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
 		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
+		private NavigationListener mNavigationListener = new DefaultNavigationListener();
 
 		public Builder(Activity activity) {
 			mActivity = activity;
@@ -81,9 +89,13 @@ public class NavigationContext {
 			return this;
 		}
 
+		public Builder navigationListener(NavigationListener navigationListener) {
+			mNavigationListener = navigationListener != null ? navigationListener : new DefaultNavigationListener();
+			return this;
+		}
+
 		public NavigationContext build() {
 			return new NavigationContext(this);
 		}
 	}
-
 }

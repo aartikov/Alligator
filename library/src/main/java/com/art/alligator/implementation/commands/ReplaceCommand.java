@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.Command;
+import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -29,7 +30,7 @@ public class ReplaceCommand implements Command {
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
+	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		Intent intent = navigationFactory.createActivityIntent(navigationContext.getActivity(), mScreen);
 		Fragment fragment = navigationFactory.createFragment(mScreen);
 
@@ -44,7 +45,7 @@ public class ReplaceCommand implements Command {
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
-				throw new IllegalStateException("Failed to replace fragment. FragmentManager is not bound.");
+				throw new CommandExecutionException("FragmentManager is not bound.");
 			}
 
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -63,7 +64,7 @@ public class ReplaceCommand implements Command {
 			return true;
 
 		} else {
-			throw new RuntimeException("Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+			throw new CommandExecutionException("Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.art.alligator.implementation.commands;
 
 import com.art.alligator.NavigationFactory;
-import com.art.alligator.implementation.Command;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.ScreenSwitcher;
 

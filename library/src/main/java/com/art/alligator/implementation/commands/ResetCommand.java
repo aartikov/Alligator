@@ -1,5 +1,7 @@
 package com.art.alligator.implementation.commands;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -17,14 +19,14 @@ import com.art.alligator.implementation.ScreenUtils;
 
 /**
  * Date: 29.12.2016
- * Time: 11:24
+ * Time: 14:30
  *
  * @author Artur Artikov
  */
-public class ReplaceCommand implements Command {
+public class ResetCommand implements Command {
 	private Screen mScreen;
 
-	public ReplaceCommand(Screen screen) {
+	public ResetCommand(Screen screen) {
 		mScreen = screen;
 	}
 
@@ -35,33 +37,31 @@ public class ReplaceCommand implements Command {
 
 		if(intent != null) {
 			Activity activity = navigationContext.getActivity();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			ScreenUtils.putScreenClass(intent, mScreen.getClass());
 			activity.startActivity(intent);
-			activity.finish();
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext));
 			return false;
-
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
-				throw new IllegalStateException("Failed to replace fragment. FragmentManager is not bound.");
+				throw new IllegalStateException("Failed to reset fragments. FragmentManager is not bound.");
 			}
 
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
-			if (currentFragment != null) {
-				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext));
-				transaction.remove(currentFragment);
+			List<Fragment> fragments = CommandUtils.getFragments(navigationContext);
+			for(int i = 0; i < fragments.size(); i++) {
+				if(i == fragments.size() - 1) {
+					CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext));
+				}
+				transaction.remove(fragments.get(i));
 			}
 
 			ScreenUtils.putScreenClass(fragment, mScreen.getClass());
-			int fragmentCount = CommandUtils.getFragmentCount(navigationContext);
-			int index = fragmentCount == 0 ? 0 : fragmentCount - 1;
-			String tag = CommandUtils.getFragmentTag(navigationContext, index);
+			String tag = CommandUtils.getFragmentTag(navigationContext, 0);
 			transaction.add(navigationContext.getContainerId(), fragment, tag);
 			transaction.commitNow();
 			return true;
-
 		} else {
 			throw new RuntimeException("Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}

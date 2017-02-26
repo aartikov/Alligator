@@ -70,7 +70,7 @@ public class TestFragment extends Fragment {
 
 		mForwardButton.setOnClickListener(v -> mNavigator.goForward(new TestSmallScreen(counter + 1)));
 		mReplaceButton.setOnClickListener(v -> mNavigator.replace(new TestSmallScreen(counter)));
-		mResetButton.setOnClickListener(v -> mNavigator.resetTo(new TestSmallScreen(1)));
+		mResetButton.setOnClickListener(v -> mNavigator.reset(new TestSmallScreen(1)));
 		mBackButton.setOnClickListener(v -> mNavigator.goBack());
 		mDoubleBackButton.setOnClickListener(v -> {
 			mNavigator.goBack();

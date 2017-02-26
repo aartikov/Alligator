@@ -14,6 +14,7 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
 import com.art.alligator.implementation.ScreenUtils;
 import com.art.navigationsample.R;
+import com.art.navigationsample.SampleAnimationProvider;
 import com.art.navigationsample.SampleApplication;
 import com.art.navigationsample.screens.TestScreen;
 import com.art.navigationsample.screens.TestSmallScreen;
@@ -58,7 +59,7 @@ public class TestActivity extends AppCompatActivity {
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 		if (savedInstanceState == null) {
-			mNavigator.resetTo(new TestSmallScreen(1));
+			mNavigator.goForward(new TestSmallScreen(1));
 		}
 
 		mRootView.setBackgroundColor(getRandomColor());
@@ -69,7 +70,7 @@ public class TestActivity extends AppCompatActivity {
 
 		mForwardButton.setOnClickListener(view -> mNavigator.goForward(new TestScreen(counter + 1)));
 		mReplaceButton.setOnClickListener(view -> mNavigator.replace(new TestScreen(counter)));
-		mResetButton.setOnClickListener(view -> mNavigator.resetTo(new TestScreen(1)));
+		mResetButton.setOnClickListener(view -> mNavigator.reset(new TestScreen(1)));
 		mFinishButton.setOnClickListener(view -> mNavigator.finish());
 	}
 
@@ -78,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
 		super.onResume();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
 				.fragmentManagerAndContainerId(getSupportFragmentManager(), R.id.activity_test_fragment_container)
-				.animationProvider(new MyAnimationProvider())
+				.animationProvider(new SampleAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}

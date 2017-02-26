@@ -1,16 +1,19 @@
 package com.art.alligator.implementation.commands;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
-import com.art.alligator.AnimationProvider;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.implementation.Command;
+import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.ScreenUtils;
 
 /**
  * Date: 29.12.2016
@@ -27,45 +30,46 @@ public class ForwardCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Context context = navigationContext.getActivity();
-		Intent intent = navigationFactory.createActivityIntent(context, mScreen);
+		Intent intent = navigationFactory.createActivityIntent(navigationContext.getActivity(), mScreen);
 		Fragment fragment = navigationFactory.createFragment(mScreen);
-		AnimationProvider animationProvider = navigationContext.getAnimationProvider();
 
 		if (intent != null) {
-			context.startActivity(intent);
-			TransitionAnimation animation = animationProvider.getActivityForwardAnimation(mScreen.getClass());
-			if (animation != null && !animation.equals(TransitionAnimation.DEFAULT)) {
-				navigationContext.getActivity().overridePendingTransition(animation.getEnterAnimation(), animation.getExitAnimation());
-			}
+			Activity activity = navigationContext.getActivity();
+			ScreenUtils.putScreenClass(intent, mScreen.getClass());
+			activity.startActivity(intent);
+			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext));
 			return false;
+
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
 				throw new IllegalStateException("Failed to add fragment. FragmentManager is not bound.");
 			}
 
-			TransitionAnimation forwardAnimation = animationProvider.getFragmentForwardAnimation(mScreen.getClass());
-			if(forwardAnimation == null || forwardAnimation.equals(TransitionAnimation.DEFAULT)) {
-				forwardAnimation = TransitionAnimation.NONE;
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
+			if(currentFragment != null) {
+				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext));
+				transaction.detach(currentFragment);
 			}
 
-			TransitionAnimation backAnimation = animationProvider.getFragmentBackAnimation(mScreen.getClass());
-			if(backAnimation == null || backAnimation.equals(TransitionAnimation.DEFAULT)) {
-				backAnimation = TransitionAnimation.NONE;
-			}
-
-			fragmentManager.beginTransaction()
-					.setCustomAnimations(forwardAnimation.getEnterAnimation(), forwardAnimation.getExitAnimation(), backAnimation.getEnterAnimation(), backAnimation.getExitAnimation())
-					.replace(navigationContext.getContainerId(), fragment)
-					.addToBackStack(mScreen.getClass().getName())
-					.commit();
-
-			fragmentManager.executePendingTransactions();
+			ScreenUtils.putScreenClass(fragment, mScreen.getClass());
+			int index = CommandUtils.getFragmentCount(navigationContext);
+			String tag = CommandUtils.getFragmentTag(navigationContext, index);
+			transaction.add(navigationContext.getContainerId(), fragment, tag);
+			transaction.commitNow();
 			return true;
 
 		} else {
 			throw new RuntimeException("Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
+	}
+
+	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.FORWARD, true, mScreen.getClass());
+	}
+
+	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.FORWARD, false, mScreen.getClass());
 	}
 }

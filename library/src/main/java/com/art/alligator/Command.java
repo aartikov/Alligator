@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.alligator;
 
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;

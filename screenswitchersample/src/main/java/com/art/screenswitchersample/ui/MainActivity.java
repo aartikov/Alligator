@@ -102,12 +102,13 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 	private void bindNavigationContext() {
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
+		NavigationContext.Builder builder = new NavigationContext.Builder(this).screenSwitcher(mScreenSwitcher);
+
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
 			int containerId = ((ContainerIdProvider) fragment).getContainerId();
-			mNavigationContextBinder.bind(new NavigationContext(this, fragment.getChildFragmentManager(), containerId, mScreenSwitcher));
-		} else {
-			mNavigationContextBinder.bind(new NavigationContext(this, mScreenSwitcher));
+			builder.fragmentManagerAndContainerId(fragment.getChildFragmentManager(), containerId);
 		}
+		mNavigationContextBinder.bind(builder.build());
 	}
 
 	private void selectTab(@IdRes int tabId) {

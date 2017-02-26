@@ -3,6 +3,7 @@ package com.art.alligator.implementation;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
@@ -60,8 +61,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void resetTo(Screen screen) {
-		executeCommand(new ResetToCommand(screen));
+	public void reset(Screen screen) {
+		executeCommand(new ResetCommand(screen));
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new SwitchToCommand(screenName));
 	}
 
-	private void executeCommand(Command command) {
+	protected void executeCommand(Command command) {
 		if (mCanExecuteCommands) {
 			mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
 		} else {

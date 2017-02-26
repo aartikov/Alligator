@@ -31,7 +31,7 @@ public interface Navigator {
 	/**
 	 * Replace all other screens with a new screen
 	 */
-	void resetTo(Screen screen);
+	void reset(Screen screen);
 
 	/**
 	 * Finish a last screen or a group of screens executing some common task

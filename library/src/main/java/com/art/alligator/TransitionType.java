@@ -7,8 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
-public enum  TransitionAnimationDirection {
+public enum TransitionType {
 	FORWARD,
 	BACK,
-	REPLACE
+	REPLACE,
+	RESET
 }

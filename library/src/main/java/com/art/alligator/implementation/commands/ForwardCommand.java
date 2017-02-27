@@ -12,7 +12,7 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.ScreenUtils;
 
@@ -67,10 +67,10 @@ public class ForwardCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.FORWARD, true, mScreen.getClass());
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, true, mScreen.getClass());
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.FORWARD, false, mScreen.getClass());
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, false, mScreen.getClass());
 	}
 }

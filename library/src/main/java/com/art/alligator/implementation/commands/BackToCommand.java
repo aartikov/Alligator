@@ -14,7 +14,7 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.ScreenUtils;
 
@@ -80,11 +80,11 @@ public class BackToCommand implements Command {
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.BACK, true, screenClass);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(CommandUtils.getCurrentFragment(navigationContext));
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.BACK, false, screenClass);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, false, screenClass);
 	}
 }

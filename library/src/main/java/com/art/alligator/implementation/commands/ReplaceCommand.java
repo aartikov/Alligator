@@ -12,7 +12,7 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.ScreenUtils;
 
@@ -69,10 +69,10 @@ public class ReplaceCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.REPLACE, true, mScreen.getClass());
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, true, mScreen.getClass());
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.REPLACE, false, mScreen.getClass());
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, false, mScreen.getClass());
 	}
 }

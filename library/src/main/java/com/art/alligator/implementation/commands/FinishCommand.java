@@ -7,7 +7,7 @@ import com.art.alligator.NavigationFactory;
 import com.art.alligator.Command;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.ScreenUtils;
 
@@ -29,6 +29,6 @@ public class FinishCommand implements Command {
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
-		return navigationContext.getAnimationProvider().getAnimation(TransitionAnimationDirection.BACK, true, screenClass);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
 	}
 }

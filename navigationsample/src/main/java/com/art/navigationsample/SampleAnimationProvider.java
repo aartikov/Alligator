@@ -3,7 +3,7 @@ package com.art.navigationsample;
 import com.art.alligator.AnimationProvider;
 import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
-import com.art.alligator.TransitionAnimationDirection;
+import com.art.alligator.TransitionType;
 
 /**
  * Date: 25.02.2017
@@ -14,14 +14,15 @@ import com.art.alligator.TransitionAnimationDirection;
 
 public class SampleAnimationProvider implements AnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionAnimationDirection direction, boolean isActivity, Class<? extends Screen> screenClass) {
-		switch (direction) {
+	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClass) {
+		switch (transitionType) {
 			case FORWARD:
 				return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 			case BACK:
 				return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
 			case REPLACE:
-				return new TransitionAnimation(android.R.anim.fade_in, isActivity ? R.anim.stay : android.R.anim.fade_out);
+			case RESET:
+				return new TransitionAnimation(R.anim.stay, android.R.anim.fade_out);
 			default:
 				return TransitionAnimation.DEFAULT;
 		}

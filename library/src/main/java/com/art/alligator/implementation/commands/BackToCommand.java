@@ -27,9 +27,11 @@ import com.art.alligator.implementation.ScreenUtils;
 
 public class BackToCommand implements Command {
 	private Class<? extends Screen> mScreenClass;
+	private TransitionAnimation mAnimation;
 
-	public BackToCommand(Class<? extends Screen> screenClass) {
+	public BackToCommand(Class<? extends Screen> screenClass, TransitionAnimation animation) {
 		mScreenClass = screenClass;
+		mAnimation = animation;
 	}
 
 	@Override
@@ -79,11 +81,19 @@ public class BackToCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(CommandUtils.getCurrentFragment(navigationContext));
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, false, screenClass);
 	}

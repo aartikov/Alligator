@@ -24,9 +24,11 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ForwardCommand implements Command {
 	private Screen mScreen;
+	private TransitionAnimation mAnimation;
 
-	public ForwardCommand(Screen screen) {
+	public ForwardCommand(Screen screen, TransitionAnimation animation) {
 		mScreen = screen;
+		mAnimation = animation;
 	}
 
 	@Override
@@ -67,10 +69,18 @@ public class ForwardCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, true, mScreen.getClass());
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, false, mScreen.getClass());
 	}
 }

@@ -24,9 +24,11 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ReplaceCommand implements Command {
 	private Screen mScreen;
+	private TransitionAnimation mAnimation;
 
-	public ReplaceCommand(Screen screen) {
+	public ReplaceCommand(Screen screen, TransitionAnimation animation) {
 		mScreen = screen;
+		mAnimation = animation;
 	}
 
 	@Override
@@ -69,10 +71,18 @@ public class ReplaceCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, true, mScreen.getClass());
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, false, mScreen.getClass());
 	}
 }

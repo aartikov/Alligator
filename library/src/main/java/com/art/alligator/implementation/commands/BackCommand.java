@@ -23,6 +23,12 @@ import com.art.alligator.implementation.ScreenUtils;
  * @author Artur Artikov
  */
 public class BackCommand implements Command {
+	private TransitionAnimation mAnimation;
+
+	public BackCommand(TransitionAnimation animation) {
+		mAnimation = animation;
+	}
+
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		if(navigationContext.getFragmentManager() == null || CommandUtils.getFragmentCount(navigationContext) <= 1) {
@@ -46,11 +52,19 @@ public class BackCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(CommandUtils.getCurrentFragment(navigationContext));
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, false, screenClass);
 	}

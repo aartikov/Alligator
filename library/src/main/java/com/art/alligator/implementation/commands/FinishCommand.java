@@ -19,6 +19,12 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 
 public class FinishCommand implements Command {
+	private TransitionAnimation mAnimation;
+
+	public FinishCommand(TransitionAnimation animation) {
+		mAnimation = animation;
+	}
+
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		Activity activity = navigationContext.getActivity();
@@ -28,6 +34,10 @@ public class FinishCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
 	}

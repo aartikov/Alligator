@@ -26,9 +26,11 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ResetCommand implements Command {
 	private Screen mScreen;
+	private TransitionAnimation mAnimation;
 
-	public ResetCommand(Screen screen) {
+	public ResetCommand(Screen screen, TransitionAnimation animation) {
 		mScreen = screen;
+		mAnimation = animation;
 	}
 
 	@Override
@@ -69,10 +71,18 @@ public class ResetCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, true, mScreen.getClass());
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+		if(mAnimation != null) {
+			return mAnimation;
+		}
+
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, false, mScreen.getClass());
 	}
 }

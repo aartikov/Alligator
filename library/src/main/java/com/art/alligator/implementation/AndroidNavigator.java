@@ -10,7 +10,13 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
-import com.art.alligator.implementation.commands.*;
+import com.art.alligator.implementation.commands.BackCommand;
+import com.art.alligator.implementation.commands.BackToCommand;
+import com.art.alligator.implementation.commands.FinishCommand;
+import com.art.alligator.implementation.commands.ForwardCommand;
+import com.art.alligator.implementation.commands.ReplaceCommand;
+import com.art.alligator.implementation.commands.ResetCommand;
+import com.art.alligator.implementation.commands.SwitchToCommand;
 
 /**
  * Date: 29.12.2016
@@ -80,12 +86,22 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		if (mCanExecuteCommands) {
 			try {
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				mNavigationContext.getNavigationListener().onExecuted(command);
+				onCommandExecuted(command);
 			} catch (CommandExecutionException e) {
-				mNavigationContext.getNavigationListener().onError(command, e.getMessage());
+				onError(command, e);
 			}
 		} else {
 			mPendingCommands.add(command);
+		}
+	}
+
+	protected void onError(Command command, CommandExecutionException e) {
+		throw new RuntimeException("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + e.getMessage(), e);
+	}
+
+	protected void onCommandExecuted(Command command) {
+		if(mNavigationContext.getNavigationListener() != null) {
+			mNavigationContext.getNavigationListener().onCommandExecuted(command);
 		}
 	}
 
@@ -94,10 +110,10 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			Command command = mPendingCommands.remove();
 			try {
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				mNavigationContext.getNavigationListener().onExecuted(command);
+				onCommandExecuted(command);
 			} catch (CommandExecutionException e) {
 				mPendingCommands.clear();
-				mNavigationContext.getNavigationListener().onError(command, e.getMessage());
+				onError(command, e);
 			}
 		}
 	}

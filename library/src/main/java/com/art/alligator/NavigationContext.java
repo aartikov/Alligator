@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.implementation.DefaultAnimationProvider;
-import com.art.alligator.implementation.DefaultNavigationListener;
 
 /**
  * Date: 29.12.2016
@@ -67,7 +66,7 @@ public class NavigationContext {
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
 		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
-		private NavigationListener mNavigationListener = new DefaultNavigationListener();
+		private NavigationListener mNavigationListener;
 
 		public Builder(Activity activity) {
 			mActivity = activity;
@@ -90,7 +89,7 @@ public class NavigationContext {
 		}
 
 		public Builder navigationListener(NavigationListener navigationListener) {
-			mNavigationListener = navigationListener != null ? navigationListener : new DefaultNavigationListener();
+			mNavigationListener = navigationListener;
 			return this;
 		}
 

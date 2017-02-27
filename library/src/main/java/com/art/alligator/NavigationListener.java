@@ -8,6 +8,5 @@ package com.art.alligator;
  */
 
 public interface NavigationListener {
-	void onExecuted(Command command);
-	void onError(Command command, String message);
+	void onCommandExecuted(Command command);
 }

@@ -1,4 +1,4 @@
-package com.art.alligator.implementation.screenswitchers;
+package com.art.alligator.implementation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

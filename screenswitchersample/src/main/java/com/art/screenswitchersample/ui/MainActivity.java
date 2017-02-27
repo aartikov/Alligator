@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
+import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
-import com.art.alligator.Screen;
-import com.art.alligator.implementation.screenswitchers.FactoryBasedScreenSwitcher;
+import com.art.alligator.implementation.FragmentScreenSwitcher;
 import com.art.screenswitchersample.R;
 import com.art.screenswitchersample.SampleApplication;
 import com.art.screenswitchersample.screens.TabScreen;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
-	private FactoryBasedScreenSwitcher mScreenSwitcher;
+	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@BindView(R.id.activity_main_bottom_bar)
 	BottomBar mBottomBar;
@@ -86,10 +86,11 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	private void initScreenSwitcher() {
-		mScreenSwitcher = new FactoryBasedScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container, SampleApplication.getNavigationFactory()) {
+		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container) {
 			@Override
-			public Screen getScreen(String screenName) {
-				return new TabScreen(screenName);
+			protected Fragment createFragment(String screenName) {
+				NavigationFactory navigationFactory = SampleApplication.getNavigationFactory();
+				return navigationFactory.createFragment(new TabScreen(screenName));
 			}
 
 			@Override

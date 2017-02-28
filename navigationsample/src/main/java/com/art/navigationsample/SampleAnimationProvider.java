@@ -22,7 +22,7 @@ public class SampleAnimationProvider implements AnimationProvider {
 				return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
 			case REPLACE:
 			case RESET:
-				return new TransitionAnimation(R.anim.stay, android.R.anim.fade_out);
+				return new TransitionAnimation(R.anim.stay, R.anim.fade_out);
 			default:
 				return TransitionAnimation.DEFAULT;
 		}

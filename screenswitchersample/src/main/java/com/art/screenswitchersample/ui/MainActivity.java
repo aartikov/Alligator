@@ -1,6 +1,6 @@
 package com.art.screenswitchersample.ui;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.os.Bundle;
@@ -12,8 +12,10 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.implementation.FragmentScreenSwitcher;
 import com.art.screenswitchersample.R;
+import com.art.screenswitchersample.SampleAnimationProvider;
 import com.art.screenswitchersample.SampleApplication;
 import com.art.screenswitchersample.screens.TabScreen;
 import com.roughike.bottombar.BottomBar;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	private static final String ANDROID_SCREEN_NAME = "ANDROID";
 	private static final String BUG_SCREEN_NAME = "BUG";
 	private static final String DOG_SCREEN_NAME = "DOG";
-	private static Map<Integer, String> sTabToNameMap = new HashMap<>();
+	private static Map<Integer, String> sTabToNameMap = new LinkedHashMap<>();
 
 	static {
 		sTabToNameMap.put(R.id.tab_android, ANDROID_SCREEN_NAME);
@@ -94,6 +96,17 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			}
 
 			@Override
+			protected TransitionAnimation getAnimation(String previousScreenName, String nextScreenName) {
+				int previousIndex = screenNameToIndex(previousScreenName);
+				int nextIndex = screenNameToIndex(nextScreenName);
+				if(nextIndex > previousIndex) {
+					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
+				} else {
+					return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
+				}
+			}
+
+			@Override
 			protected void onScreenSwitched(String screenName) {
 				bindNavigationContext();
 				selectTab(screenNameToTabId(screenName));
@@ -103,7 +116,9 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 	private void bindNavigationContext() {
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
-		NavigationContext.Builder builder = new NavigationContext.Builder(this).screenSwitcher(mScreenSwitcher);
+		NavigationContext.Builder builder = new NavigationContext.Builder(this)
+				.screenSwitcher(mScreenSwitcher)
+				.animationProvider(new SampleAnimationProvider());
 
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
 			int containerId = ((ContainerIdProvider) fragment).getContainerId();
@@ -131,6 +146,17 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			if (entry.getValue().equals(screenName)) {
 				return entry.getKey();
 			}
+		}
+		throw new IllegalArgumentException("Unknown screen name " + screenName);
+	}
+
+	private static int screenNameToIndex(String screenName) {
+		int index = 0;
+		for (Map.Entry<Integer, String> entry : sTabToNameMap.entrySet()) {
+			if (entry.getValue().equals(screenName)) {
+				return index;
+			}
+			index++;
 		}
 		throw new IllegalArgumentException("Unknown screen name " + screenName);
 	}

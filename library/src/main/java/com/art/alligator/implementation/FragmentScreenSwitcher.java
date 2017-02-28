@@ -2,8 +2,10 @@ package com.art.alligator.implementation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.ScreenSwitcher;
+import com.art.alligator.TransitionAnimation;
 
 /**
  * Date: 01/30/2016
@@ -27,6 +29,10 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	protected void onScreenSwitched(String screenName) {
 	}
 
+	protected TransitionAnimation getAnimation(String previousScreenName, String nextScreenName) {
+		return TransitionAnimation.NONE;
+	}
+
 	@Override
 	public boolean switchTo(String screenName) {
 		Fragment newFragment = mFragmentManager.findFragmentByTag(screenName);
@@ -46,19 +52,21 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 			return true;
 		}
 
-		if(mCurrentFragment != null) {
-			mFragmentManager.beginTransaction()
-					.detach(mCurrentFragment)
-					.commitNow();
-		}
-
+		Fragment previousFragment = mCurrentFragment;
 		mCurrentFragment = newFragment;
 		onScreenSwitched(screenName);
 
-		mFragmentManager.beginTransaction()
-				.attach(newFragment)
-				.commitNow();
+		FragmentTransaction transaction = mFragmentManager.beginTransaction();
+		if(previousFragment != null) {
+			TransitionAnimation animation = getAnimation(previousFragment.getTag(), screenName);
+			if(animation != null && animation != TransitionAnimation.DEFAULT) {
+				transaction.setCustomAnimations(animation.getEnterAnimation(), animation.getExitAnimation());
+			}
+			transaction.detach(previousFragment);
+		}
 
+		transaction.attach(newFragment);
+		transaction.commitNow();
 		return true;
 	}
 

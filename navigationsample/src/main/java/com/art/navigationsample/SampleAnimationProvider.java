@@ -14,7 +14,7 @@ import com.art.alligator.TransitionType;
 
 public class SampleAnimationProvider implements AnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClass) {
+	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo) {
 		switch (transitionType) {
 			case FORWARD:
 				return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);

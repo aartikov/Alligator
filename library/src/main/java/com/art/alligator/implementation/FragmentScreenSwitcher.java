@@ -29,7 +29,7 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	protected void onScreenSwitched(String screenName) {
 	}
 
-	protected TransitionAnimation getAnimation(String previousScreenName, String nextScreenName) {
+	protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
 		return TransitionAnimation.NONE;
 	}
 

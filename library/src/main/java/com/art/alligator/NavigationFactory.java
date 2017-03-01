@@ -1,5 +1,7 @@
 package com.art.alligator;
 
+import java.util.Collection;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,4 +29,9 @@ public interface NavigationFactory {
 	 * Creates an fragment for the given screen, or returns  null if the screen is not represented by a fragment
 	 */
 	Fragment createFragment(Screen screen);
+
+	/**
+	 * Get known screen classes
+	 */
+	Collection<Class<? extends Screen>> getScreenClasses();
 }

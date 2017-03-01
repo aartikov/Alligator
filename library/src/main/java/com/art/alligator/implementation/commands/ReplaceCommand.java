@@ -39,9 +39,10 @@ public class ReplaceCommand implements Command {
 		if(intent != null) {
 			Activity activity = navigationContext.getActivity();
 			ScreenUtils.putScreenClass(intent, mScreen.getClass());
+			ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getPreviousScreenClass(activity));
 			activity.startActivity(intent);
 			activity.finish();
-			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext));
+			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 
 		} else if (fragment != null) {
@@ -53,7 +54,7 @@ public class ReplaceCommand implements Command {
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
 			if (currentFragment != null) {
-				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext));
+				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, currentFragment));
 				transaction.remove(currentFragment);
 			}
 
@@ -70,19 +71,23 @@ public class ReplaceCommand implements Command {
 		}
 	}
 
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		if(mAnimation != null) {
 			return mAnimation;
 		}
 
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, true, mScreen.getClass());
+		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, true, screenClassFrom, screenClassTo);
 	}
 
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
 		if(mAnimation != null) {
 			return mAnimation;
 		}
 
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, false, mScreen.getClass());
+		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, false, screenClassFrom, screenClassTo);
 	}
 }

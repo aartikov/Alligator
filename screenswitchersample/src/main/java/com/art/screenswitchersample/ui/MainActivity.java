@@ -96,10 +96,10 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			}
 
 			@Override
-			protected TransitionAnimation getAnimation(String previousScreenName, String nextScreenName) {
-				int previousIndex = screenNameToIndex(previousScreenName);
-				int nextIndex = screenNameToIndex(nextScreenName);
-				if(nextIndex > previousIndex) {
+			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
+				int indexFrom = screenNameToIndex(screenNameFrom);
+				int indexTo = screenNameToIndex(screenNameTo);
+				if(indexTo > indexFrom) {
 					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 				} else {
 					return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);

@@ -13,7 +13,7 @@ import com.art.alligator.TransitionType;
  */
 public class DefaultAnimationProvider implements AnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClass) {
+	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo) {
 		return TransitionAnimation.DEFAULT;
 	}
 }

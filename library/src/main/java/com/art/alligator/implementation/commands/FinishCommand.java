@@ -29,16 +29,17 @@ public class FinishCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		Activity activity = navigationContext.getActivity();
 		activity.finish();
-		CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext));
+		CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 		return false;
 	}
 
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		if(mAnimation != null) {
 			return mAnimation;
 		}
 
-		Class<? extends Screen> screenClass = ScreenUtils.getScreenClass(navigationContext.getActivity());
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClass);
+		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassTo = ScreenUtils.getPreviousScreenClass(navigationContext.getActivity());
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClassFrom, screenClassTo);
 	}
 }

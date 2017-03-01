@@ -39,8 +39,9 @@ public class ForwardCommand implements Command {
 		if (intent != null) {
 			Activity activity = navigationContext.getActivity();
 			ScreenUtils.putScreenClass(intent, mScreen.getClass());
+			ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getScreenClass(activity, navigationFactory));
 			activity.startActivity(intent);
-			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext));
+			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 
 		} else if (fragment != null) {
@@ -52,7 +53,7 @@ public class ForwardCommand implements Command {
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
 			if(currentFragment != null) {
-				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext));
+				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, currentFragment));
 				transaction.detach(currentFragment);
 			}
 
@@ -68,19 +69,23 @@ public class ForwardCommand implements Command {
 		}
 	}
 
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext) {
+	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		if(mAnimation != null) {
 			return mAnimation;
 		}
 
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, true, mScreen.getClass());
+		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, true, screenClassFrom, screenClassTo);
 	}
 
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext) {
+	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
 		if(mAnimation != null) {
 			return mAnimation;
 		}
 
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, false, mScreen.getClass());
+		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, false, screenClassFrom, screenClassTo);
 	}
 }

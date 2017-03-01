@@ -90,7 +90,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void reset(Screen screen) {
-		replace(screen, null);
+		reset(screen, null);
 	}
 
 	@Override

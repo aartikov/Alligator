@@ -28,8 +28,9 @@ import com.art.alligator.implementation.commands.SwitchToCommand;
 public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private NavigationFactory mNavigationFactory;
 	private NavigationContext mNavigationContext;
-	private Queue<Command> mPendingCommands = new LinkedList<>();
+	private Queue<Command> mCommandQueue = new LinkedList<>();
 	private boolean mCanExecuteCommands;
+	private boolean mIsExecutingCommands;
 
 	public AndroidNavigator(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
@@ -39,7 +40,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	public void bind(NavigationContext navigationContext) {
 		mNavigationContext = navigationContext;
 		mCanExecuteCommands = true;
-		executePendingCommands();
+		executeQueuedCommands();
 	}
 
 	@Override
@@ -114,17 +115,34 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	protected void executeCommand(Command command) {
-		if (mCanExecuteCommands) {
+		mCommandQueue.add(command);
+		executeQueuedCommands();
+	}
+
+	private void executeQueuedCommands() {
+		if(mIsExecutingCommands) {
+			return;
+		}
+
+		mIsExecutingCommands = true;
+		while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
+			Command command = mCommandQueue.remove();
 			try {
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
 				onCommandExecuted(command);
 			} catch (CommandExecutionException e) {
+				mCommandQueue.clear();
+				mIsExecutingCommands = false;
 				onError(command, e);
+			} catch (Exception e) {
+				mCommandQueue.clear();
+				mIsExecutingCommands = false;
+				throw e;
 			}
-		} else {
-			mPendingCommands.add(command);
 		}
+		mIsExecutingCommands = false;
 	}
+
 
 	protected void onCommandExecuted(Command command) {
 		if(mNavigationContext.getNavigationListener() != null) {
@@ -134,18 +152,5 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	protected void onError(Command command, CommandExecutionException e) {
 		throw new RuntimeException("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + e.getMessage(), e);
-	}
-
-	private void executePendingCommands() {
-		while (mCanExecuteCommands && !mPendingCommands.isEmpty()) {
-			Command command = mPendingCommands.remove();
-			try {
-				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				onCommandExecuted(command);
-			} catch (CommandExecutionException e) {
-				mPendingCommands.clear();
-				onError(command, e);
-			}
-		}
 	}
 }

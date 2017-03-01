@@ -3,6 +3,7 @@ package com.art.alligator.implementation;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.art.alligator.ScreenSwitcher;
 import com.art.alligator.TransitionAnimation;
@@ -16,12 +17,10 @@ import com.art.alligator.TransitionAnimation;
 public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
-	private Fragment mCurrentFragment;
 
 	public FragmentScreenSwitcher(FragmentManager fragmentManager, int containerId) {
 		mFragmentManager = fragmentManager;
 		mContainerId = containerId;
-		mCurrentFragment = mFragmentManager.findFragmentById(mContainerId);
 	}
 
 	protected abstract Fragment createFragment(String screenName);
@@ -35,42 +34,44 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 
 	@Override
 	public boolean switchTo(String screenName) {
+		Fragment currentFragment = getCurrentFragment();
+
 		Fragment newFragment = mFragmentManager.findFragmentByTag(screenName);
+		boolean justCreated = newFragment == null;
 		if (newFragment == null) {
 			newFragment = createFragment(screenName);
-			if(newFragment == null) {
+			if (newFragment == null) {
 				return false;
 			}
-
-			mFragmentManager.beginTransaction()
-					.add(mContainerId, newFragment, screenName)
-					.detach(newFragment)
-					.commitNow();
 		}
 
-		if(mCurrentFragment == newFragment) {
+		if(currentFragment == newFragment) {
 			return true;
 		}
 
-		Fragment previousFragment = mCurrentFragment;
-		mCurrentFragment = newFragment;
-		onScreenSwitched(screenName);
-
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		if(previousFragment != null) {
-			TransitionAnimation animation = getAnimation(previousFragment.getTag(), screenName);
+
+		if(currentFragment != null) {
+			TransitionAnimation animation = getAnimation(currentFragment.getTag(), screenName);
 			if(animation != null && animation != TransitionAnimation.DEFAULT) {
 				transaction.setCustomAnimations(animation.getEnterAnimation(), animation.getExitAnimation());
 			}
-			transaction.detach(previousFragment);
+			transaction.detach(currentFragment);
 		}
 
-		transaction.attach(newFragment);
+		if(justCreated) {
+			transaction.add(mContainerId, newFragment, screenName);
+		} else {
+			transaction.attach(newFragment);
+		}
+
 		transaction.commitNow();
+
+		onScreenSwitched(screenName);
 		return true;
 	}
 
 	public Fragment getCurrentFragment() {
-		return mCurrentFragment;
+		return mFragmentManager.findFragmentById(mContainerId);
 	}
 }

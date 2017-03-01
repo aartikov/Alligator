@@ -15,6 +15,10 @@ import com.art.alligator.TransitionType;
 public class SampleAnimationProvider implements AnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo) {
-		return new TransitionAnimation(R.anim.stay, R.anim.fade_out);
+		if(isActivity) {
+			return TransitionAnimation.DEFAULT;
+		} else {
+			return new TransitionAnimation(R.anim.stay, R.anim.fade_out);
+		}
 	}
 }

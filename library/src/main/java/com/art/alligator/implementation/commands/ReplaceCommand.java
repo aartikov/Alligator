@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
@@ -24,11 +25,11 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ReplaceCommand implements Command {
 	private Screen mScreen;
-	private TransitionAnimation mAnimation;
+	private AnimationData mAnimationData;
 
-	public ReplaceCommand(Screen screen, TransitionAnimation animation) {
+	public ReplaceCommand(Screen screen, AnimationData animationData) {
 		mScreen = screen;
-		mAnimation = animation;
+		mAnimationData = animationData;
 	}
 
 	@Override
@@ -72,22 +73,14 @@ public class ReplaceCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, true, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, false, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

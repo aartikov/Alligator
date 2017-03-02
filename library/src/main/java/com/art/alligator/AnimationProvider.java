@@ -8,5 +8,5 @@ package com.art.alligator;
  */
 
 public interface AnimationProvider {
-	TransitionAnimation getAnimation(TransitionType transitionType, boolean isActivity, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo);
+	TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData);
 }

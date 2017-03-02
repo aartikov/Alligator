@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
@@ -27,11 +28,11 @@ import com.art.alligator.implementation.ScreenUtils;
 
 public class BackToCommand implements Command {
 	private Class<? extends Screen> mScreenClass;
-	private TransitionAnimation mAnimation;
+	private AnimationData mAnimationData;
 
-	public BackToCommand(Class<? extends Screen> screenClass, TransitionAnimation animation) {
+	public BackToCommand(Class<? extends Screen> screenClass, AnimationData animationData) {
 		mScreenClass = screenClass;
-		mAnimation = animation;
+		mAnimationData = animationData;
 	}
 
 	@Override
@@ -81,22 +82,14 @@ public class BackToCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreenClass;
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, true, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreenClass;
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, false, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

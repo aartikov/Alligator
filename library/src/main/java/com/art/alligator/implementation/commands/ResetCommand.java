@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
@@ -26,11 +27,11 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ResetCommand implements Command {
 	private Screen mScreen;
-	private TransitionAnimation mAnimation;
+	private AnimationData mAnimationData;
 
-	public ResetCommand(Screen screen, TransitionAnimation animation) {
+	public ResetCommand(Screen screen, AnimationData animationData) {
 		mScreen = screen;
-		mAnimation = animation;
+		mAnimationData = animationData;
 	}
 
 	@Override
@@ -71,22 +72,14 @@ public class ResetCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, true, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		if(mAnimation != null) {
-			return mAnimation;
-		}
-
 		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, false, screenClassFrom, screenClassTo);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

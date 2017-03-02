@@ -3,6 +3,7 @@ package com.art.alligator.implementation;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
@@ -10,7 +11,6 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
-import com.art.alligator.TransitionAnimation;
 import com.art.alligator.implementation.commands.BackCommand;
 import com.art.alligator.implementation.commands.BackToCommand;
 import com.art.alligator.implementation.commands.FinishCommand;
@@ -55,8 +55,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goForward(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ForwardCommand(screen, animation));
+	public void goForward(Screen screen, AnimationData animationData) {
+		executeCommand(new ForwardCommand(screen, animationData));
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goBack(TransitionAnimation animation) {
-		executeCommand(new BackCommand(animation));
+	public void goBack(AnimationData animationData) {
+		executeCommand(new BackCommand(animationData));
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goBackTo(Class<? extends Screen> screenClass, TransitionAnimation animation) {
-		executeCommand(new BackToCommand(screenClass, animation));
+	public void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData) {
+		executeCommand(new BackToCommand(screenClass, animationData));
 	}
 
 	@Override
@@ -85,8 +85,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void replace(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ReplaceCommand(screen, animation));
+	public void replace(Screen screen, AnimationData animationData) {
+		executeCommand(new ReplaceCommand(screen, animationData));
 	}
 
 	@Override
@@ -95,8 +95,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void reset(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ResetCommand(screen, animation));
+	public void reset(Screen screen, AnimationData animationData) {
+		executeCommand(new ResetCommand(screen, animationData));
 	}
 
 	@Override
@@ -105,8 +105,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void finish(TransitionAnimation animation) {
-		executeCommand(new FinishCommand(animation));
+	public void finish(AnimationData animationData) {
+		executeCommand(new FinishCommand(animationData));
 	}
 
 	@Override

@@ -13,42 +13,42 @@ public interface Navigator {
 	 */
 	void goForward(Screen screen);
 
-	void goForward(Screen screen, TransitionAnimation animation);
+	void goForward(Screen screen, AnimationData animationData);
 
 	/**
 	 * Finish current screen and go back to the previous screen
 	 */
 	void goBack();
 
-	void goBack(TransitionAnimation animation);
+	void goBack(AnimationData animationData);
 
 	/**
 	 * Go back to a screen with the given class
 	 */
 	void goBackTo(Class<? extends Screen> screenClass);
 
-	void goBackTo(Class<? extends Screen> screenClass, TransitionAnimation animation);
+	void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData);
 
 	/**
 	 * Replace the last screen with a new screen
 	 */
 	void replace(Screen screen);
 
-	void replace(Screen screen, TransitionAnimation animation);
+	void replace(Screen screen, AnimationData animationData);
 
 	/**
 	 * Remove all other screens and add a new screen
 	 */
 	void reset(Screen screen);
 
-	void reset(Screen screen, TransitionAnimation animation);
+	void reset(Screen screen, AnimationData animationData);
 
 	/**
 	 * Finish a last screen or a group of screens executing some common task
 	 */
 	void finish();
 
-	void finish(TransitionAnimation animation);
+	void finish(AnimationData animationData);
 
 	/**
 	 * Switch screens by name

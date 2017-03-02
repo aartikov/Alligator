@@ -33,7 +33,9 @@ public class CommandUtils {
 				break;
 			}
 
-			result.add(fragment);
+			if(!fragment.isRemoving()) {
+				result.add(fragment);
+			}
 			index++;
 		}
 		return result;

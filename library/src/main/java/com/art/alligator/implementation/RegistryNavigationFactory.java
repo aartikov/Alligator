@@ -1,6 +1,7 @@
 package com.art.alligator.implementation;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Activity;
@@ -19,7 +20,7 @@ import com.art.alligator.Screen;
  */
 
 public class RegistryNavigationFactory implements NavigationFactory {
-	private Map<Class<? extends Screen>, RegistryElement> mRegistry = new HashMap<>();
+	private Map<Class<? extends Screen>, RegistryElement> mRegistry = new LinkedHashMap<>();
 
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, IntentCreationFunction<ScreenT> intentCreationFunction) {
 		checkIfAlreadyRegistered(screenClass);
@@ -79,6 +80,11 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public Collection<Class<? extends Screen>> getScreenClasses() {
+		return mRegistry.keySet();
 	}
 
 	private void checkIfAlreadyRegistered(Class<? extends Screen> screenClass) {

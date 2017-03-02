@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.screenswitchersample;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.AnimationProvider;
@@ -7,14 +7,19 @@ import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 
 /**
- * Date: 24.02.2017
- * Time: 19:14
+ * Date: 28.02.2017
+ * Time: 21:01
  *
  * @author Artur Artikov
  */
-public class DefaultAnimationProvider implements AnimationProvider {
+
+public class SampleAnimationProvider implements AnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData) {
-		return TransitionAnimation.DEFAULT;
+		if(isActivity) {
+			return TransitionAnimation.DEFAULT;
+		} else {
+			return new TransitionAnimation(R.anim.stay, R.anim.fade_out);
+		}
 	}
 }

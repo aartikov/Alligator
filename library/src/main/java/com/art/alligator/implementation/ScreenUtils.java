@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 
 /**
@@ -18,8 +19,9 @@ import com.art.alligator.Screen;
  */
 
 public class ScreenUtils {
-	private static final String KEY_SCREEN_CLASS = "com.art.alligator.implementation.ScreenUtils.KEY_SCREEN_CLASS";
 	private static final String KEY_SCREEN = "com.art.alligator.implementation.ScreenUtils.KEY_SCREEN";
+	private static final String KEY_SCREEN_CLASS = "com.art.alligator.implementation.ScreenUtils.KEY_SCREEN_CLASS";
+	private static final String KEY_PREVIOUS_SCREEN_CLASS = "com.art.alligator.implementation.ScreenUtils.KEY_PREVIOUS_SCREEN_CLASS";
 
 	private ScreenUtils() {
 	}
@@ -74,8 +76,17 @@ public class ScreenUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Class<? extends Screen> getScreenClass(Activity activity) {
+	public static Class<? extends Screen> getScreenClass(Activity activity, NavigationFactory navigationFactory) {
 		Class<? extends Screen> screenClass = (Class<? extends Screen>) activity.getIntent().getSerializableExtra(KEY_SCREEN_CLASS);
+
+		if(screenClass == null) {   // screenClass is null. May be activity is a home screen. Try to find it in NavigationFactory.
+			for(Class<? extends Screen> sc: navigationFactory.getScreenClasses()) {
+				if(navigationFactory.getActivityClass(sc) == activity.getClass()) {
+					screenClass = sc;
+					break;
+				}
+			}
+		}
 		return screenClass != null ? screenClass : Screen.class;
 	}
 
@@ -99,5 +110,15 @@ public class ScreenUtils {
 			fragment.setArguments(arguments);
 		}
 		arguments.putSerializable(KEY_SCREEN_CLASS, screenClass);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Class<? extends Screen> getPreviousScreenClass(Activity activity) {
+		Class<? extends Screen> screenClass = (Class<? extends Screen>) activity.getIntent().getSerializableExtra(KEY_PREVIOUS_SCREEN_CLASS);
+		return screenClass != null ? screenClass : Screen.class;
+	}
+
+	public static void putPreviousScreenClass(Intent intent, Class<? extends Screen> screenClass) {
+		intent.putExtra(KEY_PREVIOUS_SCREEN_CLASS, screenClass);
 	}
 }

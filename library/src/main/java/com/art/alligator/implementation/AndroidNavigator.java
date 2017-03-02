@@ -3,6 +3,7 @@ package com.art.alligator.implementation;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
 import com.art.alligator.NavigationContext;
@@ -10,7 +11,6 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
-import com.art.alligator.TransitionAnimation;
 import com.art.alligator.implementation.commands.BackCommand;
 import com.art.alligator.implementation.commands.BackToCommand;
 import com.art.alligator.implementation.commands.FinishCommand;
@@ -28,8 +28,9 @@ import com.art.alligator.implementation.commands.SwitchToCommand;
 public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private NavigationFactory mNavigationFactory;
 	private NavigationContext mNavigationContext;
-	private Queue<Command> mPendingCommands = new LinkedList<>();
+	private Queue<Command> mCommandQueue = new LinkedList<>();
 	private boolean mCanExecuteCommands;
+	private boolean mIsExecutingCommands;
 
 	public AndroidNavigator(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
@@ -39,7 +40,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	public void bind(NavigationContext navigationContext) {
 		mNavigationContext = navigationContext;
 		mCanExecuteCommands = true;
-		executePendingCommands();
+		executeQueuedCommands();
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goForward(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ForwardCommand(screen, animation));
+	public void goForward(Screen screen, AnimationData animationData) {
+		executeCommand(new ForwardCommand(screen, animationData));
 	}
 
 	@Override
@@ -64,8 +65,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goBack(TransitionAnimation animation) {
-		executeCommand(new BackCommand(animation));
+	public void goBack(AnimationData animationData) {
+		executeCommand(new BackCommand(animationData));
 	}
 
 	@Override
@@ -74,8 +75,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goBackTo(Class<? extends Screen> screenClass, TransitionAnimation animation) {
-		executeCommand(new BackToCommand(screenClass, animation));
+	public void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData) {
+		executeCommand(new BackToCommand(screenClass, animationData));
 	}
 
 	@Override
@@ -84,18 +85,18 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void replace(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ReplaceCommand(screen, animation));
+	public void replace(Screen screen, AnimationData animationData) {
+		executeCommand(new ReplaceCommand(screen, animationData));
 	}
 
 	@Override
 	public void reset(Screen screen) {
-		replace(screen, null);
+		reset(screen, null);
 	}
 
 	@Override
-	public void reset(Screen screen, TransitionAnimation animation) {
-		executeCommand(new ResetCommand(screen, animation));
+	public void reset(Screen screen, AnimationData animationData) {
+		executeCommand(new ResetCommand(screen, animationData));
 	}
 
 	@Override
@@ -104,8 +105,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void finish(TransitionAnimation animation) {
-		executeCommand(new FinishCommand(animation));
+	public void finish(AnimationData animationData) {
+		executeCommand(new FinishCommand(animationData));
 	}
 
 	@Override
@@ -114,17 +115,34 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	protected void executeCommand(Command command) {
-		if (mCanExecuteCommands) {
+		mCommandQueue.add(command);
+		executeQueuedCommands();
+	}
+
+	private void executeQueuedCommands() {
+		if(mIsExecutingCommands) {
+			return;
+		}
+
+		mIsExecutingCommands = true;
+		while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
+			Command command = mCommandQueue.remove();
 			try {
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
 				onCommandExecuted(command);
 			} catch (CommandExecutionException e) {
+				mCommandQueue.clear();
+				mIsExecutingCommands = false;
 				onError(command, e);
+			} catch (Exception e) {
+				mCommandQueue.clear();
+				mIsExecutingCommands = false;
+				throw e;
 			}
-		} else {
-			mPendingCommands.add(command);
 		}
+		mIsExecutingCommands = false;
 	}
+
 
 	protected void onCommandExecuted(Command command) {
 		if(mNavigationContext.getNavigationListener() != null) {
@@ -134,18 +152,5 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	protected void onError(Command command, CommandExecutionException e) {
 		throw new RuntimeException("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + e.getMessage(), e);
-	}
-
-	private void executePendingCommands() {
-		while (mCanExecuteCommands && !mPendingCommands.isEmpty()) {
-			Command command = mPendingCommands.remove();
-			try {
-				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				onCommandExecuted(command);
-			} catch (CommandExecutionException e) {
-				mPendingCommands.clear();
-				onError(command, e);
-			}
-		}
 	}
 }

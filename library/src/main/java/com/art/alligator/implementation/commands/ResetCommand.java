@@ -17,6 +17,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.FailedResolveActivityException;
 import com.art.alligator.implementation.ScreenUtils;
 
 /**
@@ -42,8 +43,15 @@ public class ResetCommand implements Command {
 		if(intent != null) {
 			Activity activity = navigationContext.getActivity();
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			ScreenUtils.putScreenClass(intent, mScreen.getClass());
+			if(intent.getAction() == null) {
+				ScreenUtils.putScreenClass(intent, mScreen.getClass());
+			}
+
+			if(intent.resolveActivity(activity.getPackageManager()) == null) {
+				throw new FailedResolveActivityException(this, mScreen);
+			}
 			activity.startActivity(intent);
+
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 		} else if (fragment != null) {

@@ -15,6 +15,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.FailedResolveActivityException;
 import com.art.alligator.implementation.ScreenUtils;
 
 /**
@@ -41,8 +42,16 @@ public class ForwardCommand implements Command {
 
 		if (intent != null) {
 			Activity activity = navigationContext.getActivity();
-			ScreenUtils.putScreenClass(intent, mScreen.getClass());
-			ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getScreenClass(activity, navigationFactory));
+
+			if(intent.getAction() == null) {
+				ScreenUtils.putScreenClass(intent, mScreen.getClass());
+				ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getScreenClass(activity, navigationFactory));
+			}
+
+			if(intent.resolveActivity(activity.getPackageManager()) == null) {
+				throw new FailedResolveActivityException(this, mScreen);
+			}
+
 			if(mForResult) {
 				int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
 				activity.startActivityForResult(intent, requestCode);

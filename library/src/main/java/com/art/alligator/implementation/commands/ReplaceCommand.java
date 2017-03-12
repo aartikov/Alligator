@@ -15,6 +15,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.FailedResolveActivityException;
 import com.art.alligator.implementation.ScreenUtils;
 
 /**
@@ -39,9 +40,17 @@ public class ReplaceCommand implements Command {
 
 		if(intent != null) {
 			Activity activity = navigationContext.getActivity();
-			ScreenUtils.putScreenClass(intent, mScreen.getClass());
-			ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getPreviousScreenClass(activity));
+
+			if(intent.getAction() == null) {
+				ScreenUtils.putScreenClass(intent, mScreen.getClass());
+				ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getPreviousScreenClass(activity));
+			}
+
+			if(intent.resolveActivity(activity.getPackageManager()) == null) {
+				throw new FailedResolveActivityException(this, mScreen);
+			}
 			activity.startActivity(intent);
+
 			activity.finish();
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;

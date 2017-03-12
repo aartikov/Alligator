@@ -13,6 +13,6 @@ import com.art.alligator.NavigationErrorListener;
 public class DefaultNavigationErrorListener implements NavigationErrorListener {
 	@Override
 	public void onNavigationError(CommandExecutionException e) {
-		throw new RuntimeException(e.getMessage(), e);
+		throw new RuntimeException(e);
 	}
 }

@@ -27,9 +27,8 @@ public class ScreenResultUtils {
 	static public boolean handleActivityResult(int requestCode, int resultCode, Intent data, NavigationFactory navigationFactory, ScreenResultListener listener) {
 		Class<? extends Screen> screenClass = getScreenClass(requestCode, navigationFactory);
 		if(screenClass != null) {
-			ScreenResult screenResult = navigationFactory.createScreenResult(new ActivityResult(resultCode, data));
-			listener.onScreenResult(screenClass, screenResult);
-			return true;
+			ScreenResult screenResult = navigationFactory.createScreenResult(screenClass, new ActivityResult(resultCode, data));
+			return listener.onScreenResult(screenClass, screenResult);
 		} else {
 			return false;
 		}

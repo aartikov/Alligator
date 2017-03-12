@@ -53,15 +53,17 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	}
 
 	@Override
-	public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
+	public boolean onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
 		if(screenClass == InputScreen.class) {
 			InputScreen.Result inputScreenResult = (InputScreen.Result) result;
 			if(inputScreenResult == null) {
-				Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
 			} else {
 				mMessageTextView.setText(inputScreenResult.getMessage());
 			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class ReplaceCommand implements Command {
 		} else if (fragment != null) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
-				throw new CommandExecutionException("FragmentManager is not bound.");
+				throw new CommandExecutionException(this, "FragmentManager is not bound.");
 			}
 
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -68,7 +68,7 @@ public class ReplaceCommand implements Command {
 			return true;
 
 		} else {
-			throw new CommandExecutionException("Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+			throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
 	}
 

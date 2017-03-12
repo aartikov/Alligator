@@ -146,32 +146,26 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		}
 
 		mIsExecutingCommands = true;
-		while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
-			Command command = mCommandQueue.remove();
-			try {
+
+		try {
+			while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
+				Command command = mCommandQueue.remove();
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				onCommandExecuted(command);
-			} catch (CommandExecutionException e) {
-				mCommandQueue.clear();
-				mIsExecutingCommands = false;
-				onError(command, e);
-			} catch (Exception e) {
-				mCommandQueue.clear();
-				mIsExecutingCommands = false;
-				throw e;
+				if (mNavigationContext.getNavigationListener() != null) {
+					mNavigationContext.getNavigationListener().onCommandExecuted(command);
+				}
 			}
+			mIsExecutingCommands = false;
+		} catch (CommandExecutionException e) {
+			mCommandQueue.clear();
+			mIsExecutingCommands = false;
+			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
+		} catch (Exception e){
+			mCommandQueue.clear();
+			mIsExecutingCommands = false;
+			throw e;
 		}
+
 		mIsExecutingCommands = false;
-	}
-
-
-	protected void onCommandExecuted(Command command) {
-		if(mNavigationContext.getNavigationListener() != null) {
-			mNavigationContext.getNavigationListener().onCommandExecuted(command);
-		}
-	}
-
-	protected void onError(Command command, CommandExecutionException e) {
-		throw new RuntimeException("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + e.getMessage(), e);
 	}
 }

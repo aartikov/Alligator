@@ -23,12 +23,12 @@ public class SwitchToCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
 		if (screenSwitcher == null) {
-			throw new CommandExecutionException("ScreenSwitcher is not bound.");
+			throw new CommandExecutionException(this, "ScreenSwitcher is not bound.");
 		}
 
 		boolean success = screenSwitcher.switchTo(mScreenName);
 		if(!success) {
-			throw new CommandExecutionException("Unknown screen name " + mScreenName);
+			throw new CommandExecutionException(this, "Unknown screen name " + mScreenName);
 		}
 		return true;
 	}

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.implementation.DefaultAnimationProvider;
+import com.art.alligator.implementation.DefaultNavigationErrorListener;
 
 /**
  * Date: 29.12.2016
@@ -18,6 +19,7 @@ public class NavigationContext {
 	private ScreenSwitcher mScreenSwitcher;
 	private AnimationProvider mAnimationProvider;
 	private NavigationListener mNavigationListener;
+	private NavigationErrorListener mNavigationErrorListener;
 
 	public NavigationContext(Activity activity) {
 		this(new Builder(activity));
@@ -34,6 +36,7 @@ public class NavigationContext {
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mAnimationProvider = builder.mAnimationProvider;
 		mNavigationListener = builder.mNavigationListener;
+		mNavigationErrorListener = builder.mNavigationErrorListener;
 	}
 
 	public Activity getActivity() {
@@ -60,6 +63,10 @@ public class NavigationContext {
 		return mNavigationListener;
 	}
 
+	public NavigationErrorListener getNavigationErrorListener() {
+		return mNavigationErrorListener;
+	}
+
 	public static class Builder {
 		private Activity mActivity;
 		private FragmentManager mFragmentManager;
@@ -67,6 +74,7 @@ public class NavigationContext {
 		private ScreenSwitcher mScreenSwitcher;
 		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
 		private NavigationListener mNavigationListener;
+		private NavigationErrorListener mNavigationErrorListener = new DefaultNavigationErrorListener();
 
 		public Builder(Activity activity) {
 			mActivity = activity;
@@ -90,6 +98,11 @@ public class NavigationContext {
 
 		public Builder navigationListener(NavigationListener navigationListener) {
 			mNavigationListener = navigationListener;
+			return this;
+		}
+
+		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
+			mNavigationErrorListener = navigationErrorListener != null ? navigationErrorListener : new DefaultNavigationErrorListener();
 			return this;
 		}
 

@@ -59,7 +59,7 @@ public class BackToCommand implements Command {
 			}
 
 			if(index == -1) {
-				throw new CommandExecutionException("Screen " + mScreenClass.getSimpleName() + " is not found.");
+				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 			}
 
 			if(index == fragments.size() - 1) {
@@ -77,7 +77,7 @@ public class BackToCommand implements Command {
 			transaction.commitNow();
 			return true;
 		} else {
-			throw new CommandExecutionException("Screen " + mScreenClass.getSimpleName() + " is not found.");
+			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 		}
 	}
 

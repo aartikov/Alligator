@@ -1,6 +1,7 @@
 package com.art.alligator.implementation;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,18 +23,20 @@ import com.art.alligator.ScreenResult;
  */
 
 public class RegistryNavigationFactory implements NavigationFactory {
-	private Map<Class<? extends Screen>, RegistryElement> mRegistry = new LinkedHashMap<>();
-	private int mRequestCode = 1;
+	private int mRequestCodeCounter = 1;
+	private Map<Class<? extends Screen>, ScreenRegistryElement> mScreenRegistry = new LinkedHashMap<>();
+	private Map<Class<? extends Screen>, ScreenResultCreationFunction> mScreenResultCreationFunctions = new HashMap<>();
+	private Map<Class<? extends ScreenResult>, ActivityResultCreationFunction> mActivityResultCreationFunctions = new HashMap<>();
 
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, IntentCreationFunction<ScreenT> intentCreationFunction) {
-		checkIfAlreadyRegistered(screenClass);
-		mRegistry.put(screenClass, new RegistryElement(activityClass, mRequestCode, intentCreationFunction));
-		mRequestCode++;
+		checkIfScreenAlreadyRegistered(screenClass);
+		mScreenRegistry.put(screenClass, new ScreenRegistryElement(activityClass, mRequestCodeCounter, intentCreationFunction));
+		mRequestCodeCounter++;
 	}
 
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, FragmentCreationFunction<ScreenT> fragmentCreationFunction) {
-		checkIfAlreadyRegistered(screenClass);
-		mRegistry.put(screenClass, new RegistryElement(fragmentCreationFunction));
+		checkIfScreenAlreadyRegistered(screenClass);
+		mScreenRegistry.put(screenClass, new ScreenRegistryElement(fragmentCreationFunction));
 	}
 
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
@@ -54,10 +57,30 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		});
 	}
 
+	public <ScreenResultT extends ScreenResult> void registerScreenResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
+	                                                                      ScreenResultCreationFunction<ScreenResultT> screenResultCreationFunction,
+	                                                                      ActivityResultCreationFunction<ScreenResultT> activityResultCreationFunction) {
+
+		checkIfScreenResultAlreadyRegistered(screenResultClass);
+		mScreenResultCreationFunctions.put(screenClass, screenResultCreationFunction);
+		mActivityResultCreationFunctions.put(screenResultClass, activityResultCreationFunction);
+	}
+
+	public <ScreenResultT extends ScreenResult> void registerScreenResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
+	                                                                      ScreenResultCreationFunction<ScreenResultT> screenResultCreationFunction) {
+
+		registerScreenResult(screenClass, screenResultClass, screenResultCreationFunction, new ActivityResultCreationFunction<ScreenResultT>() {
+			@Override
+			public ActivityResult create(ScreenResultT screenResult) {
+				throw new RuntimeException("ActivityResultCreationFunction is not implemented for screen result " + screenResult.getClass().getSimpleName());
+			}
+		});
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public Intent createActivityIntent(Context context, Screen screen) {
-		RegistryElement element = mRegistry.get(screen.getClass());
+		ScreenRegistryElement element = mScreenRegistry.get(screen.getClass());
 		if (element != null && element.getIntentCreationFunction() != null) {
 			return element.getIntentCreationFunction().create(context, screen);
 		} else {
@@ -67,7 +90,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 
 	@Override
 	public Class<? extends Activity> getActivityClass(Class<? extends Screen> screenClass) {
-		RegistryElement element = mRegistry.get(screenClass);
+		ScreenRegistryElement element = mScreenRegistry.get(screenClass);
 		if (element != null) {
 			return element.getActivityClass();
 		} else {
@@ -78,7 +101,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Fragment createFragment(Screen screen) {
-		RegistryElement element = mRegistry.get(screen.getClass());
+		ScreenRegistryElement element = mScreenRegistry.get(screen.getClass());
 		if (element != null && element.getFragmentCreationFunction() != null) {
 			return element.getFragmentCreationFunction().create(screen);
 		} else {
@@ -88,7 +111,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 
 	@Override
 	public int getRequestCode(Class<? extends Screen> screenClass) {
-		RegistryElement element = mRegistry.get(screenClass);
+		ScreenRegistryElement element = mScreenRegistry.get(screenClass);
 		if (element != null) {
 			return element.getRequestCode();
 		} else {
@@ -97,23 +120,40 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	@Override
-	public ScreenResult createScreenResult(ActivityResult activityResult) {
-		return ScreenResultUtils.createScreenResult(activityResult);
+	public ScreenResult createScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult) {
+		ScreenResultCreationFunction screenResultCreationFunction = mScreenResultCreationFunctions.get(screenClass);
+		if (screenResultCreationFunction != null) {
+			return screenResultCreationFunction.create(activityResult);
+		} else {
+			return ScreenResultUtils.createScreenResult(activityResult);
+		}
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public ActivityResult createActivityResult(ScreenResult screenResult) {
-		return ScreenResultUtils.createActivityResult(screenResult);
+		ActivityResultCreationFunction activityResultCreationFunctionation = mActivityResultCreationFunctions.get(screenResult.getClass());
+		if (activityResultCreationFunctionation != null) {
+			return activityResultCreationFunctionation.create(screenResult);
+		} else {
+			return ScreenResultUtils.createActivityResult(screenResult);
+		}
 	}
 
 	@Override
 	public Collection<Class<? extends Screen>> getScreenClasses() {
-		return mRegistry.keySet();
+		return mScreenRegistry.keySet();
 	}
 
-	private void checkIfAlreadyRegistered(Class<? extends Screen> screenClass) {
-		if (mRegistry.get(screenClass) != null) {
-			throw new IllegalStateException("Screen " + screenClass.getSimpleName() + "is already regitered.");
+	private void checkIfScreenAlreadyRegistered(Class<? extends Screen> screenClass) {
+		if (mScreenRegistry.get(screenClass) != null) {
+			throw new IllegalStateException("Screen " + screenClass.getSimpleName() + " is already registered.");
+		}
+	}
+
+	private void checkIfScreenResultAlreadyRegistered(Class<? extends ScreenResult> screenResultClass) {
+		if (mActivityResultCreationFunctions.get(screenResultClass) != null) {
+			throw new IllegalStateException("Screen result " + screenResultClass.getSimpleName() + " is already registered.");
 		}
 	}
 
@@ -125,19 +165,19 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		Fragment create(ScreenT screen);
 	}
 
-	private static class RegistryElement {
+	private static class ScreenRegistryElement {
 		private Class<? extends Activity> mActivityClass;
 		private int mRequestCode = -1;
 		private IntentCreationFunction mIntentCreationFunction;
 		private FragmentCreationFunction mFragmentCreationFunction;
 
-		RegistryElement(Class<? extends Activity> activityClass, int requestCode, IntentCreationFunction intentCreationFunction) {
+		ScreenRegistryElement(Class<? extends Activity> activityClass, int requestCode, IntentCreationFunction intentCreationFunction) {
 			mActivityClass = activityClass;
 			mRequestCode = requestCode;
 			mIntentCreationFunction = intentCreationFunction;
 		}
 
-		RegistryElement(FragmentCreationFunction fragmentCreationFunction) {
+		ScreenRegistryElement(FragmentCreationFunction fragmentCreationFunction) {
 			mFragmentCreationFunction = fragmentCreationFunction;
 		}
 
@@ -145,7 +185,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 			return mActivityClass;
 		}
 
-		public int getRequestCode() {
+		int getRequestCode() {
 			return mRequestCode;
 		}
 
@@ -156,5 +196,13 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		FragmentCreationFunction getFragmentCreationFunction() {
 			return mFragmentCreationFunction;
 		}
+	}
+
+	public interface ScreenResultCreationFunction<ScreenResultT extends ScreenResult> {
+		ScreenResultT create(ActivityResult activityResult);
+	}
+
+	public interface ActivityResultCreationFunction<ScreenResultT extends ScreenResult> {
+		ActivityResult create(ScreenResultT screenResult);
 	}
 }

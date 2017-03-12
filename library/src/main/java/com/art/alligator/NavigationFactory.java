@@ -38,7 +38,7 @@ public interface NavigationFactory {
 	/**
 	 * Convert ActivityResult to ScreenResult
 	 */
-	ScreenResult createScreenResult(ActivityResult activityResult);
+	ScreenResult createScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult);
 
 	/**
 	 * Convert ScreenResult to ActivityResult

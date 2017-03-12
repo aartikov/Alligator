@@ -49,7 +49,7 @@ public class ScreenUtils {
 		return getScreen(fragment, null);
 	}
 
-	public static Intent createActivityIntent(Context context, Class<? extends Activity> activityClass, Screen screen) {
+	static Intent createActivityIntent(Context context, Class<? extends Activity> activityClass, Screen screen) {
 		Intent intent = new Intent(context, activityClass);
 		if (screen instanceof Serializable) {
 			intent.putExtra(KEY_SCREEN, (Serializable) screen);
@@ -57,7 +57,7 @@ public class ScreenUtils {
 		return intent;
 	}
 
-	public static Fragment createFragment(Class<? extends Fragment> fragmentClass, Screen screen) {
+	static Fragment createFragment(Class<? extends Fragment> fragmentClass, Screen screen) {
 		try {
 			Fragment fragment = fragmentClass.newInstance();
 			if (screen instanceof Serializable) {

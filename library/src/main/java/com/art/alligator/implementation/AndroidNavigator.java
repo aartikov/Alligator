@@ -11,6 +11,7 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
+import com.art.alligator.ScreenResult;
 import com.art.alligator.implementation.commands.BackCommand;
 import com.art.alligator.implementation.commands.BackToCommand;
 import com.art.alligator.implementation.commands.FinishCommand;
@@ -56,7 +57,17 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goForward(Screen screen, AnimationData animationData) {
-		executeCommand(new ForwardCommand(screen, animationData));
+		executeCommand(new ForwardCommand(screen, false, animationData));
+	}
+
+	@Override
+	public void goForwardForResult(Screen screen) {
+		goForwardForResult(screen, null);
+	}
+
+	@Override
+	public void goForwardForResult(Screen screen, AnimationData animationData) {
+		executeCommand(new ForwardCommand(screen, true, animationData));
 	}
 
 	@Override
@@ -106,7 +117,17 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void finish(AnimationData animationData) {
-		executeCommand(new FinishCommand(animationData));
+		executeCommand(new FinishCommand(null, animationData));
+	}
+
+	@Override
+	public void finishWithResult(ScreenResult screenResult) {
+		finishWithResult(screenResult, null);
+	}
+
+	@Override
+	public void finishWithResult(ScreenResult screenResult, AnimationData animationData) {
+		executeCommand(new FinishCommand(screenResult, animationData));
 	}
 
 	@Override

@@ -16,6 +16,13 @@ public interface Navigator {
 	void goForward(Screen screen, AnimationData animationData);
 
 	/**
+	 * Go forward for result
+	 */
+	void goForwardForResult(Screen screen);
+
+	void goForwardForResult(Screen screen, AnimationData animationData);
+
+	/**
 	 * Finish current screen and go back to the previous screen
 	 */
 	void goBack();
@@ -49,6 +56,13 @@ public interface Navigator {
 	void finish();
 
 	void finish(AnimationData animationData);
+
+	/**
+	 * Finish a last screen or a group of screens executing some common task
+	 */
+	void finishWithResult(ScreenResult screenResult);
+
+	void finishWithResult(ScreenResult screenResult, AnimationData animationData);
 
 	/**
 	 * Switch screens by name

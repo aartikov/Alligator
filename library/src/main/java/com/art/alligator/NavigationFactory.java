@@ -31,6 +31,21 @@ public interface NavigationFactory {
 	Fragment createFragment(Screen screen);
 
 	/**
+	 * Returns request code for the screen class or -1 if the screen is not represented by an activity
+	 */
+	int getRequestCode(Class<? extends Screen> screenClass);
+
+	/**
+	 * Convert ActivityResult to ScreenResult
+	 */
+	ScreenResult createScreenResult(ActivityResult activityResult);
+
+	/**
+	 * Convert ScreenResult to ActivityResult
+	 */
+	ActivityResult createActivityResult(ScreenResult screenResult);
+
+	/**
 	 * Get known screen classes
 	 */
 	Collection<Class<? extends Screen>> getScreenClasses();

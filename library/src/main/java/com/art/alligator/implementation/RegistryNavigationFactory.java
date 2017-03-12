@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import com.art.alligator.ActivityResult;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
+import com.art.alligator.ScreenResult;
 
 /**
  * Date: 11.02.2017
@@ -21,10 +23,12 @@ import com.art.alligator.Screen;
 
 public class RegistryNavigationFactory implements NavigationFactory {
 	private Map<Class<? extends Screen>, RegistryElement> mRegistry = new LinkedHashMap<>();
+	private int mRequestCode = 1;
 
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, IntentCreationFunction<ScreenT> intentCreationFunction) {
 		checkIfAlreadyRegistered(screenClass);
-		mRegistry.put(screenClass, new RegistryElement(activityClass, intentCreationFunction));
+		mRegistry.put(screenClass, new RegistryElement(activityClass, mRequestCode, intentCreationFunction));
+		mRequestCode++;
 	}
 
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, FragmentCreationFunction<ScreenT> fragmentCreationFunction) {
@@ -83,6 +87,26 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	@Override
+	public int getRequestCode(Class<? extends Screen> screenClass) {
+		RegistryElement element = mRegistry.get(screenClass);
+		if (element != null) {
+			return element.getRequestCode();
+		} else {
+			return -1;
+		}
+	}
+
+	@Override
+	public ScreenResult createScreenResult(ActivityResult activityResult) {
+		return ScreenResultUtils.createScreenResult(activityResult);
+	}
+
+	@Override
+	public ActivityResult createActivityResult(ScreenResult screenResult) {
+		return ScreenResultUtils.createActivityResult(screenResult);
+	}
+
+	@Override
 	public Collection<Class<? extends Screen>> getScreenClasses() {
 		return mRegistry.keySet();
 	}
@@ -103,11 +127,13 @@ public class RegistryNavigationFactory implements NavigationFactory {
 
 	private static class RegistryElement {
 		private Class<? extends Activity> mActivityClass;
+		private int mRequestCode = -1;
 		private IntentCreationFunction mIntentCreationFunction;
 		private FragmentCreationFunction mFragmentCreationFunction;
 
-		RegistryElement(Class<? extends Activity> activityClass, IntentCreationFunction intentCreationFunction) {
+		RegistryElement(Class<? extends Activity> activityClass, int requestCode, IntentCreationFunction intentCreationFunction) {
 			mActivityClass = activityClass;
+			mRequestCode = requestCode;
 			mIntentCreationFunction = intentCreationFunction;
 		}
 
@@ -117,6 +143,10 @@ public class RegistryNavigationFactory implements NavigationFactory {
 
 		Class<? extends Activity> getActivityClass() {
 			return mActivityClass;
+		}
+
+		public int getRequestCode() {
+			return mRequestCode;
 		}
 
 		IntentCreationFunction getIntentCreationFunction() {

@@ -25,10 +25,12 @@ import com.art.alligator.implementation.ScreenUtils;
  */
 public class ForwardCommand implements Command {
 	private Screen mScreen;
+	private boolean mForResult;
 	private AnimationData mAnimationData;
 
-	public ForwardCommand(Screen screen, AnimationData animationData) {
+	public ForwardCommand(Screen screen, boolean forResult, AnimationData animationData) {
 		mScreen = screen;
+		mForResult = forResult;
 		mAnimationData = animationData;
 	}
 
@@ -41,7 +43,12 @@ public class ForwardCommand implements Command {
 			Activity activity = navigationContext.getActivity();
 			ScreenUtils.putScreenClass(intent, mScreen.getClass());
 			ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getScreenClass(activity, navigationFactory));
-			activity.startActivity(intent);
+			if(mForResult) {
+				int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
+				activity.startActivityForResult(intent, requestCode);
+			} else {
+				activity.startActivity(intent);
+			}
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 
@@ -49,6 +56,9 @@ public class ForwardCommand implements Command {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
 				throw new CommandExecutionException("FragmentManager is not bound.");
+			}
+			if(mForResult) {
+				throw new CommandExecutionException("goForwardForResult is not supported for fragment screens.");
 			}
 
 			FragmentTransaction transaction = fragmentManager.beginTransaction();

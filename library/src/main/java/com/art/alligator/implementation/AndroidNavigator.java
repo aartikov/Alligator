@@ -151,8 +151,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
 				Command command = mCommandQueue.remove();
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				if (mNavigationContext.getNavigationListener() != null) {
-					mNavigationContext.getNavigationListener().onCommandExecuted(command);
+				if (mNavigationContext.getNavigationCommandListener() != null) {
+					mNavigationContext.getNavigationCommandListener().onNavigationCommandExecuted(command);
 				}
 			}
 			mIsExecutingCommands = false;

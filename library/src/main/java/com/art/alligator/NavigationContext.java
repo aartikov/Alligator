@@ -18,7 +18,7 @@ public class NavigationContext {
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
 	private AnimationProvider mAnimationProvider;
-	private NavigationListener mNavigationListener;
+	private NavigationCommandListener mNavigationCommandListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
 	public NavigationContext(Activity activity) {
@@ -35,7 +35,7 @@ public class NavigationContext {
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mAnimationProvider = builder.mAnimationProvider;
-		mNavigationListener = builder.mNavigationListener;
+		mNavigationCommandListener = builder.mNavigationCommandListener;
 		mNavigationErrorListener = builder.mNavigationErrorListener;
 	}
 
@@ -59,8 +59,8 @@ public class NavigationContext {
 		return mAnimationProvider;
 	}
 
-	public NavigationListener getNavigationListener() {
-		return mNavigationListener;
+	public NavigationCommandListener getNavigationCommandListener() {
+		return mNavigationCommandListener;
 	}
 
 	public NavigationErrorListener getNavigationErrorListener() {
@@ -73,7 +73,7 @@ public class NavigationContext {
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
 		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
-		private NavigationListener mNavigationListener;
+		private NavigationCommandListener mNavigationCommandListener;
 		private NavigationErrorListener mNavigationErrorListener = new DefaultNavigationErrorListener();
 
 		public Builder(Activity activity) {
@@ -96,8 +96,8 @@ public class NavigationContext {
 			return this;
 		}
 
-		public Builder navigationListener(NavigationListener navigationListener) {
-			mNavigationListener = navigationListener;
+		public Builder navigationListener(NavigationCommandListener navigationCommandListener) {
+			mNavigationCommandListener = navigationCommandListener;
 			return this;
 		}
 

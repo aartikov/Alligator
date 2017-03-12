@@ -7,6 +7,6 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
-public interface NavigationListener {
-	void onCommandExecuted(Command command);
+public interface NavigationCommandListener {
+	void onNavigationCommandExecuted(Command command);
 }

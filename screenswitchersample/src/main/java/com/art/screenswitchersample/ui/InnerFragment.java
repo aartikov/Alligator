@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -47,5 +49,15 @@ public class InnerFragment extends Fragment {
 
 		Navigator navigator = SampleApplication.getNavigator();
 		mForwardButton.setOnClickListener(v -> navigator.goForward(new InnerScreen(counter + 1)));
+	}
+
+
+	// Workaround for issue https://code.google.com/p/android/issues/detail?id=55228
+	@Override
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+		if (getParentFragment() != null && getParentFragment().isDetached()) {
+			return AnimationUtils.loadAnimation(getContext(), R.anim.stay);
+		}
+		return super.onCreateAnimation(transit, enter, nextAnim);
 	}
 }

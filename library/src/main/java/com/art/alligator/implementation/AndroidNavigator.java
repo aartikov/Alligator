@@ -3,6 +3,8 @@ package com.art.alligator.implementation;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import android.os.Looper;
+
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
@@ -39,6 +41,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void bind(NavigationContext navigationContext) {
+		checkThread();
 		mNavigationContext = navigationContext;
 		mCanExecuteCommands = true;
 		executeQueuedCommands();
@@ -46,6 +49,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void unbind() {
+		checkThread();
 		mNavigationContext = null;
 		mCanExecuteCommands = false;
 	}
@@ -136,6 +140,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	protected void executeCommand(Command command) {
+		checkThread();
 		mCommandQueue.add(command);
 		executeQueuedCommands();
 	}
@@ -167,5 +172,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		}
 
 		mIsExecutingCommands = false;
+	}
+
+	private void checkThread() {
+		if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+			throw new RuntimeException("Can only be called from the main thread.");
+		}
 	}
 }

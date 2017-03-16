@@ -1,8 +1,5 @@
 package com.art.screenswitchersample.ui;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -34,16 +31,10 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	private static final String ANDROID_SCREEN_NAME = "ANDROID";
 	private static final String BUG_SCREEN_NAME = "BUG";
 	private static final String DOG_SCREEN_NAME = "DOG";
-	private static Map<Integer, String> sTabToNameMap = new LinkedHashMap<>();
-
-	static {
-		sTabToNameMap.put(R.id.tab_android, ANDROID_SCREEN_NAME);
-		sTabToNameMap.put(R.id.tab_bug, BUG_SCREEN_NAME);
-		sTabToNameMap.put(R.id.tab_dog, DOG_SCREEN_NAME);
-	}
 
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
+	private TabsInfo mTabsInfo;
 	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@BindView(R.id.activity_main_bottom_bar)
@@ -58,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		ButterKnife.bind(this);
 
 		mBottomBar.setOnTabSelectListener(this, false);
+		initTabsInfo();
 		initScreenSwitcher();
 
 		if (savedInstanceState == null) {
@@ -84,7 +76,14 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 	@Override
 	public void onTabSelected(@IdRes int tabId) {
-		mNavigator.switchTo(tabIdToScreenName(tabId));
+		mNavigator.switchTo(mTabsInfo.getScreenName(tabId));
+	}
+
+	private void initTabsInfo() {
+		mTabsInfo = new TabsInfo();
+		mTabsInfo.add(ANDROID_SCREEN_NAME, R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
+		mTabsInfo.add(BUG_SCREEN_NAME, R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
+		mTabsInfo.add(DOG_SCREEN_NAME, R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
 	}
 
 	private void initScreenSwitcher() {
@@ -97,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 
 			@Override
 			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
-				int indexFrom = screenNameToIndex(screenNameFrom);
-				int indexTo = screenNameToIndex(screenNameTo);
+				int indexFrom = mTabsInfo.getTabIndex(screenNameFrom);
+				int indexTo = mTabsInfo.getTabIndex(screenNameTo);
 				if(indexTo > indexFrom) {
 					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 				} else {
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			@Override
 			protected void onScreenSwitched(String screenName) {
 				bindNavigationContext();
-				selectTab(screenNameToTabId(screenName));
+				selectTab(mTabsInfo.getTabId(screenName));
 			}
 		};
 	}
@@ -131,33 +130,5 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		mBottomBar.setOnTabSelectListener(null);    // workaround to don't call listener
 		mBottomBar.selectTabWithId(tabId);
 		mBottomBar.setOnTabSelectListener(this, false);
-	}
-
-	private static String tabIdToScreenName(@IdRes int tabId) {
-		String name = sTabToNameMap.get(tabId);
-		if (name == null) {
-			throw new IllegalArgumentException("Unknown tab id " + tabId);
-		}
-		return name;
-	}
-
-	private static int screenNameToTabId(String screenName) {
-		for (Map.Entry<Integer, String> entry : sTabToNameMap.entrySet()) {
-			if (entry.getValue().equals(screenName)) {
-				return entry.getKey();
-			}
-		}
-		throw new IllegalArgumentException("Unknown screen name " + screenName);
-	}
-
-	private static int screenNameToIndex(String screenName) {
-		int index = 0;
-		for (Map.Entry<Integer, String> entry : sTabToNameMap.entrySet()) {
-			if (entry.getValue().equals(screenName)) {
-				return index;
-			}
-			index++;
-		}
-		throw new IllegalArgumentException("Unknown screen name " + screenName);
 	}
 }

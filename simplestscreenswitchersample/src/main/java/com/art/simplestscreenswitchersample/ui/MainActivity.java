@@ -1,4 +1,4 @@
-package com.art.screenswitchersample.ui;
+package com.art.simplestscreenswitchersample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -9,12 +9,10 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
-import com.art.alligator.TransitionAnimation;
 import com.art.alligator.implementation.FragmentScreenSwitcher;
-import com.art.screenswitchersample.R;
-import com.art.screenswitchersample.SampleAnimationProvider;
-import com.art.screenswitchersample.SampleApplication;
-import com.art.screenswitchersample.screens.TabScreen;
+import com.art.simplestscreenswitchersample.R;
+import com.art.simplestscreenswitchersample.SampleApplication;
+import com.art.simplestscreenswitchersample.screens.TabScreen;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -60,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	@Override
 	protected void onResume() {
 		super.onResume();
-		bindNavigationContext();
+		NavigationContext navigationContext = new NavigationContext.Builder(this)
+				.screenSwitcher(mScreenSwitcher)
+				.build();
+		mNavigationContextBinder.bind(navigationContext);
 	}
 
 	@Override
@@ -95,35 +96,10 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			}
 
 			@Override
-			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
-				int indexFrom = mTabsInfo.getTabIndex(screenNameFrom);
-				int indexTo = mTabsInfo.getTabIndex(screenNameTo);
-				if(indexTo > indexFrom) {
-					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
-				} else {
-					return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
-				}
-			}
-
-			@Override
 			protected void onScreenSwitched(String screenName) {
-				bindNavigationContext();
 				selectTab(mTabsInfo.getTabId(screenName));
 			}
 		};
-	}
-
-	private void bindNavigationContext() {
-		Fragment fragment = mScreenSwitcher.getCurrentFragment();
-		NavigationContext.Builder builder = new NavigationContext.Builder(this)
-				.screenSwitcher(mScreenSwitcher)
-				.animationProvider(new SampleAnimationProvider());
-
-		if (fragment != null && fragment instanceof ContainerIdProvider) {
-			int containerId = ((ContainerIdProvider) fragment).getContainerId();
-			builder.fragmentManagerAndContainerId(fragment.getChildFragmentManager(), containerId);
-		}
-		mNavigationContextBinder.bind(builder.build());
 	}
 
 	private void selectTab(@IdRes int tabId) {

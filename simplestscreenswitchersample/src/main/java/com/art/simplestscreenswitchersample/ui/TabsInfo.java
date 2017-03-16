@@ -1,4 +1,4 @@
-package com.art.screenswitchersample.ui;
+package com.art.simplestscreenswitchersample.ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class TabsInfo {
 			throw new IllegalArgumentException("Dublicate screen name");
 		}
 
-		mTabs.put(screenName, new Tab(tabId, screen, mTabs.size()));
+		mTabs.put(screenName, new Tab(tabId, screen));
 	}
 
 	public int getTabId(String screenName) {
@@ -39,14 +39,6 @@ public class TabsInfo {
 		return tab.getScreen();
 	}
 
-	public int getTabIndex(String screenName) {
-		Tab tab = mTabs.get(screenName);
-		if (tab == null) {
-			throw new IllegalArgumentException("Unknown screen name " + screenName);
-		}
-		return tab.getIndex();
-	}
-
 	public String getScreenName(int tabId) {
 		for (Map.Entry<String, Tab> entry : mTabs.entrySet()) {
 			Tab tab = entry.getValue();
@@ -60,12 +52,10 @@ public class TabsInfo {
 	private static class Tab {
 		private int mId;
 		private Screen mScreen;
-		private int mIndex;
 
-		Tab(int id, Screen screen, int index) {
+		Tab(int id, Screen screen) {
 			mId = id;
 			mScreen = screen;
-			mIndex = index;
 		}
 
 		int getId() {
@@ -74,10 +64,6 @@ public class TabsInfo {
 
 		Screen getScreen() {
 			return mScreen;
-		}
-
-		int getIndex() {
-			return mIndex;
 		}
 	}
 }

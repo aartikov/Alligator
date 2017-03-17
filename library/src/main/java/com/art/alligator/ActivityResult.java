@@ -1,6 +1,8 @@
 package com.art.alligator;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 
 /**
  * Date: 12.03.2017
@@ -11,18 +13,30 @@ import android.content.Intent;
 
 public class ActivityResult {
 	private int mResultCode;
-	private Intent mData;
+	private Intent mIntent;
 
-	public ActivityResult(int resultCode, Intent data) {
+	public ActivityResult(int resultCode, Intent intent) {
 		mResultCode = resultCode;
-		mData = data;
+		mIntent = intent;
 	}
 
 	public int getResultCode() {
 		return mResultCode;
 	}
 
-	public Intent getData() {
-		return mData;
+	public Intent getIntent() {
+		return mIntent;
+	}
+
+	public Uri getDataUri() {
+		return mIntent != null ? mIntent.getData() : null;
+	}
+
+	public boolean isOk() {
+		return mResultCode == Activity.RESULT_OK;
+	}
+
+	public boolean isCanceled() {
+		return mResultCode == Activity.RESULT_CANCELED;
 	}
 }

@@ -10,7 +10,7 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
 import com.art.screenresultsample.R;
 import com.art.screenresultsample.SampleApplication;
-import com.art.screenresultsample.screens.InputScreen;
+import com.art.screenresultsample.screens.MessageInputScreen;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
  *
  * @author Artur Artikov
  */
-public class InputActivity extends AppCompatActivity {
+public class MessageInputActivity extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.activity_input_edit_text_message)
+	@BindView(R.id.activity_message_input_edit_text_message)
 	EditText mMessageEditText;
 
 	@BindView(R.id.activity_input_button_ok)
@@ -34,7 +34,7 @@ public class InputActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_input);
+		setContentView(R.layout.activity_message_input);
 		ButterKnife.bind(this);
 
 		mNavigator = SampleApplication.getNavigator();
@@ -42,7 +42,7 @@ public class InputActivity extends AppCompatActivity {
 
 		mOkButton.setOnClickListener(v -> {
 			String message = mMessageEditText.getText().toString();
-			mNavigator.finishWithResult(new InputScreen.Result(message));
+			mNavigator.finishWithResult(new MessageInputScreen.Result(message));
 		});
 	}
 

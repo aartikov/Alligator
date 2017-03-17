@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
@@ -13,20 +12,21 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:text="@string/input_hint" />
+		android:text="@string/input_message_hint" />
 
 	<EditText
-		android:id="@+id/activity_input_edit_text_message"
-		android:layout_marginTop="16dp"
+		android:id="@+id/activity_message_input_edit_text_message"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType="text" />
+		android:layout_marginTop="16dp"
+		android:inputType="text"
+		android:maxLength="100" />
 
 	<Button
 		android:id="@+id/activity_input_button_ok"
-		android:text="@string/ok"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:layout_marginTop="16dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+		android:text="@string/ok" />
 </LinearLayout>

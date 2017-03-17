@@ -11,9 +11,10 @@ import com.art.alligator.ScreenResult;
  *
  * @author Artur Artikov
  */
-public class InputScreen implements Screen {
+public class MessageInputScreen implements Screen {
 
 	// It is convenient to declare a screen result as static inner class of the screen
+	// Make it serializable so it will be converted to ActivityResult automatically
 	public static class Result implements ScreenResult, Serializable {
 		private String mMessage;
 

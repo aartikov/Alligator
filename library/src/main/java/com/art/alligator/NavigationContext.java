@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.implementation.DefaultAnimationProvider;
+import com.art.alligator.implementation.DefaultNavigationErrorListener;
 
 /**
  * Date: 29.12.2016
@@ -17,7 +18,8 @@ public class NavigationContext {
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
 	private AnimationProvider mAnimationProvider;
-	private NavigationListener mNavigationListener;
+	private NavigationCommandListener mNavigationCommandListener;
+	private NavigationErrorListener mNavigationErrorListener;
 
 	public NavigationContext(Activity activity) {
 		this(new Builder(activity));
@@ -33,7 +35,8 @@ public class NavigationContext {
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mAnimationProvider = builder.mAnimationProvider;
-		mNavigationListener = builder.mNavigationListener;
+		mNavigationCommandListener = builder.mNavigationCommandListener;
+		mNavigationErrorListener = builder.mNavigationErrorListener;
 	}
 
 	public Activity getActivity() {
@@ -56,8 +59,12 @@ public class NavigationContext {
 		return mAnimationProvider;
 	}
 
-	public NavigationListener getNavigationListener() {
-		return mNavigationListener;
+	public NavigationCommandListener getNavigationCommandListener() {
+		return mNavigationCommandListener;
+	}
+
+	public NavigationErrorListener getNavigationErrorListener() {
+		return mNavigationErrorListener;
 	}
 
 	public static class Builder {
@@ -66,7 +73,8 @@ public class NavigationContext {
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
 		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
-		private NavigationListener mNavigationListener;
+		private NavigationCommandListener mNavigationCommandListener;
+		private NavigationErrorListener mNavigationErrorListener = new DefaultNavigationErrorListener();
 
 		public Builder(Activity activity) {
 			mActivity = activity;
@@ -88,8 +96,13 @@ public class NavigationContext {
 			return this;
 		}
 
-		public Builder navigationListener(NavigationListener navigationListener) {
-			mNavigationListener = navigationListener;
+		public Builder navigationListener(NavigationCommandListener navigationCommandListener) {
+			mNavigationCommandListener = navigationCommandListener;
+			return this;
+		}
+
+		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
+			mNavigationErrorListener = navigationErrorListener != null ? navigationErrorListener : new DefaultNavigationErrorListener();
 			return this;
 		}
 

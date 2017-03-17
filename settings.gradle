@@ -1,1 +1,1 @@
-include ':navigationsample', ':library', ':screenswitchersample', ':simplestnavigationsample'
+include ':navigationsample', ':library', ':advancedscreenswitchersample', ':simplestnavigationsample', ':screenresultsample', ':simplestscreenswitchersample'

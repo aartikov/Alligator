@@ -8,7 +8,20 @@ package com.art.alligator;
  */
 
 public class CommandExecutionException extends Exception {
-	public CommandExecutionException(String message) {
-		super(message);
+	private Command mCommand;
+	private String mReason;
+
+	public CommandExecutionException(Command command, String reason) {
+		super("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + reason);
+		mCommand = command;
+		mReason = reason;
+	}
+
+	public Command getCommand() {
+		return mCommand;
+	}
+
+	public String getReason() {
+		return mReason;
 	}
 }

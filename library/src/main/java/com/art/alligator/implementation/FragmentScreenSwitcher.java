@@ -3,7 +3,6 @@ package com.art.alligator.implementation;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 
 import com.art.alligator.ScreenSwitcher;
 import com.art.alligator.TransitionAnimation;
@@ -73,5 +72,10 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 
 	public Fragment getCurrentFragment() {
 		return mFragmentManager.findFragmentById(mContainerId);
+	}
+
+	public String getCurrentScreenName() {
+		Fragment currentFragment = getCurrentFragment();
+		return currentFragment != null ? currentFragment.getTag() : null;
 	}
 }

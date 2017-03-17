@@ -3,6 +3,8 @@ package com.art.alligator.implementation;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import android.os.Looper;
+
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
@@ -11,6 +13,7 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
+import com.art.alligator.ScreenResult;
 import com.art.alligator.implementation.commands.BackCommand;
 import com.art.alligator.implementation.commands.BackToCommand;
 import com.art.alligator.implementation.commands.FinishCommand;
@@ -38,6 +41,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void bind(NavigationContext navigationContext) {
+		checkThread();
 		mNavigationContext = navigationContext;
 		mCanExecuteCommands = true;
 		executeQueuedCommands();
@@ -45,6 +49,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void unbind() {
+		checkThread();
 		mNavigationContext = null;
 		mCanExecuteCommands = false;
 	}
@@ -56,7 +61,17 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goForward(Screen screen, AnimationData animationData) {
-		executeCommand(new ForwardCommand(screen, animationData));
+		executeCommand(new ForwardCommand(screen, false, animationData));
+	}
+
+	@Override
+	public void goForwardForResult(Screen screen) {
+		goForwardForResult(screen, null);
+	}
+
+	@Override
+	public void goForwardForResult(Screen screen, AnimationData animationData) {
+		executeCommand(new ForwardCommand(screen, true, animationData));
 	}
 
 	@Override
@@ -106,7 +121,17 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void finish(AnimationData animationData) {
-		executeCommand(new FinishCommand(animationData));
+		executeCommand(new FinishCommand(null, animationData));
+	}
+
+	@Override
+	public void finishWithResult(ScreenResult screenResult) {
+		finishWithResult(screenResult, null);
+	}
+
+	@Override
+	public void finishWithResult(ScreenResult screenResult, AnimationData animationData) {
+		executeCommand(new FinishCommand(screenResult, animationData));
 	}
 
 	@Override
@@ -115,6 +140,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	protected void executeCommand(Command command) {
+		checkThread();
 		mCommandQueue.add(command);
 		executeQueuedCommands();
 	}
@@ -125,32 +151,32 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		}
 
 		mIsExecutingCommands = true;
-		while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
-			Command command = mCommandQueue.remove();
-			try {
+
+		try {
+			while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
+				Command command = mCommandQueue.remove();
 				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				onCommandExecuted(command);
-			} catch (CommandExecutionException e) {
-				mCommandQueue.clear();
-				mIsExecutingCommands = false;
-				onError(command, e);
-			} catch (Exception e) {
-				mCommandQueue.clear();
-				mIsExecutingCommands = false;
-				throw e;
+				if (mNavigationContext.getNavigationCommandListener() != null) {
+					mNavigationContext.getNavigationCommandListener().onNavigationCommandExecuted(command);
+				}
 			}
+			mIsExecutingCommands = false;
+		} catch (CommandExecutionException e) {
+			mCommandQueue.clear();
+			mIsExecutingCommands = false;
+			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
+		} catch (Exception e){
+			mCommandQueue.clear();
+			mIsExecutingCommands = false;
+			throw e;
 		}
+
 		mIsExecutingCommands = false;
 	}
 
-
-	protected void onCommandExecuted(Command command) {
-		if(mNavigationContext.getNavigationListener() != null) {
-			mNavigationContext.getNavigationListener().onCommandExecuted(command);
+	private void checkThread() {
+		if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+			throw new RuntimeException("Can only be called from the main thread.");
 		}
-	}
-
-	protected void onError(Command command, CommandExecutionException e) {
-		throw new RuntimeException("Failed to execute navigation command " + command.getClass().getSimpleName() + ". " + e.getMessage(), e);
 	}
 }

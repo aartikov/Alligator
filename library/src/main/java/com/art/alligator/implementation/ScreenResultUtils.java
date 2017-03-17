@@ -35,11 +35,11 @@ public class ScreenResultUtils {
 	}
 
 	static ScreenResult createScreenResult(ActivityResult activityResult) {
-		if(activityResult.getData() == null || activityResult.getResultCode() != Activity.RESULT_OK) {
+		if(activityResult.getIntent() == null || activityResult.getResultCode() != Activity.RESULT_OK) {
 			return null;
 		}
 
-		return (ScreenResult) activityResult.getData().getSerializableExtra(KEY_SCREEN_RESULT);
+		return (ScreenResult) activityResult.getIntent().getSerializableExtra(KEY_SCREEN_RESULT);
 	}
 
 	static ActivityResult createActivityResult(ScreenResult screenResult) {

@@ -35,7 +35,7 @@ public class FinishCommand implements Command {
 		Activity activity = navigationContext.getActivity();
 		if(mScreenResult != null) {
 			ActivityResult activityResult = navigationFactory.createActivityResult(mScreenResult);
-			activity.setResult(activityResult.getResultCode(), activityResult.getData());
+			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 		}
 		activity.finish();
 		CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));

@@ -16,37 +16,67 @@ import android.support.v4.app.Fragment;
 
 public interface NavigationFactory {
 	/**
-	 * Creates an activity intent for the given screen, or returns null if the screen is not represented by an activity
+	 * Checks if a screen is represented by activity
 	 */
-	Intent createActivityIntent(Context context, Screen screen);
+	boolean isActivityScreen(Class<? extends Screen> screenClass);
 
 	/**
-	 * Returns activity class for the screen class or null if the screen is not represented by an activity
+	 * Returns activity class for the screen class
 	 */
 	Class<? extends Activity> getActivityClass(Class<? extends Screen> screenClass);
 
 	/**
-	 * Creates an fragment for the given screen, or returns  null if the screen is not represented by a fragment
+	 * Creates an activity intent for the given screen
+	 */
+	Intent createIntent(Context context, Screen screen);
+
+	/**
+	 * Gets screen from the intent
+	 */
+	<ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass);
+
+	/**
+	 * Checks if a screen is represented by fragment
+	 */
+	boolean isFragmentScreen(Class<? extends Screen> screenClass);
+
+	/**
+	 * Creates an fragment for the given screen
 	 */
 	Fragment createFragment(Screen screen);
 
 	/**
-	 * Returns request code for the screen class or -1 if the screen is not represented by an activity
+	 * Gets screen from the fragment
+	 */
+	<ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass);
+
+	/**
+	 * Checks if a screen can be started for result
+	 */
+	boolean isScreenForResult(Class<? extends Screen> screenClass);
+
+	/**
+	 * Returns request code for the screen class
 	 */
 	int getRequestCode(Class<? extends Screen> screenClass);
 
 	/**
-	 * Convert ActivityResult to ScreenResult
+	 * Returns screen result class for the screen class
 	 */
-	ScreenResult createScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult);
+	Class<? extends ScreenResult> getScreenResultClass(Class<? extends Screen> screenClass);
 
 	/**
-	 * Convert ScreenResult to ActivityResult
+	 * Creates ActivityResult from ScreenResult
 	 */
-	ActivityResult createActivityResult(ScreenResult screenResult);
+	ActivityResult createActivityResult(Class<? extends Screen> screenClass, ScreenResult screenResult);
 
 	/**
-	 * Get known screen classes
+	 * Gets ScreenResult from ActivityResult
+	 */
+	ScreenResult getScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult);
+
+	/**
+	 * Gets known screen classes
 	 */
 	Collection<Class<? extends Screen>> getScreenClasses();
 }

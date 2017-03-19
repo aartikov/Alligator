@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenResolver;
 import com.art.advancedscreenswitchersample.R;
 import com.art.advancedscreenswitchersample.SampleApplication;
 import com.art.advancedscreenswitchersample.screens.InnerScreen;
@@ -38,7 +38,8 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.bind(this, view);
 
-		TabScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		TabScreen screen = screenResolver.getScreen(this, TabScreen.class);
 		mNameTextView.setText(screen.getName());
 
 		if (getChildFragmentManager().findFragmentById(R.id.fragment_tab_container) == null) {

@@ -15,7 +15,7 @@ import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
 import com.art.alligator.ScreenResultListener;
-import com.art.alligator.implementation.ScreenResultUtils;
+import com.art.alligator.implementation.ScreenResultResolver;
 import com.art.screenresultsample.R;
 import com.art.screenresultsample.SampleApplication;
 import com.art.screenresultsample.screens.ImagePickerScreen;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-		mNavigationFactory = SampleApplication.getNavigationFactory();
 
 		mInputMessageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new MessageInputScreen()));
 		mPickImageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new ImagePickerScreen()));
@@ -64,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		ScreenResultUtils.handleActivityResult(requestCode, resultCode, data, mNavigationFactory, this);
+		ScreenResultResolver screenResultResolver = SampleApplication.getScreenResultResolver();
+		screenResultResolver.handleActivityResult(requestCode, resultCode, data, this);
 	}
 
 	@Override

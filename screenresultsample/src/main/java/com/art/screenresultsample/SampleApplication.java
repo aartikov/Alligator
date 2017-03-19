@@ -3,9 +3,9 @@ package com.art.screenresultsample;
 import android.app.Application;
 
 import com.art.alligator.NavigationContextBinder;
-import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.implementation.AndroidNavigator;
+import com.art.alligator.implementation.ScreenResultResolver;
 
 /**
  * Date: 12.03.2016
@@ -15,13 +15,11 @@ import com.art.alligator.implementation.AndroidNavigator;
  */
 public class SampleApplication extends Application {
 	private static AndroidNavigator sNavigator;
-	private static NavigationFactory sNavigationFactory;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sNavigationFactory = new SampleNavigationFactory();
-		sNavigator = new AndroidNavigator(sNavigationFactory);
+		sNavigator = new AndroidNavigator(new SampleNavigationFactory());
 	}
 
 	public static Navigator getNavigator() {
@@ -32,7 +30,7 @@ public class SampleApplication extends Application {
 		return sNavigator;
 	}
 
-	public static NavigationFactory getNavigationFactory() {
-		return sNavigationFactory;
+	public static ScreenResultResolver getScreenResultResolver() {
+		return sNavigator.getScreenResultResolver();
 	}
 }

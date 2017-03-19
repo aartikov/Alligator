@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenResolver;
 import com.art.navigationsample.R;
 import com.art.navigationsample.SampleApplication;
 import com.art.navigationsample.screens.TestSmallScreen;
@@ -64,7 +64,8 @@ public class TestFragment extends Fragment {
 
 		mRootView.setBackgroundColor(getRandomColor());
 
-		TestSmallScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		TestSmallScreen screen = screenResolver.getScreen(this, TestSmallScreen.class);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

@@ -15,7 +15,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016
@@ -53,14 +53,14 @@ public class BackCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = ScreenUtils.getPreviousScreenClass(navigationContext.getActivity());
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(navigationContext.getActivity());
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment, Fragment previousFragment) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
-		Class<? extends Screen> screenClassTo = ScreenUtils.getScreenClass(previousFragment);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassTo = ScreenClassUtils.getScreenClass(previousFragment);
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

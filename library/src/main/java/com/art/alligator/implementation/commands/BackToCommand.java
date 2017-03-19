@@ -17,7 +17,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
  * Date: 11.02.2017
@@ -37,22 +37,29 @@ public class BackToCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		Class activityClass = navigationFactory.getActivityClass(mScreenClass);
-		FragmentManager fragmentManager = navigationContext.getFragmentManager();
+		if (navigationFactory.isActivityScreen(mScreenClass)) {
+			Class activityClass = navigationFactory.getActivityClass(mScreenClass);
+			if (activityClass == null) {
+				throw new CommandExecutionException(this, "Activity class for " + mScreenClass.getSimpleName() + "is null.");
+			}
 
-		if (activityClass != null) {
 			Activity activity = navigationContext.getActivity();
 			Intent intent = new Intent(activity, activityClass);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			ScreenUtils.putScreenClass(intent, mScreenClass);
+			ScreenClassUtils.putScreenClass(intent, mScreenClass);
 			activity.startActivity(intent);
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
-		} else if (fragmentManager != null) {
+
+		} else if (navigationFactory.isFragmentScreen(mScreenClass)) {
+			if (navigationContext.getFragmentManager() == null) {
+				throw new CommandExecutionException(this, "FragmentManager is not bound.");
+			}
+
 			List<Fragment> fragments = CommandUtils.getFragments(navigationContext);
 			int index = -1;
 			for(int i = fragments.size() - 1; i >= 0; i--) {
-				if(mScreenClass == ScreenUtils.getScreenClass(fragments.get(i))) {
+				if(mScreenClass == ScreenClassUtils.getScreenClass(fragments.get(i))) {
 					index = i;
 					break;
 				}
@@ -66,6 +73,7 @@ public class BackToCommand implements Command {
 				return true;
 			}
 
+			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			for(int i = index + 1; i < fragments.size(); i++) {
 				if(i == fragments.size() - 1) {
@@ -77,18 +85,18 @@ public class BackToCommand implements Command {
 			transaction.commitNow();
 			return true;
 		} else {
-			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
+			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not registered.");
 		}
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreenClass;
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreenClass;
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 	}

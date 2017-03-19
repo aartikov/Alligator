@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenResolver;
 import com.art.navigationsample.R;
 import com.art.navigationsample.SampleAnimationProvider;
 import com.art.navigationsample.SampleApplication;
@@ -64,8 +64,9 @@ public class TestActivity extends AppCompatActivity {
 
 		mRootView.setBackgroundColor(getRandomColor());
 
-		TestScreen screen = ScreenUtils.getScreen(this, new TestScreen(1));
-		int counter = screen.getCounter();
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		TestScreen screen = screenResolver.getScreen(this, TestScreen.class);
+		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
 		mForwardButton.setOnClickListener(view -> mNavigator.goForward(new TestScreen(counter + 1)));

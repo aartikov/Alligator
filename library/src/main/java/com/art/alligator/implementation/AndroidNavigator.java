@@ -34,14 +34,30 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private Queue<Command> mCommandQueue = new LinkedList<>();
 	private boolean mCanExecuteCommands;
 	private boolean mIsExecutingCommands;
+	private ScreenResolver mScreenResolver;
+	private ScreenResultResolver mScreenResultResolver;
 
 	public AndroidNavigator(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
+		mScreenResolver = new ScreenResolver(navigationFactory);
+		mScreenResultResolver = new ScreenResultResolver(navigationFactory);
+	}
+
+	public NavigationFactory getNavigationFactory() {
+		return mNavigationFactory;
+	}
+
+	public ScreenResolver getScreenResolver() {
+		return mScreenResolver;
+	}
+
+	public ScreenResultResolver getScreenResultResolver() {
+		return mScreenResultResolver;
 	}
 
 	@Override
 	public void bind(NavigationContext navigationContext) {
-		checkThread();
+		checkThatMainThread();
 		mNavigationContext = navigationContext;
 		mCanExecuteCommands = true;
 		executeQueuedCommands();
@@ -49,7 +65,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void unbind() {
-		checkThread();
+		checkThatMainThread();
 		mNavigationContext = null;
 		mCanExecuteCommands = false;
 	}
@@ -140,7 +156,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	protected void executeCommand(Command command) {
-		checkThread();
+		checkThatMainThread();
 		mCommandQueue.add(command);
 		executeQueuedCommands();
 	}
@@ -174,7 +190,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		mIsExecutingCommands = false;
 	}
 
-	private void checkThread() {
+	private void checkThatMainThread() {
 		if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
 			throw new RuntimeException("Can only be called from the main thread.");
 		}

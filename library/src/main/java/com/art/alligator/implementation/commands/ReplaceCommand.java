@@ -16,7 +16,7 @@ import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.FailedResolveActivityException;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016
@@ -35,18 +35,13 @@ public class ReplaceCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		Intent intent = navigationFactory.createActivityIntent(navigationContext.getActivity(), mScreen);
-		Fragment fragment = navigationFactory.createFragment(mScreen);
-
-		if(intent != null) {
+		if (navigationFactory.isActivityScreen(mScreen.getClass())) {
 			Activity activity = navigationContext.getActivity();
+			Intent intent = navigationFactory.createIntent(activity, mScreen);
+			ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
+			ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getPreviousScreenClass(activity));
 
-			if(intent.getAction() == null) {
-				ScreenUtils.putScreenClass(intent, mScreen.getClass());
-				ScreenUtils.putPreviousScreenClass(intent, ScreenUtils.getPreviousScreenClass(activity));
-			}
-
-			if(intent.resolveActivity(activity.getPackageManager()) == null) {
+			if (intent.resolveActivity(activity.getPackageManager()) == null) {
 				throw new FailedResolveActivityException(this, mScreen);
 			}
 			activity.startActivity(intent);
@@ -55,12 +50,13 @@ public class ReplaceCommand implements Command {
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 
-		} else if (fragment != null) {
+		} else if (navigationFactory.isFragmentScreen(mScreen.getClass())) {
 			FragmentManager fragmentManager = navigationContext.getFragmentManager();
 			if (fragmentManager == null) {
 				throw new CommandExecutionException(this, "FragmentManager is not bound.");
 			}
 
+			Fragment fragment = navigationFactory.createFragment(mScreen);
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
 			if (currentFragment != null) {
@@ -68,7 +64,7 @@ public class ReplaceCommand implements Command {
 				transaction.remove(currentFragment);
 			}
 
-			ScreenUtils.putScreenClass(fragment, mScreen.getClass());
+			ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 			int fragmentCount = CommandUtils.getFragmentCount(navigationContext);
 			int index = fragmentCount == 0 ? 0 : fragmentCount - 1;
 			String tag = CommandUtils.getFragmentTag(navigationContext, index);
@@ -82,13 +78,13 @@ public class ReplaceCommand implements Command {
 	}
 
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		Class<? extends Screen> screenClassFrom = ScreenUtils.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, false, mAnimationData);
 	}

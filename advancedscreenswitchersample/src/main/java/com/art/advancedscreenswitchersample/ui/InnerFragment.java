@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenResolver;
 import com.art.advancedscreenswitchersample.R;
 import com.art.advancedscreenswitchersample.SampleApplication;
 import com.art.advancedscreenswitchersample.screens.InnerScreen;
@@ -43,7 +43,8 @@ public class InnerFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.bind(this, view);
 
-		InnerScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		InnerScreen screen = screenResolver.getScreen(this, InnerScreen.class);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

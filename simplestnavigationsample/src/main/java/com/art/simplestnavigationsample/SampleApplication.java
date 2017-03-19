@@ -5,6 +5,7 @@ import android.app.Application;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
 import com.art.alligator.implementation.AndroidNavigator;
+import com.art.alligator.implementation.ScreenResolver;
 
 /**
  * Date: 22.01.2016
@@ -27,5 +28,9 @@ public class SampleApplication extends Application {
 
 	public static NavigationContextBinder getNavigationContextBinder() {
 		return sNavigator;
+	}
+
+	public static ScreenResolver getScreenResolver() {
+		return sNavigator.getScreenResolver();
 	}
 }

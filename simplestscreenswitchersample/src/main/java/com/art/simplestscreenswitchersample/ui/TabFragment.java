@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.implementation.ScreenResolver;
 import com.art.simplestscreenswitchersample.R;
+import com.art.simplestscreenswitchersample.SampleApplication;
 import com.art.simplestscreenswitchersample.screens.TabScreen;
 
 import butterknife.BindView;
@@ -35,7 +36,8 @@ public class TabFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.bind(this, view);
 
-		TabScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		TabScreen screen = screenResolver.getScreen(this, TabScreen.class);
 		mNameTextView.setText(screen.getName());
 	}
 }

@@ -1,12 +1,9 @@
 package com.art.alligator.implementation.commands;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
@@ -18,6 +15,7 @@ import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.FailedResolveActivityException;
+import com.art.alligator.implementation.FragmentStack;
 import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
@@ -58,19 +56,10 @@ public class ResetCommand implements Command {
 			}
 
 			Fragment fragment = navigationFactory.createFragment(mScreen);
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			List<Fragment> fragments = CommandUtils.getFragments(navigationContext);
-			for (int i = 0; i < fragments.size(); i++) {
-				if (i == fragments.size() - 1) {
-					CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, fragments.get(i)));
-				}
-				transaction.remove(fragments.get(i));
-			}
-
 			ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
-			String tag = CommandUtils.getFragmentTag(navigationContext, 0);
-			transaction.add(navigationContext.getContainerId(), fragment, tag);
-			transaction.commitNow();
+			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+			TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+			fragmentStack.reset(fragment, animation);
 			return true;
 		} else {
 			throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
@@ -84,6 +73,10 @@ public class ResetCommand implements Command {
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
+		if (currentFragment == null) {
+			return TransitionAnimation.NONE;
+		}
+
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);

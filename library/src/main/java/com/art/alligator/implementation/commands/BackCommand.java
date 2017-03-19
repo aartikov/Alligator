@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
@@ -15,6 +13,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.FragmentStack;
 import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
@@ -32,22 +31,18 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(navigationContext.getFragmentManager() == null || CommandUtils.getFragmentCount(navigationContext) <= 1) {
+		if (navigationContext.getFragmentManager() == null || FragmentStack.from(navigationContext).getFragmentCount() <= 1) {
 			Activity activity = navigationContext.getActivity();
 			activity.finish();
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
 			return false;
 		} else {
-			FragmentManager fragmentManager = navigationContext.getFragmentManager();
-			List<Fragment> fragments = CommandUtils.getFragments(navigationContext);
+			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+			List<Fragment> fragments = fragmentStack.getFragments();
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
 			Fragment previousFragment = fragments.get(fragments.size() - 2);
-
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, currentFragment, previousFragment));
-			transaction.remove(currentFragment);
-			transaction.attach(previousFragment);
-			transaction.commitNow();
+			TransitionAnimation animation = getFragmentAnimation(navigationContext, currentFragment, previousFragment);
+			fragmentStack.pop(animation);
 			return true;
 		}
 	}

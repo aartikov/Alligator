@@ -5,8 +5,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
@@ -17,6 +15,7 @@ import com.art.alligator.Screen;
 import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
+import com.art.alligator.implementation.FragmentStack;
 import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
@@ -40,7 +39,7 @@ public class BackToCommand implements Command {
 		if (navigationFactory.isActivityScreen(mScreenClass)) {
 			Class activityClass = navigationFactory.getActivityClass(mScreenClass);
 			if (activityClass == null) {
-				throw new CommandExecutionException(this, "Activity class for " + mScreenClass.getSimpleName() + "is null.");
+				throw new CommandExecutionException(this, "Activity class for " + mScreenClass.getSimpleName() + " is null.");
 			}
 
 			Activity activity = navigationContext.getActivity();
@@ -56,33 +55,22 @@ public class BackToCommand implements Command {
 				throw new CommandExecutionException(this, "FragmentManager is not bound.");
 			}
 
-			List<Fragment> fragments = CommandUtils.getFragments(navigationContext);
-			int index = -1;
-			for(int i = fragments.size() - 1; i >= 0; i--) {
-				if(mScreenClass == ScreenClassUtils.getScreenClass(fragments.get(i))) {
-					index = i;
+			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+			List<Fragment> fragments = fragmentStack.getFragments();
+			Fragment fragment = null;
+			for (int i = fragments.size() - 1; i >= 0; i--) {
+				if (mScreenClass == ScreenClassUtils.getScreenClass(fragments.get(i))) {
+					fragment = fragments.get(i);
 					break;
 				}
 			}
 
-			if(index == -1) {
+			if (fragment == null) {
 				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 			}
 
-			if(index == fragments.size() - 1) {
-				return true;
-			}
-
-			FragmentManager fragmentManager = navigationContext.getFragmentManager();
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			for(int i = index + 1; i < fragments.size(); i++) {
-				if(i == fragments.size() - 1) {
-					CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, fragments.get(i)));
-				}
-				transaction.remove(fragments.get(i));
-			}
-			transaction.attach(fragments.get(index));
-			transaction.commitNow();
+			TransitionAnimation animation = getFragmentAnimation(navigationContext, fragments.get(fragments.size() - 1));
+			fragmentStack.popUntil(fragment, animation);
 			return true;
 		} else {
 			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not registered.");

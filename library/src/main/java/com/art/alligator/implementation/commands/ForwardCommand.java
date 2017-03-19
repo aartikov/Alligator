@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
@@ -16,6 +15,7 @@ import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.implementation.CommandUtils;
 import com.art.alligator.implementation.FailedResolveActivityException;
+import com.art.alligator.implementation.FragmentStack;
 import com.art.alligator.implementation.ScreenClassUtils;
 
 /**
@@ -43,11 +43,11 @@ public class ForwardCommand implements Command {
 			ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 			ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getScreenClass(activity, navigationFactory));
 
-			if(intent.resolveActivity(activity.getPackageManager()) == null) {
+			if (intent.resolveActivity(activity.getPackageManager()) == null) {
 				throw new FailedResolveActivityException(this, mScreen);
 			}
 
-			if(mForResult) {
+			if (mForResult) {
 				if (!navigationFactory.isScreenForResult(mScreen.getClass())) {
 					throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered as screen for result.");
 				}
@@ -64,25 +64,16 @@ public class ForwardCommand implements Command {
 			if (fragmentManager == null) {
 				throw new CommandExecutionException(this, "FragmentManager is not bound.");
 			}
-			if(mForResult) {
+			if (mForResult) {
 				throw new CommandExecutionException(this, "goForwardForResult is not supported for fragment screens.");
 			}
 
 			Fragment fragment = navigationFactory.createFragment(mScreen);
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			Fragment currentFragment = CommandUtils.getCurrentFragment(navigationContext);
-			if(currentFragment != null) {
-				CommandUtils.applyFragmentAnimation(transaction, getFragmentAnimation(navigationContext, currentFragment));
-				transaction.detach(currentFragment);
-			}
-
 			ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
-			int index = CommandUtils.getFragmentCount(navigationContext);
-			String tag = CommandUtils.getFragmentTag(navigationContext, index);
-			transaction.add(navigationContext.getContainerId(), fragment, tag);
-			transaction.commitNow();
+			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+			TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+			fragmentStack.push(fragment, animation);
 			return true;
-
 		} else {
 			throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
@@ -95,6 +86,10 @@ public class ForwardCommand implements Command {
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
+		if (currentFragment == null) {
+			return TransitionAnimation.NONE;
+		}
+
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		return navigationContext.getAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);

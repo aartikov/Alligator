@@ -2,6 +2,7 @@ package com.art.alligator;
 
 import android.app.Activity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.art.alligator.implementation.DefaultAnimationProvider;
 import com.art.alligator.implementation.DefaultNavigationErrorListener;
@@ -13,7 +14,7 @@ import com.art.alligator.implementation.DefaultNavigationErrorListener;
  * @author Artur Artikov
  */
 public class NavigationContext {
-	private Activity mActivity;
+	private AppCompatActivity mActivity;
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
@@ -21,22 +22,22 @@ public class NavigationContext {
 	private NavigationCommandListener mNavigationCommandListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
-	public NavigationContext(Activity activity) {
+	public NavigationContext(AppCompatActivity activity) {
 		this(new Builder(activity));
 	}
 
-	public NavigationContext(Activity activity, FragmentManager fragmentManager, int containerId) {
-		this(new Builder(activity).fragmentManagerAndContainerId(fragmentManager, containerId));
+	public NavigationContext(AppCompatActivity activity, int containerId) {
+		this(new Builder(activity).containerId(containerId));
 	}
 
 	private NavigationContext(Builder builder) {
 		mActivity = builder.mActivity;
-		mFragmentManager = builder.mFragmentManager;
+		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
-		mAnimationProvider = builder.mAnimationProvider;
+		mAnimationProvider = builder.mAnimationProvider != null ? builder.mAnimationProvider : new DefaultAnimationProvider();
 		mNavigationCommandListener = builder.mNavigationCommandListener;
-		mNavigationErrorListener = builder.mNavigationErrorListener;
+		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
 
 	public Activity getActivity() {
@@ -68,21 +69,25 @@ public class NavigationContext {
 	}
 
 	public static class Builder {
-		private Activity mActivity;
+		private AppCompatActivity mActivity;
 		private FragmentManager mFragmentManager;
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
-		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
+		private AnimationProvider mAnimationProvider;
 		private NavigationCommandListener mNavigationCommandListener;
-		private NavigationErrorListener mNavigationErrorListener = new DefaultNavigationErrorListener();
+		private NavigationErrorListener mNavigationErrorListener;
 
-		public Builder(Activity activity) {
+		public Builder(AppCompatActivity activity) {
 			mActivity = activity;
 		}
 
-		public Builder fragmentManagerAndContainerId(FragmentManager fragmentManager, int containerId) {
-			mFragmentManager = fragmentManager;
+		public Builder containerId(int containerId) {
 			mContainerId = containerId;
+			return this;
+		}
+
+		public Builder fragmentManager(FragmentManager fragmentManager) {
+			mFragmentManager = fragmentManager;
 			return this;
 		}
 
@@ -92,7 +97,7 @@ public class NavigationContext {
 		}
 
 		public Builder animationProvider(AnimationProvider animationProvider) {
-			mAnimationProvider = animationProvider != null ? animationProvider : new DefaultAnimationProvider();
+			mAnimationProvider = animationProvider;
 			return this;
 		}
 
@@ -102,7 +107,7 @@ public class NavigationContext {
 		}
 
 		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
-			mNavigationErrorListener = navigationErrorListener != null ? navigationErrorListener : new DefaultNavigationErrorListener();
+			mNavigationErrorListener = navigationErrorListener;
 			return this;
 		}
 

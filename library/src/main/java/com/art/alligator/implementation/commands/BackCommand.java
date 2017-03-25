@@ -31,7 +31,7 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if (navigationContext.getFragmentManager() == null || FragmentStack.from(navigationContext).getFragmentCount() <= 1) {
+		if (navigationContext.getContainerId() <= 0 || FragmentStack.from(navigationContext).getFragmentCount() <= 1) {
 			Activity activity = navigationContext.getActivity();
 			activity.finish();
 			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));

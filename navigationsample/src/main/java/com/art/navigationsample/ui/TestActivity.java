@@ -79,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.fragmentManagerAndContainerId(getSupportFragmentManager(), R.id.activity_test_fragment_container)
+				.containerId(R.id.activity_test_fragment_container)
 				.animationProvider(new SampleAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

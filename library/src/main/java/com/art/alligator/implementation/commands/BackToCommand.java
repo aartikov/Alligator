@@ -51,8 +51,8 @@ public class BackToCommand implements Command {
 			return false;
 
 		} else if (navigationFactory.isFragmentScreen(mScreenClass)) {
-			if (navigationContext.getFragmentManager() == null) {
-				throw new CommandExecutionException(this, "FragmentManager is not bound.");
+			if (navigationContext.getContainerId() <= 0) {
+				throw new CommandExecutionException(this, "ContainerId is not set.");
 			}
 
 			FragmentStack fragmentStack = FragmentStack.from(navigationContext);

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
 				int indexFrom = mTabsInfo.getTabIndex(screenNameFrom);
 				int indexTo = mTabsInfo.getTabIndex(screenNameTo);
-				if(indexTo > indexFrom) {
+				if (indexTo > indexFrom) {
 					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 				} else {
 					return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -120,9 +120,11 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 				.animationProvider(new SampleAnimationProvider());
 
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
-			int containerId = ((ContainerIdProvider) fragment).getContainerId();
-			builder.fragmentManagerAndContainerId(fragment.getChildFragmentManager(), containerId);
+			builder
+					.containerId(((ContainerIdProvider) fragment).getContainerId())
+					.fragmentManager(fragment.getChildFragmentManager());
 		}
+
 		mNavigationContextBinder.bind(builder.build());
 	}
 

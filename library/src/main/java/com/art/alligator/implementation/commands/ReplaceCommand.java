@@ -3,7 +3,6 @@ package com.art.alligator.implementation.commands;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
@@ -51,9 +50,8 @@ public class ReplaceCommand implements Command {
 			return false;
 
 		} else if (navigationFactory.isFragmentScreen(mScreen.getClass())) {
-			FragmentManager fragmentManager = navigationContext.getFragmentManager();
-			if (fragmentManager == null) {
-				throw new CommandExecutionException(this, "FragmentManager is not bound.");
+			if (navigationContext.getContainerId() <= 0) {
+				throw new CommandExecutionException(this, "ContainerId is not set.");
 			}
 
 			Fragment fragment = navigationFactory.createFragment(mScreen);

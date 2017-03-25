@@ -28,8 +28,13 @@ public class FragmentStack {
 
 	public FragmentStack(FragmentManager fragmentManager, int containerId) {
 		if (fragmentManager == null) {
-			throw new IllegalArgumentException("FragmentManager can't be null");
+			throw new IllegalArgumentException("FragmentManager can't be null.");
 		}
+
+		if (containerId <= 0) {
+			throw new IllegalArgumentException("ContainerId is not set.");
+		}
+
 		mFragmentManager = fragmentManager;
 		mContainerId = containerId;
 	}
@@ -65,7 +70,7 @@ public class FragmentStack {
 		List<Fragment> fragments = getFragments();
 		int count = fragments.size();
 		if (count == 0) {
-			throw new IllegalStateException("Can't pop fragment when stack is empty");
+			throw new IllegalStateException("Can't pop fragment when stack is empty.");
 		}
 		Fragment currentFragment = fragments.get(count - 1);
 		Fragment previousFragment = count > 1 ? fragments.get(count - 2) : null;

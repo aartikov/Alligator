@@ -29,7 +29,7 @@ public interface NavigationFactory {
 	/**
 	 * Creates an activity intent for the given screen
 	 */
-	Intent createIntent(Context context, Screen screen);
+	Intent createActivityIntent(Context context, Screen screen);
 
 	/**
 	 * Gets screen from the intent

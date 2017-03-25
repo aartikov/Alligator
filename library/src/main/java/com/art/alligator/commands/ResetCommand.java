@@ -36,7 +36,7 @@ public class ResetCommand implements Command {
 		switch (navigationFactory.getViewType(mScreen.getClass())) {
 			case ACTIVITY: {
 				Activity activity = navigationContext.getActivity();
-				Intent intent = navigationFactory.createIntent(activity, mScreen);
+				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 

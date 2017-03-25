@@ -36,7 +36,7 @@ public class ReplaceCommand implements Command {
 		switch (navigationFactory.getViewType(mScreen.getClass())) {
 			case ACTIVITY: {
 				Activity activity = navigationContext.getActivity();
-				Intent intent = navigationFactory.createIntent(activity, mScreen);
+				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 				ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getPreviousScreenClass(activity));
 

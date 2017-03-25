@@ -68,15 +68,12 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	}
 
 	@Override
-	public boolean onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
+	public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
 		if (screenClass == MessageInputScreen.class) {
 			onMessageInputted((MessageInputScreen.Result) result);
-			return true;
 		} else if (screenClass == ImagePickerScreen.class) {
 			onImagePicked((ImagePickerScreen.Result) result);
-			return true;
 		}
-		return false;
 	}
 
 	private void onMessageInputted(MessageInputScreen.Result messageInputResult) {

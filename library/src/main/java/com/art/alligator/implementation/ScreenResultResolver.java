@@ -22,13 +22,11 @@ public class ScreenResultResolver {
 		mNavigationFactory = navigationFactory;
 	}
 
-	public boolean handleActivityResult(int requestCode, int resultCode, Intent data, ScreenResultListener listener) {
+	public void handleActivityResult(int requestCode, int resultCode, Intent data, ScreenResultListener listener) {
 		Class<? extends Screen> screenClass = getScreenClass(requestCode);
 		if(screenClass != null) {
 			ScreenResult screenResult = mNavigationFactory.getScreenResult(screenClass, new ActivityResult(resultCode, data));
-			return listener.onScreenResult(screenClass, screenResult);
-		} else {
-			return false;
+			listener.onScreenResult(screenClass, screenResult);
 		}
 	}
 

@@ -8,5 +8,5 @@ package com.art.alligator;
  */
 
 public interface ScreenResultListener {
-	boolean onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
+	void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
 }

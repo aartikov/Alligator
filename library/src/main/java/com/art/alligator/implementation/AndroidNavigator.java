@@ -32,7 +32,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private NavigationFactory mNavigationFactory;
 	private NavigationContext mNavigationContext;
 	private Queue<Command> mCommandQueue = new LinkedList<>();
-	private boolean mCanExecuteCommands;
 	private boolean mIsExecutingCommands;
 	private ScreenResolver mScreenResolver;
 	private ScreenResultResolver mScreenResultResolver;
@@ -59,7 +58,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	public void bind(NavigationContext navigationContext) {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
-		mCanExecuteCommands = true;
 		executeQueuedCommands();
 	}
 
@@ -67,7 +65,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	public void unbind() {
 		checkThatMainThread();
 		mNavigationContext = null;
-		mCanExecuteCommands = false;
 	}
 
 	@Override
@@ -167,27 +164,26 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		}
 
 		mIsExecutingCommands = true;
-
 		try {
-			while (mCanExecuteCommands && !mCommandQueue.isEmpty()) {
+			while (mNavigationContext != null && !mCommandQueue.isEmpty()) {
 				Command command = mCommandQueue.remove();
-				mCanExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
+				boolean canExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
 				if (mNavigationContext.getNavigationCommandListener() != null) {
 					mNavigationContext.getNavigationCommandListener().onNavigationCommandExecuted(command);
 				}
+				if(!canExecuteCommands) {
+					mNavigationContext = null;
+				}
 			}
-			mIsExecutingCommands = false;
 		} catch (CommandExecutionException e) {
 			mCommandQueue.clear();
-			mIsExecutingCommands = false;
 			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
 		} catch (Exception e){
 			mCommandQueue.clear();
-			mIsExecutingCommands = false;
 			throw e;
+		} finally {
+			mIsExecutingCommands = false;
 		}
-
-		mIsExecutingCommands = false;
 	}
 
 	private void checkThatMainThread() {

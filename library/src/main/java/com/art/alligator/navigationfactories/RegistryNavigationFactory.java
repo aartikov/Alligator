@@ -1,4 +1,4 @@
-package com.art.alligator.navigationfactory;
+package com.art.alligator.navigationfactories;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import com.art.alligator.ScreenResult;
 import com.art.alligator.ViewType;
 
 
-import static com.art.alligator.navigationfactory.DefaultConvertingFunctions.*;
+import static com.art.alligator.navigationfactories.DefaultConvertingFunctions.*;
 
 /**
  * Date: 11.02.2017

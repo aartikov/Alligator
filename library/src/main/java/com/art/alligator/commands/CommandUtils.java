@@ -1,9 +1,9 @@
-package com.art.alligator.command;
+package com.art.alligator.commands;
 
 import android.app.Activity;
 import android.support.v4.app.FragmentTransaction;
 
-import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 26.02.2017

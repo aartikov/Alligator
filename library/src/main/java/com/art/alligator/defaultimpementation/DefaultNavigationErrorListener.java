@@ -1,7 +1,7 @@
-package com.art.alligator.navigationcontext;
+package com.art.alligator.defaultimpementation;
 
 import com.art.alligator.NavigationErrorListener;
-import com.art.alligator.exception.CommandExecutionException;
+import com.art.alligator.exceptions.CommandExecutionException;
 
 /**
  * Date: 12.03.2017

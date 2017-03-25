@@ -1,4 +1,4 @@
-package com.art.alligator.exception;
+package com.art.alligator.exceptions;
 
 import com.art.alligator.Screen;
 import com.art.alligator.Command;

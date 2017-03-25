@@ -2,7 +2,7 @@ package com.art.navigationsample;
 
 import com.art.alligator.TransitionAnimationProvider;
 import com.art.alligator.Screen;
-import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.animations.TransitionAnimation;
 import com.art.alligator.TransitionType;
 import com.art.alligator.AnimationData;
 

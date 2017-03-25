@@ -3,8 +3,8 @@ package com.art.alligator;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.art.alligator.navigationcontext.DefaultTransitionAnimationProvider;
-import com.art.alligator.navigationcontext.DefaultNavigationErrorListener;
+import com.art.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
+import com.art.alligator.defaultimpementation.DefaultNavigationErrorListener;
 
 /**
  * Date: 29.12.2016

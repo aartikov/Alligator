@@ -1,4 +1,4 @@
-package com.art.alligator.animation;
+package com.art.alligator.animations;
 
 /**
  * Date: 24.02.2017

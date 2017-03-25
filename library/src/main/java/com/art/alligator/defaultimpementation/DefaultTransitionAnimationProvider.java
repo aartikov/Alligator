@@ -1,9 +1,9 @@
-package com.art.alligator.navigationcontext;
+package com.art.alligator.defaultimpementation;
 
-import com.art.alligator.AnimationProvider;
+import com.art.alligator.TransitionAnimationProvider;
 import com.art.alligator.Screen;
 import com.art.alligator.AnimationData;
-import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.animations.TransitionAnimation;
 import com.art.alligator.TransitionType;
 
 /**
@@ -12,7 +12,7 @@ import com.art.alligator.TransitionType;
  *
  * @author Artur Artikov
  */
-public class DefaultAnimationProvider implements AnimationProvider {
+public class DefaultTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData) {
 		return TransitionAnimation.DEFAULT;

@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.NavigationContext;
-import com.art.alligator.animation.TransitionAnimation;
-import com.art.alligator.command.CommandUtils;
+import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.commands.CommandUtils;
 
 /**
  * Date: 19.03.2017

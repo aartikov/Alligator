@@ -1,6 +1,6 @@
 package com.art.advancedscreenswitchersample;
 
-import com.art.alligator.navigationfactory.RegistryNavigationFactory;
+import com.art.alligator.navigationfactories.RegistryNavigationFactory;
 import com.art.advancedscreenswitchersample.screens.*;
 import com.art.advancedscreenswitchersample.ui.*;
 

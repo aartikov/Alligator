@@ -1,11 +1,11 @@
-package com.art.alligator.screenswitcher;
+package com.art.alligator.screenswitchers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.ScreenSwitcher;
-import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 01/30/2016

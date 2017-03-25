@@ -1,6 +1,6 @@
 package com.art.alligator;
 
-import com.art.alligator.exception.CommandExecutionException;
+import com.art.alligator.exceptions.CommandExecutionException;
 
 /**
  * Date: 29.12.2016

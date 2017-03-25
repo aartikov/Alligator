@@ -5,14 +5,14 @@ import java.util.Queue;
 
 import android.os.Looper;
 
-import com.art.alligator.command.BackCommand;
-import com.art.alligator.command.BackToCommand;
-import com.art.alligator.command.FinishCommand;
-import com.art.alligator.command.ForwardCommand;
-import com.art.alligator.command.ReplaceCommand;
-import com.art.alligator.command.ResetCommand;
-import com.art.alligator.command.SwitchToCommand;
-import com.art.alligator.exception.CommandExecutionException;
+import com.art.alligator.commands.BackCommand;
+import com.art.alligator.commands.BackToCommand;
+import com.art.alligator.commands.FinishCommand;
+import com.art.alligator.commands.ForwardCommand;
+import com.art.alligator.commands.ReplaceCommand;
+import com.art.alligator.commands.ResetCommand;
+import com.art.alligator.commands.SwitchToCommand;
+import com.art.alligator.exceptions.CommandExecutionException;
 
 /**
  * Date: 29.12.2016

@@ -1,6 +1,6 @@
 package com.art.alligator;
 
-import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 24.02.2017

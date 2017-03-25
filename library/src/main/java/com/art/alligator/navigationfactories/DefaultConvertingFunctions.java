@@ -1,4 +1,4 @@
-package com.art.alligator.navigationfactory;
+package com.art.alligator.navigationfactories;
 
 import java.io.Serializable;
 
@@ -12,8 +12,8 @@ import android.support.v4.app.Fragment;
 import com.art.alligator.ActivityResult;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
-import com.art.alligator.navigationfactory.RegistryNavigationFactory.Function;
-import com.art.alligator.navigationfactory.RegistryNavigationFactory.Function2;
+import com.art.alligator.navigationfactories.RegistryNavigationFactory.Function;
+import com.art.alligator.navigationfactories.RegistryNavigationFactory.Function2;
 
 
 /**

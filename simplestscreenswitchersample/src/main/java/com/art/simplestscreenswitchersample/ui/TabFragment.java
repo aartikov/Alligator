@@ -15,6 +15,7 @@ import com.art.simplestscreenswitchersample.screens.TabScreen;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Date: 21.01.2016
@@ -26,6 +27,8 @@ public class TabFragment extends Fragment {
 	@BindView(R.id.fragment_tab_text_view_name)
 	TextView mNameTextView;
 
+	private Unbinder mButterknifeUnbinder;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_tab, container, false);
@@ -34,10 +37,16 @@ public class TabFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		ButterKnife.bind(this, view);
+		mButterknifeUnbinder = ButterKnife.bind(this, view);
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
 		TabScreen screen = screenResolver.getScreen(this, TabScreen.class);
 		mNameTextView.setText(screen.getName());
+	}
+
+	@Override
+	public void onDestroyView() {
+		mButterknifeUnbinder.unbind();
+		super.onDestroyView();
 	}
 }

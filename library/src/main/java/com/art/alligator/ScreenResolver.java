@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.alligator;
 
 import android.app.Activity;
 import android.support.v4.app.DialogFragment;

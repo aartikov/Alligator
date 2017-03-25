@@ -1,5 +1,7 @@
 package com.art.alligator;
 
+import com.art.alligator.animation.TransitionAnimation;
+
 /**
  * Date: 24.02.2017
  * Time: 19:00

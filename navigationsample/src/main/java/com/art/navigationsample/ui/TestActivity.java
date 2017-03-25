@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenResolver;
+import com.art.alligator.ScreenResolver;
 import com.art.navigationsample.R;
 import com.art.navigationsample.SampleAnimationProvider;
 import com.art.navigationsample.SampleApplication;

@@ -1,34 +1,33 @@
-package com.art.alligator.implementation.commands;
+package com.art.alligator.command;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
-import com.art.alligator.CommandExecutionException;
-import com.art.alligator.DialogFragmentHelper;
+import com.art.alligator.AnimationData;
+import com.art.alligator.exception.CommandExecutionException;
+import com.art.alligator.internal.DialogFragmentHelper;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
-import com.art.alligator.TransitionAnimation;
+import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
-import com.art.alligator.implementation.CommandUtils;
-import com.art.alligator.implementation.FailedResolveActivityException;
-import com.art.alligator.implementation.FragmentStack;
-import com.art.alligator.implementation.ScreenClassUtils;
+import com.art.alligator.exception.FailedResolveActivityException;
+import com.art.alligator.internal.FragmentStack;
+import com.art.alligator.internal.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016
- * Time: 14:30
+ * Time: 11:24
  *
  * @author Artur Artikov
  */
-public class ResetCommand implements Command {
+public class ReplaceCommand implements Command {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 
-	public ResetCommand(Screen screen, AnimationData animationData) {
+	public ReplaceCommand(Screen screen, AnimationData animationData) {
 		mScreen = screen;
 		mAnimationData = animationData;
 	}
@@ -39,13 +38,14 @@ public class ResetCommand implements Command {
 			case ACTIVITY: {
 				Activity activity = navigationContext.getActivity();
 				Intent intent = navigationFactory.createIntent(activity, mScreen);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
+				ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getPreviousScreenClass(activity));
 
 				if (intent.resolveActivity(activity.getPackageManager()) == null) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
 				activity.startActivity(intent);
+				activity.finish();
 				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
 				CommandUtils.applyActivityAnimation(activity, animation);
 				return false;
@@ -61,7 +61,7 @@ public class ResetCommand implements Command {
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
-				fragmentStack.reset(fragment, animation);
+				fragmentStack.replace(fragment, animation);
 				return true;
 			}
 
@@ -76,7 +76,7 @@ public class ResetCommand implements Command {
 	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
@@ -86,6 +86,6 @@ public class ResetCommand implements Command {
 
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
+		return navigationContext.getAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

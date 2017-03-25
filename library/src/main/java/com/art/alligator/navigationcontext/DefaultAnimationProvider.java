@@ -1,9 +1,9 @@
-package com.art.alligator.implementation;
+package com.art.alligator.navigationcontext;
 
-import com.art.alligator.AnimationData;
 import com.art.alligator.AnimationProvider;
 import com.art.alligator.Screen;
-import com.art.alligator.TransitionAnimation;
+import com.art.alligator.AnimationData;
+import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
 
 /**

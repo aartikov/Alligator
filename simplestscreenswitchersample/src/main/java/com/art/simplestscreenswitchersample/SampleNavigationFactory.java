@@ -1,6 +1,6 @@
 package com.art.simplestscreenswitchersample;
 
-import com.art.alligator.implementation.RegistryNavigationFactory;
+import com.art.alligator.navigationfactory.RegistryNavigationFactory;
 import com.art.simplestscreenswitchersample.screens.*;
 import com.art.simplestscreenswitchersample.ui.*;
 

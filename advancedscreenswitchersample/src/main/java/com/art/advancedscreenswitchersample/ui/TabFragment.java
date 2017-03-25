@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenResolver;
+import com.art.alligator.ScreenResolver;
 import com.art.advancedscreenswitchersample.R;
 import com.art.advancedscreenswitchersample.SampleApplication;
 import com.art.advancedscreenswitchersample.screens.InnerScreen;

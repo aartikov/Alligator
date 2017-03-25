@@ -1,26 +1,18 @@
-package com.art.alligator.implementation;
+package com.art.alligator;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 import android.os.Looper;
 
-import com.art.alligator.AnimationData;
-import com.art.alligator.Command;
-import com.art.alligator.CommandExecutionException;
-import com.art.alligator.NavigationContext;
-import com.art.alligator.NavigationContextBinder;
-import com.art.alligator.NavigationFactory;
-import com.art.alligator.Navigator;
-import com.art.alligator.Screen;
-import com.art.alligator.ScreenResult;
-import com.art.alligator.implementation.commands.BackCommand;
-import com.art.alligator.implementation.commands.BackToCommand;
-import com.art.alligator.implementation.commands.FinishCommand;
-import com.art.alligator.implementation.commands.ForwardCommand;
-import com.art.alligator.implementation.commands.ReplaceCommand;
-import com.art.alligator.implementation.commands.ResetCommand;
-import com.art.alligator.implementation.commands.SwitchToCommand;
+import com.art.alligator.command.BackCommand;
+import com.art.alligator.command.BackToCommand;
+import com.art.alligator.command.FinishCommand;
+import com.art.alligator.command.ForwardCommand;
+import com.art.alligator.command.ReplaceCommand;
+import com.art.alligator.command.ResetCommand;
+import com.art.alligator.command.SwitchToCommand;
+import com.art.alligator.exception.CommandExecutionException;
 
 /**
  * Date: 29.12.2016

@@ -1,4 +1,4 @@
-package com.art.alligator.implementation.commands;
+package com.art.alligator.command;
 
 import java.util.List;
 
@@ -6,18 +6,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
-import com.art.alligator.CommandExecutionException;
-import com.art.alligator.DialogFragmentHelper;
+import com.art.alligator.AnimationData;
+import com.art.alligator.exception.CommandExecutionException;
+import com.art.alligator.internal.DialogFragmentHelper;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
-import com.art.alligator.TransitionAnimation;
+import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
-import com.art.alligator.implementation.CommandUtils;
-import com.art.alligator.implementation.FragmentStack;
-import com.art.alligator.implementation.ScreenClassUtils;
+import com.art.alligator.internal.FragmentStack;
+import com.art.alligator.internal.ScreenClassUtils;
 
 /**
  * Date: 11.02.2017

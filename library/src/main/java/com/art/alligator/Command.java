@@ -1,5 +1,7 @@
 package com.art.alligator;
 
+import com.art.alligator.exception.CommandExecutionException;
+
 /**
  * Date: 29.12.2016
  * Time: 10:14

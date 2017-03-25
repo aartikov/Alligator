@@ -1,6 +1,6 @@
 package com.art.simplestnavigationsample;
 
-import com.art.alligator.implementation.RegistryNavigationFactory;
+import com.art.alligator.navigationfactory.RegistryNavigationFactory;
 import com.art.simplestnavigationsample.screens.*;
 import com.art.simplestnavigationsample.ui.*;
 

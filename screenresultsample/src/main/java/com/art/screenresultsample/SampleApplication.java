@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.AndroidNavigator;
-import com.art.alligator.implementation.ScreenResultResolver;
+import com.art.alligator.AndroidNavigator;
+import com.art.alligator.ScreenResultResolver;
 
 /**
  * Date: 12.03.2016

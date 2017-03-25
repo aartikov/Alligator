@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenResolver;
+import com.art.alligator.ScreenResolver;
 import com.art.navigationsample.R;
 import com.art.navigationsample.SampleApplication;
 import com.art.navigationsample.screens.TestSmallScreen;

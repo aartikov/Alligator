@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.alligator.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.NavigationContext;
-import com.art.alligator.TransitionAnimation;
+import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.command.CommandUtils;
 
 /**
  * Date: 19.03.2017
@@ -18,7 +19,7 @@ import com.art.alligator.TransitionAnimation;
  */
 
 public class FragmentStack {
-	private static final String TAG_PREFIX = "com.art.alligator.implementation.FragmentStack.TAG_";
+	private static final String TAG_PREFIX = "com.art.alligator.internal.FragmentStack.TAG_";
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 

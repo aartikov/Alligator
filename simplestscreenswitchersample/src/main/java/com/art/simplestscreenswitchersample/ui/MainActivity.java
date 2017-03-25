@@ -9,7 +9,7 @@ import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.FragmentScreenSwitcher;
+import com.art.alligator.screenswitcher.FragmentScreenSwitcher;
 import com.art.simplestscreenswitchersample.R;
 import com.art.simplestscreenswitchersample.SampleApplication;
 import com.art.simplestscreenswitchersample.screens.TabScreen;

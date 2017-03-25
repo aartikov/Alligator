@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.alligator.internal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,8 +17,8 @@ import com.art.alligator.ViewType;
  */
 
 public class ScreenClassUtils {
-	private static final String KEY_SCREEN_CLASS_NAME = "com.art.alligator.implementation.ScreenClassUtils.KEY_SCREEN_CLASS_NAME";
-	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "com.art.alligator.implementation.ScreenClassUtils.KEY_PREVIOUS_SCREEN_CLASS_NAME";
+	private static final String KEY_SCREEN_CLASS_NAME = "com.art.alligator.internal.ScreenClassUtils.KEY_SCREEN_CLASS_NAME";
+	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "com.art.alligator.internal.ScreenClassUtils.KEY_PREVIOUS_SCREEN_CLASS_NAME";
 
 	private ScreenClassUtils() {
 	}

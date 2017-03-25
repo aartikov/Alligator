@@ -14,7 +14,7 @@ import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
 import com.art.alligator.ScreenResultListener;
-import com.art.alligator.implementation.ScreenResultResolver;
+import com.art.alligator.ScreenResultResolver;
 import com.art.screenresultsample.R;
 import com.art.screenresultsample.SampleApplication;
 import com.art.screenresultsample.screens.ImagePickerScreen;

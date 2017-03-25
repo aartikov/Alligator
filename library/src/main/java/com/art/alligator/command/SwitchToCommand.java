@@ -1,9 +1,9 @@
-package com.art.alligator.implementation.commands;
+package com.art.alligator.command;
 
-import com.art.alligator.CommandExecutionException;
-import com.art.alligator.NavigationFactory;
 import com.art.alligator.Command;
+import com.art.alligator.exception.CommandExecutionException;
 import com.art.alligator.NavigationContext;
+import com.art.alligator.NavigationFactory;
 import com.art.alligator.ScreenSwitcher;
 
 /**

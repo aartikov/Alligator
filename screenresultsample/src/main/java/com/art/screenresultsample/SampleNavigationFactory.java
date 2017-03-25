@@ -3,7 +3,7 @@ package com.art.screenresultsample;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.art.alligator.implementation.RegistryNavigationFactory;
+import com.art.alligator.navigationfactory.RegistryNavigationFactory;
 import com.art.screenresultsample.screens.ImagePickerScreen;
 import com.art.screenresultsample.screens.MainScreen;
 import com.art.screenresultsample.screens.MessageInputScreen;

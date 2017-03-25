@@ -1,12 +1,6 @@
-package com.art.alligator.implementation;
+package com.art.alligator;
 
 import android.content.Intent;
-
-import com.art.alligator.ActivityResult;
-import com.art.alligator.NavigationFactory;
-import com.art.alligator.Screen;
-import com.art.alligator.ScreenResult;
-import com.art.alligator.ScreenResultListener;
 
 /**
  * Date: 12.03.2017

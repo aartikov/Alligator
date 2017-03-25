@@ -1,19 +1,18 @@
-package com.art.alligator.implementation.commands;
+package com.art.alligator.command;
 
 import android.app.Activity;
 
 import com.art.alligator.ActivityResult;
-import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
-import com.art.alligator.CommandExecutionException;
+import com.art.alligator.AnimationData;
+import com.art.alligator.exception.CommandExecutionException;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
-import com.art.alligator.TransitionAnimation;
+import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
-import com.art.alligator.implementation.CommandUtils;
-import com.art.alligator.implementation.ScreenClassUtils;
+import com.art.alligator.internal.ScreenClassUtils;
 
 /**
  * Date: 12.02.2017

@@ -1,4 +1,4 @@
-package com.art.alligator.implementation;
+package com.art.alligator.navigationfactory;
 
 import java.io.Serializable;
 
@@ -12,8 +12,8 @@ import android.support.v4.app.Fragment;
 import com.art.alligator.ActivityResult;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
-import com.art.alligator.implementation.RegistryNavigationFactory.Function;
-import com.art.alligator.implementation.RegistryNavigationFactory.Function2;
+import com.art.alligator.navigationfactory.RegistryNavigationFactory.Function;
+import com.art.alligator.navigationfactory.RegistryNavigationFactory.Function2;
 
 
 /**
@@ -24,8 +24,8 @@ import com.art.alligator.implementation.RegistryNavigationFactory.Function2;
  */
 
 class DefaultConvertingFunctions {
-	private static final String KEY_SCREEN = "com.art.alligator.implementation.DefaultConvertingFunctions.KEY_SCREEN";
-	private static final String KEY_SCREEN_RESULT = "com.art.alligator.implementation.DefaultConvertingFunctions.KEY_SCREEN_RESULT";
+	private static final String KEY_SCREEN = "com.art.alligator.registry.DefaultConvertingFunctions.KEY_SCREEN";
+	private static final String KEY_SCREEN_RESULT = "com.art.alligator.registry.DefaultConvertingFunctions.KEY_SCREEN_RESULT";
 
 	static <ScreenT extends Screen> Function2<Context, ScreenT, Intent> getDefaultIntentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
 		return new Function2<Context, ScreenT, Intent>() {
@@ -63,7 +63,7 @@ class DefaultConvertingFunctions {
 	}
 
 	static <ScreenT extends Screen> Function<ScreenT, Fragment> getDefaultFragmentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
-		return new RegistryNavigationFactory.Function<ScreenT, Fragment>() {
+		return new Function<ScreenT, Fragment>() {
 			@Override
 			public Fragment call(ScreenT screen) {
 				try {
@@ -111,7 +111,7 @@ class DefaultConvertingFunctions {
 	}
 
 	static <ScreenT extends Screen> Function<ScreenT, DialogFragment> getDefaultDialogFragmentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
-		return new RegistryNavigationFactory.Function<ScreenT, DialogFragment>() {
+		return new Function<ScreenT, DialogFragment>() {
 			@Override
 			public DialogFragment call(ScreenT screen) {
 				try {
@@ -153,7 +153,7 @@ class DefaultConvertingFunctions {
 		return new Function<DialogFragment, ScreenT>() {
 			@Override
 			public ScreenT call(DialogFragment dialogFragment) {
-				throw new RuntimeException("Dialog fragment screen getting function is not implemented for screen " + screenClass.getSimpleName());
+				throw new RuntimeException("Dialogragment screen getting function is not implemented for screen " + screenClass.getSimpleName());
 			}
 		};
 	}

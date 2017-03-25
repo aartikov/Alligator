@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.art.alligator.implementation.ScreenResolver;
+import com.art.alligator.ScreenResolver;
 import com.art.simplestscreenswitchersample.R;
 import com.art.simplestscreenswitchersample.SampleApplication;
 import com.art.simplestscreenswitchersample.screens.TabScreen;

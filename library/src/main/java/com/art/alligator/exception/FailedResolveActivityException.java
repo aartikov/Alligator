@@ -1,8 +1,7 @@
-package com.art.alligator.implementation;
+package com.art.alligator.exception;
 
-import com.art.alligator.Command;
-import com.art.alligator.CommandExecutionException;
 import com.art.alligator.Screen;
+import com.art.alligator.Command;
 
 /**
  * Date: 12.03.2017

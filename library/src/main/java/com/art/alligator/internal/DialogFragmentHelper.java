@@ -1,7 +1,9 @@
-package com.art.alligator;
+package com.art.alligator.internal;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+
+import com.art.alligator.NavigationContext;
 
 /**
  * Date: 25.03.2017

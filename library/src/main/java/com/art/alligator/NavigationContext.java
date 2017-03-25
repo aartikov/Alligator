@@ -3,7 +3,7 @@ package com.art.alligator;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.art.alligator.navigationcontext.DefaultAnimationProvider;
+import com.art.alligator.navigationcontext.DefaultTransitionAnimationProvider;
 import com.art.alligator.navigationcontext.DefaultNavigationErrorListener;
 
 /**
@@ -17,7 +17,7 @@ public class NavigationContext {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
-	private AnimationProvider mAnimationProvider;
+	private TransitionAnimationProvider mTransitionAnimationProvider;
 	private NavigationCommandListener mNavigationCommandListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
@@ -34,7 +34,7 @@ public class NavigationContext {
 		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
-		mAnimationProvider = builder.mAnimationProvider != null ? builder.mAnimationProvider : new DefaultAnimationProvider();
+		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
 		mNavigationCommandListener = builder.mNavigationCommandListener;
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
@@ -59,8 +59,8 @@ public class NavigationContext {
 		return mScreenSwitcher;
 	}
 
-	public AnimationProvider getAnimationProvider() {
-		return mAnimationProvider;
+	public TransitionAnimationProvider getTransitionAnimationProvider() {
+		return mTransitionAnimationProvider;
 	}
 
 	public NavigationCommandListener getNavigationCommandListener() {
@@ -76,7 +76,7 @@ public class NavigationContext {
 		private FragmentManager mFragmentManager;
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
-		private AnimationProvider mAnimationProvider;
+		private TransitionAnimationProvider mTransitionAnimationProvider;
 		private NavigationCommandListener mNavigationCommandListener;
 		private NavigationErrorListener mNavigationErrorListener;
 
@@ -99,8 +99,8 @@ public class NavigationContext {
 			return this;
 		}
 
-		public Builder animationProvider(AnimationProvider animationProvider) {
-			mAnimationProvider = animationProvider;
+		public Builder transitionAnimationProvider(TransitionAnimationProvider transitionAnimationProvider) {
+			mTransitionAnimationProvider = transitionAnimationProvider;
 			return this;
 		}
 

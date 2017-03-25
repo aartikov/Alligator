@@ -14,7 +14,7 @@ import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
 import com.art.alligator.ScreenResolver;
 import com.art.navigationsample.R;
-import com.art.navigationsample.SampleAnimationProvider;
+import com.art.navigationsample.SampleTransitionAnimationProvider;
 import com.art.navigationsample.SampleApplication;
 import com.art.navigationsample.screens.TestScreen;
 import com.art.navigationsample.screens.TestSmallScreen;
@@ -80,7 +80,7 @@ public class TestActivity extends AppCompatActivity {
 		super.onResume();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
 				.containerId(R.id.activity_test_fragment_container)
-				.animationProvider(new SampleAnimationProvider())
+				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}

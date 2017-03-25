@@ -12,7 +12,7 @@ import com.art.alligator.Navigator;
 import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.screenswitcher.FragmentScreenSwitcher;
 import com.art.advancedscreenswitchersample.R;
-import com.art.advancedscreenswitchersample.SampleAnimationProvider;
+import com.art.advancedscreenswitchersample.SampleTransitionAnimationProvider;
 import com.art.advancedscreenswitchersample.SampleApplication;
 import com.art.advancedscreenswitchersample.screens.TabScreen;
 import com.roughike.bottombar.BottomBar;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
 		NavigationContext.Builder builder = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
-				.animationProvider(new SampleAnimationProvider());
+				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
 			builder

@@ -5,6 +5,7 @@ import java.util.Collection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 /**
@@ -16,9 +17,9 @@ import android.support.v4.app.Fragment;
 
 public interface NavigationFactory {
 	/**
-	 * Checks if a screen is represented by activity
+	 * Get Screen ViewType
 	 */
-	boolean isActivityScreen(Class<? extends Screen> screenClass);
+	ViewType getViewType(Class<? extends Screen> screenClass);
 
 	/**
 	 * Returns activity class for the screen class
@@ -36,11 +37,6 @@ public interface NavigationFactory {
 	<ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass);
 
 	/**
-	 * Checks if a screen is represented by fragment
-	 */
-	boolean isFragmentScreen(Class<? extends Screen> screenClass);
-
-	/**
 	 * Creates an fragment for the given screen
 	 */
 	Fragment createFragment(Screen screen);
@@ -49,6 +45,16 @@ public interface NavigationFactory {
 	 * Gets screen from the fragment
 	 */
 	<ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass);
+
+	/**
+	 * Creates an dialog fragment for the given screen
+	 */
+	DialogFragment createDialogFragment(Screen screen);
+
+	/**
+	 * Gets screen from the dialog fragment
+	 */
+	<ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass);
 
 	/**
 	 * Checks if a screen can be started for result

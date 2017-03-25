@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import com.art.alligator.ActivityResult;
@@ -84,7 +85,7 @@ class DefaultConvertingFunctions {
 		};
 	}
 
-	static <ScreenT extends Screen> Function<Fragment, ScreenT> getDefaultFragmentScreenGetting(final Class<ScreenT> screenClass) {
+	static <ScreenT extends Screen> Function<Fragment, ScreenT> getDefaultFragmentScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<Fragment, ScreenT>() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -105,6 +106,54 @@ class DefaultConvertingFunctions {
 			@Override
 			public ScreenT call(Fragment fragment) {
 				throw new RuntimeException("Fragment screen getting function is not implemented for screen " + screenClass.getSimpleName());
+			}
+		};
+	}
+
+	static <ScreenT extends Screen> Function<ScreenT, DialogFragment> getDefaultDialogFragmentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
+		return new RegistryNavigationFactory.Function<ScreenT, DialogFragment>() {
+			@Override
+			public DialogFragment call(ScreenT screen) {
+				try {
+					DialogFragment dialogFragment = dialogFragmentClass.newInstance();
+					if (screen instanceof Serializable) {
+						Bundle arguments = new Bundle();
+						arguments.putSerializable(KEY_SCREEN, (Serializable) screen);
+						dialogFragment.setArguments(arguments);
+					}
+					return dialogFragment;
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+					return null;
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		};
+	}
+
+	static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getDefaultDialogFragmentScreenGettingFunction(final Class<ScreenT> screenClass) {
+		return new Function<DialogFragment, ScreenT>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public ScreenT call(DialogFragment dialogFragment) {
+				if (!Serializable.class.isAssignableFrom(screenClass)) {
+					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable.");
+				}
+				if (dialogFragment.getArguments() == null) {
+					return null;
+				}
+				return (ScreenT) dialogFragment.getArguments().getSerializable(KEY_SCREEN);
+			}
+		};
+	}
+
+	static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getNotImplementedDialogFragmentScreenGettingFunction(final Class<ScreenT> screenClass) {
+		return new Function<DialogFragment, ScreenT>() {
+			@Override
+			public ScreenT call(DialogFragment dialogFragment) {
+				throw new RuntimeException("Dialog fragment screen getting function is not implemented for screen " + screenClass.getSimpleName());
 			}
 		};
 	}

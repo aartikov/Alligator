@@ -1,6 +1,5 @@
 package com.art.alligator;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -40,7 +39,7 @@ public class NavigationContext {
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
 
-	public Activity getActivity() {
+	public AppCompatActivity getActivity() {
 		return mActivity;
 	}
 
@@ -50,6 +49,10 @@ public class NavigationContext {
 
 	public int getContainerId() {
 		return mContainerId;
+	}
+
+	public boolean hasContainerId() {
+		return mContainerId > 0;
 	}
 
 	public ScreenSwitcher getScreenSwitcher() {

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
+import com.art.alligator.ViewType;
 
 /**
  * Date: 19.03.2017
@@ -33,7 +34,7 @@ public class ScreenClassUtils {
 
 		if(screenClass == null) {   // screenClass is null. May be activity is a home screen. Try to find it in NavigationFactory.
 			for(Class<? extends Screen> sc: navigationFactory.getScreenClasses()) {
-				if(navigationFactory.isActivityScreen(sc) && navigationFactory.getActivityClass(sc) == activity.getClass()) {
+				if(navigationFactory.getViewType(sc) == ViewType.ACTIVITY && navigationFactory.getActivityClass(sc) == activity.getClass()) {
 					screenClass = sc;
 					break;
 				}

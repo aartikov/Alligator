@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
+import com.art.alligator.DialogFragmentHelper;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -31,12 +32,10 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if (navigationContext.getContainerId() <= 0 || FragmentStack.from(navigationContext).getFragmentCount() <= 1) {
-			Activity activity = navigationContext.getActivity();
-			activity.finish();
-			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
-			return false;
-		} else {
+		if(DialogFragmentHelper.from(navigationContext).hasVisibleDialog()) {
+			DialogFragmentHelper.from(navigationContext).hideDialog();
+			return true;
+		} else if(navigationContext.hasContainerId() && FragmentStack.from(navigationContext).getFragmentCount() > 1) {
 			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 			List<Fragment> fragments = fragmentStack.getFragments();
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
@@ -44,6 +43,12 @@ public class BackCommand implements Command {
 			TransitionAnimation animation = getFragmentAnimation(navigationContext, currentFragment, previousFragment);
 			fragmentStack.pop(animation);
 			return true;
+		} else {
+			Activity activity = navigationContext.getActivity();
+			activity.finish();
+			TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+			CommandUtils.applyActivityAnimation(activity, animation);
+			return false;
 		}
 	}
 

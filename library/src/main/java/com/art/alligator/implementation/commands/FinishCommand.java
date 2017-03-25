@@ -52,7 +52,8 @@ public class FinishCommand implements Command {
 		}
 
 		activity.finish();
-		CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
+		TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+		CommandUtils.applyActivityAnimation(activity, animation);
 		return false;
 	}
 

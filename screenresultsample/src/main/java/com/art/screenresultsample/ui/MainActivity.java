@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
-import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
@@ -34,7 +33,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
-	private NavigationFactory mNavigationFactory;
 
 	@BindView(R.id.activity_main_button_input_message)
 	Button mInputMessageButton;

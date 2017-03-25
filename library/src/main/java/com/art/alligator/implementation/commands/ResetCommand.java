@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
+import com.art.alligator.DialogFragmentHelper;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -34,33 +35,41 @@ public class ResetCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		if (navigationFactory.isActivityScreen(mScreen.getClass())) {
-			Activity activity = navigationContext.getActivity();
-			Intent intent = navigationFactory.createIntent(activity, mScreen);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
+		switch (navigationFactory.getViewType(mScreen.getClass())) {
+			case ACTIVITY: {
+				Activity activity = navigationContext.getActivity();
+				Intent intent = navigationFactory.createIntent(activity, mScreen);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 
-			if (intent.resolveActivity(activity.getPackageManager()) == null) {
-				throw new FailedResolveActivityException(this, mScreen);
-			}
-			activity.startActivity(intent);
-
-			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
-			return false;
-
-		} else if (navigationFactory.isFragmentScreen(mScreen.getClass())) {
-			if (navigationContext.getContainerId() <= 0) {
-				throw new CommandExecutionException(this, "ContainerId is not set.");
+				if (intent.resolveActivity(activity.getPackageManager()) == null) {
+					throw new FailedResolveActivityException(this, mScreen);
+				}
+				activity.startActivity(intent);
+				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+				CommandUtils.applyActivityAnimation(activity, animation);
+				return false;
 			}
 
-			Fragment fragment = navigationFactory.createFragment(mScreen);
-			ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
-			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
-			TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
-			fragmentStack.reset(fragment, animation);
-			return true;
-		} else {
-			throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+			case FRAGMENT: {
+				if (!navigationContext.hasContainerId()) {
+					throw new CommandExecutionException(this, "ContainerId is not set.");
+				}
+
+				DialogFragmentHelper.from(navigationContext).hideAllDialogs();
+				Fragment fragment = navigationFactory.createFragment(mScreen);
+				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
+				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+				fragmentStack.reset(fragment, animation);
+				return true;
+			}
+
+			case DIALOG_FRAGMENT:
+				throw new CommandExecutionException(this, "This command is not supported for dialog fragment screen.");
+
+			default:
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
 	}
 

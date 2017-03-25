@@ -2,11 +2,13 @@ package com.art.alligator.implementation.commands;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
 import com.art.alligator.CommandExecutionException;
+import com.art.alligator.DialogFragmentHelper;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -36,44 +38,55 @@ public class ForwardCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		if (navigationFactory.isActivityScreen(mScreen.getClass())) {
-			Activity activity = navigationContext.getActivity();
-			Intent intent = navigationFactory.createIntent(activity, mScreen);
-			ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
-			ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getScreenClass(activity, navigationFactory));
+		switch (navigationFactory.getViewType(mScreen.getClass())) {
+			case ACTIVITY: {
+				Activity activity = navigationContext.getActivity();
+				Intent intent = navigationFactory.createIntent(activity, mScreen);
+				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
+				ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getScreenClass(activity, navigationFactory));
 
-			if (intent.resolveActivity(activity.getPackageManager()) == null) {
-				throw new FailedResolveActivityException(this, mScreen);
-			}
-
-			if (mForResult) {
-				if (!navigationFactory.isScreenForResult(mScreen.getClass())) {
-					throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered as screen for result.");
+				if (intent.resolveActivity(activity.getPackageManager()) == null) {
+					throw new FailedResolveActivityException(this, mScreen);
 				}
-				int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
-				activity.startActivityForResult(intent, requestCode);
-			} else {
-				activity.startActivity(intent);
-			}
-			CommandUtils.applyActivityAnimation(activity, getActivityAnimation(navigationContext, navigationFactory));
-			return false;
 
-		} else if (navigationFactory.isFragmentScreen(mScreen.getClass())) {
-			if (navigationContext.getContainerId() <= 0) {
-				throw new CommandExecutionException(this, "ContainerId is not set.");
-			}
-			if (mForResult) {
-				throw new CommandExecutionException(this, "goForwardForResult is not supported for fragment screens.");
+				if (mForResult) {
+					if (!navigationFactory.isScreenForResult(mScreen.getClass())) {
+						throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered as screen for result.");
+					}
+					int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
+					activity.startActivityForResult(intent, requestCode);
+				} else {
+					activity.startActivity(intent);
+				}
+				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+				CommandUtils.applyActivityAnimation(activity, animation);
+				return false;
 			}
 
-			Fragment fragment = navigationFactory.createFragment(mScreen);
-			ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
-			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
-			TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
-			fragmentStack.push(fragment, animation);
-			return true;
-		} else {
-			throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+			case FRAGMENT: {
+				if (!navigationContext.hasContainerId()) {
+					throw new CommandExecutionException(this, "ContainerId is not set.");
+				}
+				if (mForResult) {
+					throw new CommandExecutionException(this, "goForwardForResult is not supported for fragment screens.");
+				}
+
+				Fragment fragment = navigationFactory.createFragment(mScreen);
+				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
+				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+				fragmentStack.push(fragment, animation);
+				return true;
+			}
+
+			case DIALOG_FRAGMENT: {
+				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
+				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment);
+				return true;
+			}
+
+			default:
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
 		}
 	}
 

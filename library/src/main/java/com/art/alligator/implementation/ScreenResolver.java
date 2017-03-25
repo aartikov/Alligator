@@ -1,6 +1,7 @@
 package com.art.alligator.implementation;
 
 import android.app.Activity;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import com.art.alligator.NavigationFactory;
@@ -26,5 +27,9 @@ public class ScreenResolver {
 
 	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass) {
 		return mNavigationFactory.getScreen(fragment, screenClass);
+	}
+
+	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass) {
+		return mNavigationFactory.getScreen(dialogFragment, screenClass);
 	}
 }

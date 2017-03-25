@@ -9,12 +9,14 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import com.art.alligator.ActivityResult;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
+import com.art.alligator.ViewType;
 
 
 import static com.art.alligator.implementation.DefaultConvertingFunctions.*;
@@ -29,6 +31,7 @@ import static com.art.alligator.implementation.DefaultConvertingFunctions.*;
 public class RegistryNavigationFactory implements NavigationFactory {
 	private Map<Class<? extends Screen>, ActivityScreenElement> mActivityScreenRegistry = new HashMap<>();
 	private Map<Class<? extends Screen>, FragmentScreenElement> mFragmentScreenRegistry = new HashMap<>();
+	private Map<Class<? extends Screen>, DialogFragmentScreenElement> mDialogFragmentScreenRegistry = new HashMap<>();
 	private Map<Class<? extends Screen>, ScreenForResultElement> mScreenForResultRegistry = new HashMap<>();
 	private List<Class<? extends Screen>> mScreenClasses = new ArrayList<>();
 
@@ -67,7 +70,22 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
-		registerFragment(screenClass, getDefaultFragmentCreationFunction(screenClass, fragmentClass), getDefaultFragmentScreenGetting(screenClass));
+		registerFragment(screenClass, getDefaultFragmentCreationFunction(screenClass, fragmentClass), getDefaultFragmentScreenGettingFunction(screenClass));
+	}
+
+	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> fragmentCreationFunction,
+	                                                            Function<DialogFragment, ScreenT> screenGettingFunction) {
+		checkThatNotRegistered(screenClass);
+		mDialogFragmentScreenRegistry.put(screenClass, new DialogFragmentScreenElement<>(fragmentCreationFunction, screenGettingFunction));
+		mScreenClasses.add(screenClass);
+	}
+
+	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> fragmentCreationFunction) {
+		registerDialogFragment(screenClass, fragmentCreationFunction, getNotImplementedDialogFragmentScreenGettingFunction(screenClass));
+	}
+
+	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
+		registerDialogFragment(screenClass, getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), getDefaultDialogFragmentScreenGettingFunction(screenClass));
 	}
 
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
@@ -88,8 +106,16 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	@Override
-	public boolean isActivityScreen(Class<? extends Screen> screenClass) {
-		return mActivityScreenRegistry.containsKey(screenClass);
+	public ViewType getViewType(Class<? extends Screen> screenClass) {
+		if (mActivityScreenRegistry.containsKey(screenClass)) {
+			return ViewType.ACTIVITY;
+		} else if (mFragmentScreenRegistry.containsKey(screenClass)) {
+			return ViewType.FRAGMENT;
+		} else if (mDialogFragmentScreenRegistry.containsKey(screenClass)) {
+			return ViewType.DIALOG_FRAGMENT;
+		} else {
+			return ViewType.UNKNOWN;
+		}
 	}
 
 	@Override
@@ -117,11 +143,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	@Override
-	public boolean isFragmentScreen(Class<? extends Screen> screenClass) {
-		return mFragmentScreenRegistry.containsKey(screenClass);
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
 	public Fragment createFragment(Screen screen) {
 		checkThatFragmentScreen(screen.getClass());
@@ -135,6 +156,22 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		checkThatFragmentScreen(screenClass);
 		FragmentScreenElement<ScreenT> element = mFragmentScreenRegistry.get(screenClass);
 		return element.getScreenGettingFunction().call(fragment);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public DialogFragment createDialogFragment(Screen screen) {
+		checkThatDialogFragmentScreen(screen.getClass());
+		DialogFragmentScreenElement<Screen> element = mDialogFragmentScreenRegistry.get(screen.getClass());
+		return element.getDialogFragmentCreationFunction().call(screen);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass) {
+		checkThatDialogFragmentScreen(screenClass);
+		DialogFragmentScreenElement<ScreenT> element = mDialogFragmentScreenRegistry.get(screenClass);
+		return element.getScreenGettingFunction().call(dialogFragment);
 	}
 
 	@Override
@@ -185,14 +222,20 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	private void checkThatActivityScreen(Class<? extends Screen> screenClass) {
-		if (!isActivityScreen(screenClass)) {
+		if (getViewType(screenClass) != ViewType.ACTIVITY) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as activity screen.");
 		}
 	}
 
 	private void checkThatFragmentScreen(Class<? extends Screen> screenClass) {
-		if (!isFragmentScreen(screenClass)) {
+		if (getViewType(screenClass) != ViewType.FRAGMENT) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as fragment screen.");
+		}
+	}
+
+	private void checkThatDialogFragmentScreen(Class<? extends Screen> screenClass) {
+		if (getViewType(screenClass) != ViewType.DIALOG_FRAGMENT) {
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as dialog fragment screen.");
 		}
 	}
 
@@ -203,11 +246,17 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	private void checkThatCanBeRegisteredForResult(Class<? extends Screen> screenClass) {
-		if (mScreenForResultRegistry.containsKey(screenClass)) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered as screen for result.");
+		if (isScreenForResult(screenClass)) {
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered for result.");
 		}
-		if (!isActivityScreen(screenClass)) {
+
+		ViewType viewType = getViewType(screenClass);
+		if (viewType == ViewType.UNKNOWN) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be registered as activity screen before registering it for result.");
+		}
+
+		if (viewType != ViewType.ACTIVITY) {
+			throw new IllegalArgumentException("Can't register screen " + screenClass.getSimpleName() + " for result. Only activity screen can be registered for result.");
 		}
 	}
 
@@ -253,6 +302,24 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		}
 	}
 
+	private static class DialogFragmentScreenElement<ScreenT> {
+		private Function<ScreenT, DialogFragment> mDialogFragmentCreationFunction;
+		private Function<DialogFragment, ScreenT> mScreenGettingFunction;
+
+		DialogFragmentScreenElement(Function<ScreenT, DialogFragment> dialogFragmentCreationFunction, Function<DialogFragment, ScreenT> screenGettingFunction) {
+			mDialogFragmentCreationFunction = dialogFragmentCreationFunction;
+			mScreenGettingFunction = screenGettingFunction;
+		}
+
+		Function<ScreenT, DialogFragment> getDialogFragmentCreationFunction() {
+			return mDialogFragmentCreationFunction;
+		}
+
+		Function<DialogFragment, ScreenT> getScreenGettingFunction() {
+			return mScreenGettingFunction;
+		}
+	}
+
 	private static class ScreenForResultElement<ScreenResultT> {
 		private int mRequestCode = -1;
 		private Class<ScreenResultT> mScreenResultClass;
@@ -279,7 +346,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 			return mActivityResultCreationFunction;
 		}
 
-		Function<ActivityResult, ScreenResultT>  getScreenResultGettingFunction() {
+		Function<ActivityResult, ScreenResultT> getScreenResultGettingFunction() {
 			return mScreenResultGettingFunction;
 		}
 	}

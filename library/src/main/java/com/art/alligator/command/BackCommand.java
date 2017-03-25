@@ -31,7 +31,7 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(DialogFragmentHelper.from(navigationContext).hasVisibleDialog()) {
+		if(DialogFragmentHelper.from(navigationContext).isDialogVisible()) {
 			DialogFragmentHelper.from(navigationContext).hideDialog();
 			return true;
 		} else if(navigationContext.hasContainerId() && FragmentStack.from(navigationContext).getFragmentCount() > 1) {

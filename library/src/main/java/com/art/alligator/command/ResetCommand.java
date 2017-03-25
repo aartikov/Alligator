@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.art.alligator.Command;
 import com.art.alligator.AnimationData;
-import com.art.alligator.exception.CommandExecutionException;
-import com.art.alligator.internal.DialogFragmentHelper;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
-import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
+import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.exception.CommandExecutionException;
 import com.art.alligator.exception.FailedResolveActivityException;
 import com.art.alligator.internal.FragmentStack;
 import com.art.alligator.internal.ScreenClassUtils;
@@ -55,7 +54,6 @@ public class ResetCommand implements Command {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
 				}
 
-				DialogFragmentHelper.from(navigationContext).hideAllDialogs();
 				Fragment fragment = navigationFactory.createFragment(mScreen);
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);

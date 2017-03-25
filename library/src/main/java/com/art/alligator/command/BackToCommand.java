@@ -6,15 +6,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import com.art.alligator.Command;
 import com.art.alligator.AnimationData;
-import com.art.alligator.exception.CommandExecutionException;
-import com.art.alligator.internal.DialogFragmentHelper;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
-import com.art.alligator.animation.TransitionAnimation;
 import com.art.alligator.TransitionType;
+import com.art.alligator.animation.TransitionAnimation;
+import com.art.alligator.exception.CommandExecutionException;
 import com.art.alligator.internal.FragmentStack;
 import com.art.alligator.internal.ScreenClassUtils;
 
@@ -72,7 +71,6 @@ public class BackToCommand implements Command {
 					throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 				}
 
-				DialogFragmentHelper.from(navigationContext).hideAllDialogs();
 				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragments.get(fragments.size() - 1));
 				fragmentStack.popUntil(fragment, animation);
 				return true;

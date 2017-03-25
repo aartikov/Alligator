@@ -13,7 +13,7 @@ import com.art.alligator.NavigationContext;
  */
 
 public class DialogFragmentHelper {
-	private static final String TAG = "com.art.alligator.implementation.DialogFragmentHelper.TAG";
+	private static final String TAG = "com.art.alligator.internal.DialogFragmentHelper.TAG";
 	private FragmentManager mFragmentManager;
 
 	public static DialogFragmentHelper from(NavigationContext navigationContext) {
@@ -28,7 +28,7 @@ public class DialogFragmentHelper {
 		mFragmentManager = fragmentManager;
 	}
 
-	public boolean hasVisibleDialog() {
+	public boolean isDialogVisible() {
 		return mFragmentManager.findFragmentByTag(TAG) != null;
 	}
 
@@ -40,16 +40,10 @@ public class DialogFragmentHelper {
 	public void hideDialog() {
 		DialogFragment dialogFragment = (DialogFragment) mFragmentManager.findFragmentByTag(TAG);
 		if(dialogFragment == null) {
-			throw new IllegalStateException("There are no visible dialogs.");
+			throw new IllegalStateException("Dialog is not visible.");
 		}
 
 		dialogFragment.dismiss();
 		mFragmentManager.executePendingTransactions();
-	}
-
-	public void hideAllDialogs() {
-		while (hasVisibleDialog()) {
-			hideDialog();
-		}
 	}
 }

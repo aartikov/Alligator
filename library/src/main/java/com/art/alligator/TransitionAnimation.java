@@ -14,11 +14,11 @@ import com.art.alligator.animations.transition.DummyTransitionAnimation;
  */
 
 public interface TransitionAnimation {
-	static public final TransitionAnimation DEFAULT = new DummyTransitionAnimation();
+	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
 
 	Bundle getActivityOptionsBundle(Activity activity);
 
-	boolean needDelayActivityFinish(Activity activity);
+	boolean needDelayActivityFinish();
 
 	void applyToActivityAfterStart(Activity activity);
 

@@ -2,6 +2,7 @@ package com.art.alligator.animations.transition;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.AnimRes;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.TransitionAnimation;
@@ -17,7 +18,7 @@ public class SimpleTransitionAnimation implements TransitionAnimation {
 	private int mEnterAnimation;
 	private int mExitAnimation;
 
-	public SimpleTransitionAnimation(int enterAnimation, int exitAnimation) {
+	public SimpleTransitionAnimation(@AnimRes int enterAnimation, @AnimRes int exitAnimation) {
 		mEnterAnimation = enterAnimation;
 		mExitAnimation = exitAnimation;
 	}
@@ -28,7 +29,7 @@ public class SimpleTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public boolean needDelayActivityFinish(Activity activity) {
+	public boolean needDelayActivityFinish() {
 		return false;
 	}
 

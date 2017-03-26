@@ -3,6 +3,7 @@ package com.art.alligator;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.art.alligator.defaultimpementation.DefaultDialogAnimationProvider;
 import com.art.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
 import com.art.alligator.defaultimpementation.DefaultNavigationErrorListener;
 
@@ -18,6 +19,7 @@ public class NavigationContext {
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
 	private TransitionAnimationProvider mTransitionAnimationProvider;
+	private DialogAnimationProvider mDialogAnimationProvider;
 	private NavigationCommandListener mNavigationCommandListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
@@ -35,6 +37,7 @@ public class NavigationContext {
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
+		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
 		mNavigationCommandListener = builder.mNavigationCommandListener;
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
@@ -63,6 +66,10 @@ public class NavigationContext {
 		return mTransitionAnimationProvider;
 	}
 
+	public DialogAnimationProvider getDialogAnimationProvider() {
+		return mDialogAnimationProvider;
+	}
+
 	public NavigationCommandListener getNavigationCommandListener() {
 		return mNavigationCommandListener;
 	}
@@ -77,6 +84,7 @@ public class NavigationContext {
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
 		private TransitionAnimationProvider mTransitionAnimationProvider;
+		private DialogAnimationProvider mDialogAnimationProvider;
 		private NavigationCommandListener mNavigationCommandListener;
 		private NavigationErrorListener mNavigationErrorListener;
 
@@ -101,6 +109,11 @@ public class NavigationContext {
 
 		public Builder transitionAnimationProvider(TransitionAnimationProvider transitionAnimationProvider) {
 			mTransitionAnimationProvider = transitionAnimationProvider;
+			return this;
+		}
+
+		public Builder dialogAnimationProvider(DialogAnimationProvider dialogAnimationProvider) {
+			mDialogAnimationProvider = dialogAnimationProvider;
 			return this;
 		}
 

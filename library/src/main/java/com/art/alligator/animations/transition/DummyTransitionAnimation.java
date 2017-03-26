@@ -20,7 +20,7 @@ public class DummyTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public boolean needDelayActivityFinish(Activity activity) {
+	public boolean needDelayActivityFinish() {
 		return false;
 	}
 

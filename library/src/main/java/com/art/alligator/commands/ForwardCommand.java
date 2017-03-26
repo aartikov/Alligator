@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.art.alligator.AnimationData;
 import com.art.alligator.Command;
+import com.art.alligator.DialogAnimation;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
@@ -81,7 +82,8 @@ public class ForwardCommand implements Command {
 
 			case DIALOG_FRAGMENT: {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
-				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment);
+				DialogAnimation animation = getDialogAnimation(navigationContext);
+				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
 				return true;
 			}
 
@@ -104,5 +106,9 @@ public class ForwardCommand implements Command {
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
+	}
+
+	private DialogAnimation getDialogAnimation(NavigationContext navigationContext) {
+		return navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 	}
 }

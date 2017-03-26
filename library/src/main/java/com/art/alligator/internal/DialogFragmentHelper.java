@@ -3,6 +3,7 @@ package com.art.alligator.internal;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 
+import com.art.alligator.DialogAnimation;
 import com.art.alligator.NavigationContext;
 
 /**
@@ -32,9 +33,10 @@ public class DialogFragmentHelper {
 		return mFragmentManager.findFragmentByTag(TAG) != null;
 	}
 
-	public void showDialog(DialogFragment dialogFragment) {
+	public void showDialog(DialogFragment dialogFragment, DialogAnimation animation) {
 		dialogFragment.show(mFragmentManager, TAG);
 		mFragmentManager.executePendingTransactions();
+		animation.applyAfterShowing(dialogFragment);
 	}
 
 	public void hideDialog() {

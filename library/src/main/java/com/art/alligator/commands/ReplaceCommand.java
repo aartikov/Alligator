@@ -9,10 +9,11 @@ import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
-import com.art.alligator.animations.TransitionAnimation;
 import com.art.alligator.exceptions.CommandExecutionException;
 import com.art.alligator.exceptions.FailedResolveActivityException;
+import com.art.alligator.internal.ActivityHelper;
 import com.art.alligator.internal.FragmentStack;
 import com.art.alligator.internal.ScreenClassUtils;
 
@@ -40,13 +41,13 @@ public class ReplaceCommand implements Command {
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 				ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getPreviousScreenClass(activity));
 
-				if (intent.resolveActivity(activity.getPackageManager()) == null) {
+				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
-				activity.startActivity(intent);
-				activity.finish();
 				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
-				CommandUtils.applyActivityAnimation(activity, animation);
+				activityHelper.start(intent, animation);
+				activityHelper.finish(animation);
 				return false;
 			}
 
@@ -79,7 +80,7 @@ public class ReplaceCommand implements Command {
 
 	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
 		if (currentFragment == null) {
-			return TransitionAnimation.NONE;
+			return TransitionAnimation.DEFAULT;
 		}
 
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);

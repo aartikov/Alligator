@@ -11,9 +11,10 @@ import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
-import com.art.alligator.animations.TransitionAnimation;
 import com.art.alligator.exceptions.CommandExecutionException;
+import com.art.alligator.internal.ActivityHelper;
 import com.art.alligator.internal.FragmentStack;
 import com.art.alligator.internal.ScreenClassUtils;
 
@@ -46,9 +47,10 @@ public class BackToCommand implements Command {
 				Intent intent = new Intent(activity, activityClass);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				ScreenClassUtils.putScreenClass(intent, mScreenClass);
-				activity.startActivity(intent);
+
+				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
-				CommandUtils.applyActivityAnimation(activity, animation);
+				activityHelper.start(intent, animation);
 				return false;
 			}
 

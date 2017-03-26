@@ -1,10 +1,11 @@
 package com.art.advancedscreenswitchersample;
 
 import com.art.alligator.AnimationData;
-import com.art.alligator.TransitionAnimationProvider;
 import com.art.alligator.Screen;
-import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.TransitionAnimation;
+import com.art.alligator.TransitionAnimationProvider;
 import com.art.alligator.TransitionType;
+import com.art.alligator.animations.transition.SimpleTransitionAnimation;
 
 /**
  * Date: 28.02.2017
@@ -19,7 +20,7 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 		if(isActivity) {
 			return TransitionAnimation.DEFAULT;
 		} else {
-			return new TransitionAnimation(R.anim.stay, R.anim.fade_out);
+			return new SimpleTransitionAnimation(R.anim.stay, R.anim.fade_out);
 		}
 	}
 }

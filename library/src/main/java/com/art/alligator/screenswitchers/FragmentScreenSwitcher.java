@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.ScreenSwitcher;
-import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.TransitionAnimation;
 
 /**
  * Date: 01/30/2016
@@ -28,7 +28,7 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	}
 
 	protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
-		return TransitionAnimation.NONE;
+		return TransitionAnimation.DEFAULT;
 	}
 
 	@Override
@@ -52,9 +52,7 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 
 		if(currentFragment != null) {
 			TransitionAnimation animation = getAnimation(currentFragment.getTag(), screenName);
-			if(animation != null && animation != TransitionAnimation.DEFAULT) {
-				transaction.setCustomAnimations(animation.getEnterAnimation(), animation.getExitAnimation());
-			}
+			animation.applyToFragmentTransaction(transaction);
 			transaction.detach(currentFragment);
 		}
 

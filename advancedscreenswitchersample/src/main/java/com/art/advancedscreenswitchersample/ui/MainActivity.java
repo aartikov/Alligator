@@ -5,16 +5,17 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.art.advancedscreenswitchersample.R;
+import com.art.advancedscreenswitchersample.SampleApplication;
+import com.art.advancedscreenswitchersample.SampleTransitionAnimationProvider;
+import com.art.advancedscreenswitchersample.screens.TabScreen;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
-import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.TransitionAnimation;
+import com.art.alligator.animations.transition.SimpleTransitionAnimation;
 import com.art.alligator.screenswitchers.FragmentScreenSwitcher;
-import com.art.advancedscreenswitchersample.R;
-import com.art.advancedscreenswitchersample.SampleTransitionAnimationProvider;
-import com.art.advancedscreenswitchersample.SampleApplication;
-import com.art.advancedscreenswitchersample.screens.TabScreen;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -99,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 				int indexFrom = mTabsInfo.getTabIndex(screenNameFrom);
 				int indexTo = mTabsInfo.getTabIndex(screenNameTo);
 				if (indexTo > indexFrom) {
-					return new TransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
+					return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 				} else {
-					return new TransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
+					return new SimpleTransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
 				}
 			}
 

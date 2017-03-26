@@ -2,17 +2,17 @@ package com.art.alligator.commands;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.art.alligator.Command;
 import com.art.alligator.AnimationData;
-import com.art.alligator.internal.DialogFragmentHelper;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
-import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
+import com.art.alligator.internal.ActivityHelper;
+import com.art.alligator.internal.DialogFragmentHelper;
 import com.art.alligator.internal.FragmentStack;
 import com.art.alligator.internal.ScreenClassUtils;
 
@@ -43,10 +43,9 @@ public class BackCommand implements Command {
 			fragmentStack.pop(animation);
 			return true;
 		} else {
-			Activity activity = navigationContext.getActivity();
-			activity.finish();
+			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 			TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
-			CommandUtils.applyActivityAnimation(activity, animation);
+			activityHelper.finish(animation);
 			return false;
 		}
 	}

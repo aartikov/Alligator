@@ -8,8 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.art.alligator.NavigationContext;
-import com.art.alligator.animations.TransitionAnimation;
-import com.art.alligator.commands.CommandUtils;
+import com.art.alligator.TransitionAnimation;
 
 /**
  * Date: 19.03.2017
@@ -77,7 +76,7 @@ public class FragmentStack {
 		Fragment previousFragment = count > 1 ? fragments.get(count - 2) : null;
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		CommandUtils.applyFragmentAnimation(transaction, animation);
+		animation.applyToFragmentTransaction(transaction);
 		transaction.remove(currentFragment);
 		if (previousFragment != null) {
 			transaction.attach(previousFragment);
@@ -101,7 +100,7 @@ public class FragmentStack {
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		for (int i = index + 1; i < count; i++) {
 			if (i == count - 1) {
-				CommandUtils.applyFragmentAnimation(transaction, animation);
+				animation.applyToFragmentTransaction(transaction);
 			}
 			transaction.remove(fragments.get(i));
 		}
@@ -113,7 +112,7 @@ public class FragmentStack {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		CommandUtils.applyFragmentAnimation(transaction, animation);
+		animation.applyToFragmentTransaction(transaction);
 		if (currentFragment != null) {
 			transaction.detach(currentFragment);
 		}
@@ -127,7 +126,7 @@ public class FragmentStack {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		CommandUtils.applyFragmentAnimation(transaction, animation);
+		animation.applyToFragmentTransaction(transaction);
 		if (currentFragment != null) {
 			transaction.remove(currentFragment);
 		}
@@ -145,7 +144,7 @@ public class FragmentStack {
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		for (int i = 0; i < count; i++) {
 			if (i == count - 1) {
-				CommandUtils.applyFragmentAnimation(transaction, animation);
+				animation.applyToFragmentTransaction(transaction);
 			}
 			transaction.remove(fragments.get(i));
 		}

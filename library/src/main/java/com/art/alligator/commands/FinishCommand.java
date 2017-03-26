@@ -1,17 +1,16 @@
 package com.art.alligator.commands;
 
-import android.app.Activity;
-
 import com.art.alligator.ActivityResult;
-import com.art.alligator.Command;
 import com.art.alligator.AnimationData;
-import com.art.alligator.exceptions.CommandExecutionException;
+import com.art.alligator.Command;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationFactory;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
-import com.art.alligator.animations.TransitionAnimation;
+import com.art.alligator.TransitionAnimation;
 import com.art.alligator.TransitionType;
+import com.art.alligator.exceptions.CommandExecutionException;
+import com.art.alligator.internal.ActivityHelper;
 import com.art.alligator.internal.ScreenClassUtils;
 
 /**
@@ -32,7 +31,6 @@ public class FinishCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
 			Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
 
@@ -47,12 +45,12 @@ public class FinishCommand implements Command {
 			}
 
 			ActivityResult activityResult = navigationFactory.createActivityResult(screenClass, mScreenResult);
-			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
+			navigationContext.getActivity().setResult(activityResult.getResultCode(), activityResult.getIntent());
 		}
 
-		activity.finish();
+		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 		TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
-		CommandUtils.applyActivityAnimation(activity, animation);
+		activityHelper.finish(animation);
 		return false;
 	}
 

@@ -1,6 +1,5 @@
 package com.art.alligator.commands;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
@@ -40,8 +39,7 @@ public class ResetCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		switch (navigationFactory.getViewType(mScreen.getClass())) {
 			case ACTIVITY: {
-				Activity activity = navigationContext.getActivity();
-				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
+				Intent intent = navigationFactory.createActivityIntent(navigationContext.getActivity(), mScreen);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 

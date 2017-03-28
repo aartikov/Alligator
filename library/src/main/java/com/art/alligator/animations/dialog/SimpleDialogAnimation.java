@@ -22,12 +22,12 @@ public class SimpleDialogAnimation implements DialogAnimation {
 	 * Constructor
 	 *
 	 * @param windowAnimationsStyleRes window animation style resource, for example
-	 *                                 <pre>
-	 *                                                                 <style name="DialogAnimation">
-	 *                                                                   <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
-	 *                                                                   <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
-	 *                                                                 </style>
-	 *                                                                 </pre>
+		* <pre>
+		* <style name="DialogAnimation">
+		*   <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+		*   <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+		* </style>
+		* </pre>
 	 */
 	public SimpleDialogAnimation(@StyleRes int windowAnimationsStyleRes) {
 		mWindowAnimationsStyleRes = windowAnimationsStyleRes;

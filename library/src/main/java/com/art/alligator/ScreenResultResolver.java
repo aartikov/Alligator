@@ -9,6 +9,9 @@ import android.content.Intent;
  * @author Artur Artikov
  */
 
+/**
+ * Helper class for handling screen result
+ */
 public class ScreenResultResolver {
 	private NavigationFactory mNavigationFactory;
 

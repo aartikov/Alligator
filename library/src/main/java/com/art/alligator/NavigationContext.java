@@ -13,6 +13,10 @@ import com.art.alligator.defaultimpementation.DefaultNavigationErrorListener;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Used by {@link AndroidNavigator} to  be linked with current activity lifecycle and execute navigation commands.
+ */
 public class NavigationContext {
 	private AppCompatActivity mActivity;
 	private FragmentManager mFragmentManager;

@@ -13,6 +13,10 @@ import com.art.alligator.TransitionAnimation;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Screen switcher that switches fragments in a given container
+ */
 public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;

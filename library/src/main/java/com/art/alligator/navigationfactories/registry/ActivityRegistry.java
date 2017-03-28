@@ -19,6 +19,9 @@ import com.art.alligator.functions.Function2;
  * @author Artur Artikov
  */
 
+/**
+ * Storage for activity screens
+ */
 public class ActivityRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.ActivityRegistry.KEY_SCREEN";
 

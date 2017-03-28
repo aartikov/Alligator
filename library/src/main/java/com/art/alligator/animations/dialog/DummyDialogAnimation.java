@@ -11,6 +11,9 @@ import com.art.alligator.DialogAnimation;
  * @author Artur Artikov
  */
 
+/**
+ * {@link DialogAnimation} implementation that doing nothing
+ */
 public class DummyDialogAnimation implements DialogAnimation {
 	@Override
 	public void applyAfterShowing(DialogFragment dialogFragment) {

@@ -12,6 +12,10 @@ import com.art.alligator.ScreenSwitcher;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Command implementation for switchTo method
+ */
 public class SwitchToCommand implements Command {
 	private String mScreenName;
 

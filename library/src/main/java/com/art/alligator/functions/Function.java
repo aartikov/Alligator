@@ -7,6 +7,9 @@ package com.art.alligator.functions;
  * @author Artur Artikov
  */
 
+/**
+ * Function with one argument
+ */
 public interface Function<T, R> {
 	R call(T t);
 }

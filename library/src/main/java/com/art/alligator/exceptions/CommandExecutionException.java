@@ -9,6 +9,9 @@ import com.art.alligator.Command;
  * @author Artur Artikov
  */
 
+/**
+ * Exception thrown by execute method of {@link Command}
+ */
 public class CommandExecutionException extends Exception {
 	private Command mCommand;
 	private String mReason;

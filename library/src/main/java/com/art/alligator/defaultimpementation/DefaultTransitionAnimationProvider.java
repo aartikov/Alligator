@@ -12,6 +12,10 @@ import com.art.alligator.TransitionType;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Default implementation of {@link TransitionAnimationProvider}. Always returns TransitionAnimation.DEFAULT
+ */
 public class DefaultTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData) {

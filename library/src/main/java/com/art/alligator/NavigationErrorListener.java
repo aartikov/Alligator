@@ -9,6 +9,9 @@ import com.art.alligator.exceptions.CommandExecutionException;
  * @author Artur Artikov
  */
 
+/**
+ * Interface for navigation error handling
+ */
 public interface NavigationErrorListener {
 	void onNavigationError(CommandExecutionException e);
 }

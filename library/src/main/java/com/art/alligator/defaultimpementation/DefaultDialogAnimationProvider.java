@@ -12,6 +12,9 @@ import com.art.alligator.Screen;
  * @author Artur Artikov
  */
 
+/**
+ * Default implementation of {@link DialogAnimationProvider}. Always returns DialogAnimation.DEFAULT
+ */
 public class DefaultDialogAnimationProvider implements DialogAnimationProvider {
 	@Override
 	public DialogAnimation getAnimation(Class<? extends Screen> screenClass, AnimationData animationData) {

@@ -23,6 +23,10 @@ import com.art.alligator.internal.ScreenClassUtils;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Command implementation for replace method
+ */
 public class ReplaceCommand implements Command {
 	private Screen mScreen;
 	private AnimationData mAnimationData;

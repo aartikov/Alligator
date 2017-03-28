@@ -22,6 +22,10 @@ import com.art.alligator.internal.ScreenClassUtils;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Command implementation for goBack method
+ */
 public class BackCommand implements Command {
 	private AnimationData mAnimationData;
 

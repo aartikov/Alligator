@@ -1,7 +1,5 @@
 package com.art.alligator;
 
-import com.art.alligator.Command;
-
 /**
  * Date: 26.02.2017
  * Time: 18:51
@@ -9,6 +7,9 @@ import com.art.alligator.Command;
  * @author Artur Artikov
  */
 
+/**
+ * Interface for command execution listening
+ */
 public interface NavigationCommandListener {
 	void onNavigationCommandExecuted(Command command);
 }

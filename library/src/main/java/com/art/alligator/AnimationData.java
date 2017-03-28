@@ -6,5 +6,9 @@ package com.art.alligator;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Extends this interface to declare your screen
+ */
 public interface AnimationData {
 }

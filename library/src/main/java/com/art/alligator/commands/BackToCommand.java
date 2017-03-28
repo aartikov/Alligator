@@ -25,6 +25,9 @@ import com.art.alligator.internal.ScreenClassUtils;
  * @author Artur Artikov
  */
 
+/**
+ * Command implementation for goBackTo method
+ */
 public class BackToCommand implements Command {
 	private Class<? extends Screen> mScreenClass;
 	private AnimationData mAnimationData;

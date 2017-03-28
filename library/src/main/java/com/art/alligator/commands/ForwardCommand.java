@@ -26,6 +26,10 @@ import com.art.alligator.internal.ScreenClassUtils;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Command implementation for goForward method and goForwardForResult method
+ */
 public class ForwardCommand implements Command {
 	private Screen mScreen;
 	private boolean mForResult;

@@ -13,6 +13,9 @@ import com.art.alligator.TransitionAnimation;
  * @author Artur Artikov
  */
 
+/**
+ * {@link TransitionAnimation} implementation that doing nothing
+ */
 public class DummyTransitionAnimation implements TransitionAnimation {
 	@Override
 	public Bundle getActivityOptionsBundle(Activity activity) {

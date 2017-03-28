@@ -7,8 +7,17 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Interface for binding and unbinding of {@link NavigationContext}
+ */
 public interface NavigationContextBinder {
+	/**
+	 * Bind the navigation context. Call this method from activity onResume method.
+	 */
 	void bind(NavigationContext navigationContext);
 
+	/**
+	 * Unbind an navigation context. Call this method from activity onPause method.
+	 */
 	void unbind();
 }

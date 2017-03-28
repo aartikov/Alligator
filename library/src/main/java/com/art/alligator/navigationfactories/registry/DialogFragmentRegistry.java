@@ -17,6 +17,9 @@ import com.art.alligator.functions.Function;
  * @author Artur Artikov
  */
 
+/**
+ * Storage for dialog fragment screens
+ */
 public class DialogFragmentRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.DialogFragmentRegistry.KEY_SCREEN";
 

@@ -23,6 +23,10 @@ import com.art.alligator.internal.ScreenClassUtils;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Command implementation for reset method
+ */
 public class ResetCommand implements Command {
 	private Screen mScreen;
 	private AnimationData mAnimationData;

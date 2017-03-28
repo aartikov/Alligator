@@ -7,6 +7,12 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Provider of {@link TransitionAnimation}
+ */
 public interface TransitionAnimationProvider {
+	/**
+	 * Returns provided animation
+	 */
 	TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData);
 }

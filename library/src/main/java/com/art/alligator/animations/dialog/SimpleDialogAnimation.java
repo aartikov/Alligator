@@ -12,9 +12,23 @@ import com.art.alligator.DialogAnimation;
  * @author Artur Artikov
  */
 
+/**
+ * {@link DialogAnimation} implementation that uses an style resource to play dialog fragment animation
+ */
 public class SimpleDialogAnimation implements DialogAnimation {
 	private int mWindowAnimationsStyleRes;
 
+	/**
+	 * Constructor
+	 *
+	 * @param windowAnimationsStyleRes window animation style resource, for example
+	 *                                 <pre>
+	 *                                                                 <style name="DialogAnimation">
+	 *                                                                   <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+	 *                                                                   <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+	 *                                                                 </style>
+	 *                                                                 </pre>
+	 */
 	public SimpleDialogAnimation(@StyleRes int windowAnimationsStyleRes) {
 		mWindowAnimationsStyleRes = windowAnimationsStyleRes;
 	}

@@ -20,6 +20,9 @@ import com.art.alligator.internal.ScreenClassUtils;
  * @author Artur Artikov
  */
 
+/**
+ * Command implementation for finish method and finishWithResult method
+ */
 public class FinishCommand implements Command {
 	private ScreenResult mScreenResult;
 	private AnimationData mAnimationData;

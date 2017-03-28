@@ -7,6 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Provider of {@link DialogAnimation}
+ */
 public interface DialogAnimationProvider {
 	DialogAnimation getAnimation(Class<? extends Screen> screenClass, AnimationData animationData);
 }

@@ -7,6 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Type of Screen's Android representation
+ */
 public enum ViewType {
 	ACTIVITY,
 	FRAGMENT,

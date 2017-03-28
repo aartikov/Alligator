@@ -8,6 +8,10 @@ import com.art.alligator.exceptions.CommandExecutionException;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Navigation command
+ */
 public interface Command {
 	/**
 	 * Execute a command

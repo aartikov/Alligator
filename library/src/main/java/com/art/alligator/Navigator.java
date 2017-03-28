@@ -7,65 +7,92 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Iterface for navigation
+ */
 public interface Navigator {
 	/**
-	 * Add a new screen and go to it
+	 * Adds a new screen and go to it
 	 */
 	void goForward(Screen screen);
 
+	/**
+	 * goForvard with animation data
+	 */
 	void goForward(Screen screen, AnimationData animationData);
 
 	/**
-	 * Go forward for result
+	 * Goes forward for result
 	 */
 	void goForwardForResult(Screen screen);
 
+	/**
+	 * goForwardForResult with animation data
+	 */
 	void goForwardForResult(Screen screen, AnimationData animationData);
 
 	/**
-	 * Finish current screen and go back to the previous screen
+	 * Finishes current screen and go back to the previous screen
 	 */
 	void goBack();
 
+	/**
+	 * goBack with animation data
+	 */
 	void goBack(AnimationData animationData);
 
 	/**
-	 * Go back to a screen with the given class
+	 * Goes back to the screen with the given class
 	 */
 	void goBackTo(Class<? extends Screen> screenClass);
 
+	/**
+	 * goBackTo with animation data
+	 */
 	void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData);
 
 	/**
-	 * Replace the last screen with a new screen
+	 * Replaces the last screen with a new screen
 	 */
 	void replace(Screen screen);
 
+	/**
+	 * replace with animation data
+	 */
 	void replace(Screen screen, AnimationData animationData);
 
 	/**
-	 * Remove all other screens and add a new screen
+	 * Removes all other screens and add a new screen
 	 */
 	void reset(Screen screen);
 
+	/**
+	 * reset with animation data
+	 */
 	void reset(Screen screen, AnimationData animationData);
 
 	/**
-	 * Finish a last screen or a group of screens executing some common task
+	 * Finishes a last screen or a group of screens executing some common task
 	 */
 	void finish();
 
+	/**
+	 * finish with animation data
+	 */
 	void finish(AnimationData animationData);
 
 	/**
-	 * Finish a last screen or a group of screens executing some common task
+	 * Finishes with result
 	 */
 	void finishWithResult(ScreenResult screenResult);
 
+	/**
+	 * finishWithResult with animation data
+	 */
 	void finishWithResult(ScreenResult screenResult, AnimationData animationData);
 
 	/**
-	 * Switch screens by name
+	 * Switches screens by name
 	 */
 	void switchTo(String screenName);
 }

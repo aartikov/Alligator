@@ -7,6 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Type of transition
+ */
 public enum TransitionType {
 	FORWARD,
 	BACK,

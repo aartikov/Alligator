@@ -19,6 +19,9 @@ import com.art.alligator.functions.Function;
  * @author Artur Artikov
  */
 
+/**
+ * Storage for screens for result
+ */
 public class ScreenForResultRegistry {
 	private static final String KEY_SCREEN_RESULT = "com.art.alligator.navigationfactories.registry.ScreenForResultRegistry.KEY_SCREEN_RESULT";
 	private static final int INITIAL_REQUEST_CODE = 1000;

@@ -17,6 +17,9 @@ import com.art.alligator.functions.Function;
  * @author Artur Artikov
  */
 
+/**
+ * Storage for fragment screens
+ */
 public class FragmentRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.FragmentRegistry.KEY_SCREEN";
 

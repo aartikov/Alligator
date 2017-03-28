@@ -29,6 +29,9 @@ import com.art.alligator.navigationfactories.registry.ScreenForResultRegistry;
  * @author Artur Artikov
  */
 
+/**
+ * Navigation factory with methods for screen registration
+ */
 public class RegistryNavigationFactory implements NavigationFactory {
 	private ActivityRegistry mActivityRegistry = new ActivityRegistry();
 	private FragmentRegistry mFragmentRegistry = new FragmentRegistry();
@@ -36,6 +39,9 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	private ScreenForResultRegistry mScreenForResultRegistry = new ScreenForResultRegistry();
 	private List<Class<? extends Screen>> mScreenClasses = new ArrayList<>();
 
+	/**
+	 * Register an activity screen with custom intent creation function and custom screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass,
 	                                                      Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenResolvingFunction) {
 		checkThatNotRegistered(screenClass);
@@ -43,14 +49,23 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		mScreenClasses.add(screenClass);
 	}
 
+	/**
+	 * Register an activity screen with custom intent creation function and not implemented screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, Class<? extends Activity> activityClass, Function2<Context, ScreenT, Intent> intentCreationFunction) {
 		registerActivity(screenClass, activityClass, intentCreationFunction, ActivityRegistry.getNotImplementedScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register an activity screen with default intent creation function and default screen resolving function. ScreenT must be Serializable.
+	 */
 	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
 		registerActivity(screenClass, activityClass, ActivityRegistry.getDefaultIntentCreationFunction(screenClass, activityClass), ActivityRegistry.getDefaultScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register a fragment screen with custom fragment creation function and custom screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction,
 	                                                      Function<Fragment, ScreenT> screenResolvingFunction) {
 		checkThatNotRegistered(screenClass);
@@ -58,14 +73,23 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		mScreenClasses.add(screenClass);
 	}
 
+	/**
+	 * Register a fragment screen with custom fragment creation function and not implemented screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction) {
 		registerFragment(screenClass, fragmentCreationFunction, FragmentRegistry.getNotImplementedScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register a fragment screen with default fragment creation function and default screen resolving function. ScreenT must be Serializable.
+	 */
 	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
 		registerFragment(screenClass, FragmentRegistry.getDefaultFragmentCreationFunction(screenClass, fragmentClass), FragmentRegistry.getDefaultScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register a dialog fragment screen with custom dialog fragment creation function and custom screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction,
 	                                                            Function<DialogFragment, ScreenT> screenResolvingFunction) {
 		checkThatNotRegistered(screenClass);
@@ -73,14 +97,23 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		mScreenClasses.add(screenClass);
 	}
 
+	/**
+	 * Register a dialog fragment screen with custom dialog fragment creation function and not implemented screen resolving function.
+	 */
 	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction) {
 		registerDialogFragment(screenClass, dialogFragmentCreationFunction, DialogFragmentRegistry.getNotImplementedScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register a dialog fragment screen with defaul dialog fragment creation function and default screen resolving function. ScreenT must be Serializable.
+	 */
 	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
 		registerDialogFragment(screenClass, DialogFragmentRegistry.getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), DialogFragmentRegistry.getDefaultScreenResolvingFunction(screenClass));
 	}
 
+	/**
+	 * Register a screen for result with custom activity result creation function and custom screen result resolving function.
+	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
 	                                                                         Function<ScreenResultT, ActivityResult> activityResultCreationFunction,
 	                                                                         Function<ActivityResult, ScreenResultT> screenResultResolvingFunction) {
@@ -88,11 +121,17 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		mScreenForResultRegistry.register(screenClass, screenResultClass, activityResultCreationFunction, screenResultResolvingFunction);
 	}
 
+	/**
+	 * Register a screen for result with custom activity result creation function and not implemented screen result resolving function.
+	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
 	                                                                         Function<ActivityResult, ScreenResultT> screenResultResolvingFunction) {
 		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getNotImplementedActivityResultCreationFunction(screenClass, screenResultClass), screenResultResolvingFunction);
 	}
 
+	/**
+	 * Register a screen for result with default activity result creation function and default screen result resolving function. ScreenResultT must be Serializable.
+	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
 		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getDefaultActivityResultCreationFunction(screenResultClass), ScreenForResultRegistry.getDefaultScreenResultResolvingFunction(screenResultClass));
 	}

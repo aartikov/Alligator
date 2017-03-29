@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.ScreenResolver;
 import com.art.simplestnavigationsample.R;
 import com.art.simplestnavigationsample.SampleApplication;
 import com.art.simplestnavigationsample.screens.MessageScreen;
@@ -37,7 +37,8 @@ public class MessageActivity extends AppCompatActivity {
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-		MessageScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		MessageScreen screen = screenResolver.getScreen(this, MessageScreen.class);
 		mMessageTextView.setText(screen.getMessage());
 	}
 

@@ -1,1 +1,2 @@
-include ':navigationsample', ':library', ':advancedscreenswitchersample', ':simplestnavigationsample', ':screenresultsample', ':simplestscreenswitchersample'
+include ':navigationsample', ':library', ':advancedscreenswitchersample', ':simplestnavigationsample', ':screenresultsample', ':simplestscreenswitchersample', ':stub-android'
+project(':stub-android').projectDir = new File('library/stub-android')

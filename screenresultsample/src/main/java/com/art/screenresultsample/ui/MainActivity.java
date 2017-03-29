@@ -10,12 +10,11 @@ import android.widget.Toast;
 
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
-import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
 import com.art.alligator.Screen;
 import com.art.alligator.ScreenResult;
 import com.art.alligator.ScreenResultListener;
-import com.art.alligator.implementation.ScreenResultUtils;
+import com.art.alligator.ScreenResultResolver;
 import com.art.screenresultsample.R;
 import com.art.screenresultsample.SampleApplication;
 import com.art.screenresultsample.screens.ImagePickerScreen;
@@ -34,7 +33,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
-	private NavigationFactory mNavigationFactory;
 
 	@BindView(R.id.activity_main_button_input_message)
 	Button mInputMessageButton;
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-		mNavigationFactory = SampleApplication.getNavigationFactory();
 
 		mInputMessageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new MessageInputScreen()));
 		mPickImageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new ImagePickerScreen()));
@@ -64,19 +61,17 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		ScreenResultUtils.handleActivityResult(requestCode, resultCode, data, mNavigationFactory, this);
+		ScreenResultResolver screenResultResolver = SampleApplication.getScreenResultResolver();
+		screenResultResolver.handleActivityResult(requestCode, resultCode, data, this);
 	}
 
 	@Override
-	public boolean onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
+	public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
 		if (screenClass == MessageInputScreen.class) {
 			onMessageInputted((MessageInputScreen.Result) result);
-			return true;
 		} else if (screenClass == ImagePickerScreen.class) {
 			onImagePicked((ImagePickerScreen.Result) result);
-			return true;
 		}
-		return false;
 	}
 
 	private void onMessageInputted(MessageInputScreen.Result messageInputResult) {

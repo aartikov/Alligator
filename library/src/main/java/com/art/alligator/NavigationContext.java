@@ -1,10 +1,11 @@
 package com.art.alligator;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-import com.art.alligator.implementation.DefaultAnimationProvider;
-import com.art.alligator.implementation.DefaultNavigationErrorListener;
+import com.art.alligator.defaultimpementation.DefaultDialogAnimationProvider;
+import com.art.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
+import com.art.alligator.defaultimpementation.DefaultNavigationErrorListener;
 
 /**
  * Date: 29.12.2016
@@ -12,34 +13,40 @@ import com.art.alligator.implementation.DefaultNavigationErrorListener;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Used by {@link AndroidNavigator} to  be linked with current activity lifecycle and execute navigation commands.
+ */
 public class NavigationContext {
-	private Activity mActivity;
+	private AppCompatActivity mActivity;
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 	private ScreenSwitcher mScreenSwitcher;
-	private AnimationProvider mAnimationProvider;
+	private TransitionAnimationProvider mTransitionAnimationProvider;
+	private DialogAnimationProvider mDialogAnimationProvider;
 	private NavigationCommandListener mNavigationCommandListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
-	public NavigationContext(Activity activity) {
+	public NavigationContext(AppCompatActivity activity) {
 		this(new Builder(activity));
 	}
 
-	public NavigationContext(Activity activity, FragmentManager fragmentManager, int containerId) {
-		this(new Builder(activity).fragmentManagerAndContainerId(fragmentManager, containerId));
+	public NavigationContext(AppCompatActivity activity, int containerId) {
+		this(new Builder(activity).containerId(containerId));
 	}
 
 	private NavigationContext(Builder builder) {
 		mActivity = builder.mActivity;
-		mFragmentManager = builder.mFragmentManager;
+		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
-		mAnimationProvider = builder.mAnimationProvider;
+		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
+		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
 		mNavigationCommandListener = builder.mNavigationCommandListener;
-		mNavigationErrorListener = builder.mNavigationErrorListener;
+		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
 
-	public Activity getActivity() {
+	public AppCompatActivity getActivity() {
 		return mActivity;
 	}
 
@@ -51,12 +58,20 @@ public class NavigationContext {
 		return mContainerId;
 	}
 
+	public boolean hasContainerId() {
+		return mContainerId > 0;
+	}
+
 	public ScreenSwitcher getScreenSwitcher() {
 		return mScreenSwitcher;
 	}
 
-	public AnimationProvider getAnimationProvider() {
-		return mAnimationProvider;
+	public TransitionAnimationProvider getTransitionAnimationProvider() {
+		return mTransitionAnimationProvider;
+	}
+
+	public DialogAnimationProvider getDialogAnimationProvider() {
+		return mDialogAnimationProvider;
 	}
 
 	public NavigationCommandListener getNavigationCommandListener() {
@@ -68,21 +83,26 @@ public class NavigationContext {
 	}
 
 	public static class Builder {
-		private Activity mActivity;
+		private AppCompatActivity mActivity;
 		private FragmentManager mFragmentManager;
 		private int mContainerId;
 		private ScreenSwitcher mScreenSwitcher;
-		private AnimationProvider mAnimationProvider = new DefaultAnimationProvider();
+		private TransitionAnimationProvider mTransitionAnimationProvider;
+		private DialogAnimationProvider mDialogAnimationProvider;
 		private NavigationCommandListener mNavigationCommandListener;
-		private NavigationErrorListener mNavigationErrorListener = new DefaultNavigationErrorListener();
+		private NavigationErrorListener mNavigationErrorListener;
 
-		public Builder(Activity activity) {
+		public Builder(AppCompatActivity activity) {
 			mActivity = activity;
 		}
 
-		public Builder fragmentManagerAndContainerId(FragmentManager fragmentManager, int containerId) {
-			mFragmentManager = fragmentManager;
+		public Builder containerId(int containerId) {
 			mContainerId = containerId;
+			return this;
+		}
+
+		public Builder fragmentManager(FragmentManager fragmentManager) {
+			mFragmentManager = fragmentManager;
 			return this;
 		}
 
@@ -91,8 +111,13 @@ public class NavigationContext {
 			return this;
 		}
 
-		public Builder animationProvider(AnimationProvider animationProvider) {
-			mAnimationProvider = animationProvider != null ? animationProvider : new DefaultAnimationProvider();
+		public Builder transitionAnimationProvider(TransitionAnimationProvider transitionAnimationProvider) {
+			mTransitionAnimationProvider = transitionAnimationProvider;
+			return this;
+		}
+
+		public Builder dialogAnimationProvider(DialogAnimationProvider dialogAnimationProvider) {
+			mDialogAnimationProvider = dialogAnimationProvider;
 			return this;
 		}
 
@@ -102,7 +127,7 @@ public class NavigationContext {
 		}
 
 		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
-			mNavigationErrorListener = navigationErrorListener != null ? navigationErrorListener : new DefaultNavigationErrorListener();
+			mNavigationErrorListener = navigationErrorListener;
 			return this;
 		}
 

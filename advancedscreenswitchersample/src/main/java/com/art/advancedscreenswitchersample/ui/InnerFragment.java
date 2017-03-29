@@ -12,13 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.ScreenResolver;
 import com.art.advancedscreenswitchersample.R;
 import com.art.advancedscreenswitchersample.SampleApplication;
 import com.art.advancedscreenswitchersample.screens.InnerScreen;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Date: 22.01.2016
@@ -33,6 +34,8 @@ public class InnerFragment extends Fragment {
 	@BindView(R.id.fragment_inner_button_forward)
 	Button mForwardButton;
 
+	private Unbinder mButterknifeUnbinder;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_inner, container, false);
@@ -41,9 +44,10 @@ public class InnerFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		ButterKnife.bind(this, view);
+		mButterknifeUnbinder = ButterKnife.bind(this, view);
 
-		InnerScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		InnerScreen screen = screenResolver.getScreen(this, InnerScreen.class);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
@@ -51,6 +55,11 @@ public class InnerFragment extends Fragment {
 		mForwardButton.setOnClickListener(v -> navigator.goForward(new InnerScreen(counter + 1)));
 	}
 
+	@Override
+	public void onDestroyView() {
+		mButterknifeUnbinder.unbind();
+		super.onDestroyView();
+	}
 
 	// Workaround for issue https://code.google.com/p/android/issues/detail?id=55228
 	@Override

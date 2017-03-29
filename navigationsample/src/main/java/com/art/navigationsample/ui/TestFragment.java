@@ -13,13 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.art.alligator.Navigator;
-import com.art.alligator.implementation.ScreenUtils;
+import com.art.alligator.ScreenResolver;
 import com.art.navigationsample.R;
 import com.art.navigationsample.SampleApplication;
 import com.art.navigationsample.screens.TestSmallScreen;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Date: 29.12.2016
@@ -49,6 +50,8 @@ public class TestFragment extends Fragment {
 	@BindView(R.id.fragment_test_button_double_back)
 	Button mDoubleBackButton;
 
+	private Unbinder mButterknifeUnbinder;
+
 	private Navigator mNavigator;
 
 	@Override
@@ -59,12 +62,13 @@ public class TestFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		ButterKnife.bind(this, view);
+		mButterknifeUnbinder = ButterKnife.bind(this, view);
 		mNavigator = SampleApplication.getNavigator();
 
 		mRootView.setBackgroundColor(getRandomColor());
 
-		TestSmallScreen screen = ScreenUtils.getScreen(this);
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		TestSmallScreen screen = screenResolver.getScreen(this, TestSmallScreen.class);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
@@ -76,6 +80,12 @@ public class TestFragment extends Fragment {
 			mNavigator.goBack();
 			mNavigator.goBack();
 		});
+	}
+
+	@Override
+	public void onDestroyView() {
+		mButterknifeUnbinder.unbind();
+		super.onDestroyView();
 	}
 
 	private static int getRandomColor() {

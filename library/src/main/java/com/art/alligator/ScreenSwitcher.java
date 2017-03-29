@@ -6,6 +6,10 @@ package com.art.alligator;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Something that can switch screens by name
+ */
 public interface ScreenSwitcher {
 	/**
 	 * Switch to the screen with the given name

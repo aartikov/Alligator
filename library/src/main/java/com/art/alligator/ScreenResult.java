@@ -7,5 +7,8 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Extends this interface to declare your screen result
+ */
 public interface ScreenResult {
 }

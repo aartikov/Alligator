@@ -7,6 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Interface for command execution listening
+ */
 public interface NavigationCommandListener {
 	void onNavigationCommandExecuted(Command command);
 }

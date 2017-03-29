@@ -7,6 +7,9 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+/**
+ * Interface for screen result handling
+ */
 public interface ScreenResultListener {
-	boolean onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
+	void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
 }

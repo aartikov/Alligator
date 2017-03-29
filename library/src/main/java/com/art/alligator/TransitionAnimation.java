@@ -1,50 +1,46 @@
 package com.art.alligator;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+
+import com.art.alligator.animations.transition.DummyTransitionAnimation;
+
 /**
- * Date: 24.02.2017
- * Time: 19:01
+ * Date: 26.03.2017
+ * Time: 12:01
  *
  * @author Artur Artikov
  */
 
-public class TransitionAnimation {
-	private int mEnterAnimation;
-	private int mExitAnimation;
+/**
+ *  Animation that played during transition from one screen to another.
+ */
+public interface TransitionAnimation {
+	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
 
-	public static TransitionAnimation NONE = new TransitionAnimation(0, 0);
-	public static TransitionAnimation DEFAULT = new TransitionAnimation(-1, -1);
+	/**
+	 * Returns options bundle than passes to startActivity method. Can be null.
+	 */
+	Bundle getActivityOptionsBundle(Activity activity);
 
-	public TransitionAnimation(int enterAnimation, int exitAnimation) {
-		mEnterAnimation = enterAnimation;
-		mExitAnimation = exitAnimation;
-	}
+	/**
+	 * Check if need delay activity finish. If returns true - activity finishes with method supportFinishAfterTransition(), otherwise - with method finish()
+	 */
+	boolean needDelayActivityFinish();
 
-	public int getEnterAnimation() {
-		return mEnterAnimation;
-	}
+	/**
+	 * Called after startActivity method
+	 */
+	void applyToActivityAfterStart(Activity activity);
 
-	public int getExitAnimation() {
-		return mExitAnimation;
-	}
+	/**
+	 * Called after activity finished
+	 */
+	void applyToActivityAfterFinish(Activity activity);
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		TransitionAnimation animation = (TransitionAnimation) o;
-		return mEnterAnimation == animation.mEnterAnimation && mExitAnimation == animation.mExitAnimation;
-
-	}
-
-	@Override
-	public int hashCode() {
-		int result = mEnterAnimation;
-		result = 31 * result + mExitAnimation;
-		return result;
-	}
+	/**
+	 * Called after fragment transition is begun
+	 */
+	void applyToFragmentTransaction(FragmentTransaction transaction);
 }

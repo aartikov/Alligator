@@ -11,6 +11,9 @@ import android.net.Uri;
  * @author Artur Artikov
  */
 
+/**
+ * Wrapper for activity result
+ */
 public class ActivityResult {
 	private int mResultCode;
 	private Intent mIntent;

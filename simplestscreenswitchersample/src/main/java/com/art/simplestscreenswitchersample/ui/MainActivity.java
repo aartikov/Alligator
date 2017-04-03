@@ -2,13 +2,13 @@ package com.art.simplestscreenswitchersample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.art.alligator.NavigationContext;
 import com.art.alligator.NavigationContextBinder;
-import com.art.alligator.NavigationFactory;
 import com.art.alligator.Navigator;
+import com.art.alligator.Screen;
+import com.art.alligator.screenswitchers.FactoryFragmentScreenSwitcher;
 import com.art.alligator.screenswitchers.FragmentScreenSwitcher;
 import com.art.simplestscreenswitchersample.R;
 import com.art.simplestscreenswitchersample.SampleApplication;
@@ -88,11 +88,10 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	private void initScreenSwitcher() {
-		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container) {
+		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container, SampleApplication.getNavigationFactory()) {
 			@Override
-			protected Fragment createFragment(String screenName) {
-				NavigationFactory navigationFactory = SampleApplication.getNavigationFactory();
-				return navigationFactory.createFragment(mTabsInfo.getScreen(screenName));
+			protected Screen getScreen(String screenName) {
+				return mTabsInfo.getScreen(screenName);
 			}
 
 			@Override

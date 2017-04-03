@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-		mInputMessageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new MessageInputScreen()));
-		mPickImageButton.setOnClickListener(v -> mNavigator.goForwardForResult(new ImagePickerScreen()));
+		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
+		mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
 	}
 
 	@Override

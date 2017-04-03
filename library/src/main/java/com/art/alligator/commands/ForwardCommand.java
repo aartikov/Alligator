@@ -32,12 +32,10 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 public class ForwardCommand implements Command {
 	private Screen mScreen;
-	private boolean mForResult;
 	private AnimationData mAnimationData;
 
-	public ForwardCommand(Screen screen, boolean forResult, AnimationData animationData) {
+	public ForwardCommand(Screen screen, AnimationData animationData) {
 		mScreen = screen;
-		mForResult = forResult;
 		mAnimationData = animationData;
 	}
 
@@ -56,10 +54,7 @@ public class ForwardCommand implements Command {
 				}
 
 				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
-				if (mForResult) {
-					if (!navigationFactory.isScreenForResult(mScreen.getClass())) {
-						throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered as screen for result.");
-					}
+				if (navigationFactory.isScreenForResult(mScreen.getClass())) {
 					int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
 					activityHelper.startForResult(intent, requestCode, animation);
 				} else {
@@ -71,9 +66,6 @@ public class ForwardCommand implements Command {
 			case FRAGMENT: {
 				if (!navigationContext.hasContainerId()) {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
-				}
-				if (mForResult) {
-					throw new CommandExecutionException(this, "goForwardForResult is not supported for fragment screens.");
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);

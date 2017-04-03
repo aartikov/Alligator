@@ -71,17 +71,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goForward(Screen screen, AnimationData animationData) {
-		executeCommand(new ForwardCommand(screen, false, animationData));
-	}
-
-	@Override
-	public void goForwardForResult(Screen screen) {
-		goForwardForResult(screen, null);
-	}
-
-	@Override
-	public void goForwardForResult(Screen screen, AnimationData animationData) {
-		executeCommand(new ForwardCommand(screen, true, animationData));
+		executeCommand(new ForwardCommand(screen, animationData));
 	}
 
 	@Override

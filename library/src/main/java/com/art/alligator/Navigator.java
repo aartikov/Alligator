@@ -22,16 +22,6 @@ public interface Navigator {
 	void goForward(Screen screen, AnimationData animationData);
 
 	/**
-	 * Goes forward for result
-	 */
-	void goForwardForResult(Screen screen);
-
-	/**
-	 * goForwardForResult with animation data
-	 */
-	void goForwardForResult(Screen screen, AnimationData animationData);
-
-	/**
 	 * Finishes current screen and go back to the previous screen
 	 */
 	void goBack();

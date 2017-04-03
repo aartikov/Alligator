@@ -1,6 +1,7 @@
 package com.art.alligator.internal;
 
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.art.alligator.DialogAnimation;
@@ -33,7 +34,9 @@ public class DialogFragmentHelper {
 	}
 
 	public boolean isDialogVisible() {
-		return mFragmentManager.findFragmentByTag(TAG) != null;
+		mFragmentManager.executePendingTransactions();
+		Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
+		return fragment != null && !fragment.isRemoving();
 	}
 
 	public void showDialog(DialogFragment dialogFragment, DialogAnimation animation) {

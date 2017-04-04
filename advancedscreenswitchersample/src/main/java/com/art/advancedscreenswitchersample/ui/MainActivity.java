@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onResumeFragments() {
+		super.onResumeFragments();
 		bindNavigationContext();
 	}
 

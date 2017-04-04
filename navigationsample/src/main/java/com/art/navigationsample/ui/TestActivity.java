@@ -76,8 +76,8 @@ public class TestActivity extends AppCompatActivity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onResumeFragments() {
+		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
 				.containerId(R.id.activity_test_fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())

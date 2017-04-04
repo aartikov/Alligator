@@ -12,7 +12,7 @@ package com.art.alligator;
  */
 public interface NavigationContextBinder {
 	/**
-	 * Bind the navigation context. Call this method from activity onResume method.
+	 * Bind the navigation context. Call this method from activity onResumeFragments method.
 	 */
 	void bind(NavigationContext navigationContext);
 

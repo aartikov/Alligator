@@ -1,5 +1,6 @@
 package com.art.alligator.navigationfactories;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ import com.art.alligator.navigationfactories.registry.ScreenForResultRegistry;
  */
 
 /**
- * Navigation factory with methods for screen registration
+ * Navigation factory with screen registration methods.
  */
 public class RegistryNavigationFactory implements NavigationFactory {
 	private ActivityRegistry mActivityRegistry = new ActivityRegistry();
@@ -40,100 +41,202 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	private List<Class<? extends Screen>> mScreenClasses = new ArrayList<>();
 
 	/**
-	 * Register an activity screen with custom intent creation function and custom screen resolving function.
+	 * Registers a screen represented by an activity using a custom intent creation function and a custom screen getting function.
+	 *
+	 * @param <ScreenT>              screen type
+	 * @param screenClass            screen class
+	 * @param activityClass          class of the activity that represents the screen. It must be the same activity class that was used
+	 *                               to create an intent in {@code intentCreationFunction} or {@code null} if an intent is implicit.
+	 * @param intentCreationFunction function returning an intent for starting an activity
+	 * @param screenGettingFunction  function that gets a screen from an intent
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass,
-	                                                      Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenResolvingFunction) {
+	                                                      Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mActivityRegistry.register(screenClass, activityClass, intentCreationFunction, screenResolvingFunction);
+		mActivityRegistry.register(screenClass, activityClass, intentCreationFunction, screenGettingFunction);
 		mScreenClasses.add(screenClass);
 	}
 
 	/**
-	 * Register an activity screen with custom intent creation function and not implemented screen resolving function.
+	 * Registers a screen represented by an activity using a custom intent creation function and a not implemented screen getting function.
+	 * <p>
+	 * A not implemented screen getting function throws {@code RuntimeException} when it is called.
+	 *
+	 * @param <ScreenT>              screen type
+	 * @param screenClass            screen class
+	 * @param activityClass          class of the activity that represents the screen. It must be the same activity class that was used
+	 *                               to create an intent in {@code intentCreationFunction} or {@code null} if an intent is implicit.
+	 * @param intentCreationFunction function returning an intent for starting an activity
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, Class<? extends Activity> activityClass, Function2<Context, ScreenT, Intent> intentCreationFunction) {
-		registerActivity(screenClass, activityClass, intentCreationFunction, ActivityRegistry.getNotImplementedScreenResolvingFunction(screenClass));
+		registerActivity(screenClass, activityClass, intentCreationFunction, ActivityRegistry.getNotImplementedScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register an activity screen with default intent creation function and default screen resolving function. ScreenT must be Serializable.
+	 * Register a screen represented by an activity using a default intent creation function and a default screen getting function.
+	 * <p>
+	 * A default intent creation function creates an intent that starts an activity of the class {@code activityClass}. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable}.
+	 * <p>
+	 * A default screen getting function gets a screen from the intent's extra if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 *
+	 * @param <ScreenT>     screen type
+	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the started activity.
+	 * @param activityClass class of the activity that represents the screen
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
-		registerActivity(screenClass, activityClass, ActivityRegistry.getDefaultIntentCreationFunction(screenClass, activityClass), ActivityRegistry.getDefaultScreenResolvingFunction(screenClass));
+		registerActivity(screenClass, activityClass, ActivityRegistry.getDefaultIntentCreationFunction(screenClass, activityClass), ActivityRegistry.getDefaultScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register a fragment screen with custom fragment creation function and custom screen resolving function.
+	 * Registers a screen represented by a fragment using a custom fragment creation function and a custom screen getting function.
+	 *
+	 * @param <ScreenT>                screen type
+	 * @param screenClass              screen class
+	 * @param fragmentCreationFunction function returning a new fragment
+	 * @param screenGettingFunction    function getting a screen from a fragment
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction,
-	                                                      Function<Fragment, ScreenT> screenResolvingFunction) {
+	                                                      Function<Fragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mFragmentRegistry.register(screenClass, fragmentCreationFunction, screenResolvingFunction);
+		mFragmentRegistry.register(screenClass, fragmentCreationFunction, screenGettingFunction);
 		mScreenClasses.add(screenClass);
 	}
 
 	/**
-	 * Register a fragment screen with custom fragment creation function and not implemented screen resolving function.
+	 * Registers a screen represented by a fragment using a custom fragment creation function and a not implemented screen getting function.
+	 * <p>
+	 * A not implemented screen getting function throws {@code RuntimeException} when it is called.
+	 *
+	 * @param <ScreenT>                screen type
+	 * @param screenClass              screen class
+	 * @param fragmentCreationFunction function returning a new fragment
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction) {
-		registerFragment(screenClass, fragmentCreationFunction, FragmentRegistry.getNotImplementedScreenResolvingFunction(screenClass));
+		registerFragment(screenClass, fragmentCreationFunction, FragmentRegistry.getNotImplementedScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register a fragment screen with default fragment creation function and default screen resolving function. ScreenT must be Serializable.
+	 * Registers a screen represented by a fragment using a default fragment creation function and a default screen getting function.
+	 * <p>
+	 * A default fragment creation function creates a fragment of the class {@code fragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable}.
+	 * <p>
+	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 *
+	 * @param <ScreenT>     screen type
+	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the created fragment.
+	 * @param fragmentClass class of the fragment that represents the screen
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
-		registerFragment(screenClass, FragmentRegistry.getDefaultFragmentCreationFunction(screenClass, fragmentClass), FragmentRegistry.getDefaultScreenResolvingFunction(screenClass));
+		registerFragment(screenClass, FragmentRegistry.getDefaultFragmentCreationFunction(screenClass, fragmentClass), FragmentRegistry.getDefaultScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register a dialog fragment screen with custom dialog fragment creation function and custom screen resolving function.
+	 * Registers a screen represented by a dialog fragment using a custom dialog fragment creation function and a custom screen getting function.
+	 *
+	 * @param <ScreenT>                      screen type
+	 * @param screenClass                    screen class
+	 * @param dialogFragmentCreationFunction function returning a new dialog fragment
+	 * @param screenGettingFunction          function getting a screen from a fragment
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction,
-	                                                            Function<DialogFragment, ScreenT> screenResolvingFunction) {
+	                                                            Function<DialogFragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mDialogFragmentRegistry.register(screenClass, dialogFragmentCreationFunction, screenResolvingFunction);
+		mDialogFragmentRegistry.register(screenClass, dialogFragmentCreationFunction, screenGettingFunction);
 		mScreenClasses.add(screenClass);
 	}
 
 	/**
-	 * Register a dialog fragment screen with custom dialog fragment creation function and not implemented screen resolving function.
+	 * Registers a screen represented by a dialog fragment using a custom dialog fragment creation function and a not implemented screen getting function.
+	 * <p>
+	 * A not implemented screen getting function throws {@code RuntimeException} when it is called.
+	 *
+	 * @param <ScreenT>                      screen type
+	 * @param screenClass                    screen class
+	 * @param dialogFragmentCreationFunction function returning a new dialog fragment
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction) {
-		registerDialogFragment(screenClass, dialogFragmentCreationFunction, DialogFragmentRegistry.getNotImplementedScreenResolvingFunction(screenClass));
+		registerDialogFragment(screenClass, dialogFragmentCreationFunction, DialogFragmentRegistry.getNotImplementedScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register a dialog fragment screen with defaul dialog fragment creation function and default screen resolving function. ScreenT must be Serializable.
+	 * Registers a screen represented by a dialog fragment using a default dialog fragment creation function and a default screen getting function.
+	 * <p>
+	 * A default dialog fragment creation function creates a dialog fragment of the class {@code dialogFragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable}.
+	 * <p>
+	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 *
+	 * @param <ScreenT>           screen type
+	 * @param screenClass         screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the created dialog fragment.
+	 * @param dialogFragmentClass class of the dialog fragment that represents the screen
+	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
-		registerDialogFragment(screenClass, DialogFragmentRegistry.getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), DialogFragmentRegistry.getDefaultScreenResolvingFunction(screenClass));
+		registerDialogFragment(screenClass, DialogFragmentRegistry.getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), DialogFragmentRegistry.getDefaultScreenGettingFunction(screenClass));
 	}
 
 	/**
-	 * Register a screen for result with custom activity result creation function and custom screen result resolving function.
+	 * Register a screen that can return a result using a custom activity result creation function and a custom screen result getting function.
+	 * <p>
+	 * This method is supported only for a screen that is represented by an activity (a screen should be registered with one of the {@code registerActivity} methods before calling this method).
+	 *
+	 * @param <ScreenResultT>                screen result type
+	 * @param screenClass                    screen class
+	 * @param screenResultClass              class of the result that the screen can return
+	 * @param activityResultCreationFunction function that converts a {@link ScreenResult} to an {@link ActivityResult}. Passed {@link ScreenResult} can be {@code null} when a screen has finished without no result.
+	 * @param screenResultGettingFunction    function that converts an {@link ActivityResult} to a {@link ScreenResult}
+	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity
 	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
 	                                                                         Function<ScreenResultT, ActivityResult> activityResultCreationFunction,
-	                                                                         Function<ActivityResult, ScreenResultT> screenResultResolvingFunction) {
-		checkThatCanBeRegisteredForResult(screenClass);
-		mScreenForResultRegistry.register(screenClass, screenResultClass, activityResultCreationFunction, screenResultResolvingFunction);
+	                                                                         Function<ActivityResult, ScreenResultT> screenResultGettingFunction) {
+		checkThatCanBeRegisteredForResult(screenClass, screenResultClass);
+		mScreenForResultRegistry.register(screenClass, screenResultClass, activityResultCreationFunction, screenResultGettingFunction);
 	}
 
 	/**
-	 * Register a screen for result with custom activity result creation function and not implemented screen result resolving function.
+	 * Register a screen that can return a result using a not implemented activity result creation function and a custom screen result getting function.
+	 * <p>
+	 * This method is supported only for a screen that is represented by an activity (a screen should be registered with one of the {@code registerActivity} methods before calling this method).
+	 * <p>
+	 * A not implemented activity result creation function throws {@code RuntimeException} when it is called.
+	 *
+	 * @param <ScreenResultT>             screen result type
+	 * @param screenClass                 screen class
+	 * @param screenResultClass           class of the result that the screen can return
+	 * @param screenResultGettingFunction function that converts an {@link ActivityResult} to a {@link ScreenResult}
+	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity
 	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
-	                                                                         Function<ActivityResult, ScreenResultT> screenResultResolvingFunction) {
-		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getNotImplementedActivityResultCreationFunction(screenClass, screenResultClass), screenResultResolvingFunction);
+	                                                                         Function<ActivityResult, ScreenResultT> screenResultGettingFunction) {
+		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getNotImplementedActivityResultCreationFunction(screenClass, screenResultClass), screenResultGettingFunction);
 	}
 
 	/**
-	 * Register a screen for result with default activity result creation function and default screen result resolving function. ScreenResultT must be Serializable.
+	 * Register a screen that can return a result using a default activity result creation function and a default screen result getting function.
+	 * <p>
+	 * This method is supported only for a screen that is represented by an activity (a screen should be registered with one of the {@code registerActivity} methods before calling this method).
+	 * {@code ScreenResultT} must be {@code Sezializable}.
+	 * <p>
+	 * A default activity result creation function returns {@code ActivityResult(Activity.RESULT_OK, data)} (where {@code data} contains a serialized screen result) if a screen result is not {@code null},
+	 * or it returns {@code ActivityResult(Activity.RESULT_CANCELED, null)} otherwise.
+	 * <p>
+	 * A default screen result getting function returns a deserialized screen result if an activity result has a data and its result code is Activity.RESULT_OK, or it returns {@code null} otherwise.
+	 *
+	 * @param <ScreenResultT>   screen result type
+	 * @param screenClass       screen class
+	 * @param screenResultClass class of the result that the screen can return. {@code ScreenT} must be {@code Serializable}.
+	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity, or if the screen result is not {@code Sezializable}
 	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
-		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getDefaultActivityResultCreationFunction(screenResultClass), ScreenForResultRegistry.getDefaultScreenResultResolvingFunction(screenResultClass));
+		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getDefaultActivityResultCreationFunction(screenResultClass), ScreenForResultRegistry.getDefaultScreenResultGettingFunction(screenResultClass));
 	}
 
 	@Override
@@ -220,18 +323,22 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		}
 	}
 
-	private void checkThatCanBeRegisteredForResult(Class<? extends Screen> screenClass) {
+	private void checkThatCanBeRegisteredForResult(Class<? extends Screen> screenClass, Class<? extends ScreenResult> screenResultClass) {
+		if (!Serializable.class.isAssignableFrom(screenResultClass)) {
+			throw new IllegalArgumentException("Screen result " + screenResultClass.getCanonicalName() + " should be Serializable.");
+		}
+
 		if (isScreenForResult(screenClass)) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered for result.");
 		}
 
 		ViewType viewType = getViewType(screenClass);
 		if (viewType == ViewType.UNKNOWN) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be registered as activity screen before registering it for result.");
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be registered with one of the registerActivity methods before registering it for result.");
 		}
 
 		if (viewType != ViewType.ACTIVITY) {
-			throw new IllegalArgumentException("Can't register screen " + screenClass.getSimpleName() + " for result. Only activity screen can be registered for result.");
+			throw new IllegalArgumentException("Can't register screen " + screenClass.getSimpleName() + " for result. Only a screen represented by an activity can be registered for result.");
 		}
 	}
 }

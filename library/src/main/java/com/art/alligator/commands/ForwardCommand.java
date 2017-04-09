@@ -28,7 +28,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for goForward method and goForwardForResult method
+ * Command implementation for {@code goForward} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class ForwardCommand implements Command {
 	private Screen mScreen;

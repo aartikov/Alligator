@@ -18,16 +18,16 @@ import com.art.alligator.functions.Function;
  */
 
 /**
- * Storage for dialog fragment screens
+ * Registry for screens represented by dialog fragments.
  */
 public class DialogFragmentRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.DialogFragmentRegistry.KEY_SCREEN";
 
 	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
 
-	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction, Function<DialogFragment, ScreenT> screenResolvingFunction) {
+	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction, Function<DialogFragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mElements.put(screenClass, new Element(dialogFragmentCreationFunction, screenResolvingFunction));
+		mElements.put(screenClass, new Element(dialogFragmentCreationFunction, screenGettingFunction));
 	}
 
 	public boolean isRegistered(Class<? extends Screen> screenClass) {
@@ -38,13 +38,13 @@ public class DialogFragmentRegistry {
 	public DialogFragment createDialogFragment(Screen screen) {
 		checkThatRegistered(screen.getClass());
 		Element element = mElements.get(screen.getClass());
-		return ((Function<Screen, DialogFragment>)element.getDialogFragmentCreationFunction()).call(screen);
+		return ((Function<Screen, DialogFragment>) element.getDialogFragmentCreationFunction()).call(screen);
 	}
 
-	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass)  {
+	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return (ScreenT) element.getScreenResolvingFunction().call(dialogFragment);
+		return (ScreenT) element.getScreenGettingFunction().call(dialogFragment);
 	}
 
 	public static <ScreenT extends Screen> Function<ScreenT, DialogFragment> getDefaultDialogFragmentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
@@ -70,7 +70,7 @@ public class DialogFragmentRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getDefaultScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getDefaultScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<DialogFragment, ScreenT>() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -86,42 +86,42 @@ public class DialogFragmentRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getNotImplementedScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<DialogFragment, ScreenT> getNotImplementedScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<DialogFragment, ScreenT>() {
 			@Override
 			public ScreenT call(DialogFragment dialogFragment) {
-				throw new RuntimeException("Screen resolving function is not implemented for screen " + screenClass.getSimpleName());
+				throw new RuntimeException("Screen getting function is not implemented for a screen " + screenClass.getSimpleName());
 			}
 		};
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {
-		if(isRegistered(screenClass)) {
+		if (isRegistered(screenClass)) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is is already registered.");
 		}
 	}
 
 	private void checkThatRegistered(Class<? extends Screen> screenClass) {
-		if(!isRegistered(screenClass)) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as dialog fragment screen.");
+		if (!isRegistered(screenClass)) {
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not represented by a dialog fragment.");
 		}
 	}
 
 	private static class Element {
 		private Function<? extends Screen, DialogFragment> mDialogFragmentCreationFunction;
-		private Function<DialogFragment, ? extends Screen> mScreenResolvingFunction;
+		private Function<DialogFragment, ? extends Screen> mScreenGettingFunction;
 
-		Element(Function<? extends Screen, DialogFragment> dialogFragmentCreationFunction, Function<DialogFragment, ? extends Screen> screenResolvingFunction) {
+		Element(Function<? extends Screen, DialogFragment> dialogFragmentCreationFunction, Function<DialogFragment, ? extends Screen> screenGettingFunction) {
 			mDialogFragmentCreationFunction = dialogFragmentCreationFunction;
-			mScreenResolvingFunction = screenResolvingFunction;
+			mScreenGettingFunction = screenGettingFunction;
 		}
 
 		Function<? extends Screen, DialogFragment> getDialogFragmentCreationFunction() {
 			return mDialogFragmentCreationFunction;
 		}
 
-		Function<DialogFragment, ? extends Screen> getScreenResolvingFunction() {
-			return mScreenResolvingFunction;
+		Function<DialogFragment, ? extends Screen> getScreenGettingFunction() {
+			return mScreenGettingFunction;
 		}
 	}
 }

@@ -8,7 +8,7 @@ package com.art.alligator;
  */
 
 /**
- * Type of Screen's Android representation
+ * Type of a {@link Screen}'s Android representation.
  */
 public enum ViewType {
 	ACTIVITY,

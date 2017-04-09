@@ -25,7 +25,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for replace method
+ * Command implementation for {@code replace} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class ReplaceCommand implements Command {
 	private Screen mScreen;

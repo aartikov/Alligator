@@ -21,7 +21,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for finish method and finishWithResult method
+ * Command implementation for {@code finish} method and {@code finishWithResult} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class FinishCommand implements Command {
 	private ScreenResult mScreenResult;

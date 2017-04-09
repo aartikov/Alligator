@@ -8,8 +8,13 @@ package com.art.alligator;
  */
 
 /**
- * Interface for command execution listening
+ * Interface for command execution listening.
  */
 public interface NavigationCommandListener {
+	/**
+	 * Called when a {@link Command} has successfully executed.
+	 *
+	 * @param command executed command
+	 */
 	void onNavigationCommandExecuted(Command command);
 }

@@ -8,16 +8,18 @@ package com.art.alligator;
  */
 
 /**
- * Interface for binding and unbinding of {@link NavigationContext}
+ * Interface for binding and unbinding of a {@link NavigationContext}.
  */
 public interface NavigationContextBinder {
 	/**
-	 * Bind the navigation context. Call this method from activity onResumeFragments method.
+	 * Bind a navigation context. This method should be called from {@code onResumeFragments} of an activity.
+	 *
+	 * @param navigationContext navigation context
 	 */
 	void bind(NavigationContext navigationContext);
 
 	/**
-	 * Unbind an navigation context. Call this method from activity onPause method.
+	 * Unbind a navigation context. This method should be called from {@code onPause} of an activity.
 	 */
 	void unbind();
 }

@@ -20,7 +20,7 @@ import com.art.alligator.functions.Function2;
  */
 
 /**
- * Storage for activity screens
+ * Registry for screens represented by activities.
  */
 public class ActivityRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.ActivityRegistry.KEY_SCREEN";
@@ -28,9 +28,9 @@ public class ActivityRegistry {
 	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
 
 	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Class<? extends Activity> activityClass,
-	                                              Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenResolvingFunction) {
+	                                              Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mElements.put(screenClass, new Element(activityClass, intentCreationFunction, screenResolvingFunction));
+		mElements.put(screenClass, new Element(activityClass, intentCreationFunction, screenGettingFunction));
 	}
 
 	public boolean isRegistered(Class<? extends Screen> screenClass) {
@@ -47,13 +47,13 @@ public class ActivityRegistry {
 	public Intent createActivityIntent(Context context, Screen screen) {
 		checkThatRegistered(screen.getClass());
 		Element element = mElements.get(screen.getClass());
-		return ((Function2<Context, Screen, Intent>)element.getIntentCreationFunction()).call(context, screen);
+		return ((Function2<Context, Screen, Intent>) element.getIntentCreationFunction()).call(context, screen);
 	}
 
-	public <ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass)  {
+	public <ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return (ScreenT) element.getScreenResolvingFunction().call(intent);
+		return (ScreenT) element.getScreenGettingFunction().call(intent);
 	}
 
 	public static <ScreenT extends Screen> Function2<Context, ScreenT, Intent> getDefaultIntentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
@@ -69,7 +69,7 @@ public class ActivityRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<Intent, ScreenT> getDefaultScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<Intent, ScreenT> getDefaultScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<Intent, ScreenT>() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -82,36 +82,36 @@ public class ActivityRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<Intent, ScreenT> getNotImplementedScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<Intent, ScreenT> getNotImplementedScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<Intent, ScreenT>() {
 			@Override
 			public ScreenT call(Intent intent) {
-				throw new RuntimeException("Screen resolving function is not implemented for screen " + screenClass.getSimpleName());
+				throw new RuntimeException("Screen getting function is not implemented for a screen " + screenClass.getSimpleName());
 			}
 		};
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {
-		if(isRegistered(screenClass)) {
+		if (isRegistered(screenClass)) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is is already registered.");
 		}
 	}
 
 	private void checkThatRegistered(Class<? extends Screen> screenClass) {
-		if(!isRegistered(screenClass)) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as activity screen.");
+		if (!isRegistered(screenClass)) {
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not represented by an activity.");
 		}
 	}
 
 	private static class Element {
 		private Class<? extends Activity> mActivityClass;
 		private Function2<Context, ? extends Screen, Intent> mIntentCreationFunction;
-		private Function<Intent, ? extends Screen> mScreenResolvingFunction;
+		private Function<Intent, ? extends Screen> mScreenGettingFunction;
 
-		Element(Class<? extends Activity> activityClass, Function2<Context, ? extends Screen, Intent> intentCreationFunction, Function<Intent, ? extends Screen> screenResolvingFunction) {
+		Element(Class<? extends Activity> activityClass, Function2<Context, ? extends Screen, Intent> intentCreationFunction, Function<Intent, ? extends Screen> screenGettingFunction) {
 			mActivityClass = activityClass;
 			mIntentCreationFunction = intentCreationFunction;
-			mScreenResolvingFunction = screenResolvingFunction;
+			mScreenGettingFunction = screenGettingFunction;
 		}
 
 		Class<? extends Activity> getActivityClass() {
@@ -122,8 +122,8 @@ public class ActivityRegistry {
 			return mIntentCreationFunction;
 		}
 
-		Function<Intent, ? extends Screen> getScreenResolvingFunction() {
-			return mScreenResolvingFunction;
+		Function<Intent, ? extends Screen> getScreenGettingFunction() {
+			return mScreenGettingFunction;
 		}
 	}
 }

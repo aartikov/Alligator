@@ -8,11 +8,13 @@ package com.art.alligator;
  */
 
 /**
- * Something that can switch screens by name
+ * Interface for switching screens by its names.
  */
 public interface ScreenSwitcher {
 	/**
-	 * Switch to the screen with the given name
+	 * Switches to a screen with the given name
+	 *
+	 * @param screenName screen name
 	 * @return true on success, false on fail
 	 */
 	boolean switchTo(String screenName);

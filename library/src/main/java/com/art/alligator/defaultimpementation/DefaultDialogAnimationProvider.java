@@ -13,7 +13,7 @@ import com.art.alligator.Screen;
  */
 
 /**
- * Default implementation of {@link DialogAnimationProvider}. Always returns DialogAnimation.DEFAULT
+ * Default implementation of {@link DialogAnimationProvider}. Always returns {@code DialogAnimation.DEFAULT}.
  */
 public class DefaultDialogAnimationProvider implements DialogAnimationProvider {
 	@Override

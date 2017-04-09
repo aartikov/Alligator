@@ -20,7 +20,7 @@ import com.art.alligator.functions.Function;
  */
 
 /**
- * Storage for screens for result
+ * Registry for screens that can return results.
  */
 public class ScreenForResultRegistry {
 	private static final String KEY_SCREEN_RESULT = "com.art.alligator.navigationfactories.registry.ScreenForResultRegistry.KEY_SCREEN_RESULT";
@@ -30,10 +30,10 @@ public class ScreenForResultRegistry {
 
 	public <ScreenResultT extends ScreenResult> void register(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
 	                                                          Function<ScreenResultT, ActivityResult> activityResultCreationFunction,
-	                                                          Function<ActivityResult, ScreenResultT> screenResultResolvingFunction) {
+	                                                          Function<ActivityResult, ScreenResultT> screenResultGettingFunction) {
 		checkThatNotRegistered(screenClass);
 		int requestCode = INITIAL_REQUEST_CODE + mElements.size();
-		mElements.put(screenClass, new Element(requestCode, screenResultClass, activityResultCreationFunction, screenResultResolvingFunction));
+		mElements.put(screenClass, new Element(requestCode, screenResultClass, activityResultCreationFunction, screenResultGettingFunction));
 	}
 
 	public boolean isRegistered(Class<? extends Screen> screenClass) {
@@ -56,13 +56,13 @@ public class ScreenForResultRegistry {
 	public ActivityResult createActivityResult(Class<? extends Screen> screenClass, ScreenResult screenResult) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return ((Function<ScreenResult, ActivityResult>)element.getActivityResultCreationFunction()).call(screenResult);
+		return ((Function<ScreenResult, ActivityResult>) element.getActivityResultCreationFunction()).call(screenResult);
 	}
 
 	public ScreenResult getScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return element.getScreenResultResolvingFunction().call(activityResult);
+		return element.getScreenResultGettingFunction().call(activityResult);
 	}
 
 	public static <ScreenResultT extends ScreenResult> Function<ScreenResultT, ActivityResult> getDefaultActivityResultCreationFunction(Class<ScreenResultT> screenResultClass) {
@@ -82,7 +82,7 @@ public class ScreenForResultRegistry {
 		};
 	}
 
-	public static <ScreenResultT extends ScreenResult> Function<ActivityResult, ScreenResultT> getDefaultScreenResultResolvingFunction(final Class<ScreenResultT> screenResultClass) {
+	public static <ScreenResultT extends ScreenResult> Function<ActivityResult, ScreenResultT> getDefaultScreenResultGettingFunction(final Class<ScreenResultT> screenResultClass) {
 		return new Function<ActivityResult, ScreenResultT>() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -102,7 +102,7 @@ public class ScreenForResultRegistry {
 		return new Function<ScreenResultT, ActivityResult>() {
 			@Override
 			public ActivityResult call(ScreenResultT screenResult) {
-				throw new RuntimeException("ActivityResult creation function is not implemented for screen " + screenClass.getSimpleName());
+				throw new RuntimeException("ActivityResult creation function is not implemented for a screen " + screenClass.getSimpleName());
 			}
 		};
 	}
@@ -115,7 +115,7 @@ public class ScreenForResultRegistry {
 
 	private void checkThatRegistered(Class<? extends Screen> screenClass) {
 		if (!isRegistered(screenClass)) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as screen for result.");
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered for result.");
 		}
 	}
 
@@ -123,14 +123,14 @@ public class ScreenForResultRegistry {
 		private int mRequestCode = -1;
 		private Class<? extends ScreenResult> mScreenResultClass;
 		private Function<? extends ScreenResult, ActivityResult> mActivityResultCreationFunction;
-		private Function<ActivityResult, ? extends ScreenResult> mScreenResultResolvingFunction;
+		private Function<ActivityResult, ? extends ScreenResult> mScreenResultGettingFunction;
 
 		Element(int requestCode, Class<? extends ScreenResult> screenResultClass, Function<? extends ScreenResult, ActivityResult> activityResultCreationFunction,
-		        Function<ActivityResult, ? extends ScreenResult> screenResultResolvingFunction) {
+		        Function<ActivityResult, ? extends ScreenResult> screenResultGettingFunction) {
 			mRequestCode = requestCode;
 			mScreenResultClass = screenResultClass;
 			mActivityResultCreationFunction = activityResultCreationFunction;
-			mScreenResultResolvingFunction = screenResultResolvingFunction;
+			mScreenResultGettingFunction = screenResultGettingFunction;
 		}
 
 		int getRequestCode() {
@@ -145,8 +145,8 @@ public class ScreenForResultRegistry {
 			return mActivityResultCreationFunction;
 		}
 
-		Function<ActivityResult, ? extends ScreenResult> getScreenResultResolvingFunction() {
-			return mScreenResultResolvingFunction;
+		Function<ActivityResult, ? extends ScreenResult> getScreenResultGettingFunction() {
+			return mScreenResultGettingFunction;
 		}
 	}
 }

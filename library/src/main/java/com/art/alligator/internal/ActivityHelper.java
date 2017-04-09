@@ -16,7 +16,7 @@ import com.art.alligator.TransitionAnimation;
  */
 
 /**
- * Helper class for starting and finishing activity with animation
+ * Helper class for starting and finishing an activity with animation.
  */
 public class ActivityHelper {
 	private AppCompatActivity mActivity;

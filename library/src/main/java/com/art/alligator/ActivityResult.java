@@ -12,7 +12,7 @@ import android.net.Uri;
  */
 
 /**
- * Wrapper for activity result
+ * Wrapper for an activity result. It contains a result code and an intent.
  */
 public class ActivityResult {
 	private int mResultCode;

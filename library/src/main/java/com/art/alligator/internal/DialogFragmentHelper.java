@@ -15,7 +15,7 @@ import com.art.alligator.NavigationContext;
  */
 
 /**
- * Helper class for showing and hiding dialog fragment
+ * Helper class for showing and hiding a dialog fragment.
  */
 public class DialogFragmentHelper {
 	private static final String TAG = "com.art.alligator.internal.DialogFragmentHelper.TAG";

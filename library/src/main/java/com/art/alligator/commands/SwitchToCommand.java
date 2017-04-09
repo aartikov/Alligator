@@ -14,7 +14,7 @@ import com.art.alligator.ScreenSwitcher;
  */
 
 /**
- * Command implementation for switchTo method
+ * Command implementation for {@code switchTo} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class SwitchToCommand implements Command {
 	private String mScreenName;

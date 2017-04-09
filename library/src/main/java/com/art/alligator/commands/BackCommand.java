@@ -24,7 +24,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for goBack method
+ * Command implementation for {@code goBack} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class BackCommand implements Command {
 	private AnimationData mAnimationData;

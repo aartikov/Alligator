@@ -17,7 +17,7 @@ import com.art.alligator.ViewType;
  */
 
 /**
- * Util class for storing and retrieving screen class information
+ * Util class for storing and retrieving screen class information.
  */
 public class ScreenClassUtils {
 	private static final String KEY_SCREEN_CLASS_NAME = "com.art.alligator.internal.ScreenClassUtils.KEY_SCREEN_CLASS_NAME";

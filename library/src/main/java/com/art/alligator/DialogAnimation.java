@@ -12,13 +12,14 @@ import com.art.alligator.animations.dialog.DummyDialogAnimation;
  */
 
 /**
- *  Animation that played when a dialog fragment are shown
+ *  Animation that played when a dialog fragment is shown.
  */
 public interface DialogAnimation {
 	DialogAnimation DEFAULT = new DummyDialogAnimation();
 
 	/**
-	 * Called after dialogFragment show method was called
+	 * Called after a {@code show} method of a dialog fragment was called and a related fragment transaction was executed.
+	 * @param dialogFragment dialog fragment that was shown
 	 */
 	void applyAfterShowing(DialogFragment dialogFragment);
 }

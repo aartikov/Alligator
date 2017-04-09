@@ -11,7 +11,7 @@ import com.art.alligator.exceptions.CommandExecutionException;
  */
 
 /**
- * Default implementation of {@link NavigationErrorListener}. Wraps {@link CommandExecutionException} to RuntimeException and throws it.
+ * Default implementation of {@link NavigationErrorListener}. Wraps {@link CommandExecutionException} to {@code RuntimeException} and throws it.
  */
 public class DefaultNavigationErrorListener implements NavigationErrorListener {
 	@Override

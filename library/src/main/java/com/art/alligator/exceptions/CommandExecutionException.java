@@ -10,7 +10,7 @@ import com.art.alligator.Command;
  */
 
 /**
- * Exception thrown by execute method of {@link Command}
+ * Exception thrown when a navigation error has occurred.
  */
 public class CommandExecutionException extends Exception {
 	private Command mCommand;
@@ -22,10 +22,20 @@ public class CommandExecutionException extends Exception {
 		mReason = reason;
 	}
 
+	/**
+	 * Returns a {@link Command} that was executed when an error has occurred.
+	 *
+	 * @return command that was executed when an error has occurred.
+	 */
 	public Command getCommand() {
 		return mCommand;
 	}
 
+	/**
+	 * Returns a text description of an error.
+	 *
+	 * @return text description of an error.
+	 */
 	public String getReason() {
 		return mReason;
 	}

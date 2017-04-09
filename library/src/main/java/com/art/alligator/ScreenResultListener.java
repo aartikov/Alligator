@@ -7,9 +7,17 @@ package com.art.alligator;
  * @author Artur Artikov
  */
 
+import android.support.annotation.Nullable;
+
 /**
- * Interface for screen result handling
+ * Interface for screen result handling.
  */
 public interface ScreenResultListener {
-	void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
+	/**
+	 * Called when a result of a screen is handled.
+	 *
+	 * @param screenClass screen class
+	 * @param result      screen result. Can be {@code null} when a screen has finished without no result.
+	 */
+	void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result);
 }

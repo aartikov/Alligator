@@ -10,8 +10,13 @@ import com.art.alligator.exceptions.CommandExecutionException;
  */
 
 /**
- * Interface for navigation error handling
+ * Interface for navigation error handling.
  */
 public interface NavigationErrorListener {
+	/**
+	 * Called when a navigation error has occurred.
+	 *
+	 * @param e exception with information about an error
+	 */
 	void onNavigationError(CommandExecutionException e);
 }

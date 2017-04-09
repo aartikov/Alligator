@@ -26,7 +26,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for goBackTo method
+ * Command implementation for {@code goBackTo} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class BackToCommand implements Command {
 	private Class<? extends Screen> mScreenClass;

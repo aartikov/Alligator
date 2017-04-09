@@ -15,7 +15,7 @@ import com.art.alligator.TransitionAnimation;
  */
 
 /**
- * {@link TransitionAnimation} implementation that uses an anim resource to play dialog fragment animation
+ * Transition animation that uses anim resources.
  */
 public class SimpleTransitionAnimation implements TransitionAnimation {
 	private int mEnterAnimation;

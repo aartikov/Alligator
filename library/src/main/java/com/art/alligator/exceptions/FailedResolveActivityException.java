@@ -11,7 +11,7 @@ import com.art.alligator.Command;
  */
 
 /**
- * Exception that occured when implicit intent can't be resolved.
+ * Exception thrown when an implicit intent can't be resolved.
  */
 public class FailedResolveActivityException extends CommandExecutionException {
 	private Screen mScreen;

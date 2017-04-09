@@ -8,7 +8,7 @@ package com.art.alligator;
  */
 
 /**
- * Type of transition
+ * Type of a transition during a screen animation.
  */
 public enum TransitionType {
 	FORWARD,

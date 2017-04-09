@@ -8,7 +8,7 @@ package com.art.alligator.functions;
  */
 
 /**
- * Function with one argument
+ * Function with one argument.
  */
 public interface Function<T, R> {
 	R call(T t);

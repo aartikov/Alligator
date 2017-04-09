@@ -14,33 +14,46 @@ import com.art.alligator.animations.transition.DummyTransitionAnimation;
  */
 
 /**
- *  Animation that played during transition from one screen to another.
+ * Animation that played during transition from one screen to another.
  */
 public interface TransitionAnimation {
 	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
 
 	/**
-	 * Returns options bundle than passes to startActivity method. Can be null.
+	 * Called before starting of an activity. Used to pass an options bundle for activity starting.
+	 *
+	 * @param activity current activity
+	 * @return options bundle for activity starting. Can be {@code null} if there are no options needed.
 	 */
 	Bundle getActivityOptionsBundle(Activity activity);
 
 	/**
-	 * Check if need delay activity finish. If returns true - activity finishes with method supportFinishAfterTransition(), otherwise - with method finish()
+	 * Called before finishing of an activity. Checks if there is need to delay an activity finish.
+	 * <p>
+	 * An activity will finish using {@code supportFinishAfterTransition} if this method returns {@code true}, otherwise - using {@code finish}.
+	 *
+	 * @return true if an activity finish should be delayed
 	 */
 	boolean needDelayActivityFinish();
 
 	/**
-	 * Called after startActivity method
+	 * Called after starting of an activity.
+	 *
+	 * @param activity current activity
 	 */
 	void applyToActivityAfterStart(Activity activity);
 
 	/**
-	 * Called after activity finished
+	 * Called after finishing of an activity.
+	 *
+	 * @param activity finished activity
 	 */
 	void applyToActivityAfterFinish(Activity activity);
 
 	/**
-	 * Called after fragment transition is begun
+	 * Called after beginning of a fragment transition.
+	 *
+	 * @param transaction fragment transaction
 	 */
 	void applyToFragmentTransaction(FragmentTransaction transaction);
 }

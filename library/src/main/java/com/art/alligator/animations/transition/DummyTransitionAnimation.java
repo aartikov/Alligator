@@ -14,7 +14,7 @@ import com.art.alligator.TransitionAnimation;
  */
 
 /**
- * {@link TransitionAnimation} implementation that doing nothing
+ * Transition animation that does nothing.
  */
 public class DummyTransitionAnimation implements TransitionAnimation {
 	@Override
@@ -29,16 +29,13 @@ public class DummyTransitionAnimation implements TransitionAnimation {
 
 	@Override
 	public void applyToActivityAfterStart(Activity activity) {
-
 	}
 
 	@Override
 	public void applyToActivityAfterFinish(Activity activity) {
-
 	}
 
 	@Override
 	public void applyToFragmentTransaction(FragmentTransaction transaction) {
-
 	}
 }

@@ -8,7 +8,7 @@ package com.art.alligator;
  */
 
 /**
- * Extends this interface to declare new screen type.
+ * Logical representation of an application screen. {@code Screen}'s class is a type of a screen. Fields of {@code Screen} are arguments that can be passed to an application screen.
  */
 public interface Screen {
 }

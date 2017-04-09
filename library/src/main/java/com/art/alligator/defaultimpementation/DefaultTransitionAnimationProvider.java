@@ -14,7 +14,7 @@ import com.art.alligator.TransitionType;
  */
 
 /**
- * Default implementation of {@link TransitionAnimationProvider}. Always returns TransitionAnimation.DEFAULT
+ * Default implementation of {@link TransitionAnimationProvider}. Always returns {@code TransitionAnimation.DEFAULT}.
  */
 public class DefaultTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override

@@ -2,6 +2,7 @@ package com.art.screenresultsample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	}
 
 	@Override
-	public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
+	public void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
 		if (screenClass == MessageInputScreen.class) {
 			onMessageInputted((MessageInputScreen.Result) result);
 		} else if (screenClass == ImagePickerScreen.class) {

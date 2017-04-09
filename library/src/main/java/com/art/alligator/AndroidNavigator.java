@@ -22,8 +22,8 @@ import com.art.alligator.exceptions.CommandExecutionException;
  */
 
 /**
- * Main library object. It translates calls of navigation methods to commands and puts it to the command queue.
- * Commands are executed immediately if {@link NavigationContext} is bound, otherwise command execution will be delayed untill NavigationContext will be bound.
+ * Main library object. It translates calls of navigation methods to commands and puts it to a command queue.
+ * Commands can be executed if a {@link NavigationContext} is bound, otherwise command execution will be delayed until a {@link NavigationContext} will be bound.
  */
 public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private NavigationFactory mNavigationFactory;

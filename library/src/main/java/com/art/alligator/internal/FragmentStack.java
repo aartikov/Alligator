@@ -18,7 +18,7 @@ import com.art.alligator.TransitionAnimation;
  */
 
 /**
- * Custom implementation of fragment backstack. This backstack supports a customisation of popping animation during pop execution.
+ * Custom implementation of a fragment backstack with flexible animation control.
  */
 public class FragmentStack {
 	private static final String TAG_PREFIX = "com.art.alligator.internal.FragmentStack.TAG_";

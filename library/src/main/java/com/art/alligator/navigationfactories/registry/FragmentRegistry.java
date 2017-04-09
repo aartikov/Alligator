@@ -18,16 +18,16 @@ import com.art.alligator.functions.Function;
  */
 
 /**
- * Storage for fragment screens
+ * Registry for screens represented by fragments.
  */
 public class FragmentRegistry {
 	private static final String KEY_SCREEN = "com.art.alligator.navigationfactories.registry.FragmentRegistry.KEY_SCREEN";
 
 	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
 
-	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction, Function<Fragment, ScreenT> screenResolvingFunction) {
+	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction, Function<Fragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
-		mElements.put(screenClass, new Element(fragmentCreationFunction, screenResolvingFunction));
+		mElements.put(screenClass, new Element(fragmentCreationFunction, screenGettingFunction));
 	}
 
 	public boolean isRegistered(Class<? extends Screen> screenClass) {
@@ -38,13 +38,13 @@ public class FragmentRegistry {
 	public Fragment createFragment(Screen screen) {
 		checkThatRegistered(screen.getClass());
 		Element element = mElements.get(screen.getClass());
-		return ((Function<Screen, Fragment>)element.getFragmentCreationFunction()).call(screen);
+		return ((Function<Screen, Fragment>) element.getFragmentCreationFunction()).call(screen);
 	}
 
-	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass)  {
+	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return (ScreenT) element.getScreenResolvingFunction().call(fragment);
+		return (ScreenT) element.getScreenGettingFunction().call(fragment);
 	}
 
 	public static <ScreenT extends Screen> Function<ScreenT, Fragment> getDefaultFragmentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
@@ -70,7 +70,7 @@ public class FragmentRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<Fragment, ScreenT> getDefaultScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<Fragment, ScreenT> getDefaultScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<Fragment, ScreenT>() {
 			@Override
 			@SuppressWarnings("unchecked")
@@ -86,42 +86,42 @@ public class FragmentRegistry {
 		};
 	}
 
-	public static <ScreenT extends Screen> Function<Fragment, ScreenT> getNotImplementedScreenResolvingFunction(final Class<ScreenT> screenClass) {
+	public static <ScreenT extends Screen> Function<Fragment, ScreenT> getNotImplementedScreenGettingFunction(final Class<ScreenT> screenClass) {
 		return new Function<Fragment, ScreenT>() {
 			@Override
 			public ScreenT call(Fragment fragment) {
-				throw new RuntimeException("Screen resolving function is not implemented for screen " + screenClass.getSimpleName());
+				throw new RuntimeException("Screen getting function is not implemented for a screen " + screenClass.getSimpleName());
 			}
 		};
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {
-		if(isRegistered(screenClass)) {
+		if (isRegistered(screenClass)) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is is already registered.");
 		}
 	}
 
 	private void checkThatRegistered(Class<? extends Screen> screenClass) {
-		if(!isRegistered(screenClass)) {
-			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not registered as fragment screen.");
+		if (!isRegistered(screenClass)) {
+			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is not represented by a fragment.");
 		}
 	}
 
 	private static class Element {
 		private Function<? extends Screen, Fragment> mFragmentCreationFunction;
-		private Function<Fragment, ? extends Screen> mScreenResolvingFunction;
+		private Function<Fragment, ? extends Screen> mScreenGettingFunction;
 
-		Element(Function<? extends Screen, Fragment> fragmentCreationFunction, Function<Fragment, ? extends Screen> screenResolvingFunction) {
+		Element(Function<? extends Screen, Fragment> fragmentCreationFunction, Function<Fragment, ? extends Screen> screenGettingFunction) {
 			mFragmentCreationFunction = fragmentCreationFunction;
-			mScreenResolvingFunction = screenResolvingFunction;
+			mScreenGettingFunction = screenGettingFunction;
 		}
 
 		Function<? extends Screen, Fragment> getFragmentCreationFunction() {
 			return mFragmentCreationFunction;
 		}
 
-		Function<Fragment, ? extends Screen> getScreenResolvingFunction() {
-			return mScreenResolvingFunction;
+		Function<Fragment, ? extends Screen> getScreenGettingFunction() {
+			return mScreenGettingFunction;
 		}
 	}
 }

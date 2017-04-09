@@ -12,11 +12,10 @@ import com.art.alligator.DialogAnimation;
  */
 
 /**
- * {@link DialogAnimation} implementation that doing nothing
+ * Dialog animation that does nothing.
  */
 public class DummyDialogAnimation implements DialogAnimation {
 	@Override
 	public void applyAfterShowing(DialogFragment dialogFragment) {
-
 	}
 }

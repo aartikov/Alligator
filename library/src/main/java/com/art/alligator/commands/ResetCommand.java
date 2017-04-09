@@ -24,7 +24,7 @@ import com.art.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Command implementation for reset method
+ * Command implementation for {@code reset} method of {@link com.art.alligator.AndroidNavigator}.
  */
 public class ResetCommand implements Command {
 	private Screen mScreen;

@@ -1,6 +1,5 @@
 package com.art.alligator.navigationfactories;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -324,10 +323,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	private void checkThatCanBeRegisteredForResult(Class<? extends Screen> screenClass, Class<? extends ScreenResult> screenResultClass) {
-		if (!Serializable.class.isAssignableFrom(screenResultClass)) {
-			throw new IllegalArgumentException("Screen result " + screenResultClass.getCanonicalName() + " should be Serializable.");
-		}
-
 		if (isScreenForResult(screenClass)) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered for result.");
 		}

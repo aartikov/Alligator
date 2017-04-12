@@ -69,6 +69,10 @@ public class ForwardCommand implements Command {
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
+				if(fragment instanceof DialogFragment) {
+					throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
+				}
+
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());

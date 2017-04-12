@@ -1,4 +1,4 @@
-package com.art.navigationsample;
+package me.aartikov.navigationsample;
 
 import org.junit.Test;
 

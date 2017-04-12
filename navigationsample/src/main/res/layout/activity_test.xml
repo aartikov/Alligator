@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fillViewport="true"
-	tools:activity="com.art.navigationsample.ui.TestActivity">
+	tools:activity="me.aartikov.navigationsample.ui.TestActivity">
 
 	<LinearLayout
 		android:id="@+id/activity_test_view_root"

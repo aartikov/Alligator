@@ -1,4 +1,4 @@
-package com.art.simplestscreenswitchersample;
+package me.aartikov.simplestscreenswitchersample;
 
 import org.junit.Test;
 

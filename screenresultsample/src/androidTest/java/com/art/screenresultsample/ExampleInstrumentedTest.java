@@ -1,4 +1,4 @@
-package com.art.screenresultsample;
+package me.aartikov.screenresultsample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
 		// Context of the app under test.
 		Context appContext = InstrumentationRegistry.getTargetContext();
 
-		assertEquals("com.art.screenresultsample", appContext.getPackageName());
+		assertEquals("me.aartikov.screenresultsample", appContext.getPackageName());
 	}
 }

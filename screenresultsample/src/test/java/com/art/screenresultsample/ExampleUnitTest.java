@@ -1,4 +1,4 @@
-package com.art.screenresultsample;
+package me.aartikov.screenresultsample;
 
 import org.junit.Test;
 

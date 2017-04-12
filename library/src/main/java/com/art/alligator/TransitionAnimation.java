@@ -20,7 +20,7 @@ public interface TransitionAnimation {
 	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
 
 	/**
-	 * Called before starting of an activity. Used to pass an options bundle for activity starting.
+	 * Called before starting of an activity. Used to pass an options bundle to a started activity.
 	 *
 	 * @param activity current activity
 	 * @return options bundle for activity starting. Can be {@code null} if there are no options needed.

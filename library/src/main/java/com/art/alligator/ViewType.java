@@ -8,7 +8,7 @@ package com.art.alligator;
  */
 
 /**
- * Type of a {@link Screen}'s Android representation.
+ * Enum that describes how a {@link Screen} is represented by (an activity, a fragment, or a dialog fragment).
  */
 public enum ViewType {
 	ACTIVITY,

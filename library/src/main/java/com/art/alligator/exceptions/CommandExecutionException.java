@@ -23,9 +23,9 @@ public class CommandExecutionException extends Exception {
 	}
 
 	/**
-	 * Returns a {@link Command} that was executed when an error has occurred.
+	 * Returns a {@link Command} that was being executed when an error has occurred.
 	 *
-	 * @return command that was executed when an error has occurred.
+	 * @return command that was being executed when an error has occurred.
 	 */
 	public Command getCommand() {
 		return mCommand;

@@ -38,7 +38,7 @@ public interface NavigationFactory {
 	Class<? extends Activity> getActivityClass(Class<? extends Screen> screenClass);
 
 	/**
-	 * Creates an intent starting an activity for a screen.
+	 * Creates an intent that starts an activity for a screen.
 	 *
 	 * @param context context used to create an intent
 	 * @param screen  screen
@@ -129,7 +129,7 @@ public interface NavigationFactory {
 	/**
 	 * Creates an {@link ActivityResult} from a {@link ScreenResult}.
 	 *
-	 * @param screenClass  screen class for that this converting is made
+	 * @param screenClass  class of the screen that returned a result
 	 * @param screenResult screen result
 	 * @return an activity result created from the screen result
 	 * @throws IllegalArgumentException if screen can't return a result
@@ -139,7 +139,7 @@ public interface NavigationFactory {
 	/**
 	 * Gets a {@link ScreenResult} from an {@link ActivityResult}.
 	 *
-	 * @param screenClass    screen class for that this converting is made
+	 * @param screenClass    class of the screen that returned a result
 	 * @param activityResult activity result
 	 * @return a screen result gotten from the activity result
 	 * @throws IllegalArgumentException if screen can't return a result

@@ -33,7 +33,7 @@ public abstract class FactoryFragmentScreenSwitcher extends FragmentScreenSwitch
 	 * Returns a screen by a screen name.
 	 *
 	 * @param screenName screen name
-	 * @return screen. A screen must be represented by a fragment.
+	 * @return screen. It must be represented by a fragment.
 	 */
 	abstract protected Screen getScreen(String screenName);
 

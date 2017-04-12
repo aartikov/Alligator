@@ -27,7 +27,7 @@ public interface Navigator {
 	void goForward(Screen screen, AnimationData animationData);
 
 	/**
-	 * Finishes a current screen and go back to the previous screen.
+	 * Finishes a current screen and goes back to the previous screen.
 	 */
 	void goBack();
 

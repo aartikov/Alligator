@@ -20,7 +20,7 @@ public class ScreenResultResolver {
 	}
 
 	/**
-	 * Handles screen result. This method should be called from {@code onActivityResult} of an activity.
+	 * Handles a screen result. This method should be called from {@code onActivityResult} of an activity.
 	 *
 	 * @param requestCode requestCode passed to {@code onActivityResult}
 	 * @param resultCode  resultCode passed to {@code onActivityResult}

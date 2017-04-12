@@ -18,7 +18,7 @@ public class FailedResolveActivityException extends CommandExecutionException {
 
 
 	public FailedResolveActivityException(Command command, Screen screen) {
-		super(command, "Failed resolve activity for screen " + screen.getClass().getSimpleName());
+		super(command, "Failed to resolve an activity for a screen " + screen.getClass().getSimpleName());
 		mScreen = screen;
 	}
 

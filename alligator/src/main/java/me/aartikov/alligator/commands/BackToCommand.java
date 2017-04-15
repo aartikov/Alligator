@@ -51,11 +51,16 @@ public class BackToCommand implements Command {
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				ScreenClassUtils.putScreenClass(intent, mScreenClass);
 
-				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 				Class<? extends Screen> screenClassTo = mScreenClass;
-				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+				}
+
+				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				activityHelper.start(intent, animation);
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -80,8 +85,13 @@ public class BackToCommand implements Command {
 
 				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(fragments.get(fragments.size() - 1));
 				Class<? extends Screen> screenClassTo = mScreenClass;
-				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+				}
+
 				fragmentStack.popUntil(fragment, animation);
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 

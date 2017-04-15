@@ -44,18 +44,30 @@ public class BackCommand implements Command {
 			List<Fragment> fragments = fragmentStack.getFragments();
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
 			Fragment previousFragment = fragments.get(fragments.size() - 2);
+
 			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
 			Class<? extends Screen> screenClassTo = ScreenClassUtils.getScreenClass(previousFragment);
-			TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+			TransitionAnimation animation = TransitionAnimation.DEFAULT;
+			if (screenClassFrom != null && screenClassTo != null) {
+				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+			}
+
 			fragmentStack.pop(animation);
+			navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
 			return true;
 		} else {
 			Activity activity = navigationContext.getActivity();
-			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+
 			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 			Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
-			TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+			TransitionAnimation animation = TransitionAnimation.DEFAULT;
+			if (screenClassFrom != null && screenClassTo != null) {
+				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+			}
+
+			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 			activityHelper.finish(animation);
+			navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 			return false;
 		}
 	}

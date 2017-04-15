@@ -53,11 +53,17 @@ public class FinishCommand implements Command {
 			ActivityResult activityResult = navigationFactory.createActivityResult(screenClass, mScreenResult);
 			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 		}
-		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+
 		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
-		TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+		TransitionAnimation animation = TransitionAnimation.DEFAULT;
+		if (screenClassFrom != null && screenClassTo != null) {
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+		}
+
+		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 		activityHelper.finish(animation);
+		navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 		return false;
 	}
 }

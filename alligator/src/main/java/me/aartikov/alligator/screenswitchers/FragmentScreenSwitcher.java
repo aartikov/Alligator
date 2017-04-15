@@ -1,5 +1,6 @@
 package me.aartikov.alligator.screenswitchers;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -49,8 +50,8 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	/**
 	 * Return a {@link TransitionAnimation} that will be used for a screen transition. Can be overrided for animation configuring.
 	 *
-	 * @param screenNameFrom name of the screen that disappears during a transition
-	 * @param screenNameTo   name of the screen that appears during a transition
+	 * @param screenNameFrom name of the screen that disappears during a switching
+	 * @param screenNameTo   name of the screen that appears during a switching
 	 * @return an animation that will be used for a transition
 	 */
 	protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
@@ -94,6 +95,12 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 		return true;
 	}
 
+	@Override
+	public @Nullable String getCurrentScreenName() {
+		Fragment currentFragment = getCurrentFragment();
+		return currentFragment != null ? currentFragment.getTag() : null;
+	}
+
 	/**
 	 * Returns a current fragment.
 	 *
@@ -101,15 +108,5 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	 */
 	public Fragment getCurrentFragment() {
 		return mFragmentManager.findFragmentById(mContainerId);
-	}
-
-	/**
-	 * Returns a name of the current fragment.
-	 *
-	 * @return a name of the current fragment, or null if there is no a current fragment
-	 */
-	public String getCurrentScreenName() {
-		Fragment currentFragment = getCurrentFragment();
-		return currentFragment != null ? currentFragment.getTag() : null;
 	}
 }

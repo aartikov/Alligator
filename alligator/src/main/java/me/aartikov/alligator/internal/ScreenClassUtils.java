@@ -35,7 +35,7 @@ public class ScreenClassUtils {
 		String className = activity.getIntent().getStringExtra(KEY_SCREEN_CLASS_NAME);
 		Class<? extends Screen> screenClass = getClassByName(className);
 
-		if(screenClass == null) {   // screenClass is null. May be activity is a home screen. Try to find it in NavigationFactory.
+		if(screenClass == null) {   // screenClass is null. May be activity is a first screen. Try to find it in NavigationFactory.
 			for(Class<? extends Screen> sc: navigationFactory.getScreenClasses()) {
 				if(navigationFactory.getViewType(sc) == ViewType.ACTIVITY && navigationFactory.getActivityClass(sc) == activity.getClass()) {
 					screenClass = sc;
@@ -43,7 +43,7 @@ public class ScreenClassUtils {
 				}
 			}
 		}
-		return screenClass != null ? screenClass : Screen.class;
+		return screenClass;
 	}
 
 	public static void putScreenClass(Fragment fragment, Class<? extends Screen> screenClass) {
@@ -62,7 +62,7 @@ public class ScreenClassUtils {
 			String className = fragment.getArguments().getString(KEY_SCREEN_CLASS_NAME);
 			screenClass = (Class<? extends Screen>) getClassByName(className);
 		}
-		return screenClass != null ? screenClass : Screen.class;
+		return screenClass;
 	}
 
 	public static void putPreviousScreenClass(Intent intent, Class<? extends Screen> screenClass) {
@@ -72,8 +72,7 @@ public class ScreenClassUtils {
 	@SuppressWarnings("unchecked")
 	public static Class<? extends Screen> getPreviousScreenClass(Activity activity) {
 		String className = activity.getIntent().getStringExtra(KEY_PREVIOUS_SCREEN_CLASS_NAME);
-		Class<? extends Screen> screenClass = getClassByName(className);
-		return screenClass != null ? screenClass : Screen.class;
+		return getClassByName(className);
 	}
 
 	private static Class getClassByName(String className) {

@@ -55,13 +55,18 @@ public class ForwardCommand implements Command {
 
 				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
+				}
+
 				if (navigationFactory.isScreenForResult(mScreen.getClass())) {
 					int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
 					activityHelper.startForResult(intent, requestCode, animation);
 				} else {
 					activityHelper.start(intent, animation);
 				}
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -78,11 +83,16 @@ public class ForwardCommand implements Command {
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
+
 				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = screenClassFrom == null ? TransitionAnimation.DEFAULT :
-				                                navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
+				}
+
 				fragmentStack.push(fragment, animation);
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 
@@ -90,6 +100,7 @@ public class ForwardCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
+				navigationContext.getNavigationListener().onDialogShown(mScreen.getClass());
 				return true;
 			}
 

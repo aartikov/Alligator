@@ -49,10 +49,16 @@ public class ResetCommand implements Command {
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
+
 				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
+				}
+
 				activityHelper.start(intent, animation);
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -65,11 +71,16 @@ public class ResetCommand implements Command {
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
+
 				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = screenClassFrom == null ? TransitionAnimation.DEFAULT :
-				                                navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
+				TransitionAnimation animation = TransitionAnimation.DEFAULT;
+				if (screenClassFrom != null) {
+					navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
+				}
+
 				fragmentStack.reset(fragment, animation);
+				navigationContext.getNavigationListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 

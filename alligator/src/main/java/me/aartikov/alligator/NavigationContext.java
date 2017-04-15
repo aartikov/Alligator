@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import me.aartikov.alligator.defaultimpementation.DefaultDialogAnimationProvider;
+import me.aartikov.alligator.defaultimpementation.DefaultNavigationListener;
 import me.aartikov.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
 import me.aartikov.alligator.defaultimpementation.DefaultNavigationErrorListener;
 
@@ -24,7 +25,7 @@ public class NavigationContext {
 	private ScreenSwitcher mScreenSwitcher;
 	private TransitionAnimationProvider mTransitionAnimationProvider;
 	private DialogAnimationProvider mDialogAnimationProvider;
-	private NavigationCommandListener mNavigationCommandListener;
+	private NavigationListener mNavigationListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
 	public NavigationContext(AppCompatActivity activity) {
@@ -42,7 +43,7 @@ public class NavigationContext {
 		mScreenSwitcher = builder.mScreenSwitcher;
 		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
 		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
-		mNavigationCommandListener = builder.mNavigationCommandListener;
+		mNavigationListener = builder.mNavigationListener != null ? builder.mNavigationListener : new DefaultNavigationListener();
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
 	}
 
@@ -74,8 +75,8 @@ public class NavigationContext {
 		return mDialogAnimationProvider;
 	}
 
-	public NavigationCommandListener getNavigationCommandListener() {
-		return mNavigationCommandListener;
+	public NavigationListener getNavigationListener() {
+		return mNavigationListener;
 	}
 
 	public NavigationErrorListener getNavigationErrorListener() {
@@ -92,7 +93,7 @@ public class NavigationContext {
 		private ScreenSwitcher mScreenSwitcher;
 		private TransitionAnimationProvider mTransitionAnimationProvider;
 		private DialogAnimationProvider mDialogAnimationProvider;
-		private NavigationCommandListener mNavigationCommandListener;
+		private NavigationListener mNavigationListener;
 		private NavigationErrorListener mNavigationErrorListener;
 
 		public Builder(AppCompatActivity activity) {
@@ -124,8 +125,8 @@ public class NavigationContext {
 			return this;
 		}
 
-		public Builder navigationListener(NavigationCommandListener navigationCommandListener) {
-			mNavigationCommandListener = navigationCommandListener;
+		public Builder navigationListener(NavigationListener navigationListener) {
+			mNavigationListener = navigationListener;
 			return this;
 		}
 

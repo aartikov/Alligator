@@ -1,5 +1,7 @@
 package me.aartikov.alligator.commands;
 
+import android.app.Activity;
+
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
@@ -34,32 +36,28 @@ public class FinishCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
-			Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
+			Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(activity, navigationFactory);
 
 			if (!navigationFactory.isScreenForResult(screenClass)) {
-				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " is not registered as screen for result.");
+				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
 			}
 
-			Class<? extends ScreenResult> registeredScreenResultClass = navigationFactory.getScreenResultClass(screenClass);
-			if (!registeredScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
+			Class<? extends ScreenResult> expectedScreenResultClass = navigationFactory.getScreenResultClass(screenClass);
+			if (!expectedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
 				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't finish with result of class " + mScreenResult.getClass().getCanonicalName() +
-				                                          ". It is registered to finish with result of class " + registeredScreenResultClass.getCanonicalName());
+				                                          ". It returns a result of class " + expectedScreenResultClass.getCanonicalName());
 			}
 
 			ActivityResult activityResult = navigationFactory.createActivityResult(screenClass, mScreenResult);
-			navigationContext.getActivity().setResult(activityResult.getResultCode(), activityResult.getIntent());
+			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 		}
-
 		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
-		TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
+		TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 		activityHelper.finish(animation);
 		return false;
-	}
-
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(navigationContext.getActivity());
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 	}
 }

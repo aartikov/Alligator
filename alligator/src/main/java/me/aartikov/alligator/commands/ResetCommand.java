@@ -1,5 +1,6 @@
 package me.aartikov.alligator.commands;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
@@ -39,7 +40,8 @@ public class ResetCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		switch (navigationFactory.getViewType(mScreen.getClass())) {
 			case ACTIVITY: {
-				Intent intent = navigationFactory.createActivityIntent(navigationContext.getActivity(), mScreen);
+				Activity activity = navigationContext.getActivity();
+				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 
@@ -47,7 +49,9 @@ public class ResetCommand implements Command {
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
-				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassTo = mScreen.getClass();
+				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
 				activityHelper.start(intent, animation);
 				return false;
 			}
@@ -60,7 +64,11 @@ public class ResetCommand implements Command {
 				Fragment fragment = navigationFactory.createFragment(mScreen);
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
-				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+				Fragment currentFragment = fragmentStack.getCurrentFragment();
+				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
+				Class<? extends Screen> screenClassTo = mScreen.getClass();
+				TransitionAnimation animation = screenClassFrom == null ? TransitionAnimation.DEFAULT :
+				                                navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
 				fragmentStack.reset(fragment, animation);
 				return true;
 			}
@@ -69,23 +77,7 @@ public class ResetCommand implements Command {
 				throw new CommandExecutionException(this, "This command is not supported for dialog fragment screen.");
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not unknown.");
 		}
-	}
-
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, true, mAnimationData);
-	}
-
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		if (currentFragment == null) {
-			return TransitionAnimation.DEFAULT;
-		}
-
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
-		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

@@ -2,6 +2,7 @@ package me.aartikov.alligator.commands;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.AnimationData;
@@ -35,34 +36,27 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if(DialogFragmentHelper.from(navigationContext).isDialogVisible()) {
+		if (DialogFragmentHelper.from(navigationContext).isDialogVisible()) {
 			DialogFragmentHelper.from(navigationContext).hideDialog();
 			return true;
-		} else if(navigationContext.hasContainerId() && FragmentStack.from(navigationContext).getFragmentCount() > 1) {
+		} else if (navigationContext.hasContainerId() && FragmentStack.from(navigationContext).getFragmentCount() > 1) {
 			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 			List<Fragment> fragments = fragmentStack.getFragments();
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
 			Fragment previousFragment = fragments.get(fragments.size() - 2);
-			TransitionAnimation animation = getFragmentAnimation(navigationContext, currentFragment, previousFragment);
+			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
+			Class<? extends Screen> screenClassTo = ScreenClassUtils.getScreenClass(previousFragment);
+			TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 			fragmentStack.pop(animation);
 			return true;
 		} else {
+			Activity activity = navigationContext.getActivity();
 			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
-			TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+			Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
+			TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 			activityHelper.finish(animation);
 			return false;
 		}
-	}
-
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(navigationContext.getActivity());
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
-	}
-
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment, Fragment previousFragment) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
-		Class<? extends Screen> screenClassTo = ScreenClassUtils.getScreenClass(previousFragment);
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

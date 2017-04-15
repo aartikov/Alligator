@@ -53,7 +53,9 @@ public class ForwardCommand implements Command {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
 
-				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassTo = mScreen.getClass();
+				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
 				if (navigationFactory.isScreenForResult(mScreen.getClass())) {
 					int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
 					activityHelper.startForResult(intent, requestCode, animation);
@@ -69,46 +71,30 @@ public class ForwardCommand implements Command {
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
-				if(fragment instanceof DialogFragment) {
+				if (fragment instanceof DialogFragment) {
 					throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
 				}
 
 				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
-				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragmentStack.getCurrentFragment());
+				Fragment currentFragment = fragmentStack.getCurrentFragment();
+				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
+				Class<? extends Screen> screenClassTo = mScreen.getClass();
+				TransitionAnimation animation = screenClassFrom == null ? TransitionAnimation.DEFAULT :
+				                                navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
 				fragmentStack.push(fragment, animation);
 				return true;
 			}
 
 			case DIALOG_FRAGMENT: {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
-				DialogAnimation animation = getDialogAnimation(navigationContext);
+				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
 				return true;
 			}
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not registered.");
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not unknown.");
 		}
-	}
-
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
-	}
-
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		if (currentFragment == null) {
-			return TransitionAnimation.DEFAULT;
-		}
-
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
-		Class<? extends Screen> screenClassTo = mScreen.getClass();
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
-	}
-
-	private DialogAnimation getDialogAnimation(NavigationContext navigationContext) {
-		return navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 	}
 }

@@ -52,7 +52,9 @@ public class BackToCommand implements Command {
 				ScreenClassUtils.putScreenClass(intent, mScreenClass);
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
-				TransitionAnimation animation = getActivityAnimation(navigationContext, navigationFactory);
+				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassTo = mScreenClass;
+				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 				activityHelper.start(intent, animation);
 				return false;
 			}
@@ -76,7 +78,9 @@ public class BackToCommand implements Command {
 					throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 				}
 
-				TransitionAnimation animation = getFragmentAnimation(navigationContext, fragments.get(fragments.size() - 1));
+				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(fragments.get(fragments.size() - 1));
+				Class<? extends Screen> screenClassTo = mScreenClass;
+				TransitionAnimation animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 				fragmentStack.popUntil(fragment, animation);
 				return true;
 			}
@@ -85,19 +89,7 @@ public class BackToCommand implements Command {
 				throw new CommandExecutionException(this, "This command is not supported for dialog fragment screen.");
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not registered.");
+				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not unknown.");
 		}
-	}
-
-	private TransitionAnimation getActivityAnimation(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(navigationContext.getActivity(), navigationFactory);
-		Class<? extends Screen> screenClassTo = mScreenClass;
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
-	}
-
-	private TransitionAnimation getFragmentAnimation(NavigationContext navigationContext, Fragment currentFragment) {
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
-		Class<? extends Screen> screenClassTo = mScreenClass;
-		return navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 	}
 }

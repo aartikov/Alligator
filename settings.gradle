@@ -1,2 +1,2 @@
-include ':navigationsample', ':alligator', ':advancedscreenswitchersample', ':simplestnavigationsample', ':screenresultsample', ':simplestscreenswitchersample', ':stub-android'
+include ':navigationsample', ':alligator', ':advancedscreenswitchersample', ':simplestnavigationsample', ':screenresultsample', ':simplestscreenswitchersample', ':stub-android', ':sharedelementanimationsample'
 project(':stub-android').projectDir = new File('alligator/stub-android')

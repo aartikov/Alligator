@@ -79,7 +79,9 @@ public class FragmentStack {
 		Fragment previousFragment = count > 1 ? fragments.get(count - 2) : null;
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		animation.applyToFragmentTransaction(transaction);
+		if (previousFragment != null) {
+			animation.applyBeforeFragmentTransactionExecuted(transaction, previousFragment, currentFragment);
+		}
 		transaction.remove(currentFragment);
 		if (previousFragment != null) {
 			transaction.attach(previousFragment);
@@ -103,11 +105,11 @@ public class FragmentStack {
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		for (int i = index + 1; i < count; i++) {
 			if (i == count - 1) {
-				animation.applyToFragmentTransaction(transaction);
+				animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, fragments.get(i));
 			}
 			transaction.remove(fragments.get(i));
 		}
-		transaction.attach(fragments.get(index));
+		transaction.attach(fragment);
 		transaction.commitNow();
 	}
 
@@ -115,8 +117,8 @@ public class FragmentStack {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		animation.applyToFragmentTransaction(transaction);
 		if (currentFragment != null) {
+			animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, currentFragment);
 			transaction.detach(currentFragment);
 		}
 
@@ -129,8 +131,8 @@ public class FragmentStack {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		animation.applyToFragmentTransaction(transaction);
 		if (currentFragment != null) {
+			animation.applyBeforeFragmentTransactionExecuted(transaction, currentFragment, fragment);
 			transaction.remove(currentFragment);
 		}
 
@@ -147,7 +149,7 @@ public class FragmentStack {
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		for (int i = 0; i < count; i++) {
 			if (i == count - 1) {
-				animation.applyToFragmentTransaction(transaction);
+				animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, fragments.get(i));
 			}
 			transaction.remove(fragments.get(i));
 		}

@@ -1,5 +1,7 @@
 package android.support.v4.app;
 
+import android.view.View;
+
 public class FragmentTransaction {
 	public FragmentTransaction replace(int containerViewId, Fragment fragment) {
 		throw new RuntimeException("Stub!");
@@ -26,6 +28,10 @@ public class FragmentTransaction {
 	}
 
 	public FragmentTransaction detach(Fragment fragment) {
+		throw new RuntimeException("Stub!");
+	}
+
+	public FragmentTransaction addSharedElement(View sharedElement, String name){
 		throw new RuntimeException("Stub!");
 	}
 }

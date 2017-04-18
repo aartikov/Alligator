@@ -76,10 +76,10 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 		}
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
+		TransitionAnimation animation = currentFragment != null ? getAnimation(currentFragment.getTag(), screenName) : TransitionAnimation.DEFAULT;
 
 		if (currentFragment != null) {
-			TransitionAnimation animation = getAnimation(currentFragment.getTag(), screenName);
-			animation.applyToFragmentTransaction(transaction);
+			animation.applyBeforeFragmentTransactionExecuted(transaction, newFragment, currentFragment);
 			transaction.detach(currentFragment);
 		}
 
@@ -91,6 +91,9 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 
 		transaction.commitNow();
 
+		if (currentFragment != null) {
+			animation.applyAfterFragmentTransactionExecuted(newFragment, currentFragment);
+		}
 		onScreenSwitched(screenName);
 		return true;
 	}

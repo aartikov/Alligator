@@ -18,4 +18,20 @@ public class Fragment {
 	public String getTag() {
 		throw new RuntimeException("Stub!");
 	}
+
+	public void setEnterTransition(Object transition) {
+		throw new RuntimeException("Stub!");
+	}
+
+	public void setExitTransition(Object transition) {
+		throw new RuntimeException("Stub!");
+	}
+
+	public void setSharedElementEnterTransition(Object transition) {
+		throw new RuntimeException("Stub!");
+	}
+
+	public void setAllowEnterTransitionOverlap(boolean allow) {
+		throw new RuntimeException("Stub!");
+	}
 }

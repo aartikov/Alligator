@@ -3,6 +3,7 @@ package me.aartikov.alligator.animations.transition;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import me.aartikov.alligator.TransitionAnimation;
@@ -37,17 +38,21 @@ public class SimpleTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public void applyToActivityAfterStart(Activity activity) {
+	public void applyAfterActivityStarted(Activity currentActivity) {
+		currentActivity.overridePendingTransition(mEnterAnimation, mExitAnimation);
+	}
+
+	@Override
+	public void applyAfterActivityFinished(Activity activity) {
 		activity.overridePendingTransition(mEnterAnimation, mExitAnimation);
 	}
 
 	@Override
-	public void applyToActivityAfterFinish(Activity activity) {
-		activity.overridePendingTransition(mEnterAnimation, mExitAnimation);
-	}
-
-	@Override
-	public void applyToFragmentTransaction(FragmentTransaction transaction) {
+	public void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment) {
 		transaction.setCustomAnimations(mEnterAnimation, mExitAnimation);
+	}
+
+	@Override
+	public void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment) {
 	}
 }

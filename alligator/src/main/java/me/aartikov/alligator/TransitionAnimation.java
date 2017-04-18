@@ -2,6 +2,7 @@ package me.aartikov.alligator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import me.aartikov.alligator.animations.transition.DummyTransitionAnimation;
@@ -37,23 +38,33 @@ public interface TransitionAnimation {
 	boolean needDelayActivityFinish();
 
 	/**
-	 * Called after starting of an activity.
+	 * Called after an activity started.
 	 *
-	 * @param activity current activity
+	 * @param currentActivity activity that started another activity
 	 */
-	void applyToActivityAfterStart(Activity activity);
+	void applyAfterActivityStarted(Activity currentActivity);
 
 	/**
-	 * Called after finishing of an activity.
+	 * Called after an activity finished.
 	 *
 	 * @param activity finished activity
 	 */
-	void applyToActivityAfterFinish(Activity activity);
+	void applyAfterActivityFinished(Activity activity);
 
 	/**
-	 * Called after beginning of a fragment transition.
+	 * Called before a fragment transaction executed.
 	 *
-	 * @param transaction fragment transaction
+	 * @param transaction      fragment transaction
+	 * @param enteringFragment fragment that will be added/attached diring the transaction
+	 * @param exitingFragment  fragment that will be ewmoved/detached  diring the transaction
 	 */
-	void applyToFragmentTransaction(FragmentTransaction transaction);
+	void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment);
+
+	/**
+	 * Called after a fragment transaction executed.
+	 *
+	 * @param enteringFragment fragment that will be added/attached diring the transaction
+	 * @param exitingFragment  fragment that will be ewmoved/detached  diring the transaction
+	 */
+	void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment);
 }

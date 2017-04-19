@@ -109,8 +109,10 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		exitingFragment.setExitTransition(mExitTransition);
 		enteringFragment.setSharedElementEnterTransition(mSharedElementTransition);
 		enteringFragment.setAllowEnterTransitionOverlap(mAllowEnterTransitionOverlap);
-		for (Pair<View, String> sharedElement : mSharedElements) {
-			transaction.addSharedElement(sharedElement.first, sharedElement.second);
+		if(mSharedElements != null) {
+			for (Pair<View, String> sharedElement : mSharedElements) {
+				transaction.addSharedElement(sharedElement.first, sharedElement.second);
+			}
 		}
 	}
 

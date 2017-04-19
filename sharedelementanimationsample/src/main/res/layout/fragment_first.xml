@@ -3,26 +3,51 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:orientation="vertical"
 	android:paddingBottom="@dimen/activity_vertical_margin"
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
-	android:paddingTop="@dimen/activity_vertical_margin"
-	android:orientation="vertical">
-
+	android:paddingTop="@dimen/activity_vertical_margin">
+	
 	<TextView
-		android:text="First Fragment"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center_horizontal" />
-
+		android:gravity="center_horizontal"
+		android:text="@string/first_fragment" />
+	
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="2" />
+	
 	<ImageView
-		android:id="@+id/fragment_first_image_view_kitten"
+		android:id="@+id/fragment_first_image_view_kitten_0"
 		android:layout_width="80dp"
 		android:layout_height="80dp"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="32dp"
 		android:scaleType="fitCenter"
-		android:src="@drawable/kitten"
-		android:transitionName="kitten"
+		android:src="@drawable/kitten_0"
+		android:transitionName="kitten_0"
 		tools:ignore="ContentDescription,UnusedAttribute" />
+	
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1" />
+	
+	<ImageView
+		android:id="@+id/fragment_first_image_view_kitten_1"
+		android:layout_width="80dp"
+		android:layout_height="80dp"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="40dp"
+		android:scaleType="fitCenter"
+		android:src="@drawable/kitten_1"
+		android:transitionName="kitten_1"
+		tools:ignore="ContentDescription,UnusedAttribute" />
+	
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="2" />
 </LinearLayout>

@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.sharedelementanimation.R;
 import me.aartikov.sharedelementanimation.SampleApplication;
+import me.aartikov.sharedelementanimation.screens.SecondScreen;
 
 /**
  * Date: 16.04.2017
@@ -36,7 +38,10 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
+		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this, SecondScreen.class);
+		mKittenImageView.setImageResource(screen.getKittenIndex() == 0 ? R.drawable.kitten_0 : R.drawable.kitten_1);
 		mKittenImageView.setOnClickListener(v -> SampleApplication.getNavigator().goBack());
+
 	}
 
 	@Override
@@ -46,12 +51,13 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 	}
 
 	@Override
-	public View getSharedElement() {
+	public View getSharedElement(AnimationData animationData) {
 		return mKittenImageView;
 	}
 
 	@Override
-	public String getSharedElementName() {
-		return "kitten";
+	public String getSharedElementName(AnimationData animationData) {
+		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this, SecondScreen.class);
+		return "kitten_" + screen.getKittenIndex();
 	}
 }

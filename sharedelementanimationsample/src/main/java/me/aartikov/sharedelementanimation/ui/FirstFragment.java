@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.sharedelementanimation.R;
 import me.aartikov.sharedelementanimation.SampleApplication;
 import me.aartikov.sharedelementanimation.screens.SecondScreen;
@@ -23,8 +24,8 @@ import me.aartikov.sharedelementanimation.screens.SecondScreen;
  */
 
 public class FirstFragment extends Fragment implements SharedElementProvider {
-	@BindView(R.id.fragment_first_image_view_kitten)
-	ImageView mKittenImageView;
+	@BindViews({R.id.fragment_first_image_view_kitten_0, R.id.fragment_first_image_view_kitten_1})
+	ImageView[] mKittenImageViews;
 
 	private Unbinder mButterknifeUnbinder;
 
@@ -37,7 +38,12 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		mKittenImageView.setOnClickListener(v -> SampleApplication.getNavigator().goForward(new SecondScreen()));
+		for(int i = 0; i < mKittenImageViews.length; i++) {
+			int kittenIndex = i;
+			mKittenImageViews[i].setOnClickListener(v -> {
+				SampleApplication.getNavigator().goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
+			});
+		}
 	}
 
 	@Override
@@ -47,12 +53,13 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 	}
 
 	@Override
-	public View getSharedElement() {
-		return mKittenImageView;
+	public View getSharedElement(AnimationData animationData) {
+		KittenAnimationData kittenAnimationData = (KittenAnimationData)animationData;
+		return mKittenImageViews[kittenAnimationData.getKittenIndex()];
 	}
 
 	@Override
-	public String getSharedElementName() {
+	public String getSharedElementName(AnimationData animationData) {
 		return "kitten";
 	}
 }

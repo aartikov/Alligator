@@ -16,7 +16,7 @@
 		android:layout_gravity="center_horizontal"
 		android:layout_weight="1"
 		android:scaleType="fitCenter"
-		android:src="@drawable/kitten"
+		android:src="@drawable/kitten_0"
 		android:transitionName="kitten"
 		tools:ignore="ContentDescription,UnusedAttribute" />
 
@@ -24,5 +24,5 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_horizontal"
-		android:text="Second Fragment" />
+		android:text="@string/second_fragment" />
 </LinearLayout>

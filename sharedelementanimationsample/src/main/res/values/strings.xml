@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">Shared Element Animation Sample</string>
+	<string name="first_fragment">First Fragment</string>
+	<string name="second_fragment">Second Fragment</string>
 </resources>

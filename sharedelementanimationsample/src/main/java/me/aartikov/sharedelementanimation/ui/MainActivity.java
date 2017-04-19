@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
+import android.view.View;
 
 import butterknife.ButterKnife;
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -47,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
 				.containerId(R.id.activity_main_container)
 				.transitionAnimationProvider((transitionType, screenClassFrom, screenClassTo, isActivity, animationData) -> {
 					if (transitionType == TransitionType.FORWARD) {
-						return createSlideAnimation(true);
+						return createSlideAnimation(true, animationData);
 					} else if (transitionType == TransitionType.BACK) {
-						return createSlideAnimation(false);
+						return createSlideAnimation(false, animationData);
 					} else {
 						return TransitionAnimation.DEFAULT;
 					}
@@ -70,19 +73,24 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@SuppressLint("RtlHardcoded")
-	private TransitionAnimation createSlideAnimation(boolean forward) {
+	private TransitionAnimation createSlideAnimation(boolean forward, AnimationData animationData) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			int enterGravity = forward ? Gravity.RIGHT : Gravity.LEFT;
-			int exitGravity = forward ? Gravity.LEFT : Gravity.RIGHT;
-			LollipopTransitionAnimation animation = new LollipopTransitionAnimation(new Slide(enterGravity), new Slide(exitGravity));
+			Transition enterTransition = forward ? new Slide(Gravity.RIGHT) : new Slide(Gravity.LEFT);
+			Transition exitTransition = forward ? new Slide(Gravity.LEFT) : new Slide(Gravity.RIGHT);
+			LollipopTransitionAnimation animation = new LollipopTransitionAnimation(enterTransition, exitTransition);
 			animation.setAllowEnterTransitionOverlap(false);
 
 			Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_container);
 			if (currentFragment instanceof SharedElementProvider) {
 				SharedElementProvider sharedElementProvider = (SharedElementProvider) currentFragment;
-				animation.addSharedElement(sharedElementProvider.getSharedElement(), sharedElementProvider.getSharedElementName());
-				animation.setSharedElementTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+				View sharedElement = sharedElementProvider.getSharedElement(animationData);
+				String shareElementName = sharedElementProvider.getSharedElementName(animationData);
+				animation.addSharedElement(sharedElement, shareElementName);
+				Transition moveTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move);
+				moveTransition.setDuration(600);
+				animation.setSharedElementTransition(moveTransition);
 			}
+
 			return animation;
 		} else {
 			int enterAnimRes = forward ? R.anim.slide_in_right : R.anim.slide_in_left;
@@ -90,5 +98,4 @@ public class MainActivity extends AppCompatActivity {
 			return new SimpleTransitionAnimation(enterAnimRes, exitAnimRes);
 		}
 	}
-
 }

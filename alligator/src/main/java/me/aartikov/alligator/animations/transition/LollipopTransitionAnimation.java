@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
@@ -21,6 +23,11 @@ import me.aartikov.alligator.TransitionAnimation;
  *
  * @author Artur Artikov
  */
+
+/**
+ * Transition animation that uses activity and fragment transitions introduced in Lollipop (API 21).
+ * Warning: some methods are not supported for activities (see method description).
+ */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class LollipopTransitionAnimation implements TransitionAnimation {
 	private Transition mEnterTransition;
@@ -29,9 +36,18 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 	private boolean mAllowEnterTransitionOverlap = true;
 	private List<Pair<View, String>> mSharedElements;
 
+	/**
+	 * Creates with default settings. Can be used for activities to enable Lollipop transitions (Window.FEATURE_ACTIVITY_TRANSITIONS should be also set for an activity).
+	 */
 	public LollipopTransitionAnimation() {
 	}
 
+	/**
+	 * Creates with given enter and exit transitions. Warning: is not supported for activities.
+	 *
+	 * @param enterTransition transition that will be used for an appearing fragment
+	 * @param exitTransition  transition that will be used for a disappearing fragment
+	 */
 	public LollipopTransitionAnimation(Transition enterTransition, Transition exitTransition) {
 		mEnterTransition = enterTransition;
 		mExitTransition = exitTransition;
@@ -41,6 +57,12 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return mEnterTransition;
 	}
 
+	/**
+	 * Sets a transition that will be used for an appearing fragment. Warning: is not supported for activities, should be set manually in activity's onCreate method.
+	 *
+	 * @param enterTransition transition that will be used for an appearing fragment
+	 * @return this object
+	 */
 	public LollipopTransitionAnimation setEnterTransition(Transition enterTransition) {
 		mEnterTransition = enterTransition;
 		return this;
@@ -50,6 +72,12 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return mExitTransition;
 	}
 
+	/**
+	 * Sets a transition that will be used for a disappearing fragment. Warning: is not supported for activities, should be set manually in activity's onCreate method.
+	 *
+	 * @param exitTransition transition that will be used for a disappearing fragment
+	 * @return this object
+	 */
 	public LollipopTransitionAnimation setExitTransition(Transition exitTransition) {
 		mExitTransition = exitTransition;
 		return this;
@@ -59,6 +87,12 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return mSharedElementTransition;
 	}
 
+	/**
+	 * Sets a transition that will be used for shared elements. Warning: is not supported for activities, should be set manually in activity's onCreate method.
+	 *
+	 * @param sharedElementTransition transition that will be used for shared elements
+	 * @return this object
+	 */
 	public LollipopTransitionAnimation setSharedElementTransition(Transition sharedElementTransition) {
 		mSharedElementTransition = sharedElementTransition;
 		return this;
@@ -68,6 +102,12 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return mAllowEnterTransitionOverlap;
 	}
 
+	/**
+	 * Sets whether the exit transition and the enter transition overlap or not. Warning: is not supported for activities, should be set manually in activity's onCreate method.
+	 *
+	 * @param allowEnterTransitionOverlap true to start the enter transition when possible or false to wait until the exiting transition completes
+	 * @return this object
+	 */
 	public LollipopTransitionAnimation setAllowEnterTransitionOverlap(boolean allowEnterTransitionOverlap) {
 		mAllowEnterTransitionOverlap = allowEnterTransitionOverlap;
 		return this;
@@ -77,6 +117,13 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return mSharedElements;
 	}
 
+	/**
+	 * Adds a shared element that will be used in a transition.
+	 *
+	 * @param sharedElement shared element view in a disappearing activity/fragment
+	 * @param name          shared element name in an appearing activity/fragment
+	 * @return this object
+	 */
 	public LollipopTransitionAnimation addSharedElement(View sharedElement, String name) {
 		if (mSharedElements == null) {
 			mSharedElements = new ArrayList<>();
@@ -86,8 +133,14 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Bundle getActivityOptionsBundle(Activity activity) {
-		return null;
+		if (mSharedElements == null) {
+			return ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+		} else {
+			Pair<View, String>[] sharedElements = mSharedElements.toArray(new Pair[mSharedElements.size()]);
+			return ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle();
+		}
 	}
 
 	@Override
@@ -96,7 +149,15 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
+	public void applyBeforeActivityStarted(Activity currentActivity, Intent intent) {
+	}
+
+	@Override
 	public void applyAfterActivityStarted(Activity currentActivity) {
+	}
+
+	@Override
+	public void applyBeforeActivityFinished(Activity activity) {
 	}
 
 	@Override
@@ -109,7 +170,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		exitingFragment.setExitTransition(mExitTransition);
 		enteringFragment.setSharedElementEnterTransition(mSharedElementTransition);
 		enteringFragment.setAllowEnterTransitionOverlap(mAllowEnterTransitionOverlap);
-		if(mSharedElements != null) {
+		if (mSharedElements != null) {
 			for (Pair<View, String> sharedElement : mSharedElements) {
 				transaction.addSharedElement(sharedElement.first, sharedElement.second);
 			}

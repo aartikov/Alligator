@@ -32,6 +32,10 @@ public class SimpleDialogAnimation implements DialogAnimation {
 	}
 
 	@Override
+	public void applyBeforeShowing(DialogFragment dialogFragment) {
+	}
+
+	@Override
 	public void applyAfterShowing(DialogFragment dialogFragment) {
 		if (dialogFragment.getDialog() != null && dialogFragment.getDialog().getWindow() != null) {
 			dialogFragment.getDialog().getWindow().setWindowAnimations(mWindowAnimationsStyleRes);

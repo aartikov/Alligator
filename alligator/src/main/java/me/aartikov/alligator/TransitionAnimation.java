@@ -1,6 +1,7 @@
 package me.aartikov.alligator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +16,7 @@ import me.aartikov.alligator.animations.transition.DummyTransitionAnimation;
  */
 
 /**
- * Animation that played during transition from one screen to another.
+ * Animation that played during a transition from one screen to another.
  */
 public interface TransitionAnimation {
 	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
@@ -38,14 +39,29 @@ public interface TransitionAnimation {
 	boolean needDelayActivityFinish();
 
 	/**
-	 * Called after an activity started.
+	 * Called before starting of an activity.
+	 *
+	 * @param currentActivity activity that will start another activity
+	 * @param intent intent that will be used to start an activity
+	 */
+	void applyBeforeActivityStarted(Activity currentActivity, Intent intent);
+
+	/**
+	 * Called after starting of an activity.
 	 *
 	 * @param currentActivity activity that started another activity
 	 */
 	void applyAfterActivityStarted(Activity currentActivity);
 
 	/**
-	 * Called after an activity finished.
+	 * Called before finishing of an activity.
+	 *
+	 * @param activity that will finish
+	 */
+	void applyBeforeActivityFinished(Activity activity);
+
+	/**
+	 * Called after finishing of an activity.
 	 *
 	 * @param activity finished activity
 	 */
@@ -55,16 +71,16 @@ public interface TransitionAnimation {
 	 * Called before a fragment transaction executed.
 	 *
 	 * @param transaction      fragment transaction
-	 * @param enteringFragment fragment that will be added/attached diring the transaction
-	 * @param exitingFragment  fragment that will be ewmoved/detached  diring the transaction
+	 * @param enteringFragment fragment that will be added/attached during the transaction
+	 * @param exitingFragment  fragment that will be removed/detached  during the transaction
 	 */
 	void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment);
 
 	/**
 	 * Called after a fragment transaction executed.
 	 *
-	 * @param enteringFragment fragment that will be added/attached diring the transaction
-	 * @param exitingFragment  fragment that will be ewmoved/detached  diring the transaction
+	 * @param enteringFragment fragment that will be added/attached during the transaction
+	 * @param exitingFragment  fragment that will be removed/detached  during the transaction
 	 */
 	void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment);
 }

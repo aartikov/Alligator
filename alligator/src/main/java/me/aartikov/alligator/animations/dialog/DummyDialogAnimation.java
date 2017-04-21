@@ -15,6 +15,11 @@ import me.aartikov.alligator.DialogAnimation;
  * Dialog animation that does nothing.
  */
 public class DummyDialogAnimation implements DialogAnimation {
+
+	@Override
+	public void applyBeforeShowing(DialogFragment dialogFragment) {
+	}
+
 	@Override
 	public void applyAfterShowing(DialogFragment dialogFragment) {
 	}

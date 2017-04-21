@@ -40,6 +40,7 @@ public class DialogFragmentHelper {
 	}
 
 	public void showDialog(DialogFragment dialogFragment, DialogAnimation animation) {
+		animation.applyBeforeShowing(dialogFragment);
 		dialogFragment.show(mFragmentManager, TAG);
 		mFragmentManager.executePendingTransactions();
 		animation.applyAfterShowing(dialogFragment);

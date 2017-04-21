@@ -42,11 +42,13 @@ public class ActivityHelper {
 
 	public void startForResult(Intent intent, int requestCode, TransitionAnimation animation) {
 		Bundle optionsBundle = animation.getActivityOptionsBundle(mActivity);
+		animation.applyBeforeActivityStarted(mActivity, intent);
 		ActivityCompat.startActivityForResult(mActivity, intent, requestCode, optionsBundle);
 		animation.applyAfterActivityStarted(mActivity);
 	}
 
 	public void finish(TransitionAnimation animation) {
+		animation.applyAfterActivityFinished(mActivity);
 		if(animation.needDelayActivityFinish()) {
 			mActivity.supportFinishAfterTransition();
 		} else {

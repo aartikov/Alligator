@@ -1,6 +1,7 @@
 package me.aartikov.alligator.animations.transition;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,7 +30,15 @@ public class DummyTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
+	public void applyBeforeActivityStarted(Activity currentActivity, Intent intent) {
+	}
+
+	@Override
 	public void applyAfterActivityStarted(Activity currentActivity) {
+	}
+
+	@Override
+	public void applyBeforeActivityFinished(Activity activity) {
 	}
 
 	@Override

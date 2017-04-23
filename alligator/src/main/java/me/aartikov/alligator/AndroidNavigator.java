@@ -64,6 +64,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		mNavigationContext = null;
 	}
 
+	/**
+	 * Adds a new screen and goes to it. Implemented with {@link ForwardCommand}.
+	 *
+	 * @param screen new screen
+	 */
 	@Override
 	public void goForward(Screen screen) {
 		goForward(screen, null);
@@ -74,6 +79,9 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new ForwardCommand(screen, animationData));
 	}
 
+	/**
+	 * Finishes a current screen and goes back to the previous screen. Implemented with {@link BackCommand}.
+	 */
 	@Override
 	public void goBack() {
 		goBack(null);
@@ -84,6 +92,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new BackCommand(animationData));
 	}
 
+	/**
+	 * Goes back to a screen with the given class. Implemented with {@link BackToCommand}.
+	 *
+	 * @param screenClass screen class for going back
+	 */
 	@Override
 	public void goBackTo(Class<? extends Screen> screenClass) {
 		goBackTo(screenClass, null);
@@ -94,6 +107,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new BackToCommand(screenClass, animationData));
 	}
 
+	/**
+	 * Replaces the last screen with a new screen. Implemented with {@link ReplaceCommand}.
+	 *
+	 * @param screen new screen
+	 */
 	@Override
 	public void replace(Screen screen) {
 		replace(screen, null);
@@ -104,6 +122,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new ReplaceCommand(screen, animationData));
 	}
 
+	/**
+	 * Removes all other screens and adds a new screen. Implemented with {@link ResetCommand}.
+	 *
+	 * @param screen new screen
+	 */
 	@Override
 	public void reset(Screen screen) {
 		reset(screen, null);
@@ -114,6 +137,9 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new ResetCommand(screen, animationData));
 	}
 
+	/**
+	 * Finishes a current activity. Implemented with {@link FinishCommand}.
+	 */
 	@Override
 	public void finish() {
 		finish(null);
@@ -124,6 +150,13 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new FinishCommand(null, animationData));
 	}
 
+	/**
+	 * Finishes a current activity with result. Implemented with {@link FinishCommand}.
+	 * <p>
+	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ScreenResultResolver}.
+	 *
+	 * @param screenResult screen result that will be returned
+	 */
 	@Override
 	public void finishWithResult(ScreenResult screenResult) {
 		finishWithResult(screenResult, null);
@@ -134,6 +167,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		executeCommand(new FinishCommand(screenResult, animationData));
 	}
 
+	/**
+	 * Switches screens by a name with a screen switcher. Implemented with {@link SwitchToCommand}.
+	 *
+	 * @param screenName screen name
+	 */
 	@Override
 	public void switchTo(String screenName) {
 		executeCommand(new SwitchToCommand(screenName));
@@ -146,7 +184,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	private void executeQueuedCommands() {
-		if(mIsExecutingCommands) {
+		if (mIsExecutingCommands) {
 			return;
 		}
 
@@ -155,14 +193,14 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			while (mNavigationContext != null && !mCommandQueue.isEmpty()) {
 				Command command = mCommandQueue.remove();
 				boolean canExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
-				if(!canExecuteCommands) {
+				if (!canExecuteCommands) {
 					mNavigationContext = null;
 				}
 			}
 		} catch (CommandExecutionException e) {
 			mCommandQueue.clear();
 			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
-		} catch (Exception e){
+		} catch (Exception e) {
 			mCommandQueue.clear();
 			throw e;
 		} finally {

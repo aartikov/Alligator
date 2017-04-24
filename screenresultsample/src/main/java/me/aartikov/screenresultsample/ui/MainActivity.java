@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -20,10 +24,6 @@ import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
-import com.squareup.picasso.Picasso;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 12.03.2016
@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		mNavigationContextBinder.bind(new NavigationContext(this));
+		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		mNavigationContextBinder.bind(navigationContext);
 	}
 
 	@Override

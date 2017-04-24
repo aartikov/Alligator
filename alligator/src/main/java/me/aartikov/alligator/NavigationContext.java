@@ -28,26 +28,11 @@ public class NavigationContext {
 	private NavigationListener mNavigationListener;
 	private NavigationErrorListener mNavigationErrorListener;
 
-	/**
-	 * Creates with the given activity.
-	 *
-	 * @param activity activity that should be current when this navigation context is bound
-	 */
-	public NavigationContext(AppCompatActivity activity) {
-		this(new Builder(activity));
-	}
-
-	/**
-	 * Creates with the given activity and container id.
-	 *
-	 * @param activity    activity that should be current when this navigation context is bound
-	 * @param containerId container id for fragments
-	 */
-	public NavigationContext(AppCompatActivity activity, int containerId) {
-		this(new Builder(activity).containerId(containerId));
-	}
-
 	private NavigationContext(Builder builder) {
+		if(builder.mActivity == null) {
+			throw new NullPointerException("Activity can't be null.");
+		}
+
 		mActivity = builder.mActivity;
 		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
 		mContainerId = builder.mContainerId;

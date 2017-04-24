@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		mNavigationContextBinder.bind(new NavigationContext(this));
+		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		mNavigationContextBinder.bind(navigationContext);
 	}
 
 	@Override

@@ -14,23 +14,23 @@ import me.aartikov.alligator.ScreenResolver;
  * @author Artur Artikov
  */
 public class SampleApplication extends Application {
-	private static AndroidNavigator sNavigator;
+	private static AndroidNavigator sAndroidNavigator;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sNavigator = new AndroidNavigator(new SampleNavigationFactory());
+		sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
 	}
 
 	public static Navigator getNavigator() {
-		return sNavigator;
+		return sAndroidNavigator;
 	}
 
 	public static NavigationContextBinder getNavigationContextBinder() {
-		return sNavigator;
+		return sAndroidNavigator;
 	}
 
 	public static ScreenResolver getScreenResolver() {
-		return sNavigator.getScreenResolver();
+		return sAndroidNavigator.getScreenResolver();
 	}
 }

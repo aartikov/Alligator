@@ -10,12 +10,12 @@ import android.content.Intent;
  */
 
 /**
- * Helper class for handling a screen result.
+ * Helper class for handling a screen result. Can be obtained with {@code getScreenResultResolver} method of {@link AndroidNavigator}.
  */
 public class ScreenResultResolver {
 	private NavigationFactory mNavigationFactory;
 
-	public ScreenResultResolver(NavigationFactory navigationFactory) {
+	ScreenResultResolver(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 	}
 

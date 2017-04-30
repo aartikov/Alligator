@@ -29,7 +29,7 @@ public class NavigationContext {
 	private NavigationErrorListener mNavigationErrorListener;
 
 	private NavigationContext(Builder builder) {
-		if(builder.mActivity == null) {
+		if (builder.mActivity == null) {
 			throw new NullPointerException("Activity can't be null.");
 		}
 
@@ -105,6 +105,7 @@ public class NavigationContext {
 		 * Sets a container id.
 		 *
 		 * @param containerId container id for fragments
+		 * @return this object
 		 */
 		public Builder containerId(int containerId) {
 			mContainerId = containerId;
@@ -116,6 +117,7 @@ public class NavigationContext {
 		 *
 		 * @param fragmentManager that will be used for fragment transactions. By default a support fragment manager of the current activity will be used.
 		 *                        This method can be useful to set a child fragment manager.
+		 * @return this object
 		 */
 		public Builder fragmentManager(FragmentManager fragmentManager) {
 			mFragmentManager = fragmentManager;
@@ -126,6 +128,7 @@ public class NavigationContext {
 		 * Sets a screen switcher.
 		 *
 		 * @param screenSwitcher screen switcher that will be used to switch screens by {@code switchTo} method of {@link Navigator}
+		 * @return this object
 		 */
 		public Builder screenSwitcher(ScreenSwitcher screenSwitcher) {
 			mScreenSwitcher = screenSwitcher;
@@ -136,6 +139,7 @@ public class NavigationContext {
 		 * Sets a provider of {@link TransitionAnimation}s.
 		 *
 		 * @param transitionAnimationProvider provider of {@link TransitionAnimation}s. By default a provider that returns {@code TransitionAnimation.DEFAULT} is used.
+		 * @return this object
 		 */
 		public Builder transitionAnimationProvider(TransitionAnimationProvider transitionAnimationProvider) {
 			mTransitionAnimationProvider = transitionAnimationProvider;
@@ -146,6 +150,7 @@ public class NavigationContext {
 		 * Sets a provider of {@link DialogAnimation}s.
 		 *
 		 * @param dialogAnimationProvider provider of {@link DialogAnimation}s. By default a provider that returns {@code DialogAnimation.DEFAULT} is used.
+		 * @return this object
 		 */
 		public Builder dialogAnimationProvider(DialogAnimationProvider dialogAnimationProvider) {
 			mDialogAnimationProvider = dialogAnimationProvider;
@@ -156,6 +161,7 @@ public class NavigationContext {
 		 * Sets a navigation listener. This listener is called after screen transitions, screen switching, and dialog showing.
 		 *
 		 * @param navigationListener navigation listener. By default a listener that does nothing is used.
+		 * @return this object
 		 */
 		public Builder navigationListener(NavigationListener navigationListener) {
 			mNavigationListener = navigationListener;
@@ -166,6 +172,7 @@ public class NavigationContext {
 		 * Sets a navigation error listener. This listener when an error has occurred during {@link Command} execution.
 		 *
 		 * @param navigationErrorListener navigation error listener. By default a listener that wraps errors to {@code RuntimeException} and throws it is used.
+		 * @return this object
 		 */
 		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
 			mNavigationErrorListener = navigationErrorListener;

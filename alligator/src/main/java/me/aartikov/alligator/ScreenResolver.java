@@ -12,12 +12,12 @@ import android.support.v4.app.Fragment;
  */
 
 /**
- * Helper class for getting a screen from its Android representation.
+ * Helper class for getting a screen from its Android representation. Can be obtained with {@code getScreenResolver} method of {@link AndroidNavigator}.
  */
 public class ScreenResolver {
 	private NavigationFactory mNavigationFactory;
 
-	public ScreenResolver(NavigationFactory navigationFactory) {
+	ScreenResolver(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 	}
 
@@ -34,7 +34,7 @@ public class ScreenResolver {
 	}
 
 	/**
-	 * Gets a screen from a fragment
+	 * Gets a screen from a fragment.
 	 *
 	 * @param <ScreenT>   screen type
 	 * @param fragment    fragment containing a screen data in its arguments
@@ -46,7 +46,7 @@ public class ScreenResolver {
 	}
 
 	/**
-	 * Gets a screen from a dialog fragment
+	 * Gets a screen from a dialog fragment.
 	 *
 	 * @param <ScreenT>      screen type
 	 * @param dialogFragment dialog fragment containing a screen data in its arguments

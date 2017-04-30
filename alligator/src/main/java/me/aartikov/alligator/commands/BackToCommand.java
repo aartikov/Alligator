@@ -96,7 +96,7 @@ public class BackToCommand implements Command {
 			}
 
 			case DIALOG_FRAGMENT:
-				throw new CommandExecutionException(this, "This command is not supported for dialog fragment screen.");
+				throw new CommandExecutionException(this, "BackTo command is not supported for dialog fragments.");
 
 			default:
 				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not unknown.");

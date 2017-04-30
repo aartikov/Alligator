@@ -2,10 +2,12 @@ package me.aartikov.alligator.commands;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
+import me.aartikov.alligator.DialogAnimation;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
@@ -14,6 +16,7 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
 import me.aartikov.alligator.internal.ActivityHelper;
+import me.aartikov.alligator.internal.DialogFragmentHelper;
 import me.aartikov.alligator.internal.FragmentStack;
 import me.aartikov.alligator.internal.ScreenClassUtils;
 
@@ -76,7 +79,7 @@ public class ResetCommand implements Command {
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
-					navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, false, mAnimationData);
 				}
 
 				fragmentStack.reset(fragment, animation);
@@ -85,7 +88,16 @@ public class ResetCommand implements Command {
 			}
 
 			case DIALOG_FRAGMENT:
-				throw new CommandExecutionException(this, "This command is not supported for dialog fragment screen.");
+				DialogFragmentHelper dialogFragmentHelper = DialogFragmentHelper.from(navigationContext);
+				while (dialogFragmentHelper.isDialogVisible()) {
+					dialogFragmentHelper.hideDialog();
+				}
+
+				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
+				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
+				dialogFragmentHelper.showDialog(dialogFragment, animation);
+				navigationContext.getNavigationListener().onDialogShown(mScreen.getClass());
+				return true;
 
 			default:
 				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not unknown.");

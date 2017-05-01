@@ -35,9 +35,9 @@ public class ScreenClassUtils {
 		String className = activity.getIntent().getStringExtra(KEY_SCREEN_CLASS_NAME);
 		Class<? extends Screen> screenClass = getClassByName(className);
 
-		if(screenClass == null) {   // screenClass is null. May be activity is a first screen. Try to find it in NavigationFactory.
-			for(Class<? extends Screen> sc: navigationFactory.getScreenClasses()) {
-				if(navigationFactory.getViewType(sc) == ViewType.ACTIVITY && navigationFactory.getActivityClass(sc) == activity.getClass()) {
+		if (screenClass == null) {   // screenClass is null. May be activity is a first screen. Try to find it in NavigationFactory.
+			for (Class<? extends Screen> sc : navigationFactory.getScreenClasses()) {
+				if (navigationFactory.getViewType(sc) == ViewType.ACTIVITY && navigationFactory.getActivityClass(sc) == activity.getClass()) {
 					screenClass = sc;
 					break;
 				}
@@ -48,7 +48,7 @@ public class ScreenClassUtils {
 
 	public static void putScreenClass(Fragment fragment, Class<? extends Screen> screenClass) {
 		Bundle arguments = fragment.getArguments();
-		if(arguments == null) {
+		if (arguments == null) {
 			arguments = new Bundle();
 			fragment.setArguments(arguments);
 		}
@@ -76,7 +76,7 @@ public class ScreenClassUtils {
 	}
 
 	private static Class getClassByName(String className) {
-		if(className == null || className.isEmpty()) {
+		if (className == null || className.isEmpty()) {
 			return null;
 		}
 

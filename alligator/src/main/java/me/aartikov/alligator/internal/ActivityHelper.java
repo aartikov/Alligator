@@ -49,7 +49,7 @@ public class ActivityHelper {
 
 	public void finish(TransitionAnimation animation) {
 		animation.applyAfterActivityFinished(mActivity);
-		if(animation.needDelayActivityFinish()) {
+		if (animation.needDelayActivityFinish()) {
 			mActivity.supportFinishAfterTransition();
 		} else {
 			mActivity.finish();

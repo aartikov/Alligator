@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -11,9 +13,6 @@ import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.simplestnavigationsample.R;
 import me.aartikov.simplestnavigationsample.SampleApplication;
 import me.aartikov.simplestnavigationsample.screens.MessageScreen;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 22.01.2016

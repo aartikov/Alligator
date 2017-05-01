@@ -42,7 +42,7 @@ public interface TransitionAnimation {
 	 * Called before starting of an activity.
 	 *
 	 * @param currentActivity activity that will start another activity
-	 * @param intent intent that will be used to start an activity
+	 * @param intent          intent that will be used to start an activity
 	 */
 	void applyBeforeActivityStarted(Activity currentActivity, Intent intent);
 

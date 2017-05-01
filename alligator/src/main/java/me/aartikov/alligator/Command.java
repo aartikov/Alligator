@@ -15,6 +15,7 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
 public interface Command {
 	/**
 	 * Executes a command
+	 *
 	 * @param navigationContext navigation context that can be used for a command implementation
 	 * @param navigationFactory navigation factory that can be used for a command implementation
 	 * @return true if after this command other command can be executed, false if command execution should be delayed until a new {@link NavigationContext} will be bound

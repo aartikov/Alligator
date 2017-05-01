@@ -1,7 +1,7 @@
 package me.aartikov.alligator.exceptions;
 
-import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.Command;
+import me.aartikov.alligator.Screen;
 
 /**
  * Date: 12.03.2017

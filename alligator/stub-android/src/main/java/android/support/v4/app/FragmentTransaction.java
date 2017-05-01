@@ -31,7 +31,7 @@ public class FragmentTransaction {
 		throw new RuntimeException("Stub!");
 	}
 
-	public FragmentTransaction addSharedElement(View sharedElement, String name){
+	public FragmentTransaction addSharedElement(View sharedElement, String name) {
 		throw new RuntimeException("Stub!");
 	}
 }

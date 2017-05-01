@@ -38,7 +38,7 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		for(int i = 0; i < mKittenImageViews.length; i++) {
+		for (int i = 0; i < mKittenImageViews.length; i++) {
 			int kittenIndex = i;
 			mKittenImageViews[i].setOnClickListener(v -> {
 				SampleApplication.getNavigator().goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
@@ -54,7 +54,7 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 
 	@Override
 	public View getSharedElement(AnimationData animationData) {
-		KittenAnimationData kittenAnimationData = (KittenAnimationData)animationData;
+		KittenAnimationData kittenAnimationData = (KittenAnimationData) animationData;
 		return mKittenImageViews[kittenAnimationData.getKittenIndex()];
 	}
 

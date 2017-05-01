@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
 	<tab
-		id="@+id/tab_android"
 		icon="@drawable/ic_android"
+		id="@+id/tab_android"
 		title="@string/tab_android" />
 	<tab
-		id="@+id/tab_bug"
 		icon="@drawable/ic_bug"
+		id="@+id/tab_bug"
 		title="@string/tab_bug" />
 	<tab
-		id="@+id/tab_dog"
 		icon="@drawable/ic_dog"
+		id="@+id/tab_dog"
 		title="@string/tab_dog" />
 </tabs>

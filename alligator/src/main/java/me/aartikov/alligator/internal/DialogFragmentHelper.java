@@ -48,7 +48,7 @@ public class DialogFragmentHelper {
 
 	public void hideDialog() {
 		DialogFragment dialogFragment = (DialogFragment) mFragmentManager.findFragmentByTag(TAG);
-		if(dialogFragment == null) {
+		if (dialogFragment == null) {
 			throw new IllegalStateException("Dialog is not visible.");
 		}
 

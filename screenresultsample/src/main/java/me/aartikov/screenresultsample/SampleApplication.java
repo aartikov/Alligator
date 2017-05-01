@@ -2,9 +2,9 @@ package me.aartikov.screenresultsample;
 
 import android.app.Application;
 
+import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.ScreenResultResolver;
 
 /**

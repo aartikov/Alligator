@@ -7,6 +7,8 @@ package me.aartikov.alligator;
  * @author Artur Artikov
  */
 
+import android.support.annotation.Nullable;
+
 /**
  * Provider of a {@link TransitionAnimation}.
  */
@@ -21,5 +23,5 @@ public interface TransitionAnimationProvider {
 	 * @param animationData   data for an additional animation configuring
 	 * @return an animation that will be used for a transition
 	 */
-	TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, AnimationData animationData);
+	TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData);
 }

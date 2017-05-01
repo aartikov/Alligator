@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -13,11 +18,6 @@ import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 import me.aartikov.simplestscreenswitchersample.R;
 import me.aartikov.simplestscreenswitchersample.SampleApplication;
 import me.aartikov.simplestscreenswitchersample.screens.TabScreen;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 21.01.2016
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	private TabsInfo mTabsInfo;
 	private FragmentScreenSwitcher mScreenSwitcher;
 
-	@BindView(R.id.activity_main_bottom_bar)
+	@BindView(R.id.bottom_bar)
 	BottomBar mBottomBar;
 
 	@Override
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	private void initScreenSwitcher() {
-		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container, SampleApplication.getNavigationFactory()) {
+		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, SampleApplication.getNavigationFactory()) {
 			@Override
 			protected Screen getScreen(String screenName) {
 				return mTabsInfo.getScreen(screenName);

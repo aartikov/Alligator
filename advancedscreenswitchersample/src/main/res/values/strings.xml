@@ -1,8 +1,8 @@
 <resources>
 	<string name="app_name">Advanced Screen Switcher Sample</string>
-
 	<string name="tab_android">Android</string>
 	<string name="tab_bug">Bug</string>
 	<string name="tab_dog">Dog</string>
-	<string name="counter_template">"Counter: %d"</string>
+	<string name="counter_template">Counter: %d</string>
+	<string name="forward">Forward</string>
 </resources>

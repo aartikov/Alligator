@@ -25,7 +25,7 @@ public class MessageActivity extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.activity_message_text_view_message)
+	@BindView(R.id.message_text_view)
 	TextView mMessageTextView;
 
 	@Override

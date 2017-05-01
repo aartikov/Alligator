@@ -7,7 +7,7 @@
 	tools:context="me.aartikov.sharedelementanimation.ui.MainActivity">
 	
 	<FrameLayout
-		android:id="@+id/activity_main_container"
+		android:id="@+id/main_container"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" />
 </FrameLayout>

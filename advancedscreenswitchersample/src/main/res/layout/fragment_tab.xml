@@ -7,7 +7,7 @@
 	android:orientation="vertical">
 
 	<TextView
-		android:id="@+id/fragment_tab_text_view_name"
+		android:id="@+id/name_text_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
@@ -15,7 +15,7 @@
 		android:padding="10dp" />
 
 	<FrameLayout
-		android:id="@+id/fragment_tab_container"
+		android:id="@+id/inner_container"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1" />

@@ -24,7 +24,7 @@ import me.aartikov.sharedelementanimation.screens.SecondScreen;
  */
 
 public class SecondFragment extends Fragment implements SharedElementProvider {
-	@BindView(R.id.fragment_second_image_view_kitten)
+	@BindView(R.id.kitten_image_view)
 	ImageView mKittenImageView;
 
 	private Unbinder mButterknifeUnbinder;

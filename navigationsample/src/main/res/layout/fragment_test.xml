@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/fragment_test_view_root"
+<LinearLayout android:id="@+id/root_view"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
@@ -8,7 +8,7 @@
 	android:padding="10dp">
 	
 	<TextView
-		android:id="@+id/fragment_test_text_view_counter"
+		android:id="@+id/counter_text_view"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
@@ -17,7 +17,7 @@
 		tools:text="Counter" />
 	
 	<Button
-		android:id="@+id/fragment_test_button_forward"
+		android:id="@+id/forward_button"
 		android:layout_width="120dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
@@ -26,7 +26,7 @@
 		android:textSize="12sp" />
 	
 	<Button
-		android:id="@+id/fragment_test_button_replace"
+		android:id="@+id/replace_button"
 		android:layout_width="120dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
@@ -35,7 +35,7 @@
 		android:textSize="12sp" />
 	
 	<Button
-		android:id="@+id/fragment_test_button_reset"
+		android:id="@+id/reset_button"
 		android:layout_width="120dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
@@ -44,7 +44,7 @@
 		android:textSize="12sp" />
 	
 	<Button
-		android:id="@+id/fragment_test_button_back"
+		android:id="@+id/back_button"
 		android:layout_width="120dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
@@ -53,7 +53,7 @@
 		android:textSize="12sp" />
 
 	<Button
-		android:id="@+id/fragment_test_button_double_back"
+		android:id="@+id/double_back_button"
 		android:layout_width="120dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"

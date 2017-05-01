@@ -29,25 +29,25 @@ import butterknife.Unbinder;
  * @author Artur Artikov
  */
 public class TestFragment extends Fragment {
-	@BindView(R.id.fragment_test_view_root)
+	@BindView(R.id.root_view)
 	View mRootView;
 
-	@BindView(R.id.fragment_test_text_view_counter)
+	@BindView(R.id.counter_text_view)
 	TextView mCounterTextView;
 
-	@BindView(R.id.fragment_test_button_forward)
+	@BindView(R.id.forward_button)
 	Button mForwardButton;
 
-	@BindView(R.id.fragment_test_button_replace)
+	@BindView(R.id.replace_button)
 	Button mReplaceButton;
 
-	@BindView(R.id.fragment_test_button_reset)
+	@BindView(R.id.reset_button)
 	Button mResetButton;
 
-	@BindView(R.id.fragment_test_button_back)
+	@BindView(R.id.back_button)
 	Button mBackButton;
 
-	@BindView(R.id.fragment_test_button_double_back)
+	@BindView(R.id.double_back_button)
 	Button mDoubleBackButton;
 
 	private Unbinder mButterknifeUnbinder;

@@ -6,13 +6,13 @@
 	android:orientation="vertical">
 
 	<FrameLayout
-		android:id="@+id/activity_main_container"
+		android:id="@+id/main_container"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1" />
 
 	<com.roughike.bottombar.BottomBar
-		android:id="@+id/activity_main_bottom_bar"
+		android:id="@+id/bottom_bar"
 		android:layout_width="match_parent"
 		android:layout_height="60dp"
 		app:bb_tabXmlResource="@xml/bottom_bar_tabs" />

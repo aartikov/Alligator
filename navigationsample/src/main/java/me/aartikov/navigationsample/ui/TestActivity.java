@@ -29,22 +29,22 @@ import butterknife.ButterKnife;
  * @author Artur Artikov
  */
 public class TestActivity extends AppCompatActivity {
-	@BindView(R.id.activity_test_view_root)
+	@BindView(R.id.root_view)
 	View mRootView;
 
-	@BindView(R.id.activity_test_text_view_counter)
+	@BindView(R.id.counter_text_view)
 	TextView mCounterTextView;
 
-	@BindView(R.id.activity_test_button_forward)
+	@BindView(R.id.forward_button)
 	Button mForwardButton;
 
-	@BindView(R.id.activity_test_button_replace)
+	@BindView(R.id.replace_button)
 	Button mReplaceButton;
 
-	@BindView(R.id.activity_test_button_reset)
+	@BindView(R.id.reset_button)
 	Button mResetButton;
 
-	@BindView(R.id.activity_test_button_finish)
+	@BindView(R.id.finish_button)
 	Button mFinishButton;
 
 	private Navigator mNavigator;
@@ -79,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.containerId(R.id.activity_test_fragment_container)
+				.containerId(R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

@@ -7,7 +7,7 @@
 	tools:activity="me.aartikov.navigationsample.ui.TestActivity">
 
 	<LinearLayout
-		android:id="@+id/activity_test_view_root"
+		android:id="@+id/root_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
@@ -17,7 +17,7 @@
 		android:paddingTop="@dimen/activity_vertical_margin">
 
 		<TextView
-			android:id="@+id/activity_test_text_view_counter"
+			android:id="@+id/counter_text_view"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
@@ -25,7 +25,7 @@
 			tools:text="Counter" />
 
 		<FrameLayout
-			android:id="@+id/activity_test_fragment_container"
+			android:id="@+id/fragment_container"
 			android:layout_width="180dp"
 			android:layout_height="240dp"
 			android:layout_gravity="center_horizontal"
@@ -33,28 +33,28 @@
 			android:background="#EEEEEE" />
 
 		<Button
-			android:id="@+id/activity_test_button_forward"
+			android:id="@+id/forward_button"
 			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:text="@string/forward" />
 
 		<Button
-			android:id="@+id/activity_test_button_replace"
+			android:id="@+id/replace_button"
 			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:text="@string/replace" />
 
 		<Button
-			android:id="@+id/activity_test_button_reset"
+			android:id="@+id/reset_button"
 			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:text="@string/reset" />
 
 		<Button
-			android:id="@+id/activity_test_button_finish"
+			android:id="@+id/finish_button"
 			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"

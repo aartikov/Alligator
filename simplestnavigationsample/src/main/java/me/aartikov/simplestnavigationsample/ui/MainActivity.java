@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.activity_main_button_show_message)
+	@BindView(R.id.show_message_button)
 	Button mShowMessageButton;
 
 	@Override

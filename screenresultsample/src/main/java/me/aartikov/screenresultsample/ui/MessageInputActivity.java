@@ -25,10 +25,10 @@ public class MessageInputActivity extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.activity_message_input_edit_text_message)
+	@BindView(R.id.message_edit_text)
 	EditText mMessageEditText;
 
-	@BindView(R.id.activity_input_button_ok)
+	@BindView(R.id.ok_button)
 	Button mOkButton;
 
 	@Override

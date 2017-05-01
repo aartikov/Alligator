@@ -35,16 +35,16 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.activity_main_button_input_message)
+	@BindView(R.id.input_message_button)
 	Button mInputMessageButton;
 
-	@BindView(R.id.activity_main_button_pick_image)
+	@BindView(R.id.pick_image_button)
 	Button mPickImageButton;
 
-	@BindView(R.id.activity_main_text_view_message)
+	@BindView(R.id.message_text_view)
 	TextView mMessageTextView;
 
-	@BindView(R.id.activity_main_image_view)
+	@BindView(R.id.image_view)
 	ImageView mImageView;
 
 	@Override

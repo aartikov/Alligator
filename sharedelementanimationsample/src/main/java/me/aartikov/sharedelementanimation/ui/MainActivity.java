@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onResumeFragments();
 
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.containerId(R.id.activity_main_container)
+				.containerId(R.id.main_container)
 				.transitionAnimationProvider((transitionType, screenClassFrom, screenClassTo, isActivity, animationData) -> {
 					if (transitionType == TransitionType.FORWARD) {
 						return createSlideAnimation(true, animationData);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 			LollipopTransitionAnimation animation = new LollipopTransitionAnimation(enterTransition, exitTransition);
 			animation.setAllowEnterTransitionOverlap(false);
 
-			Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_container);
+			Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 			if (currentFragment instanceof SharedElementProvider) {
 				SharedElementProvider sharedElementProvider = (SharedElementProvider) currentFragment;
 				View sharedElement = sharedElementProvider.getSharedElement(animationData);

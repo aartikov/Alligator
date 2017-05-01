@@ -13,14 +13,14 @@
 		android:orientation="vertical">
 		
 		<TextView
-			android:id="@+id/fragment_inner_text_view_counter"
+			android:id="@+id/counter_text_view"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			tools:text="Counter" />
 		
 		<Button
-			android:id="@+id/fragment_inner_button_forward"
+			android:id="@+id/forward_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"

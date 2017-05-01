@@ -26,7 +26,7 @@ import butterknife.Unbinder;
  * @author Artur Artikov
  */
 public class TabFragment extends Fragment implements ContainerIdProvider {
-	@BindView(R.id.fragment_tab_text_view_name)
+	@BindView(R.id.name_text_view)
 	TextView mNameTextView;
 
 	private Unbinder mButterknifeUnbinder;
@@ -45,7 +45,7 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 		TabScreen screen = screenResolver.getScreen(this, TabScreen.class);
 		mNameTextView.setText(screen.getName());
 
-		if (getChildFragmentManager().findFragmentById(R.id.fragment_tab_container) == null) {
+		if (getChildFragmentManager().findFragmentById(R.id.inner_container) == null) {
 			Navigator navigator = SampleApplication.getNavigator();
 			navigator.reset(new InnerScreen(1));
 		}
@@ -59,6 +59,6 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 
 	@Override
 	public int getContainerId() {
-		return R.id.fragment_tab_container;
+		return R.id.inner_container;
 	}
 }

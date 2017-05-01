@@ -28,10 +28,10 @@ import butterknife.Unbinder;
  * @author Artur Artikov
  */
 public class InnerFragment extends Fragment {
-	@BindView(R.id.fragment_inner_text_view_counter)
+	@BindView(R.id.counter_text_view)
 	TextView mCounterTextView;
 
-	@BindView(R.id.fragment_inner_button_forward)
+	@BindView(R.id.forward_button)
 	Button mForwardButton;
 
 	private Unbinder mButterknifeUnbinder;

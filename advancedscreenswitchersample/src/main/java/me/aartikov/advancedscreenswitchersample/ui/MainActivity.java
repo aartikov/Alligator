@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	private TabsInfo mTabsInfo;
 	private FragmentScreenSwitcher mScreenSwitcher;
 
-	@BindView(R.id.activity_main_bottom_bar)
+	@BindView(R.id.bottom_bar)
 	BottomBar mBottomBar;
 
 	@Override
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	private void initScreenSwitcher() {
-		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.activity_main_container, SampleApplication.getNavigationFactory()) {
+		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, SampleApplication.getNavigationFactory()) {
 			@Override
 			protected Screen getScreen(String screenName) {
 				return mTabsInfo.getScreen(screenName);

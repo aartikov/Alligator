@@ -24,7 +24,7 @@ import butterknife.Unbinder;
  * @author Artur Artikov
  */
 public class TabFragment extends Fragment {
-	@BindView(R.id.fragment_tab_text_view_name)
+	@BindView(R.id.name_text_view)
 	TextView mNameTextView;
 
 	private Unbinder mButterknifeUnbinder;

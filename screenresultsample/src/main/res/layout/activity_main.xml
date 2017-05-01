@@ -12,7 +12,7 @@
 	tools:context="me.aartikov.screenresultsample.ui.MainActivity">
 
 	<TextView
-		android:id="@+id/activity_main_text_view_message"
+		android:id="@+id/message_text_view"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_marginBottom="16dp"
@@ -28,13 +28,13 @@
 		android:orientation="vertical">
 
 		<Button
-			android:id="@+id/activity_main_button_input_message"
+			android:id="@+id/input_message_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/input_message" />
 
 		<Button
-			android:id="@+id/activity_main_button_pick_image"
+			android:id="@+id/pick_image_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/pick_image" />
@@ -42,7 +42,7 @@
 
 
 	<ImageView
-		android:id="@+id/activity_main_image_view"
+		android:id="@+id/image_view"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_marginTop="16dp"

@@ -2,13 +2,20 @@ package me.aartikov.advancedscreenswitchersample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.SampleTransitionAnimationProvider;
 import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -17,11 +24,6 @@ import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
 import me.aartikov.alligator.screenswitchers.FactoryFragmentScreenSwitcher;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 21.01.2016
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			}
 
 			@Override
-			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
+			protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo, @Nullable AnimationData animationData) {
 				int indexFrom = mTabsInfo.getTabIndex(screenNameFrom);
 				int indexTo = mTabsInfo.getTabIndex(screenNameTo);
 				if (indexTo > indexFrom) {

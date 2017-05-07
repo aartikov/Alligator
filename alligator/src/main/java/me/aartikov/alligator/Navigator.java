@@ -116,4 +116,12 @@ public interface Navigator {
 	 * @param screenName screen name
 	 */
 	void switchTo(String screenName);
+
+	/**
+	 * {@code switchTo} with an animation data.
+	 *
+	 * @param screenName    screen name
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void switchTo(String screenName, AnimationData animationData);
 }

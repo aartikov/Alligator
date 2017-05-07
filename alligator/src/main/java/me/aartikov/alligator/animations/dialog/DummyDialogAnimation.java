@@ -12,7 +12,7 @@ import me.aartikov.alligator.DialogAnimation;
  */
 
 /**
- * Dialog animation that does nothing.
+ * Dialog animation that leaves a default animation behavior for dialog fragments.
  */
 public class DummyDialogAnimation implements DialogAnimation {
 

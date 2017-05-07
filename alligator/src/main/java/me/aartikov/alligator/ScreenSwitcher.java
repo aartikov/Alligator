@@ -16,15 +16,17 @@ public interface ScreenSwitcher {
 	/**
 	 * Switches to a screen with the given name
 	 *
-	 * @param screenName screen name
+	 * @param screenName    screen name
+	 * @param animationData animation data for an additional animation configuring
 	 * @return true on success, false on fail
 	 */
-	boolean switchTo(String screenName);
+	boolean switchTo(String screenName, @Nullable AnimationData animationData);
 
 	/**
 	 * Returns a name of a current screen.
 	 *
 	 * @return a name of a current screen or {@code null} if there is no current screen.
 	 */
-	@Nullable String getCurrentScreenName();
+	@Nullable
+	String getCurrentScreenName();
 }

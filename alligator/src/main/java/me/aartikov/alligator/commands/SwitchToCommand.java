@@ -1,5 +1,6 @@
 package me.aartikov.alligator.commands;
 
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
@@ -18,9 +19,11 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
  */
 public class SwitchToCommand implements Command {
 	private String mScreenName;
+	private AnimationData mAnimationData;
 
-	public SwitchToCommand(String screenName) {
+	public SwitchToCommand(String screenName, AnimationData animationData) {
 		mScreenName = screenName;
+		mAnimationData = animationData;
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public class SwitchToCommand implements Command {
 		}
 
 		String previousScreenName = screenSwitcher.getCurrentScreenName();
-		boolean success = screenSwitcher.switchTo(mScreenName);
+		boolean success = screenSwitcher.switchTo(mScreenName, mAnimationData);
 		if (!success) {
 			throw new CommandExecutionException(this, "Unknown screen name " + mScreenName);
 		}

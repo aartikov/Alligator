@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.ScreenSwitcher;
 import me.aartikov.alligator.TransitionAnimation;
 
@@ -48,18 +49,19 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	}
 
 	/**
-	 * Return a {@link TransitionAnimation} that will be used for a screen transition. Can be overrided for animation configuring.
+	 * Return a {@link TransitionAnimation} that will be used for a screen transition. Can be overridden for animation configuring.
 	 *
 	 * @param screenNameFrom name of the screen that disappears during a switching
 	 * @param screenNameTo   name of the screen that appears during a switching
+	 * @param animationData  animation data for an additional animation configuring
 	 * @return an animation that will be used for a transition
 	 */
-	protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo) {
+	protected TransitionAnimation getAnimation(String screenNameFrom, String screenNameTo, @Nullable AnimationData animationData) {
 		return TransitionAnimation.DEFAULT;
 	}
 
 	@Override
-	public boolean switchTo(String screenName) {
+	public boolean switchTo(String screenName, @Nullable AnimationData animationData) {
 		Fragment currentFragment = getCurrentFragment();
 
 		Fragment newFragment = mFragmentManager.findFragmentByTag(screenName);
@@ -76,7 +78,7 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 		}
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
-		TransitionAnimation animation = currentFragment != null ? getAnimation(currentFragment.getTag(), screenName) : TransitionAnimation.DEFAULT;
+		TransitionAnimation animation = currentFragment != null ? getAnimation(currentFragment.getTag(), screenName, animationData) : TransitionAnimation.DEFAULT;
 
 		if (currentFragment != null) {
 			animation.applyBeforeFragmentTransactionExecuted(transaction, newFragment, currentFragment);
@@ -99,7 +101,9 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	}
 
 	@Override
-	public @Nullable String getCurrentScreenName() {
+	public
+	@Nullable
+	String getCurrentScreenName() {
 		Fragment currentFragment = getCurrentFragment();
 		return currentFragment != null ? currentFragment.getTag() : null;
 	}

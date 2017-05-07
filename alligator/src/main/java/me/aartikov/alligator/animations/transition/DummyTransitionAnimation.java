@@ -16,7 +16,7 @@ import me.aartikov.alligator.TransitionAnimation;
  */
 
 /**
- * Transition animation that does nothing.
+ * Transition animation that leaves a default animation behavior for activities and fragments.
  */
 public class DummyTransitionAnimation implements TransitionAnimation {
 	@Override

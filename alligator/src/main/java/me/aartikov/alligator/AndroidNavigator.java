@@ -174,7 +174,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 */
 	@Override
 	public void switchTo(String screenName) {
-		executeCommand(new SwitchToCommand(screenName));
+		executeCommand(new SwitchToCommand(screenName, null));
+	}
+
+	@Override
+	public void switchTo(String screenName, AnimationData animationData) {
+		executeCommand(new SwitchToCommand(screenName, animationData));
 	}
 
 	protected void executeCommand(Command command) {

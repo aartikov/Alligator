@@ -46,7 +46,10 @@ public class ReplaceCommand implements Command {
 				Activity activity = navigationContext.getActivity();
 				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
-				ScreenClassUtils.putPreviousScreenClass(intent, ScreenClassUtils.getPreviousScreenClass(activity));
+				Class<? extends Screen> previousScreenClass = ScreenClassUtils.getPreviousScreenClass(activity);
+				if(previousScreenClass != null) {
+					ScreenClassUtils.putPreviousScreenClass(intent, previousScreenClass);
+				}
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				if (!activityHelper.resolve(intent)) {

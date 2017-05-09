@@ -1,18 +1,18 @@
 package me.aartikov.alligator;
 
+import android.support.annotation.Nullable;
+
 /**
- * Date: 26.02.2017
- * Time: 18:51
+ * Date: 09.05.2017
+ * Time: 16:06
  *
  * @author Artur Artikov
  */
 
-import android.support.annotation.Nullable;
-
 /**
- * Interface for navigation listening.
+ * Interface for listening of screen transition.
  */
-public interface NavigationListener {
+public interface TransitionListener {
 	/**
 	 * Called when a transition from one screen to another has been executed.
 	 *
@@ -22,19 +22,4 @@ public interface NavigationListener {
 	 * @param isActivity      true if the screens involved in the transition are represented by activities
 	 */
 	void onScreenTransition(TransitionType transitionType, @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo, boolean isActivity);
-
-	/**
-	 * Called when a dialog was shown.
-	 *
-	 * @param screenClass class of a screen that represents a dialog.
-	 */
-	void onDialogShown(Class<? extends Screen> screenClass);
-
-	/**
-	 * Called after a screen has been switched.
-	 *
-	 * @param screenNameFrom name of the screen that disappears during a switching or {@code null} if there was no current screen before switching
-	 * @param screenNameTo   name of the screen that appears during a switching
-	 */
-	void onScreenSwitched(@Nullable String screenNameFrom, String screenNameTo);
 }

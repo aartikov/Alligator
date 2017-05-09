@@ -62,7 +62,7 @@ public class ReplaceCommand implements Command {
 
 				activityHelper.start(intent, animation);
 				activityHelper.finish(animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, true);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -84,7 +84,7 @@ public class ReplaceCommand implements Command {
 				}
 
 				fragmentStack.replace(fragment, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, false);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 
@@ -97,7 +97,7 @@ public class ReplaceCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				dialogFragmentHelper.showDialog(dialogFragment, animation);
-				navigationContext.getNavigationListener().onDialogShown(mScreen.getClass());
+				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 				return true;
 
 			default:

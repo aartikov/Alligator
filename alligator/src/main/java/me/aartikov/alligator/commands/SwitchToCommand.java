@@ -34,11 +34,15 @@ public class SwitchToCommand implements Command {
 		}
 
 		String previousScreenName = screenSwitcher.getCurrentScreenName();
+		if(previousScreenName != null && previousScreenName.equals(mScreenName)) {
+			return true;
+		}
+
 		boolean success = screenSwitcher.switchTo(mScreenName, mAnimationData);
 		if (!success) {
 			throw new CommandExecutionException(this, "Unknown screen name " + mScreenName);
 		}
-		navigationContext.getNavigationListener().onScreenSwitched(previousScreenName, mScreenName);
+		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreenName, mScreenName);
 		return true;
 	}
 }

@@ -20,6 +20,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.ScreenSwitchingListener;
 import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
 import me.aartikov.alligator.screenswitchers.FactoryFragmentScreenSwitcher;
@@ -31,7 +32,7 @@ import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
  *
  * @author Artur Artikov
  */
-public class MainActivity extends AppCompatActivity implements OnTabSelectListener {
+public class MainActivity extends AppCompatActivity implements OnTabSelectListener, ScreenSwitchingListener {
 	private static final String ANDROID_SCREEN_NAME = "ANDROID";
 	private static final String BUG_SCREEN_NAME = "BUG";
 	private static final String DOG_SCREEN_NAME = "DOG";
@@ -83,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		mNavigator.switchTo(mTabsInfo.getScreenName(tabId));
 	}
 
+	@Override
+	public void onScreenSwitched(@Nullable String screenNameFrom, String screenNameTo) {
+		bindNavigationContext();
+		selectTab(mTabsInfo.getTabId(screenNameTo));
+	}
+
 	private void initTabsInfo() {
 		mTabsInfo = new TabsInfo();
 		mTabsInfo.add(ANDROID_SCREEN_NAME, R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
@@ -107,12 +114,6 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 					return new SimpleTransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
 				}
 			}
-
-			@Override
-			protected void onScreenSwitched(String screenName) {
-				bindNavigationContext();
-				selectTab(mTabsInfo.getTabId(screenName));
-			}
 		};
 	}
 
@@ -120,11 +121,11 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
 		NavigationContext.Builder builder = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
+				.screenSwitcherListener(this)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
-			builder
-					.containerId(((ContainerIdProvider) fragment).getContainerId())
+			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
 					.fragmentManager(fragment.getChildFragmentManager());
 		}
 

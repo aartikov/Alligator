@@ -41,14 +41,6 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 	protected abstract Fragment createFragment(String screenName);
 
 	/**
-	 * Screen switching callback. Called after a screen has been switched.
-	 *
-	 * @param screenName name of a new screen
-	 */
-	protected void onScreenSwitched(String screenName) {
-	}
-
-	/**
 	 * Return a {@link TransitionAnimation} that will be used for a screen transition. Can be overridden for animation configuring.
 	 *
 	 * @param screenNameFrom name of the screen that disappears during a switching
@@ -73,10 +65,6 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 			}
 		}
 
-		if (currentFragment == newFragment) {
-			return true;
-		}
-
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		TransitionAnimation animation = currentFragment != null ? getAnimation(currentFragment.getTag(), screenName, animationData) : TransitionAnimation.DEFAULT;
 
@@ -96,7 +84,6 @@ public abstract class FragmentScreenSwitcher implements ScreenSwitcher {
 		if (currentFragment != null) {
 			animation.applyAfterFragmentTransactionExecuted(newFragment, currentFragment);
 		}
-		onScreenSwitched(screenName);
 		return true;
 	}
 

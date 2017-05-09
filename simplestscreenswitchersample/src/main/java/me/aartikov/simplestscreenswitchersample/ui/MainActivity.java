@@ -2,6 +2,7 @@ package me.aartikov.simplestscreenswitchersample.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.roughike.bottombar.BottomBar;
@@ -13,6 +14,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.ScreenSwitchingListener;
 import me.aartikov.alligator.screenswitchers.FactoryFragmentScreenSwitcher;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 import me.aartikov.simplestscreenswitchersample.R;
@@ -25,7 +27,7 @@ import me.aartikov.simplestscreenswitchersample.screens.TabScreen;
  *
  * @author Artur Artikov
  */
-public class MainActivity extends AppCompatActivity implements OnTabSelectListener {
+public class MainActivity extends AppCompatActivity implements OnTabSelectListener, ScreenSwitchingListener {
 	private static final String ANDROID_SCREEN_NAME = "ANDROID";
 	private static final String BUG_SCREEN_NAME = "BUG";
 	private static final String DOG_SCREEN_NAME = "DOG";
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
+				.screenSwitcherListener(this)
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}
@@ -80,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		mNavigator.switchTo(mTabsInfo.getScreenName(tabId));
 	}
 
+	@Override
+	public void onScreenSwitched(@Nullable String screenNameFrom, String screenNameTo) {
+		selectTab(mTabsInfo.getTabId(screenNameTo));
+	}
+
 	private void initTabsInfo() {
 		mTabsInfo = new TabsInfo();
 		mTabsInfo.add(ANDROID_SCREEN_NAME, R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
@@ -92,11 +100,6 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 			@Override
 			protected Screen getScreen(String screenName) {
 				return mTabsInfo.getScreen(screenName);
-			}
-
-			@Override
-			protected void onScreenSwitched(String screenName) {
-				selectTab(mTabsInfo.getTabId(screenName));
 			}
 		};
 	}

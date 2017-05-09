@@ -63,7 +63,7 @@ public class FinishCommand implements Command {
 
 		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 		activityHelper.finish(animation);
-		navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 		return false;
 	}
 }

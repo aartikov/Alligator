@@ -60,7 +60,7 @@ public class BackToCommand implements Command {
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				activityHelper.start(intent, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -91,7 +91,7 @@ public class BackToCommand implements Command {
 				}
 
 				fragmentStack.popUntil(fragment, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 

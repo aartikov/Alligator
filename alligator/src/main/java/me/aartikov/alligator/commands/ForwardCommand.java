@@ -66,7 +66,7 @@ public class ForwardCommand implements Command {
 				} else {
 					activityHelper.start(intent, animation);
 				}
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -92,7 +92,7 @@ public class ForwardCommand implements Command {
 				}
 
 				fragmentStack.push(fragment, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 
@@ -100,7 +100,7 @@ public class ForwardCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
-				navigationContext.getNavigationListener().onDialogShown(mScreen.getClass());
+				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 				return true;
 			}
 

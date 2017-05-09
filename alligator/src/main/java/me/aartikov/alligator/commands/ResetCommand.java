@@ -61,7 +61,7 @@ public class ResetCommand implements Command {
 				}
 
 				activityHelper.start(intent, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, true);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
@@ -83,7 +83,7 @@ public class ResetCommand implements Command {
 				}
 
 				fragmentStack.reset(fragment, animation);
-				navigationContext.getNavigationListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, false);
+				navigationContext.getTransitionListener().onScreenTransition(TransitionType.RESET, screenClassFrom, screenClassTo, false);
 				return true;
 			}
 
@@ -96,7 +96,7 @@ public class ResetCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				dialogFragmentHelper.showDialog(dialogFragment, animation);
-				navigationContext.getNavigationListener().onDialogShown(mScreen.getClass());
+				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 				return true;
 
 			default:

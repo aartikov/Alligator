@@ -1,12 +1,11 @@
 package me.aartikov.simplestscreenswitchersample.ui;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +26,7 @@ import me.aartikov.simplestscreenswitchersample.screens.TabScreen;
  *
  * @author Artur Artikov
  */
-public class MainActivity extends AppCompatActivity implements OnTabSelectListener, ScreenSwitchingListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
 	private static final String ANDROID_SCREEN_NAME = "ANDROID";
 	private static final String BUG_SCREEN_NAME = "BUG";
 	private static final String DOG_SCREEN_NAME = "DOG";
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@BindView(R.id.bottom_bar)
-	BottomBar mBottomBar;
+	BottomNavigationView mBottomBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
-		mBottomBar.setOnTabSelectListener(this, false);
+		mBottomBar.setOnNavigationItemSelectedListener(this);
 		initTabsInfo();
 		initScreenSwitcher();
 
@@ -79,13 +78,16 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 	}
 
 	@Override
-	public void onTabSelected(@IdRes int tabId) {
-		mNavigator.switchTo(mTabsInfo.getScreenName(tabId));
+	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+		String screenName = mTabsInfo.getScreenName(item.getItemId());
+		mNavigator.switchTo(screenName);
+		return false;
 	}
 
 	@Override
 	public void onScreenSwitched(@Nullable String screenNameFrom, String screenNameTo) {
-		selectTab(mTabsInfo.getTabId(screenNameTo));
+		int tabId = mTabsInfo.getTabId(screenNameTo);
+		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 	}
 
 	private void initTabsInfo() {
@@ -102,11 +104,5 @@ public class MainActivity extends AppCompatActivity implements OnTabSelectListen
 				return mTabsInfo.getScreen(screenName);
 			}
 		};
-	}
-
-	private void selectTab(@IdRes int tabId) {
-		mBottomBar.setOnTabSelectListener(null);    // workaround to don't call listener
-		mBottomBar.selectTabWithId(tabId);
-		mBottomBar.setOnTabSelectListener(this, false);
 	}
 }

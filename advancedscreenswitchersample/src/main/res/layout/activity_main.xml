@@ -11,9 +11,9 @@
 		android:layout_height="0dp"
 		android:layout_weight="1" />
 
-	<com.roughike.bottombar.BottomBar
+	<android.support.design.widget.BottomNavigationView
 		android:id="@+id/bottom_bar"
 		android:layout_width="match_parent"
-		android:layout_height="60dp"
-		app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
+		android:layout_height="wrap_content"
+		app:menu="@menu/bottom_bar_tabs" />
 </LinearLayout>

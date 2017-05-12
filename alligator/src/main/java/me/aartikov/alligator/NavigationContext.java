@@ -1,5 +1,6 @@
 package me.aartikov.alligator;
 
+import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -123,7 +124,7 @@ public class NavigationContext {
 		 * @param containerId container id for fragments
 		 * @return this object
 		 */
-		public Builder containerId(int containerId) {
+		public Builder containerId(@IdRes int containerId) {
 			mContainerId = containerId;
 			return this;
 		}
@@ -201,7 +202,7 @@ public class NavigationContext {
 		 * @param screenSwitchingListener screen switcher listener. By default a listener that does nothing is used.
 		 * @return this object
 		 */
-		public Builder screenSwitcherListener(ScreenSwitchingListener screenSwitchingListener) {
+		public Builder screenSwitchingListener(ScreenSwitchingListener screenSwitchingListener) {
 			mScreenSwitchingListener = screenSwitchingListener;
 			return this;
 		}

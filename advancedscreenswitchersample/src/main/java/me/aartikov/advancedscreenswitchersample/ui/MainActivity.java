@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
 		NavigationContext.Builder builder = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
-				.screenSwitcherListener(this)
+				.screenSwitchingListener(this)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		if (fragment != null && fragment instanceof ContainerIdProvider) {

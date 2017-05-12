@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
-				.screenSwitcherListener(this)
+				.screenSwitchingListener(this)
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}

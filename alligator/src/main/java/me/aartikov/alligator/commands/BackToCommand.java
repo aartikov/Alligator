@@ -99,7 +99,7 @@ public class BackToCommand implements Command {
 				throw new CommandExecutionException(this, "BackTo command is not supported for dialog fragments.");
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not unknown.");
+				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is unknown.");
 		}
 	}
 }

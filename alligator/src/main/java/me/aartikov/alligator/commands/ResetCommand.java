@@ -100,7 +100,7 @@ public class ResetCommand implements Command {
 				return true;
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not unknown.");
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is unknown.");
 		}
 	}
 }

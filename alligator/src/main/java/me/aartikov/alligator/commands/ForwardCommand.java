@@ -108,7 +108,7 @@ public class ForwardCommand implements Command {
 			}
 
 			default:
-				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is not unknown.");
+				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is unknown.");
 		}
 	}
 }

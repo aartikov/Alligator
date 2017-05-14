@@ -8,7 +8,7 @@ package me.aartikov.alligator;
  */
 
 /**
- * Iterface with navigation methods.
+ * Interface with navigation methods.
  */
 public interface Navigator {
 	/**
@@ -111,17 +111,17 @@ public interface Navigator {
 	void finishWithResult(ScreenResult screenResult, AnimationData animationData);
 
 	/**
-	 * Switches screens by a name.
+	 * Switches screen.
 	 *
-	 * @param screenName screen name
+	 * @param screen screen for switching to. A screen must have {@code equals()} and {@code hashCode()} correctly overridden because it can be used as a key internally.
 	 */
-	void switchTo(String screenName);
+	void switchTo(Screen screen);
 
 	/**
 	 * {@code switchTo} with an animation data.
 	 *
-	 * @param screenName    screen name
+	 * @param screen         for switching to. A screen must have {@code equals()} and {@code hashCode()} correctly overridden because it can be used as a key internally.
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void switchTo(String screenName, AnimationData animationData);
+	void switchTo(Screen screen, AnimationData animationData);
 }

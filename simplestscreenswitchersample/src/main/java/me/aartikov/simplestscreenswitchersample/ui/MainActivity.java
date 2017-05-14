@@ -1,5 +1,9 @@
 package me.aartikov.simplestscreenswitchersample.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +18,6 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenSwitchingListener;
-import me.aartikov.alligator.screenswitchers.FactoryFragmentScreenSwitcher;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 import me.aartikov.simplestscreenswitchersample.R;
 import me.aartikov.simplestscreenswitchersample.SampleApplication;
@@ -27,14 +30,11 @@ import me.aartikov.simplestscreenswitchersample.screens.TabScreen;
  * @author Artur Artikov
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
-	private static final String ANDROID_SCREEN_NAME = "ANDROID";
-	private static final String BUG_SCREEN_NAME = "BUG";
-	private static final String DOG_SCREEN_NAME = "DOG";
-
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
-	private TabsInfo mTabsInfo;
 	private FragmentScreenSwitcher mScreenSwitcher;
+	@SuppressLint("UseSparseArrays")
+	private Map<Integer, Screen> mScreenMap = new HashMap<>();
 
 	@BindView(R.id.bottom_bar)
 	BottomNavigationView mBottomBar;
@@ -48,12 +48,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		ButterKnife.bind(this);
 
 		mBottomBar.setOnNavigationItemSelectedListener(this);
-		initTabsInfo();
-		initScreenSwitcher();
+		initScreenMap();
+		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container);
 
 		if (savedInstanceState == null) {
-			mNavigator.switchTo(ANDROID_SCREEN_NAME);
+			mNavigator.switchTo(getScreen(R.id.tab_android));
 		}
+	}
+
+	private void initScreenMap() {
+		mScreenMap.put(R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
+		mScreenMap.put(R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
+		mScreenMap.put(R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
 	}
 
 	@Override
@@ -73,36 +79,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	}
 
 	@Override
-	public void onBackPressed() {
-		mNavigator.goBack();
-	}
-
-	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		String screenName = mTabsInfo.getScreenName(item.getItemId());
-		mNavigator.switchTo(screenName);
+		Screen screen = getScreen(item.getItemId());
+		mNavigator.switchTo(screen);
 		return false;
 	}
 
 	@Override
-	public void onScreenSwitched(@Nullable String screenNameFrom, String screenNameTo) {
-		int tabId = mTabsInfo.getTabId(screenNameTo);
+	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
+		int tabId = getTabId(screenTo);
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 	}
 
-	private void initTabsInfo() {
-		mTabsInfo = new TabsInfo();
-		mTabsInfo.add(ANDROID_SCREEN_NAME, R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
-		mTabsInfo.add(BUG_SCREEN_NAME, R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
-		mTabsInfo.add(DOG_SCREEN_NAME, R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
+	@Override
+	public void onBackPressed() {
+		mNavigator.goBack();
 	}
 
-	private void initScreenSwitcher() {
-		mScreenSwitcher = new FactoryFragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, SampleApplication.getNavigationFactory()) {
-			@Override
-			protected Screen getScreen(String screenName) {
-				return mTabsInfo.getScreen(screenName);
+	private Screen getScreen(int tabId) {
+		return mScreenMap.get(tabId);
+	}
+
+	private int getTabId(Screen screen) {
+		for(Map.Entry<Integer, Screen> entry: mScreenMap.entrySet()) {
+			if(screen.equals(entry.getValue())) {
+				return entry.getKey();
 			}
-		};
+		}
+		return -1;
 	}
 }

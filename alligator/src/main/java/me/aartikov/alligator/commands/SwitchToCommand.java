@@ -4,8 +4,10 @@ import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenSwitcher;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 
 /**
  * Date: 29.12.2016
@@ -18,11 +20,11 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
  * Command implementation for {@code switchTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
 public class SwitchToCommand implements Command {
-	private String mScreenName;
+	private Screen mScreen;
 	private AnimationData mAnimationData;
 
-	public SwitchToCommand(String screenName, AnimationData animationData) {
-		mScreenName = screenName;
+	public SwitchToCommand(Screen screen, AnimationData animationData) {
+		mScreen = screen;
 		mAnimationData = animationData;
 	}
 
@@ -33,16 +35,17 @@ public class SwitchToCommand implements Command {
 			throw new CommandExecutionException(this, "ScreenSwitcher is not set.");
 		}
 
-		String previousScreenName = screenSwitcher.getCurrentScreenName();
-		if(previousScreenName != null && previousScreenName.equals(mScreenName)) {
+		Screen previousScreen = screenSwitcher.getCurrentScreen();
+		if(previousScreen != null && previousScreen.equals(mScreen)) {
 			return true;
 		}
 
-		boolean success = screenSwitcher.switchTo(mScreenName, mAnimationData);
-		if (!success) {
-			throw new CommandExecutionException(this, "Unknown screen name " + mScreenName);
+		try {
+			screenSwitcher.switchTo(mScreen, mAnimationData);
+		} catch (ScreenSwitchingException e) {
+			throw new CommandExecutionException(this, e.getMessage());
 		}
-		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreenName, mScreenName);
+		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
 		return true;
 	}
 }

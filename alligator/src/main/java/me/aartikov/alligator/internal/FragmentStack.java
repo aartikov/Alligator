@@ -65,8 +65,7 @@ public class FragmentStack {
 	}
 
 	public Fragment getCurrentFragment() {
-		List<Fragment> fragments = getFragments();
-		return fragments.isEmpty() ? null : fragments.get(fragments.size() - 1);
+		return mFragmentManager.findFragmentById(mContainerId);
 	}
 
 	public void pop(TransitionAnimation animation) {

@@ -4,7 +4,6 @@ import android.app.Application;
 
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
 
@@ -33,9 +32,5 @@ public class SampleApplication extends Application {
 
 	public static ScreenResolver getScreenResolver() {
 		return sAndroidNavigator.getScreenResolver();
-	}
-
-	public static NavigationFactory getNavigationFactory() {
-		return sAndroidNavigator.getNavigationFactory();
 	}
 }

@@ -9,24 +9,26 @@ package me.aartikov.alligator;
 
 import android.support.annotation.Nullable;
 
+import me.aartikov.alligator.exceptions.ScreenSwitchingException;
+
 /**
- * Interface for switching screens by its names.
+ * Object for switching between several screens without theirs recreation.
  */
 public interface ScreenSwitcher {
 	/**
-	 * Switches to a screen with the given name
+	 * Switches to a given screen.
 	 *
-	 * @param screenName    screen name
+	 * @param screen        screen
 	 * @param animationData animation data for an additional animation configuring
-	 * @return true on success, false on fail
+	 * @throws me.aartikov.alligator.exceptions.ScreenSwitchingException on fail
 	 */
-	boolean switchTo(String screenName, @Nullable AnimationData animationData);
+	void switchTo(Screen screen, @Nullable AnimationData animationData) throws ScreenSwitchingException;
 
 	/**
-	 * Returns a name of a current screen.
+	 * Returns a current screen.
 	 *
-	 * @return a name of a current screen or {@code null} if there is no current screen.
+	 * @return current screen or {@code null} if there is no current screen.
 	 */
 	@Nullable
-	String getCurrentScreenName();
+	Screen getCurrentScreen();
 }

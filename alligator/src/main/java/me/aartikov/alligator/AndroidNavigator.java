@@ -55,6 +55,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	public void bind(NavigationContext navigationContext) {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
+		setNavigationFactoryToScreenSwitcher();
 		executeQueuedCommands();
 	}
 
@@ -168,18 +169,18 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	/**
-	 * Switches screens by a name with a screen switcher. Implemented with {@link SwitchToCommand}.
+	 * Switches screen with a screen switcher. Implemented with {@link SwitchToCommand}.
 	 *
-	 * @param screenName screen name
+	 * @param screen screen
 	 */
 	@Override
-	public void switchTo(String screenName) {
-		executeCommand(new SwitchToCommand(screenName, null));
+	public void switchTo(Screen screen) {
+		executeCommand(new SwitchToCommand(screen, null));
 	}
 
 	@Override
-	public void switchTo(String screenName, AnimationData animationData) {
-		executeCommand(new SwitchToCommand(screenName, animationData));
+	public void switchTo(Screen screen, AnimationData animationData) {
+		executeCommand(new SwitchToCommand(screen, animationData));
 	}
 
 	protected void executeCommand(Command command) {
@@ -210,6 +211,17 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			throw e;
 		} finally {
 			mIsExecutingCommands = false;
+		}
+	}
+
+	private void setNavigationFactoryToScreenSwitcher() {
+		if (mNavigationContext == null) {
+			return;
+		}
+
+		ScreenSwitcher screenSwitcher = mNavigationContext.getScreenSwitcher();
+		if (screenSwitcher instanceof NavigationFactorySetter) {
+			((NavigationFactorySetter) screenSwitcher).setNavigationFactory(mNavigationFactory);
 		}
 	}
 

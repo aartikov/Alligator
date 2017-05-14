@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
@@ -72,11 +73,15 @@ public class ScreenForResultRegistry {
 				if (screenResult == null) {
 					return new ActivityResult(Activity.RESULT_CANCELED, null);
 				}
-				if (!(screenResult instanceof Serializable)) {
-					throw new IllegalArgumentException("Screen result " + screenResult.getClass().getCanonicalName() + " should be Serializable.");
-				}
+
 				Intent data = new Intent();
-				data.putExtra(KEY_SCREEN_RESULT, (Serializable) screenResult);
+				if (screenResult instanceof Serializable) {
+					data.putExtra(KEY_SCREEN_RESULT, (Serializable) screenResult);
+				} else if (screenResult instanceof Parcelable) {
+					data.putExtra(KEY_SCREEN_RESULT, (Parcelable) screenResult);
+				} else {
+					throw new IllegalArgumentException("Screen result " + screenResult.getClass().getCanonicalName() + " should be Serializable or Parcelable.");
+				}
 				return new ActivityResult(Activity.RESULT_OK, data);
 			}
 		};
@@ -89,11 +94,13 @@ public class ScreenForResultRegistry {
 			public ScreenResultT call(ActivityResult activityResult) {
 				if (activityResult.getIntent() == null || activityResult.getResultCode() != Activity.RESULT_OK) {
 					return null;
+				} else if (Serializable.class.isAssignableFrom(screenResultClass)) {
+					return (ScreenResultT) activityResult.getIntent().getSerializableExtra(KEY_SCREEN_RESULT);
+				} else if (Parcelable.class.isAssignableFrom(screenResultClass)) {
+					return (ScreenResultT) activityResult.getIntent().getParcelableExtra(KEY_SCREEN_RESULT);
+				} else {
+					throw new IllegalArgumentException("Screen result " + screenResultClass.getCanonicalName() + " should be Serializable or Parcelable.");
 				}
-				if (!Serializable.class.isAssignableFrom(screenResultClass)) {
-					throw new IllegalArgumentException("Screen result " + screenResultClass.getCanonicalName() + " should be Serializable.");
-				}
-				return (ScreenResultT) activityResult.getIntent().getSerializableExtra(KEY_SCREEN_RESULT);
 			}
 		};
 	}

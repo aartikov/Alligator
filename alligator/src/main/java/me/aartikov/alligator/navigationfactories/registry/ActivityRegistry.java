@@ -7,6 +7,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.functions.Function;
@@ -63,6 +64,8 @@ public class ActivityRegistry {
 				Intent intent = new Intent(context, activityClass);
 				if (screen instanceof Serializable) {
 					intent.putExtra(KEY_SCREEN, (Serializable) screen);
+				} else if (screen instanceof Parcelable) {
+					intent.putExtra(KEY_SCREEN, (Parcelable) screen);
 				}
 				return intent;
 			}
@@ -74,10 +77,13 @@ public class ActivityRegistry {
 			@Override
 			@SuppressWarnings("unchecked")
 			public ScreenT call(Intent intent) {
-				if (!Serializable.class.isAssignableFrom(screenClass)) {
-					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable.");
+				if (Serializable.class.isAssignableFrom(screenClass)) {
+					return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
+				} else if (Parcelable.class.isAssignableFrom(screenClass)) {
+					return (ScreenT) intent.getParcelableExtra(KEY_SCREEN);
+				} else {
+					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable or Parcelable.");
 				}
-				return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
 			}
 		};
 	}

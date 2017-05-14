@@ -52,7 +52,7 @@ public class ScreenClassUtils {
 			arguments = new Bundle();
 			fragment.setArguments(arguments);
 		}
-		arguments.putSerializable(KEY_SCREEN_CLASS_NAME, screenClass.getName());
+		arguments.putString(KEY_SCREEN_CLASS_NAME, screenClass.getName());
 	}
 
 	@SuppressWarnings("unchecked")

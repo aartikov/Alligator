@@ -76,12 +76,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	/**
 	 * Register a screen represented by an activity using a default intent creation function and a default screen getting function.
 	 * <p>
-	 * A default intent creation function creates an intent that starts an activity of the class {@code activityClass}. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable}.
+	 * A default intent creation function creates an intent that starts an activity of the class {@code activityClass}. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
 	 * <p>
-	 * A default screen getting function gets a screen from the intent's extra if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 * A default screen getting function gets a screen from the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable} and throws {@code IllegalArgumentException} otherwise.
 	 *
 	 * @param <ScreenT>     screen type
-	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the started activity.
+	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} or {@code Parcelable} if it contains a data that should be passed to the started activity.
 	 * @param activityClass class of the activity that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
@@ -122,12 +122,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	/**
 	 * Registers a screen represented by a fragment using a default fragment creation function and a default screen getting function.
 	 * <p>
-	 * A default fragment creation function creates a fragment of the class {@code fragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable}.
+	 * A default fragment creation function creates a fragment of the class {@code fragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
 	 * <p>
-	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable} and throws {@code IllegalArgumentException} otherwise.
 	 *
 	 * @param <ScreenT>     screen type
-	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the created fragment.
+	 * @param screenClass   screen class. {@code ScreenT} should be {@code Serializable} or {@code Parcelable} if it contains a data that should be passed to the created fragment.
 	 * @param fragmentClass class of the fragment that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
@@ -168,12 +168,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	/**
 	 * Registers a screen represented by a dialog fragment using a default dialog fragment creation function and a default screen getting function.
 	 * <p>
-	 * A default dialog fragment creation function creates a dialog fragment of the class {@code dialogFragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable}.
+	 * A default dialog fragment creation function creates a dialog fragment of the class {@code dialogFragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
 	 * <p>
-	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} and throws {@code IllegalArgumentException} otherwise.
+	 * A default screen getting function gets a screen from the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable} and throws {@code IllegalArgumentException} otherwise.
 	 *
 	 * @param <ScreenT>           screen type
-	 * @param screenClass         screen class. {@code ScreenT} should be {@code Serializable} if it contains a data that should be passed to the created dialog fragment.
+	 * @param screenClass         screen class. {@code ScreenT} should be {@code Serializable} or {@code Parcelable} if it contains a data that should be passed to the created dialog fragment.
 	 * @param dialogFragmentClass class of the dialog fragment that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
@@ -231,8 +231,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 *
 	 * @param <ScreenResultT>   screen result type
 	 * @param screenClass       screen class
-	 * @param screenResultClass class of the result that the screen can return. {@code ScreenT} must be {@code Serializable}.
-	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity, or if the screen result is not {@code Sezializable}
+	 * @param screenResultClass class of the result that the screen can return. {@code ScreenT} must be {@code Serializable} or {@code Parcelable}.
+	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity, or if the screen result is not {@code Serializable} or {@code Parcelable}
 	 */
 	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
 		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getDefaultActivityResultCreationFunction(screenResultClass), ScreenForResultRegistry.getDefaultScreenResultGettingFunction(screenResultClass));

@@ -13,7 +13,7 @@ import me.aartikov.alligator.ScreenResult;
  */
 public class MessageInputScreen implements Screen {
 
-	// It is convenient to declare a screen result as static inner class of the screen
+	// It is convenient to declare a screen result as a static inner class of the screen.
 	public static class Result implements ScreenResult, Serializable {
 		private String mMessage;
 

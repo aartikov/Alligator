@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
@@ -57,6 +58,10 @@ public class DialogFragmentRegistry {
 						Bundle arguments = new Bundle();
 						arguments.putSerializable(KEY_SCREEN, (Serializable) screen);
 						dialogFragment.setArguments(arguments);
+					} else if(screen instanceof Parcelable) {
+						Bundle arguments = new Bundle();
+						arguments.putParcelable(KEY_SCREEN, (Parcelable)screen);
+						dialogFragment.setArguments(arguments);
 					}
 					return dialogFragment;
 				} catch (InstantiationException e) {
@@ -75,13 +80,15 @@ public class DialogFragmentRegistry {
 			@Override
 			@SuppressWarnings("unchecked")
 			public ScreenT call(DialogFragment dialogFragment) {
-				if (!Serializable.class.isAssignableFrom(screenClass)) {
-					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable.");
-				}
 				if (dialogFragment.getArguments() == null) {
-					return null;
+					throw new IllegalArgumentException("Dialog fragment has no arguments.");
+				} else if (Serializable.class.isAssignableFrom(screenClass)) {
+					return (ScreenT) dialogFragment.getArguments().getSerializable(KEY_SCREEN);
+				} else if (Parcelable.class.isAssignableFrom(screenClass)) {
+					return (ScreenT) dialogFragment.getArguments().getParcelable(KEY_SCREEN);
+				} else {
+					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable or Parcelable.");
 				}
-				return (ScreenT) dialogFragment.getArguments().getSerializable(KEY_SCREEN);
 			}
 		};
 	}

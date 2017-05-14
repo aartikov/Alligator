@@ -32,7 +32,6 @@ public class MessageActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
 		ButterKnife.bind(this);
-
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 

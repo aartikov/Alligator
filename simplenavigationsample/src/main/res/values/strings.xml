@@ -1,4 +1,12 @@
 <resources>
 	<string name="app_name">Simple Navigation Sample</string>
+	
+	<string name="first_screen">First screen</string>
+	<string name="next">Next</string>
 	<string name="show_message">Show message</string>
+	
+	<string name="second_screen">Second screen</string>
+	<string name="previous">Previous</string>
+	
+	<string name="meassage_screen">Message screen</string>
 </resources>

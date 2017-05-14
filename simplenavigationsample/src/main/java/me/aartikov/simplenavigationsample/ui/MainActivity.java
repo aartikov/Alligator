@@ -2,16 +2,13 @@ package me.aartikov.simplenavigationsample.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
-import me.aartikov.simplenavigationsample.screens.MessageScreen;
+import me.aartikov.simplenavigationsample.screens.FirstScreen;
 
 /**
  * Date: 22.01.2016
@@ -23,25 +20,24 @@ public class MainActivity extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
-	@BindView(R.id.show_message_button)
-	Button mShowMessageButton;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
-
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-		mShowMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageScreen("Hello!")));
+		if(savedInstanceState == null) {
+			mNavigator.reset(new FirstScreen());
+		}
 	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		NavigationContext navigationContext = new NavigationContext.Builder(this)
+				.containerId(R.id.main_container)
+				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}
 

@@ -86,6 +86,10 @@ public class FragmentStack {
 			transaction.attach(previousFragment);
 		}
 		transaction.commitNow();
+
+		if (previousFragment != null) {
+			animation.applyAfterFragmentTransactionExecuted(previousFragment, currentFragment);
+		}
 	}
 
 	public void popUntil(Fragment fragment, TransitionAnimation animation) {
@@ -110,6 +114,8 @@ public class FragmentStack {
 		}
 		transaction.attach(fragment);
 		transaction.commitNow();
+
+		animation.applyAfterFragmentTransactionExecuted(fragment, fragments.get(count - 1));
 	}
 
 	public void push(Fragment fragment, TransitionAnimation animation) {
@@ -124,6 +130,10 @@ public class FragmentStack {
 		int index = getFragmentCount();
 		transaction.add(mContainerId, fragment, getFragmentTag(index));
 		transaction.commitNow();
+
+		if (currentFragment != null) {
+			animation.applyAfterFragmentTransactionExecuted(fragment, currentFragment);
+		}
 	}
 
 	public void replace(Fragment fragment, TransitionAnimation animation) {
@@ -139,6 +149,10 @@ public class FragmentStack {
 		int index = count == 0 ? 0 : count - 1;
 		transaction.add(mContainerId, fragment, getFragmentTag(index));
 		transaction.commitNow();
+
+		if (currentFragment != null) {
+			animation.applyAfterFragmentTransactionExecuted(fragment, currentFragment);
+		}
 	}
 
 	public void reset(Fragment fragment, TransitionAnimation animation) {
@@ -155,6 +169,10 @@ public class FragmentStack {
 
 		transaction.add(mContainerId, fragment, getFragmentTag(0));
 		transaction.commitNow();
+
+		if (count > 0) {
+			animation.applyAfterFragmentTransactionExecuted(fragment, fragments.get(count - 1));
+		}
 	}
 
 	private String getFragmentTag(int index) {

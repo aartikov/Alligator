@@ -26,7 +26,8 @@ import me.aartikov.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Screen switcher that switches fragments in a container.
+ * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments.
+ * A NavigationFactory must have valid screen getting functions for passing screens. Screens must have {@code equals()} and {@code hashCode()} correctly overridden.
  */
 public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactorySetter {
 	public interface AnimationProvider {

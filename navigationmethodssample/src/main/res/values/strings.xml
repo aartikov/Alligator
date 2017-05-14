@@ -1,0 +1,11 @@
+<resources>
+	<string name="app_name">Navigation Methods Sample</string>
+	<string name="forward">Forward</string>
+	<string name="replace">Replace</string>
+	<string name="reset">Reset</string>
+	<string name="finish">Finish</string>
+	<string name="back">Back</string>
+	<string name="double_back">Back x 2</string>
+
+	<string name="counter_template">"Counter: %d"</string>
+</resources>

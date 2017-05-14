@@ -1,0 +1,4 @@
+<resources>
+	<string name="app_name">Simple Navigation Sample</string>
+	<string name="show_message">Show message</string>
+</resources>

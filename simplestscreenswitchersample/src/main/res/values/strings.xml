@@ -1,6 +1,0 @@
-<resources>
-	<string name="app_name">Simplest Screen Switcher Sample</string>
-	<string name="tab_android">Android</string>
-	<string name="tab_bug">Bug</string>
-	<string name="tab_dog">Dog</string>
-</resources>

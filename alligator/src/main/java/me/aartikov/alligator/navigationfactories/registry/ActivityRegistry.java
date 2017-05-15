@@ -1,13 +1,11 @@
 package me.aartikov.alligator.navigationfactories.registry;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.functions.Function;
@@ -24,8 +22,6 @@ import me.aartikov.alligator.functions.Function2;
  * Registry for screens represented by activities.
  */
 public class ActivityRegistry {
-	private static final String KEY_SCREEN = "me.aartikov.alligator.navigationfactories.registry.ActivityRegistry.KEY_SCREEN";
-
 	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
 
 	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Class<? extends Activity> activityClass,
@@ -55,46 +51,6 @@ public class ActivityRegistry {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
 		return (ScreenT) element.getScreenGettingFunction().call(intent);
-	}
-
-	public static <ScreenT extends Screen> Function2<Context, ScreenT, Intent> getDefaultIntentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
-		return new Function2<Context, ScreenT, Intent>() {
-			@Override
-			public Intent call(Context context, ScreenT screen) {
-				Intent intent = new Intent(context, activityClass);
-				if (screen instanceof Serializable) {
-					intent.putExtra(KEY_SCREEN, (Serializable) screen);
-				} else if (screen instanceof Parcelable) {
-					intent.putExtra(KEY_SCREEN, (Parcelable) screen);
-				}
-				return intent;
-			}
-		};
-	}
-
-	public static <ScreenT extends Screen> Function<Intent, ScreenT> getDefaultScreenGettingFunction(final Class<ScreenT> screenClass) {
-		return new Function<Intent, ScreenT>() {
-			@Override
-			@SuppressWarnings("unchecked")
-			public ScreenT call(Intent intent) {
-				if (Serializable.class.isAssignableFrom(screenClass)) {
-					return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
-				} else if (Parcelable.class.isAssignableFrom(screenClass)) {
-					return (ScreenT) intent.getParcelableExtra(KEY_SCREEN);
-				} else {
-					throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " should be Serializable or Parcelable.");
-				}
-			}
-		};
-	}
-
-	public static <ScreenT extends Screen> Function<Intent, ScreenT> getNotImplementedScreenGettingFunction(final Class<ScreenT> screenClass) {
-		return new Function<Intent, ScreenT>() {
-			@Override
-			public ScreenT call(Intent intent) {
-				throw new RuntimeException("Screen getting function is not implemented for a screen " + screenClass.getSimpleName());
-			}
-		};
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {

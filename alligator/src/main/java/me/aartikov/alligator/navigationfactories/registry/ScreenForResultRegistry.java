@@ -1,12 +1,7 @@
 package me.aartikov.alligator.navigationfactories.registry;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Parcelable;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
@@ -24,7 +19,6 @@ import me.aartikov.alligator.functions.Function;
  * Registry for screens that can return results.
  */
 public class ScreenForResultRegistry {
-	private static final String KEY_SCREEN_RESULT = "me.aartikov.alligator.navigationfactories.registry.ScreenForResultRegistry.KEY_SCREEN_RESULT";
 	private static final int INITIAL_REQUEST_CODE = 1000;
 
 	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
@@ -64,54 +58,6 @@ public class ScreenForResultRegistry {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
 		return element.getScreenResultGettingFunction().call(activityResult);
-	}
-
-	public static <ScreenResultT extends ScreenResult> Function<ScreenResultT, ActivityResult> getDefaultActivityResultCreationFunction(Class<ScreenResultT> screenResultClass) {
-		return new Function<ScreenResultT, ActivityResult>() {
-			@Override
-			public ActivityResult call(ScreenResultT screenResult) {
-				if (screenResult == null) {
-					return new ActivityResult(Activity.RESULT_CANCELED, null);
-				}
-
-				Intent data = new Intent();
-				if (screenResult instanceof Serializable) {
-					data.putExtra(KEY_SCREEN_RESULT, (Serializable) screenResult);
-				} else if (screenResult instanceof Parcelable) {
-					data.putExtra(KEY_SCREEN_RESULT, (Parcelable) screenResult);
-				} else {
-					throw new IllegalArgumentException("Screen result " + screenResult.getClass().getCanonicalName() + " should be Serializable or Parcelable.");
-				}
-				return new ActivityResult(Activity.RESULT_OK, data);
-			}
-		};
-	}
-
-	public static <ScreenResultT extends ScreenResult> Function<ActivityResult, ScreenResultT> getDefaultScreenResultGettingFunction(final Class<ScreenResultT> screenResultClass) {
-		return new Function<ActivityResult, ScreenResultT>() {
-			@Override
-			@SuppressWarnings("unchecked")
-			public ScreenResultT call(ActivityResult activityResult) {
-				if (activityResult.getIntent() == null || activityResult.getResultCode() != Activity.RESULT_OK) {
-					return null;
-				} else if (Serializable.class.isAssignableFrom(screenResultClass)) {
-					return (ScreenResultT) activityResult.getIntent().getSerializableExtra(KEY_SCREEN_RESULT);
-				} else if (Parcelable.class.isAssignableFrom(screenResultClass)) {
-					return (ScreenResultT) activityResult.getIntent().getParcelableExtra(KEY_SCREEN_RESULT);
-				} else {
-					throw new IllegalArgumentException("Screen result " + screenResultClass.getCanonicalName() + " should be Serializable or Parcelable.");
-				}
-			}
-		};
-	}
-
-	public static <ScreenResultT extends ScreenResult> Function<ScreenResultT, ActivityResult> getNotImplementedActivityResultCreationFunction(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
-		return new Function<ScreenResultT, ActivityResult>() {
-			@Override
-			public ActivityResult call(ScreenResultT screenResult) {
-				throw new RuntimeException("ActivityResult creation function is not implemented for a screen " + screenClass.getSimpleName());
-			}
-		};
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {

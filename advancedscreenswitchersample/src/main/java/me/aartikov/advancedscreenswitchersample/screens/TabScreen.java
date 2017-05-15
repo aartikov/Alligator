@@ -1,7 +1,9 @@
 package me.aartikov.advancedscreenswitchersample.screens;
 
-import java.io.Serializable;
+import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 
+import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.alligator.Screen;
 
 /**
@@ -11,35 +13,33 @@ import me.aartikov.alligator.Screen;
  * @author Artur Artikov
  */
 
-public class TabScreen implements Screen, Serializable {
-	private String mName;
+public enum TabScreen implements Screen {
+	ANDROID(R.id.tab_android, R.string.tab_android),
+	BUG(R.id.tab_bug, R.string.tab_bug),
+	DOG(R.id.tab_dog, R.string.tab_dog);
 
-	public TabScreen(String name) {
-		mName = name;
+	private int id;
+	private int name;
+
+	TabScreen(@IdRes int id, @StringRes int name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	public String getName() {
-		return mName;
+	public @IdRes int getId() {
+		return id;
 	}
 
-	// Override equals() and hashCode(), because this screen is used as a key in a screen switcher.
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
+	public @StringRes int getName() {
+		return name;
+	}
+
+	public static TabScreen getById(@IdRes int id) {
+		for (TabScreen screen : values()) {
+			if (screen.getId() == id) {
+				return screen;
+			}
 		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		TabScreen tabScreen = (TabScreen) o;
-
-		return mName != null ? mName.equals(tabScreen.mName) : tabScreen.mName == null;
-
-	}
-
-	@Override
-	public int hashCode() {
-		return mName != null ? mName.hashCode() : 0;
+		throw new IllegalArgumentException("Unknown id " + id);
 	}
 }

@@ -69,8 +69,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param intentCreationFunction function that returns an intent for starting an activity
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, Class<? extends Activity> activityClass, Function2<Context, ScreenT, Intent> intentCreationFunction) {
-		registerActivity(screenClass, activityClass, intentCreationFunction, ActivityRegistry.getNotImplementedScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, Function2<Context, ScreenT, Intent> intentCreationFunction) {
+		registerActivity(screenClass, activityClass, intentCreationFunction, RegistryFunctions.getNotImplementedIntentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param activityClass class of the activity that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerActivity(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
-		registerActivity(screenClass, activityClass, ActivityRegistry.getDefaultIntentCreationFunction(screenClass, activityClass), ActivityRegistry.getDefaultScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass) {
+		registerActivity(screenClass, activityClass, RegistryFunctions.getDefaultIntentCreationFunction(screenClass, activityClass), RegistryFunctions.getDefaultIntentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -115,8 +115,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param fragmentCreationFunction function that returns a new fragment
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction) {
-		registerFragment(screenClass, fragmentCreationFunction, FragmentRegistry.getNotImplementedScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Function<ScreenT, Fragment> fragmentCreationFunction) {
+		registerFragment(screenClass, fragmentCreationFunction, RegistryFunctions.getNotImplementedFragmentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -131,8 +131,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param fragmentClass class of the fragment that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerFragment(final Class<ScreenT> screenClass, final Class<? extends Fragment> fragmentClass) {
-		registerFragment(screenClass, FragmentRegistry.getDefaultFragmentCreationFunction(screenClass, fragmentClass), FragmentRegistry.getDefaultScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass) {
+		registerFragment(screenClass, RegistryFunctions.getDefaultFragmentCreationFunction(screenClass, fragmentClass), RegistryFunctions.getDefaultFragmentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -161,8 +161,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param dialogFragmentCreationFunction function that returns a new dialog fragment
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction) {
-		registerDialogFragment(screenClass, dialogFragmentCreationFunction, DialogFragmentRegistry.getNotImplementedScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Function<ScreenT, DialogFragment> dialogFragmentCreationFunction) {
+		registerDialogFragment(screenClass, dialogFragmentCreationFunction, RegistryFunctions.getNotImplementedDialogFragmentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -177,8 +177,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param dialogFragmentClass class of the dialog fragment that represents the screen
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerDialogFragment(final Class<ScreenT> screenClass, final Class<? extends DialogFragment> dialogFragmentClass) {
-		registerDialogFragment(screenClass, DialogFragmentRegistry.getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), DialogFragmentRegistry.getDefaultScreenGettingFunction(screenClass));
+	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass) {
+		registerDialogFragment(screenClass, RegistryFunctions.getDefaultDialogFragmentCreationFunction(screenClass, dialogFragmentClass), RegistryFunctions.getDefaultDialogFragmentScreenGettingFunction(screenClass));
 	}
 
 	/**
@@ -213,9 +213,9 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param screenResultGettingFunction function that converts an {@link ActivityResult} to a {@link ScreenResult}
 	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity
 	 */
-	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
+	public <ScreenResultT extends ScreenResult> void registerScreenForResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass,
 	                                                                         Function<ActivityResult, ScreenResultT> screenResultGettingFunction) {
-		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getNotImplementedActivityResultCreationFunction(screenClass, screenResultClass), screenResultGettingFunction);
+		registerScreenForResult(screenClass, screenResultClass, RegistryFunctions.getNotImplementedActivityResultCreationFunction(screenClass, screenResultClass), screenResultGettingFunction);
 	}
 
 	/**
@@ -234,8 +234,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param screenResultClass class of the result that the screen can return. {@code ScreenT} must be {@code Serializable} or {@code Parcelable}.
 	 * @throws IllegalArgumentException if the screen is already registered for result, or if the screen is not represented by an activity, or if the screen result is not {@code Serializable} or {@code Parcelable}
 	 */
-	public <ScreenResultT extends ScreenResult> void registerScreenForResult(final Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
-		registerScreenForResult(screenClass, screenResultClass, ScreenForResultRegistry.getDefaultActivityResultCreationFunction(screenResultClass), ScreenForResultRegistry.getDefaultScreenResultGettingFunction(screenResultClass));
+	public <ScreenResultT extends ScreenResult> void registerScreenForResult(Class<? extends Screen> screenClass, Class<ScreenResultT> screenResultClass) {
+		registerScreenForResult(screenClass, screenResultClass, RegistryFunctions.getDefaultActivityResultCreationFunction(screenResultClass), RegistryFunctions.getDefaultScreenResultGettingFunction(screenResultClass));
 	}
 
 	@Override

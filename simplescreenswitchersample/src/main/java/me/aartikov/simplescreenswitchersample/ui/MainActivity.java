@@ -1,9 +1,5 @@
 package me.aartikov.simplescreenswitchersample.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 	private FragmentScreenSwitcher mScreenSwitcher;
-	@SuppressLint("UseSparseArrays")
-	private Map<Integer, Screen> mScreenMap = new HashMap<>();
 
 	@BindView(R.id.bottom_bar)
 	BottomNavigationView mBottomBar;
@@ -48,18 +42,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		ButterKnife.bind(this);
 
 		mBottomBar.setOnNavigationItemSelectedListener(this);
-		initScreenMap();
 		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container);
 
 		if (savedInstanceState == null) {
-			mNavigator.switchTo(getScreen(R.id.tab_android));
+			mNavigator.switchTo(TabScreen.getById(R.id.tab_android));
 		}
-	}
-
-	private void initScreenMap() {
-		mScreenMap.put(R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
-		mScreenMap.put(R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
-		mScreenMap.put(R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
 	}
 
 	@Override
@@ -80,32 +67,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		Screen screen = getScreen(item.getItemId());
+		Screen screen = TabScreen.getById(item.getItemId());
 		mNavigator.switchTo(screen);
-		return false;
+		return true;
 	}
 
 	@Override
 	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
-		int tabId = getTabId(screenTo);
+		int tabId = ((TabScreen) screenTo).getId();
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 	}
 
 	@Override
 	public void onBackPressed() {
 		mNavigator.goBack();
-	}
-
-	private Screen getScreen(int tabId) {
-		return mScreenMap.get(tabId);
-	}
-
-	private int getTabId(Screen screen) {
-		for(Map.Entry<Integer, Screen> entry: mScreenMap.entrySet()) {
-			if(screen.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		return -1;
 	}
 }

@@ -1,8 +1,5 @@
 package me.aartikov.advancedscreenswitchersample.ui;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 	private FragmentScreenSwitcher mScreenSwitcher;
-	private Map<Integer, Screen> mScreenMap = new LinkedHashMap<>();
 
 	@BindView(R.id.bottom_bar)
 	BottomNavigationView mBottomBar;
@@ -49,25 +45,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		ButterKnife.bind(this);
 
 		mBottomBar.setOnNavigationItemSelectedListener(this);
-		initScreenMap();
-		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, createSwitcherAnimationProvider());
+		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, createScreenSwitcherAnimationProvider());
 
 		if (savedInstanceState == null) {
-			mNavigator.switchTo(getScreen(R.id.tab_android));
+			mNavigator.switchTo(TabScreen.getById(R.id.tab_android));
 		}
 	}
 
-
-	private void initScreenMap() {
-		mScreenMap.put(R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
-		mScreenMap.put(R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
-		mScreenMap.put(R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
-	}
-
-	private FragmentScreenSwitcher.AnimationProvider createSwitcherAnimationProvider() {
+	private FragmentScreenSwitcher.AnimationProvider createScreenSwitcherAnimationProvider() {
 		return (screenFrom, screenTo, animationData) -> {
-			int indexFrom = getTabIndex(screenFrom);
-			int indexTo = getTabIndex(screenTo);
+			int indexFrom = ((TabScreen) screenFrom).ordinal();
+			int indexTo = ((TabScreen) screenTo).ordinal();
 			if (indexTo > indexFrom) {
 				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 			} else {
@@ -95,14 +83,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		Screen screen = getScreen(item.getItemId());
+		Screen screen = TabScreen.getById(item.getItemId());
 		mNavigator.switchTo(screen);
 		return false;
 	}
 
 	@Override
 	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
-		int tabId = getTabId(screenTo);
+		int tabId = ((TabScreen) screenTo).getId();
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 		bindNavigationContext();
 	}
@@ -121,29 +109,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 		mNavigationContextBinder.bind(builder.build());
 	}
-
-	private Screen getScreen(int tabId) {
-		return mScreenMap.get(tabId);
-	}
-
-	private int getTabId(Screen screen) {
-		for (Map.Entry<Integer, Screen> entry : mScreenMap.entrySet()) {
-			if (screen.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		return -1;
-	}
-
-	private int getTabIndex(Screen screen) {
-		int index = 0;
-		for (Map.Entry<Integer, Screen> entry : mScreenMap.entrySet()) {
-			if (screen.equals(entry.getValue())) {
-				return index;
-			}
-			index++;
-		}
-		return -1;
-	}
-
 }

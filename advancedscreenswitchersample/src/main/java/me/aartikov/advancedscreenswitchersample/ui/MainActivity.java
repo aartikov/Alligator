@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
+import me.aartikov.advancedscreenswitchersample.SampleScreenSwitcherAnimationProvider;
 import me.aartikov.advancedscreenswitchersample.SampleTransitionAnimationProvider;
 import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
 import me.aartikov.alligator.NavigationContext;
@@ -19,7 +20,6 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenSwitchingListener;
-import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
 /**
@@ -45,23 +45,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		ButterKnife.bind(this);
 
 		mBottomBar.setOnNavigationItemSelectedListener(this);
-		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, createScreenSwitcherAnimationProvider());
+		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, new SampleScreenSwitcherAnimationProvider());
 
 		if (savedInstanceState == null) {
 			mNavigator.switchTo(TabScreen.getById(R.id.tab_android));
 		}
-	}
-
-	private FragmentScreenSwitcher.AnimationProvider createScreenSwitcherAnimationProvider() {
-		return (screenFrom, screenTo, animationData) -> {
-			int indexFrom = ((TabScreen) screenFrom).ordinal();
-			int indexTo = ((TabScreen) screenTo).ordinal();
-			if (indexTo > indexFrom) {
-				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
-			} else {
-				return new SimpleTransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
-			}
-		};
 	}
 
 	@Override

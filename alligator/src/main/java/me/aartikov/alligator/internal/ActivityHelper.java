@@ -37,7 +37,10 @@ public class ActivityHelper {
 	}
 
 	public void start(Intent intent, TransitionAnimation animation) {
-		startForResult(intent, -1, animation);
+		Bundle optionsBundle = animation.getActivityOptionsBundle(mActivity);
+		animation.applyBeforeActivityStarted(mActivity, intent);
+		ActivityCompat.startActivity(mActivity, intent, optionsBundle);
+		animation.applyAfterActivityStarted(mActivity);
 	}
 
 	public void startForResult(Intent intent, int requestCode, TransitionAnimation animation) {
@@ -48,7 +51,7 @@ public class ActivityHelper {
 	}
 
 	public void finish(TransitionAnimation animation) {
-		animation.applyAfterActivityFinished(mActivity);
+		animation.applyBeforeActivityFinished(mActivity);
 		if (animation.needDelayActivityFinish()) {
 			mActivity.supportFinishAfterTransition();
 		} else {

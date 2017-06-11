@@ -68,7 +68,7 @@ public class TestFragment extends Fragment {
 		mRootView.setBackgroundColor(getRandomColor());
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TestSmallScreen screen = screenResolver.getScreen(this, TestSmallScreen.class);
+		TestSmallScreen screen = screenResolver.getScreen(this);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

@@ -20,7 +20,7 @@ import me.aartikov.alligator.TransitionAnimation;
  * Helper class for fragment switching.
  */
 public class FragmentSwitcher {
-	private static final String TAG_PREFIX = "me.aartikov.alligator.internal.FragmentSwitcher.TAG_";
+	private static final String TAG_PREFIX = "me.aartikov.alligator.FRAGMENT_SWITCHER_TAG_";
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 

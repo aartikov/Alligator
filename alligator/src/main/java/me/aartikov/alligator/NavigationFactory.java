@@ -1,7 +1,5 @@
 package me.aartikov.alligator;
 
-import java.util.Collection;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -48,15 +46,21 @@ public interface NavigationFactory {
 	Intent createActivityIntent(Context context, Screen screen);
 
 	/**
+	 * Gets a screen class from an activity.
+	 *
+	 * @param activity activity
+	 * @return a screen class gotten from the activity or null if there is no information about a screen class
+	 */
+	Class<? extends Screen> getScreenClass(Activity activity);
+
+	/**
 	 * Gets a screen from an intent.
 	 *
-	 * @param <ScreenT>   screen type
-	 * @param intent      intent containing a screen data in its extra
-	 * @param screenClass screen class
+	 * @param activity      activity containing a screen data in its intent
 	 * @return a screen gotten from the intent
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
-	<ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass);
+	Screen getScreen(Activity activity);
 
 	/**
 	 * Creates a fragment for a screen.
@@ -68,15 +72,21 @@ public interface NavigationFactory {
 	Fragment createFragment(Screen screen);
 
 	/**
+	 * Gets a screen class from a fragment.
+	 *
+	 * @param fragment fragment
+	 * @return a screen class gotten from the fragment or null if there is no information about a screen class
+	 */
+	Class<? extends Screen> getScreenClass(Fragment fragment);
+
+	/**
 	 * Gets a screen from a fragment.
 	 *
-	 * @param <ScreenT>   screen type
 	 * @param fragment    fragment containing a screen data in its arguments
-	 * @param screenClass screen class
 	 * @return a screen gotten from the fragment
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
-	<ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass);
+	Screen getScreen(Fragment fragment);
 
 	/**
 	 * Creates a dialog fragment for a screen.
@@ -88,15 +98,21 @@ public interface NavigationFactory {
 	DialogFragment createDialogFragment(Screen screen);
 
 	/**
+	 * Gets a screen class from a dialog fragment.
+	 *
+	 * @param dialogFragment dialog fragment
+	 * @return a screen class gotten from the dialog fragment or null if there is no information about a screen class
+	 */
+	Class<? extends Screen> getScreenClass(DialogFragment dialogFragment);
+
+	/**
 	 * Gets a screen from a dialog fragment.
 	 *
-	 * @param <ScreenT>      screen type
 	 * @param dialogFragment dialog fragment containing a screen data in its arguments
-	 * @param screenClass    screen class
 	 * @return a screen gotten from the dialog fragment
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
-	<ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass);
+	Screen getScreen(DialogFragment dialogFragment);
 
 	/**
 	 * Checks if a screen can return a result.
@@ -116,6 +132,14 @@ public interface NavigationFactory {
 	 * @throws IllegalArgumentException if screen can't return a result
 	 */
 	int getRequestCode(Class<? extends Screen> screenClass);
+
+	/**
+	 * Gets a screen class by a request code.
+	 *
+	 * @param requestCode request code
+	 * @return a screen class gotten by the request code or null if there is no screen with this request code
+	 */
+	Class<? extends Screen> getScreenClass(int requestCode);
 
 	/**
 	 * Returns a screen result class for the screen.
@@ -145,11 +169,4 @@ public interface NavigationFactory {
 	 * @throws IllegalArgumentException if screen can't return a result
 	 */
 	ScreenResult getScreenResult(Class<? extends Screen> screenClass, ActivityResult activityResult);
-
-	/**
-	 * Gets known screen classes.
-	 *
-	 * @return a collection of screens known to the navigation factory
-	 */
-	Collection<Class<? extends Screen>> getScreenClasses();
 }

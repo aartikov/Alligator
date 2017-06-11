@@ -106,11 +106,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 	private void initFragmentMap() {
 		mFragmentMap = new HashMap<>();
 		for (Fragment fragment : fragmentSwitcher.getFragments()) {
-			Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(fragment);
-			Screen screen = screenClass != null ? mNavigationFactory.getScreen(fragment, screenClass) : null;
-			if (screen != null) {
-				mFragmentMap.put(screen, fragment);
-			}
+			mFragmentMap.put(mNavigationFactory.getScreen(fragment), fragment);
 		}
 	}
 
@@ -128,7 +124,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 		if (fragment == null) {
 			fragment = mNavigationFactory.createFragment(screen);
 			try {
-				mNavigationFactory.getScreen(fragment, screen.getClass());  // Check that the screen has a valid screen getting function
+				mNavigationFactory.getScreen(fragment);  // Check that the screen has a valid screen getting function
 			} catch (Exception e) {
 				throw new ScreenSwitchingException(e.getMessage());
 			}

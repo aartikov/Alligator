@@ -1,7 +1,8 @@
 package me.aartikov.alligator.navigationfactories.registry;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +23,7 @@ import me.aartikov.alligator.functions.Function2;
  * Registry for screens represented by activities.
  */
 public class ActivityRegistry {
-	private Map<Class<? extends Screen>, Element> mElements = new HashMap<>();
+	private Map<Class<? extends Screen>, Element> mElements = new LinkedHashMap<>();
 
 	public <ScreenT extends Screen> void register(Class<ScreenT> screenClass, Class<? extends Activity> activityClass,
 	                                              Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenGettingFunction) {
@@ -47,10 +48,14 @@ public class ActivityRegistry {
 		return ((Function2<Context, Screen, Intent>) element.getIntentCreationFunction()).call(context, screen);
 	}
 
-	public <ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass) {
+	public <ScreenT extends Screen> ScreenT getScreen(Activity activity, Class<ScreenT> screenClass) {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
-		return (ScreenT) element.getScreenGettingFunction().call(intent);
+		return (ScreenT) element.getScreenGettingFunction().call(activity.getIntent());
+	}
+
+	public Set<Class<? extends Screen>> getScreenClasses() {
+		return mElements.keySet();
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {

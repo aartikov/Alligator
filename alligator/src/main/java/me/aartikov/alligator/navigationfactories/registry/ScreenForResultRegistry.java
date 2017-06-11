@@ -2,6 +2,7 @@ package me.aartikov.alligator.navigationfactories.registry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
@@ -58,6 +59,10 @@ public class ScreenForResultRegistry {
 		checkThatRegistered(screenClass);
 		Element element = mElements.get(screenClass);
 		return element.getScreenResultGettingFunction().call(activityResult);
+	}
+
+	public Set<Class<? extends Screen>> getScreenClasses() {
+		return mElements.keySet();
 	}
 
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {

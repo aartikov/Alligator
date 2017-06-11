@@ -42,7 +42,7 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TabScreen screen = screenResolver.getScreen(this, TabScreen.class);
+		TabScreen screen = screenResolver.getScreen(this);
 		mNameTextView.setText(screen.getName());
 
 		if (getChildFragmentManager().findFragmentById(R.id.inner_container) == null) {

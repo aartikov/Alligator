@@ -38,7 +38,7 @@ public class FinishCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
-			Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+			Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 
 			if (!navigationFactory.isScreenForResult(screenClass)) {
 				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
@@ -54,7 +54,7 @@ public class FinishCommand implements Command {
 			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 		}
 
-		Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 		Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null && screenClassTo != null) {

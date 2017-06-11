@@ -36,7 +36,7 @@ public class MessageActivity extends AppCompatActivity {
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		MessageScreen screen = screenResolver.getScreen(this, MessageScreen.class);
+		MessageScreen screen = screenResolver.getScreen(this);
 		mMessageTextView.setText(screen.getMessage());
 	}
 

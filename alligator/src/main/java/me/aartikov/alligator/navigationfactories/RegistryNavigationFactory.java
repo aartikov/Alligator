@@ -1,9 +1,5 @@
 package me.aartikov.alligator.navigationfactories;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +13,7 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.ViewType;
 import me.aartikov.alligator.functions.Function;
 import me.aartikov.alligator.functions.Function2;
+import me.aartikov.alligator.internal.ScreenClassUtils;
 import me.aartikov.alligator.navigationfactories.registry.ActivityRegistry;
 import me.aartikov.alligator.navigationfactories.registry.DialogFragmentRegistry;
 import me.aartikov.alligator.navigationfactories.registry.FragmentRegistry;
@@ -37,7 +34,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	private FragmentRegistry mFragmentRegistry = new FragmentRegistry();
 	private DialogFragmentRegistry mDialogFragmentRegistry = new DialogFragmentRegistry();
 	private ScreenForResultRegistry mScreenForResultRegistry = new ScreenForResultRegistry();
-	private List<Class<? extends Screen>> mScreenClasses = new ArrayList<>();
 
 	/**
 	 * Registers a screen represented by an activity using a custom intent creation function and a custom screen getting function.
@@ -54,7 +50,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                      Function2<Context, ScreenT, Intent> intentCreationFunction, Function<Intent, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
 		mActivityRegistry.register(screenClass, activityClass, intentCreationFunction, screenGettingFunction);
-		mScreenClasses.add(screenClass);
 	}
 
 	/**
@@ -102,7 +97,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                      Function<Fragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
 		mFragmentRegistry.register(screenClass, fragmentCreationFunction, screenGettingFunction);
-		mScreenClasses.add(screenClass);
 	}
 
 	/**
@@ -148,7 +142,6 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                            Function<DialogFragment, ScreenT> screenGettingFunction) {
 		checkThatNotRegistered(screenClass);
 		mDialogFragmentRegistry.register(screenClass, dialogFragmentCreationFunction, screenGettingFunction);
-		mScreenClasses.add(screenClass);
 	}
 
 	/**
@@ -258,31 +251,74 @@ public class RegistryNavigationFactory implements NavigationFactory {
 
 	@Override
 	public Intent createActivityIntent(Context context, Screen screen) {
-		return mActivityRegistry.createActivityIntent(context, screen);
+		Intent intent = mActivityRegistry.createActivityIntent(context, screen);
+		ScreenClassUtils.putScreenClass(intent, screen.getClass());
+		return intent;
 	}
 
 	@Override
-	public <ScreenT extends Screen> ScreenT getScreen(Intent intent, Class<ScreenT> screenClass) {
-		return mActivityRegistry.getScreen(intent, screenClass);
+	public Class<? extends Screen> getScreenClass(Activity activity) {
+		Class<? extends Screen> screenClass = ScreenClassUtils.getScreenClass(activity, this);
+
+		if (screenClass == null) {   // May be this activity is a home screen. Try to find it in ActivityRegistry.
+			for (Class<? extends Screen> sc : mActivityRegistry.getScreenClasses()) {
+				if (mActivityRegistry.getActivityClass(sc) == activity.getClass()) {
+					screenClass = sc;
+					break;
+				}
+			}
+		}
+		return screenClass;
+	}
+
+	@Override
+	public Screen getScreen(Activity activity) {
+		Class<? extends Screen> screenClass = getScreenClass(activity);
+		if (screenClass == null) {
+			throw new IllegalArgumentException("Failed to get screen class.");
+		}
+		return mActivityRegistry.getScreen(activity, screenClass);
 	}
 
 	@Override
 	public Fragment createFragment(Screen screen) {
-		return mFragmentRegistry.createFragment(screen);
+		Fragment fragment = mFragmentRegistry.createFragment(screen);
+		ScreenClassUtils.putScreenClass(fragment, screen.getClass());
+		return fragment;
 	}
 
 	@Override
-	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass) {
+	public Class<? extends Screen> getScreenClass(Fragment fragment) {
+		return ScreenClassUtils.getScreenClass(fragment);
+	}
+
+	@Override
+	public Screen getScreen(Fragment fragment) {
+		Class<? extends Screen> screenClass = getScreenClass(fragment);
+		if (screenClass == null) {
+			throw new IllegalArgumentException("Failed to get screen class.");
+		}
 		return mFragmentRegistry.getScreen(fragment, screenClass);
 	}
 
 	@Override
 	public DialogFragment createDialogFragment(Screen screen) {
-		return mDialogFragmentRegistry.createDialogFragment(screen);
+		DialogFragment dialogFragment = mDialogFragmentRegistry.createDialogFragment(screen);
+		ScreenClassUtils.putScreenClass(dialogFragment, screen.getClass());
+		return dialogFragment;
 	}
 
 	@Override
-	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass) {
+	public Class<? extends Screen> getScreenClass(DialogFragment dialogFragment) {
+		return ScreenClassUtils.getScreenClass(dialogFragment);
+	}
+
+	@Override
+	public Screen getScreen(DialogFragment dialogFragment) {
+		Class<? extends Screen> screenClass = getScreenClass(dialogFragment);
+		if (screenClass == null) {
+			throw new IllegalArgumentException("Failed to get screen class.");
+		}
 		return mDialogFragmentRegistry.getScreen(dialogFragment, screenClass);
 	}
 
@@ -294,6 +330,16 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	@Override
 	public int getRequestCode(Class<? extends Screen> screenClass) {
 		return mScreenForResultRegistry.getRequestCode(screenClass);
+	}
+
+	@Override
+	public Class<? extends Screen> getScreenClass(int requestCode) {
+		for (Class<? extends Screen> screenClass : mScreenForResultRegistry.getScreenClasses()) {
+			if (mScreenForResultRegistry.getRequestCode(screenClass) == requestCode) {
+				return screenClass;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -311,13 +357,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		return mScreenForResultRegistry.getScreenResult(screenClass, activityResult);
 	}
 
-	@Override
-	public Collection<Class<? extends Screen>> getScreenClasses() {
-		return mScreenClasses;
-	}
-
 	private void checkThatNotRegistered(Class<? extends Screen> screenClass) {
-		if (mScreenClasses.contains(screenClass)) {
+		if (getViewType(screenClass) != ViewType.UNKNOWN) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered.");
 		}
 	}

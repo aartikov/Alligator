@@ -45,8 +45,8 @@ public class BackCommand implements Command {
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
 			Fragment previousFragment = fragments.get(fragments.size() - 2);
 
-			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(currentFragment);
-			Class<? extends Screen> screenClassTo = ScreenClassUtils.getScreenClass(previousFragment);
+			Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(currentFragment);
+			Class<? extends Screen> screenClassTo = navigationFactory.getScreenClass(previousFragment);
 			TransitionAnimation animation = TransitionAnimation.DEFAULT;
 			if (screenClassFrom != null && screenClassTo != null) {
 				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
@@ -58,7 +58,7 @@ public class BackCommand implements Command {
 		} else {
 			Activity activity = navigationContext.getActivity();
 
-			Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+			Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 			Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
 			TransitionAnimation animation = TransitionAnimation.DEFAULT;
 			if (screenClassFrom != null && screenClassTo != null) {

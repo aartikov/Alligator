@@ -23,8 +23,8 @@ import me.aartikov.alligator.functions.Function2;
  * @author Artur Artikov
  */
 public class RegistryFunctions {
-	private static final String KEY_SCREEN = "me.aartikov.alligator.navigationfactories.RegistryFunctions.KEY_SCREEN";
-	private static final String KEY_SCREEN_RESULT = "me.aartikov.alligator.navigationfactories.RegistryFunctions.KEY_SCREEN_RESULT";
+	private static final String KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN";
+	private static final String KEY_SCREEN_RESULT = "me.aartikov.alligator.KEY_SCREEN_RESULT";
 
 	public static <ScreenT extends Screen> Function2<Context, ScreenT, Intent> getDefaultIntentCreationFunction(final Class<ScreenT> screenClass, final Class<? extends Activity> activityClass) {
 		return new Function2<Context, ScreenT, Intent>() {

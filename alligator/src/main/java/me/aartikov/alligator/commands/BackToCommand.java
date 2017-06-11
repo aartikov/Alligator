@@ -51,7 +51,7 @@ public class BackToCommand implements Command {
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				ScreenClassUtils.putScreenClass(intent, mScreenClass);
 
-				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 				Class<? extends Screen> screenClassTo = mScreenClass;
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
@@ -73,7 +73,7 @@ public class BackToCommand implements Command {
 				List<Fragment> fragments = fragmentStack.getFragments();
 				Fragment fragment = null;
 				for (int i = fragments.size() - 1; i >= 0; i--) {
-					if (mScreenClass == ScreenClassUtils.getScreenClass(fragments.get(i))) {
+					if (mScreenClass == navigationFactory.getScreenClass(fragments.get(i))) {
 						fragment = fragments.get(i);
 						break;
 					}
@@ -83,7 +83,7 @@ public class BackToCommand implements Command {
 					throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
 				}
 
-				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(fragments.get(fragments.size() - 1));
+				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(fragments.get(fragments.size() - 1));
 				Class<? extends Screen> screenClassTo = mScreenClass;
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {

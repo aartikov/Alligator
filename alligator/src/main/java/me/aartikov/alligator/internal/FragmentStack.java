@@ -21,7 +21,7 @@ import me.aartikov.alligator.TransitionAnimation;
  * Custom implementation of a fragment backstack with flexible animation control.
  */
 public class FragmentStack {
-	private static final String TAG_PREFIX = "me.aartikov.alligator.internal.FragmentStack.TAG_";
+	private static final String TAG_PREFIX = "me.aartikov.alligator.FRAGMENT_STACK_TAG_";
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 

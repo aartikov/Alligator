@@ -45,7 +45,6 @@ public class ReplaceCommand implements Command {
 			case ACTIVITY: {
 				Activity activity = navigationContext.getActivity();
 				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
-				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 				Class<? extends Screen> previousScreenClass = ScreenClassUtils.getPreviousScreenClass(activity);
 				if(previousScreenClass != null) {
 					ScreenClassUtils.putPreviousScreenClass(intent, previousScreenClass);
@@ -56,7 +55,7 @@ public class ReplaceCommand implements Command {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
 
-				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
@@ -75,11 +74,10 @@ public class ReplaceCommand implements Command {
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
-				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
 
-				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
+				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {

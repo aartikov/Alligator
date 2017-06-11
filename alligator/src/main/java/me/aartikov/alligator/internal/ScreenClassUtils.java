@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ViewType;
 
 /**
  * Date: 19.03.2017
@@ -17,11 +16,11 @@ import me.aartikov.alligator.ViewType;
  */
 
 /**
- * Util class for storing and retrieving screen class information.
+ * Utils class for storing and retrieving screen class information.
  */
 public class ScreenClassUtils {
-	private static final String KEY_SCREEN_CLASS_NAME = "me.aartikov.alligator.internal.ScreenClassUtils.KEY_SCREEN_CLASS_NAME";
-	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "me.aartikov.alligator.internal.ScreenClassUtils.KEY_PREVIOUS_SCREEN_CLASS_NAME";
+	private static final String KEY_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_SCREEN_CLASS_NAME";
+	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_PREVIOUS_SCREEN_CLASS_NAME";
 
 	private ScreenClassUtils() {
 	}
@@ -33,17 +32,7 @@ public class ScreenClassUtils {
 	@SuppressWarnings("unchecked")
 	public static Class<? extends Screen> getScreenClass(Activity activity, NavigationFactory navigationFactory) {
 		String className = activity.getIntent().getStringExtra(KEY_SCREEN_CLASS_NAME);
-		Class<? extends Screen> screenClass = getClassByName(className);
-
-		if (screenClass == null) {   // screenClass is null. May be activity is a first screen. Try to find it in NavigationFactory.
-			for (Class<? extends Screen> sc : navigationFactory.getScreenClasses()) {
-				if (navigationFactory.getViewType(sc) == ViewType.ACTIVITY && navigationFactory.getActivityClass(sc) == activity.getClass()) {
-					screenClass = sc;
-					break;
-				}
-			}
-		}
-		return screenClass;
+		return getClassByName(className);
 	}
 
 	public static void putScreenClass(Fragment fragment, Class<? extends Screen> screenClass) {
@@ -57,12 +46,12 @@ public class ScreenClassUtils {
 
 	@SuppressWarnings("unchecked")
 	public static Class<? extends Screen> getScreenClass(Fragment fragment) {
-		Class<? extends Screen> screenClass = null;
-		if (fragment.getArguments() != null) {
-			String className = fragment.getArguments().getString(KEY_SCREEN_CLASS_NAME);
-			screenClass = (Class<? extends Screen>) getClassByName(className);
+		if (fragment.getArguments() == null) {
+			return null;
 		}
-		return screenClass;
+
+		String className = fragment.getArguments().getString(KEY_SCREEN_CLASS_NAME);
+		return (Class<? extends Screen>) getClassByName(className);
 	}
 
 	public static void putPreviousScreenClass(Intent intent, Class<? extends Screen> screenClass) {

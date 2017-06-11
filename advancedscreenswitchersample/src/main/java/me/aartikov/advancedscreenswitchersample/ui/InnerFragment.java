@@ -47,7 +47,7 @@ public class InnerFragment extends Fragment {
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		InnerScreen screen = screenResolver.getScreen(this, InnerScreen.class);
+		InnerScreen screen = screenResolver.getScreen(this);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

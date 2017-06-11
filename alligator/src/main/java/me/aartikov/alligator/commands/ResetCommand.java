@@ -18,7 +18,6 @@ import me.aartikov.alligator.exceptions.FailedResolveActivityException;
 import me.aartikov.alligator.internal.ActivityHelper;
 import me.aartikov.alligator.internal.DialogFragmentHelper;
 import me.aartikov.alligator.internal.FragmentStack;
-import me.aartikov.alligator.internal.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016
@@ -46,14 +45,13 @@ public class ResetCommand implements Command {
 				Activity activity = navigationContext.getActivity();
 				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				ScreenClassUtils.putScreenClass(intent, mScreen.getClass());
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
 
-				Class<? extends Screen> screenClassFrom = ScreenClassUtils.getScreenClass(activity, navigationFactory);
+				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
@@ -71,11 +69,10 @@ public class ResetCommand implements Command {
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
-				ScreenClassUtils.putScreenClass(fragment, mScreen.getClass());
 				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
 
-				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : ScreenClassUtils.getScreenClass(currentFragment);
+				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
 				Class<? extends Screen> screenClassTo = mScreen.getClass();
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {

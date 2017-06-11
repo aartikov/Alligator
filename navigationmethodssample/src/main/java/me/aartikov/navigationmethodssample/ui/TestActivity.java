@@ -65,7 +65,7 @@ public class TestActivity extends AppCompatActivity {
 		mRootView.setBackgroundColor(getRandomColor());
 
 		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TestScreen screen = screenResolver.getScreen(this, TestScreen.class);
+		TestScreen screen = screenResolver.getScreen(this);
 		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

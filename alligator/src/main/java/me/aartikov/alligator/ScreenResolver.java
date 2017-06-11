@@ -24,25 +24,25 @@ public class ScreenResolver {
 	/**
 	 * Gets a screen from an activity.
 	 *
-	 * @param <ScreenT>   screen type
-	 * @param activity    activity containing a screen data in its intent
-	 * @param screenClass screen class
+	 * @param <ScreenT> screen type
+	 * @param activity  activity containing a screen data in its intent
 	 * @return a screen gotten from the activity intent
 	 */
-	public <ScreenT extends Screen> ScreenT getScreen(Activity activity, Class<ScreenT> screenClass) {
-		return mNavigationFactory.getScreen(activity.getIntent(), screenClass);
+	@SuppressWarnings("unchecked")
+	public <ScreenT extends Screen> ScreenT getScreen(Activity activity) {
+		return (ScreenT) mNavigationFactory.getScreen(activity);
 	}
 
 	/**
 	 * Gets a screen from a fragment.
 	 *
-	 * @param <ScreenT>   screen type
-	 * @param fragment    fragment containing a screen data in its arguments
-	 * @param screenClass screen class
+	 * @param <ScreenT> screen type
+	 * @param fragment  fragment containing a screen data in its arguments
 	 * @return a screen gotten from the fragment
 	 */
-	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment, Class<ScreenT> screenClass) {
-		return mNavigationFactory.getScreen(fragment, screenClass);
+	@SuppressWarnings("unchecked")
+	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment) {
+		return (ScreenT) mNavigationFactory.getScreen(fragment);
 	}
 
 	/**
@@ -50,10 +50,10 @@ public class ScreenResolver {
 	 *
 	 * @param <ScreenT>      screen type
 	 * @param dialogFragment dialog fragment containing a screen data in its arguments
-	 * @param screenClass    screen class
 	 * @return a screen gotten from the dialog fragment
 	 */
-	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment, Class<ScreenT> screenClass) {
-		return mNavigationFactory.getScreen(dialogFragment, screenClass);
+	@SuppressWarnings("unchecked")
+	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment) {
+		return (ScreenT) mNavigationFactory.getScreen(dialogFragment);
 	}
 }

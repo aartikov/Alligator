@@ -7,7 +7,7 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 11
         consumerProguardFiles 'proguard-rules.pro'
     }
 }

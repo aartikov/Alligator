@@ -38,7 +38,7 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this, SecondScreen.class);
+		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		mKittenImageView.setImageResource(screen.getKittenIndex() == 0 ? R.drawable.kitten_0 : R.drawable.kitten_1);
 		mKittenImageView.setOnClickListener(v -> SampleApplication.getNavigator().goBack());
 
@@ -57,7 +57,7 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 
 	@Override
 	public String getSharedElementName(AnimationData animationData) {
-		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this, SecondScreen.class);
+		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		return "kitten_" + screen.getKittenIndex();
 	}
 }

@@ -28,19 +28,10 @@ public class ScreenResultResolver {
 	 * @param listener    listener that will handle a screen result
 	 */
 	public void handleActivityResult(int requestCode, int resultCode, Intent data, ScreenResultListener listener) {
-		Class<? extends Screen> screenClass = getScreenClass(requestCode);
+		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(requestCode);
 		if (screenClass != null) {
 			ScreenResult screenResult = mNavigationFactory.getScreenResult(screenClass, new ActivityResult(resultCode, data));
 			listener.onScreenResult(screenClass, screenResult);
 		}
-	}
-
-	private Class<? extends Screen> getScreenClass(int requestCode) {
-		for (Class<? extends Screen> screenClass : mNavigationFactory.getScreenClasses()) {
-			if (mNavigationFactory.isScreenForResult(screenClass) && mNavigationFactory.getRequestCode(screenClass) == requestCode) {
-				return screenClass;
-			}
-		}
-		return null;
 	}
 }

@@ -7,15 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
-import me.aartikov.simplenavigationsample.screens.MessageScreen;
-import me.aartikov.simplenavigationsample.screens.SecondScreen;
+import me.aartikov.simplenavigationsample.screens.ScreenA;
+import me.aartikov.simplenavigationsample.screens.ScreenD;
 
 /**
  * Date: 15.05.2017
@@ -23,12 +25,12 @@ import me.aartikov.simplenavigationsample.screens.SecondScreen;
  *
  * @author Artur Artikov
  */
-public class FirstFragment extends Fragment {
-	@BindView(R.id.next_button)
-	Button mNextButton;
+public class FragmentD extends Fragment {
+	@BindView(R.id.message_text_view)
+	TextView mMessageTextView;
 
-	@BindView(R.id.message_button)
-	Button mMessageButton;
+	@BindView(R.id.go_back_to_a_button)
+	Button mGoBackToAButton;
 
 	private Unbinder mButterknifeUnbinder;
 
@@ -36,7 +38,7 @@ public class FirstFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_first, container, false);
+		return inflater.inflate(R.layout.fragment_d, container, false);
 	}
 
 	@Override
@@ -45,8 +47,10 @@ public class FirstFragment extends Fragment {
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
 		mNavigator = SampleApplication.getNavigator();
 
-		mNextButton.setOnClickListener(v -> mNavigator.goForward(new SecondScreen()));
-		mMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageScreen("Hello!")));
+		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
+		ScreenD screen = screenResolver.getScreen(this);
+		mMessageTextView.setText(screen.getMessage());
+		mGoBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));
 	}
 
 	@Override

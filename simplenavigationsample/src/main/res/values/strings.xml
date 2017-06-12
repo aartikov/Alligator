@@ -1,12 +1,12 @@
 <resources>
 	<string name="app_name">Simple Navigation Sample</string>
 	
-	<string name="first_screen">First screen</string>
-	<string name="next">Next</string>
-	<string name="show_message">Show message</string>
+	<string name="screen_a">Screen A</string>
+	<string name="screen_b">Screen B</string>
+	<string name="screen_c">Screen C</string>
+	<string name="screen_d">Screen D</string>
 	
-	<string name="second_screen">Second screen</string>
-	<string name="previous">Previous</string>
-	
-	<string name="meassage_screen">Message screen</string>
+	<string name="go_forward_to_b">Go forward to B</string>
+	<string name="go_forward_to_d">Go forward to D</string>
+	<string name="go_back_to_a">Go back to A</string>
 </resources>

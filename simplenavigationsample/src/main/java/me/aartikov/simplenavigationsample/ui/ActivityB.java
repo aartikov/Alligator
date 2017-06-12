@@ -2,17 +2,14 @@ package me.aartikov.simplenavigationsample.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
-import me.aartikov.simplenavigationsample.screens.MessageScreen;
+import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
+import me.aartikov.simplenavigationsample.screens.ScreenC;
 
 /**
  * Date: 22.01.2016
@@ -20,30 +17,29 @@ import me.aartikov.simplenavigationsample.screens.MessageScreen;
  *
  * @author Artur Artikov
  */
-public class MessageActivity extends AppCompatActivity {
+public class ActivityB extends AppCompatActivity {
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
-
-	@BindView(R.id.message_text_view)
-	TextView mMessageTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_message);
-		ButterKnife.bind(this);
+		setContentView(R.layout.activity_b);
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		MessageScreen screen = screenResolver.getScreen(this);
-		mMessageTextView.setText(screen.getMessage());
+		if (savedInstanceState == null) {
+			mNavigator.reset(new ScreenC());
+		}
 	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		NavigationContext navigationContext = new NavigationContext.Builder(this)
+				.containerId(R.id.fragment_container)
+				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
+				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}
 

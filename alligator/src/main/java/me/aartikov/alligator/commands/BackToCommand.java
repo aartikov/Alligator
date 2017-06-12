@@ -55,7 +55,7 @@ public class BackToCommand implements Command {
 				Class<? extends Screen> screenClassTo = mScreenClass;
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
-					navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 				}
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);

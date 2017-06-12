@@ -10,10 +10,10 @@ import me.aartikov.alligator.Screen;
  *
  * @author Artur Artikov
  */
-public class MessageScreen implements Screen, Serializable {
+public class ScreenD implements Screen, Serializable {
 	private String mMessage;
 
-	public MessageScreen(String message) {
+	public ScreenD(String message) {
 		mMessage = message;
 	}
 

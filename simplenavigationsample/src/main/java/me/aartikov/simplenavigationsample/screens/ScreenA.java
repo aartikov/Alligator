@@ -9,5 +9,5 @@ import me.aartikov.alligator.Screen;
  * @author Artur Artikov
  */
 
-public class SecondScreen implements Screen {
+public class ScreenA implements Screen {
 }

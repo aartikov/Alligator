@@ -2,13 +2,17 @@ package me.aartikov.simplenavigationsample.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
-import me.aartikov.simplenavigationsample.screens.FirstScreen;
+import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
+import me.aartikov.simplenavigationsample.screens.ScreenB;
 
 /**
  * Date: 22.01.2016
@@ -16,27 +20,29 @@ import me.aartikov.simplenavigationsample.screens.FirstScreen;
  *
  * @author Artur Artikov
  */
-public class MainActivity extends AppCompatActivity {
+public class ActivityA extends AppCompatActivity {
+	@BindView(R.id.go_forward_to_b_button)
+	Button mGoForwardToBButton;
+
 	private Navigator mNavigator;
 	private NavigationContextBinder mNavigationContextBinder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_a);
+		ButterKnife.bind(this);
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-		if(savedInstanceState == null) {
-			mNavigator.reset(new FirstScreen());
-		}
+		mGoForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));
 	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.containerId(R.id.main_container)
+				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}

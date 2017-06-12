@@ -14,6 +14,7 @@ import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
+import me.aartikov.simplenavigationsample.screens.ScreenD;
 
 /**
  * Date: 15.05.2017
@@ -21,9 +22,9 @@ import me.aartikov.simplenavigationsample.SampleApplication;
  *
  * @author Artur Artikov
  */
-public class SecondFragment extends Fragment {
-	@BindView(R.id.previous_button)
-	Button mPreviousButton;
+public class FragmentC extends Fragment {
+	@BindView(R.id.go_forward_to_d_button)
+	Button mGoForwardToDButton;
 
 	private Unbinder mButterknifeUnbinder;
 
@@ -31,7 +32,7 @@ public class SecondFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_second, container, false);
+		return inflater.inflate(R.layout.fragment_c, container, false);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class SecondFragment extends Fragment {
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
 		mNavigator = SampleApplication.getNavigator();
 
-		mPreviousButton.setOnClickListener(v -> mNavigator.goBack());
+		mGoForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Hello!")));
 	}
 
 	@Override

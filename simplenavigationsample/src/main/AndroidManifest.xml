@@ -9,17 +9,17 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name="me.aartikov.simplenavigationsample.ui.MainActivity">
+		<activity android:name="me.aartikov.simplenavigationsample.ui.ActivityA"
+			android:label="@string/screen_a">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-				
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		
 		<activity
-			android:name="me.aartikov.simplenavigationsample.ui.MessageActivity"
-			android:label="@string/meassage_screen" />
+			android:name="me.aartikov.simplenavigationsample.ui.ActivityB"
+			android:label="@string/screen_b" />
 	</application>
 
 </manifest>

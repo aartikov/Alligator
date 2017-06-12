@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
  */
 public interface TransitionListener {
 	/**
-	 * Called when a transition from one screen to another has been executed.
+	 * Called when an usual screen transition (not screen switching and not dialog showing) has been executed.
 	 *
 	 * @param transitionType  type of a transition
 	 * @param screenClassFrom class of the screen that disappears during a transition or {@code null} if there was no current screen before transition

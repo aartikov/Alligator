@@ -111,16 +111,16 @@ public interface Navigator {
 	void finishWithResult(ScreenResult screenResult, AnimationData animationData);
 
 	/**
-	 * Switches screen.
+	 * Switches screens.
 	 *
-	 * @param screen screen for switching to. A screen must have {@code equals()} and {@code hashCode()} correctly overridden because it can be used as a key internally.
+	 * @param screen screen for switching to
 	 */
 	void switchTo(Screen screen);
 
 	/**
 	 * {@code switchTo} with an animation data.
 	 *
-	 * @param screen         for switching to. A screen must have {@code equals()} and {@code hashCode()} correctly overridden because it can be used as a key internally.
+	 * @param screen        screen for switching to
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void switchTo(Screen screen, AnimationData animationData);

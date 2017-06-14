@@ -31,6 +31,8 @@ public class ActivityB extends AppCompatActivity {
 		if (savedInstanceState == null) {
 			mNavigator.reset(new ScreenC());
 		}
+
+		setTitle(R.string.screen_b);
 	}
 
 	@Override

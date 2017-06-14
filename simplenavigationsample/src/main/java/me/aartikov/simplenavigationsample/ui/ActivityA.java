@@ -35,6 +35,7 @@ public class ActivityA extends AppCompatActivity {
 		mNavigator = SampleApplication.getNavigator();
 		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
+		setTitle(R.string.screen_a);
 		mGoForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));
 	}
 

@@ -41,7 +41,7 @@ public class FragmentC extends Fragment {
 		mButterknifeUnbinder = ButterKnife.bind(this, view);
 		mNavigator = SampleApplication.getNavigator();
 
-		mGoForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Hello!")));
+		mGoForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Message for D from C")));
 	}
 
 	@Override

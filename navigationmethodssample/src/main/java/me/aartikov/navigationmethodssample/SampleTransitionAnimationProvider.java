@@ -15,7 +15,6 @@ import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
  *
  * @author Artur Artikov
  */
-
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {

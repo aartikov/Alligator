@@ -9,18 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.navigationmethodssample.R;
-import me.aartikov.navigationmethodssample.SampleTransitionAnimationProvider;
 import me.aartikov.navigationmethodssample.SampleApplication;
+import me.aartikov.navigationmethodssample.SampleTransitionAnimationProvider;
 import me.aartikov.navigationmethodssample.screens.TestScreen;
 import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 29.12.2016
@@ -47,25 +45,20 @@ public class TestActivity extends AppCompatActivity {
 	@BindView(R.id.finish_button)
 	Button mFinishButton;
 
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_test);
 		ButterKnife.bind(this);
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 		if (savedInstanceState == null) {
-			mNavigator.goForward(new TestSmallScreen(1));
+			mNavigator.reset(new TestSmallScreen(1));
 		}
 
-		mRootView.setBackgroundColor(getRandomColor());
-
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TestScreen screen = screenResolver.getScreen(this);
+		TestScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
@@ -73,6 +66,8 @@ public class TestActivity extends AppCompatActivity {
 		mReplaceButton.setOnClickListener(view -> mNavigator.replace(new TestScreen(counter)));
 		mResetButton.setOnClickListener(view -> mNavigator.reset(new TestScreen(1)));
 		mFinishButton.setOnClickListener(view -> mNavigator.finish());
+
+		mRootView.setBackgroundColor(getRandomColor());
 	}
 
 	@Override

@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@android:color/white"
+	android:background="?android:colorBackground"
+	android:gravity="center"
 	android:orientation="vertical">
 	
-	<LinearLayout
+	<TextView
+		android:id="@+id/counter_text_view"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:orientation="vertical">
-		
-		<TextView
-			android:id="@+id/counter_text_view"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			tools:text="Counter" />
-		
-		<Button
-			android:id="@+id/forward_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="20dp"
-			android:text="Forward" />
-	</LinearLayout>
-
-</FrameLayout>
+		android:layout_gravity="center_horizontal"
+		tools:text="Counter" />
+	
+	<Button
+		android:id="@+id/forward_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="20dp"
+		android:text="@string/forward" />
+</LinearLayout>

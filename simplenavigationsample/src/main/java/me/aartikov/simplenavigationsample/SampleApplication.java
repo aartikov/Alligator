@@ -22,6 +22,8 @@ public class SampleApplication extends Application {
 		sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
 	}
 
+	// In a real application use dependency injection framework to provide these objects.
+
 	public static Navigator getNavigator() {
 		return sAndroidNavigator;
 	}

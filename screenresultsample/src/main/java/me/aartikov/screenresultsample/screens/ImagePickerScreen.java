@@ -13,7 +13,7 @@ import me.aartikov.alligator.ScreenResult;
  */
 public class ImagePickerScreen implements Screen {
 
-	// It is convenient to declare a screen result as a static inner class of the screen.
+	// It is convenient to declare a result as a static inner class.
 	public static class Result implements ScreenResult {
 		private Uri mUri;
 

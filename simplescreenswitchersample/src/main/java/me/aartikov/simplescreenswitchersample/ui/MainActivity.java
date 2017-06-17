@@ -26,18 +26,16 @@ import me.aartikov.simplescreenswitchersample.screens.TabScreen;
  * @author Artur Artikov
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
-	private FragmentScreenSwitcher mScreenSwitcher;
-
 	@BindView(R.id.bottom_bar)
 	BottomNavigationView mBottomBar;
+
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 

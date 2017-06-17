@@ -12,15 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
-import me.aartikov.navigationmethodssample.R;
-import me.aartikov.navigationmethodssample.SampleApplication;
-import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.aartikov.alligator.Navigator;
+import me.aartikov.navigationmethodssample.R;
+import me.aartikov.navigationmethodssample.SampleApplication;
+import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
 
 /**
  * Date: 29.12.2016
@@ -50,9 +48,9 @@ public class TestFragment extends Fragment {
 	@BindView(R.id.double_back_button)
 	Button mDoubleBackButton;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
 
-	private Navigator mNavigator;
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,13 +60,9 @@ public class TestFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		mNavigator = SampleApplication.getNavigator();
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 
-		mRootView.setBackgroundColor(getRandomColor());
-
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TestSmallScreen screen = screenResolver.getScreen(this);
+		TestSmallScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
@@ -77,14 +71,16 @@ public class TestFragment extends Fragment {
 		mResetButton.setOnClickListener(v -> mNavigator.reset(new TestSmallScreen(1)));
 		mBackButton.setOnClickListener(v -> mNavigator.goBack());
 		mDoubleBackButton.setOnClickListener(v -> {
-			mNavigator.goBack();
+			mNavigator.goBack();        // Due to a command queue in AndroidNavigator you can combine navigation methods arbitrarily.
 			mNavigator.goBack();
 		});
+
+		mRootView.setBackgroundColor(getRandomColor());
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 

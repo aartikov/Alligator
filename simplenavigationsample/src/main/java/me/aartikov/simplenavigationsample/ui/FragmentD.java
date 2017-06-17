@@ -13,7 +13,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
 import me.aartikov.simplenavigationsample.screens.ScreenA;
@@ -32,9 +31,9 @@ public class FragmentD extends Fragment {
 	@BindView(R.id.go_back_to_a_button)
 	Button mGoBackToAButton;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
 
-	private Navigator mNavigator;
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,18 +43,16 @@ public class FragmentD extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		mNavigator = SampleApplication.getNavigator();
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		ScreenD screen = screenResolver.getScreen(this);
+		ScreenD screen = SampleApplication.getScreenResolver().getScreen(this);     // use ScreenResolver to get a screen with its arguments
 		mMessageTextView.setText(screen.getMessage());
-		mGoBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));
+		mGoBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));   // mNavigator.finish() will have the same effect in this case
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 }

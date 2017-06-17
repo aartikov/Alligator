@@ -29,18 +29,16 @@ import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
  * @author Artur Artikov
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
-	private FragmentScreenSwitcher mScreenSwitcher;
-
 	@BindView(R.id.bottom_bar)
 	BottomNavigationView mBottomBar;
+
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
@@ -64,6 +62,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		super.onPause();
 	}
 
+	private void bindNavigationContext() {
+		NavigationContext.Builder builder = new NavigationContext.Builder(this)
+				.screenSwitcher(mScreenSwitcher)
+				.screenSwitchingListener(this)
+				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
+
+		Fragment fragment = mScreenSwitcher.getCurrentFragment();
+		if (fragment != null && fragment instanceof ContainerIdProvider) {
+			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
+					.fragmentManager(fragment.getChildFragmentManager());
+		}
+
+		mNavigationContextBinder.bind(builder.build());
+	}
+
 	@Override
 	public void onBackPressed() {
 		mNavigator.goBack();
@@ -80,21 +93,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
 		int tabId = ((TabScreen) screenTo).getId();
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
-		bindNavigationContext();
-	}
-
-	private void bindNavigationContext() {
-		Fragment fragment = mScreenSwitcher.getCurrentFragment();
-		NavigationContext.Builder builder = new NavigationContext.Builder(this)
-				.screenSwitcher(mScreenSwitcher)
-				.screenSwitchingListener(this)
-				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
-
-		if (fragment != null && fragment instanceof ContainerIdProvider) {
-			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
-					.fragmentManager(fragment.getChildFragmentManager());
-		}
-
-		mNavigationContextBinder.bind(builder.build());
+		bindNavigationContext();    // rebind NavigationContext because we need to set another container id and another child fragment manager.
 	}
 }

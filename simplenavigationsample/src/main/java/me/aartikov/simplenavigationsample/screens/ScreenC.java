@@ -8,6 +8,5 @@ import me.aartikov.alligator.Screen;
  *
  * @author Artur Artikov
  */
-
 public class ScreenC implements Screen {
 }

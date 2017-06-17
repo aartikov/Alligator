@@ -26,9 +26,9 @@ public class FragmentC extends Fragment {
 	@BindView(R.id.go_forward_to_d_button)
 	Button mGoForwardToDButton;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
 
-	private Navigator mNavigator;
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,15 +38,13 @@ public class FragmentC extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
-		mNavigator = SampleApplication.getNavigator();
-
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 		mGoForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Message for D from C")));
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 }

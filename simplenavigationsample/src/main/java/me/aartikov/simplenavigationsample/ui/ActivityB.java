@@ -18,27 +18,23 @@ import me.aartikov.simplenavigationsample.screens.ScreenC;
  * @author Artur Artikov
  */
 public class ActivityB extends AppCompatActivity {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_b);
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 		if (savedInstanceState == null) {
 			mNavigator.reset(new ScreenC());
 		}
-
-		setTitle(R.string.screen_b);
 	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
+		NavigationContext navigationContext = new NavigationContext.Builder(this)       // Same as in ActivityA but we also set a containerId to place fragments there.
 				.containerId(R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();

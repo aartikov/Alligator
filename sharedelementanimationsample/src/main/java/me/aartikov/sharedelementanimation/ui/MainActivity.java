@@ -3,7 +3,6 @@ package me.aartikov.sharedelementanimation.ui;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -13,17 +12,13 @@ import me.aartikov.sharedelementanimation.SampleTransitionAnimationProvider;
 import me.aartikov.sharedelementanimation.screens.FirstScreen;
 
 public class MainActivity extends AppCompatActivity {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
-
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 		if (savedInstanceState == null) {
 			mNavigator.reset(new FirstScreen());
@@ -33,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.containerId(R.id.main_container)
+				.containerId(R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider(this))
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

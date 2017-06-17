@@ -11,15 +11,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
-import me.aartikov.advancedscreenswitchersample.R;
-import me.aartikov.advancedscreenswitchersample.SampleApplication;
-import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.aartikov.advancedscreenswitchersample.R;
+import me.aartikov.advancedscreenswitchersample.SampleApplication;
+import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
+import me.aartikov.alligator.Navigator;
 
 /**
  * Date: 22.01.2016
@@ -34,7 +32,9 @@ public class InnerFragment extends Fragment {
 	@BindView(R.id.forward_button)
 	Button mForwardButton;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
+
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,20 +44,17 @@ public class InnerFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		InnerScreen screen = screenResolver.getScreen(this);
+		InnerScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		int counter = screen.getCounter();
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
-
-		Navigator navigator = SampleApplication.getNavigator();
-		mForwardButton.setOnClickListener(v -> navigator.goForward(new InnerScreen(counter + 1)));
+		mForwardButton.setOnClickListener(v -> mNavigator.goForward(new InnerScreen(counter + 1)));
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 

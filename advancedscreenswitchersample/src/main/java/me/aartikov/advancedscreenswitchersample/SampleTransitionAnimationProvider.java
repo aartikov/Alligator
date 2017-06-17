@@ -15,11 +15,10 @@ import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
  *
  * @author Artur Artikov
  */
-
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
-		if(isActivity) {
+		if (isActivity) {
 			return TransitionAnimation.DEFAULT;
 		} else {
 			return new SimpleTransitionAnimation(R.anim.stay, R.anim.fade_out);

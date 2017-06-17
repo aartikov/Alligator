@@ -16,7 +16,6 @@ import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.ViewType;
 import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 import me.aartikov.alligator.internal.FragmentSwitcher;
-import me.aartikov.alligator.internal.ScreenClassUtils;
 
 /**
  * Date: 01/30/2016
@@ -26,8 +25,8 @@ import me.aartikov.alligator.internal.ScreenClassUtils;
  */
 
 /**
- * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments.
- * Screens must have {@code equals} and {@code hashCode} correctly overridden.
+ * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments and get screens back from it.
+ * Screens used by {@code FragmentScreenSwitcher} must have {@code equals} and {@code hashCode} correctly overridden.
  */
 public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactorySetter {
 	public interface AnimationProvider {
@@ -128,8 +127,6 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 			} catch (Exception e) {
 				throw new ScreenSwitchingException(e.getMessage());
 			}
-
-			ScreenClassUtils.putScreenClass(fragment, screen.getClass());
 			mFragmentMap.put(screen, fragment);
 		}
 		return fragment;

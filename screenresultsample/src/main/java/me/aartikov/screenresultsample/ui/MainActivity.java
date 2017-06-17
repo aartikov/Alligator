@@ -19,7 +19,6 @@ import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.ScreenResultListener;
-import me.aartikov.alligator.ScreenResultResolver;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
@@ -32,8 +31,8 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  * @author Artur Artikov
  */
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@BindView(R.id.input_message_button)
 	Button mInputMessageButton;
@@ -53,17 +52,16 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-
-		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
+		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));    // goForward works as startActivityForResult if a screen is registered for result.
 		mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
 	}
 
+
+	// Use ScreenResultResolver to translate onActivityResult arguments to ScreenResultListener call.
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		ScreenResultResolver screenResultResolver = SampleApplication.getScreenResultResolver();
-		screenResultResolver.handleActivityResult(requestCode, resultCode, data, this);
+		SampleApplication.getScreenResultResolver().handleActivityResult(requestCode, resultCode, data, this);
 	}
 
 	@Override

@@ -23,6 +23,8 @@ import static me.aartikov.alligator.navigationfactories.RegistryFunctions.getDef
 public class SampleNavigationFactory extends RegistryNavigationFactory {
 	public SampleNavigationFactory() {
 		registerActivity(MainScreen.class, MainActivity.class);
+
+		// It is a little bit tricky to register enum based screens
 		registerFragment(TabScreen.class, screen -> getDefaultFragmentCreationFunction(TabScreen.class, getTabFragmentClass(screen)).call(screen), getDefaultFragmentScreenGettingFunction(TabScreen.class));
 	}
 

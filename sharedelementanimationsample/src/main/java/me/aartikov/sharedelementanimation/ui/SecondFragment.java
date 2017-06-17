@@ -27,7 +27,7 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 	@BindView(R.id.kitten_image_view)
 	ImageView mKittenImageView;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,16 +37,16 @@ public class SecondFragment extends Fragment implements SharedElementProvider {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
+
 		SecondScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		mKittenImageView.setImageResource(screen.getKittenIndex() == 0 ? R.drawable.kitten_0 : R.drawable.kitten_1);
 		mKittenImageView.setOnClickListener(v -> SampleApplication.getNavigator().goBack());
-
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 

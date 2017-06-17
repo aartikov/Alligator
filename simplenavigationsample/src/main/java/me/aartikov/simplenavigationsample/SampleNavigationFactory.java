@@ -13,6 +13,8 @@ import me.aartikov.simplenavigationsample.ui.*;
 
 public class SampleNavigationFactory extends RegistryNavigationFactory {
 	public SampleNavigationFactory() {
+
+		// Default intentCreationFunction, fragmentCreationFunction, screenGettingFunction are used here.
 		registerActivity(ScreenA.class, ActivityA.class);
 		registerActivity(ScreenB.class, ActivityB.class);
 		registerFragment(ScreenC.class, FragmentC.class);

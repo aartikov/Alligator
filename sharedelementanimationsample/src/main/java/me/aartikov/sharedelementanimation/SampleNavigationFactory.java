@@ -10,7 +10,6 @@ import me.aartikov.sharedelementanimation.ui.*;
  *
  * @author Artur Artikov
  */
-
 public class SampleNavigationFactory extends RegistryNavigationFactory {
 	public SampleNavigationFactory() {
 		registerFragment(FirstScreen.class, FirstFragment.class);

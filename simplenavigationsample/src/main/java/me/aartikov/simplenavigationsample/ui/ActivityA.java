@@ -24,20 +24,22 @@ public class ActivityA extends AppCompatActivity {
 	@BindView(R.id.go_forward_to_b_button)
 	Button mGoForwardToBButton;
 
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_a);
-		ButterKnife.bind(this);
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-
 		setTitle(R.string.screen_a);
-		mGoForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));
+		ButterKnife.bind(this);
+
+		mGoForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));       // If you use MVP architectural pattern call methods of Navigator in presenters.
 	}
+
+
+	// Bind NavigationContext in onResumeFragments() and unbind it in onPause().
+	// In a real application you can do it in a base activity class, or use plugin system like that https://github.com/passsy/CompositeAndroid
 
 	@Override
 	protected void onResumeFragments() {

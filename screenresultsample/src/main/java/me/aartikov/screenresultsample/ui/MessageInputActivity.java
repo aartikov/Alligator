@@ -22,8 +22,8 @@ import butterknife.ButterKnife;
  * @author Artur Artikov
  */
 public class MessageInputActivity extends AppCompatActivity {
-	private Navigator mNavigator;
-	private NavigationContextBinder mNavigationContextBinder;
+	private Navigator mNavigator = SampleApplication.getNavigator();
+	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@BindView(R.id.message_edit_text)
 	EditText mMessageEditText;
@@ -37,12 +37,9 @@ public class MessageInputActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_message_input);
 		ButterKnife.bind(this);
 
-		mNavigator = SampleApplication.getNavigator();
-		mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-
 		mOkButton.setOnClickListener(v -> {
 			String message = mMessageEditText.getText().toString();
-			mNavigator.finishWithResult(new MessageInputScreen.Result(message));
+			mNavigator.finishWithResult(new MessageInputScreen.Result(message));    // Easy-peasy!
 		});
 	}
 

@@ -13,25 +13,27 @@ import me.aartikov.alligator.Screen;
  * @author Artur Artikov
  */
 
+// Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden. Or you can use enums that already have valid equals and hashCode.
+
 public enum TabScreen implements Screen {
 	ANDROID(R.id.tab_android, R.string.tab_android),
 	BUG(R.id.tab_bug, R.string.tab_bug),
 	DOG(R.id.tab_dog, R.string.tab_dog);
 
-	private int id;
-	private int name;
+	private int mId;
+	private int mName;
 
 	TabScreen(@IdRes int id, @StringRes int name) {
-		this.id = id;
-		this.name = name;
+		mId = id;
+		mName = name;
 	}
 
 	public @IdRes int getId() {
-		return id;
+		return mId;
 	}
 
 	public @StringRes int getName() {
-		return name;
+		return mName;
 	}
 
 	public static TabScreen getById(@IdRes int id) {

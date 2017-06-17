@@ -26,7 +26,6 @@ import me.aartikov.sharedelementanimation.ui.SharedElementProvider;
  *
  * @author Artur Artikov
  */
-
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	private AppCompatActivity mActivity;
 
@@ -53,7 +52,7 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 			LollipopTransitionAnimation animation = new LollipopTransitionAnimation(enterTransition, exitTransition);
 			animation.setAllowEnterTransitionOverlap(false);
 
-			Fragment currentFragment = mActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+			Fragment currentFragment = mActivity.getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 			if (currentFragment instanceof SharedElementProvider) {
 				SharedElementProvider sharedElementProvider = (SharedElementProvider) currentFragment;
 				View sharedElement = sharedElementProvider.getSharedElement(animationData);

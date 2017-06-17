@@ -12,6 +12,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.Navigator;
 import me.aartikov.sharedelementanimation.R;
 import me.aartikov.sharedelementanimation.SampleApplication;
 import me.aartikov.sharedelementanimation.screens.SecondScreen;
@@ -27,7 +28,9 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 	@BindViews({R.id.kitten_image_view_0, R.id.kitten_image_view_1})
 	ImageView[] mKittenImageViews;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
+
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,18 +40,19 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
+
 		for (int i = 0; i < mKittenImageViews.length; i++) {
 			int kittenIndex = i;
 			mKittenImageViews[i].setOnClickListener(v -> {
-				SampleApplication.getNavigator().goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
+				mNavigator.goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
 			});
 		}
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 

@@ -17,7 +17,8 @@
 		</activity>
 		
 		<activity
-			android:name="me.aartikov.simplenavigationsample.ui.ActivityB"/>
+			android:name="me.aartikov.simplenavigationsample.ui.ActivityB"
+			android:label="@string/screen_b" />
 	</application>
 
 </manifest>

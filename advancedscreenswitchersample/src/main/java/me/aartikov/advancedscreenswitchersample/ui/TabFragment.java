@@ -8,16 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
 import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import me.aartikov.alligator.Navigator;
 
 /**
  * Date: 21.01.2016
@@ -29,7 +27,9 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 	@BindView(R.id.name_text_view)
 	TextView mNameTextView;
 
-	private Unbinder mButterknifeUnbinder;
+	private Unbinder mButterKnifeUnbinder;
+
+	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,21 +39,19 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterknifeUnbinder = ButterKnife.bind(this, view);
+		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 
-		ScreenResolver screenResolver = SampleApplication.getScreenResolver();
-		TabScreen screen = screenResolver.getScreen(this);
+		TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		mNameTextView.setText(screen.getName());
 
 		if (getChildFragmentManager().findFragmentById(R.id.inner_container) == null) {
-			Navigator navigator = SampleApplication.getNavigator();
-			navigator.reset(new InnerScreen(1));
+			mNavigator.reset(new InnerScreen(1));
 		}
 	}
 
 	@Override
 	public void onDestroyView() {
-		mButterknifeUnbinder.unbind();
+		mButterKnifeUnbinder.unbind();
 		super.onDestroyView();
 	}
 

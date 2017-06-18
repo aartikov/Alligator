@@ -69,7 +69,7 @@ public class ScreenD implements Screen, Serializable {
 ```
 
 ### 2. Create NavigationFactory
-Register your screens in `RegistryNavigationFactory`. In this sample the default converting functions are used that will serialize and deserialize screen arguments if a screen is `Serializable` or `Parcelable`.
+Register your screens in `RegistryNavigationFactory`. In this sample the default converting functions will be used that serialize and deserialize screen arguments if a screen is `Serializable` or `Parcelable`. See about converting functions in [Java docs](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/navigationfactories/RegistryNavigationFactory.html).
 
 ```java
 public class SampleNavigationFactory extends RegistryNavigationFactory {
@@ -89,7 +89,7 @@ sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
 ```
 
 ### 4. Set NavigationContext
-Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also set a fragment container, a fragment manager (which is by default is taken from an activity), a [screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
+Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also set a fragment container, a fragment manager (which by default is taken from an activity), a [screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
 
 Activities are responsible to bind and unbind `NavigationContext`. Bind it in `onResumeFragments` (when state of an activity and its fragments is restored) and unbind in `onPause` (when an activity becomes inactive).
 
@@ -119,16 +119,16 @@ mNavigator.goBack();
 ```
 
 `Navigator` provides these navigation methods:
-1. `goForward(screen)` - Add a new screen and go to it.
-2. `goBack()` - Remove the current screen and go back to the previous screen.
-3. `goBackTo(screenClass)` - Go back to a screen with the given class.
-4. `replace(screen)` - Replace the last screen with a new screen.
-5. `reset(screen)` - Remove all other screens and adds a new screen.
-6. `finish()` - Finish the last screen or the group of screens executing some common task (implemented as finishing of the current activity).
-7. `finishWithResult(screenResult)` - Finish with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
-8. `switchTo(screen)` - Switch a screen using a [ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenSwitcher.html).
+1. `goForward(screen)` - Adds a new screen and goes to it.
+2. `goBack()` - Removes the current screen and goes back to the previous screen.
+3. `goBackTo(screenClass)` - Goes back to a screen with the given class.
+4. `replace(screen)` - Replaces the last screen with a new screen.
+5. `reset(screen)` - Removse all other screens and adds a new screen.
+6. `finish()` - Finishes the last screen or the group of screens executing some common task (implemented as finishing of the current activity).
+7. `finishWithResult(screenResult)` - Finishes with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
+8. `switchTo(screen)` - Switches a screen using a [ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenSwitcher.html).
 
-Navigation methods can be called at any moment, even when a `NavigationContext` is not bound. When a navigation method is called an appropriate `Command` is generated and placed to a command queue. `AndroidNavigator` can execute commands only when a `NavigationContext` is bound to it, in other case a command will be postponed. You can combine navigation methods arbitrarily (for example call two `goBack()` one by one). This will work for activities too because `AndroidNavigator` unbinds a `NavigationContext` by itself after activity finishing or starting.
+Navigation methods can be called at any moment, even when a `NavigationContext` is not bound. When a navigation method is called an appropriate `Command` is generated and placed to a command queue. `AndroidNavigator` can execute commands only when a `NavigationContext` is bound to it, in other case a command will be postponed. You can combine navigation methods arbitrarily (for example call two `goBack()` one by one). This works for activities too because `AndroidNavigator` unbinds a `NavigationContext` by itself after activity finishing or starting.
 
 See how navigation methods work in [simple navigation sample](https://github.com/aartikov/Alligator/tree/master/simplenavigationsample) an [navigation methods sample](https://github.com/aartikov/Alligator/tree/master/navigationmethodssample).
 
@@ -141,12 +141,12 @@ String message  = screen.getMessage();
 
 ## Advanced topics
 ### Configure animations
-Create `TransitionAnimationProvider` and set it using `NavigationContext`.
+Create `TransitionAnimationProvider` and set it to `NavigationContext`.
 ```java
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom,
-    Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
+    					Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
 		switch (transitionType) {
 			case FORWARD:
 				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -159,14 +159,9 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 }
 ```
 ```java
-	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
-				.build();
-		mNavigationContextBinder.bind(navigationContext);
-	}
+    NavigationContext navigationContext = new NavigationContext.Builder(this)
+            .transitionAnimationProvider(new SampleTransitionAnimationProvider())
+            .build();
 ```
 
 Lollipop transition animations are also supported, see [shared element animation sample](https://github.com/aartikov/Alligator/tree/master/sharedelementanimationsample).
@@ -182,11 +177,11 @@ To make screen switching posible a special object `ScreenSwitcher` should be cre
 To use a dialog fragment as a screen register it with `registerDialogFragment` method and start it with `goForward` method.
 
 ### Listen navigation
-These types of listeners can be set using `NavigationContext`
-- `TransitionListener` - called when usual screen transition (not screen switching and not dialog showing) has been executed.
-- `DialogShowingListener` - called when a fragment dialog has been shown.
-- `ScreenSwitchingListener` - called when a screen has been switched with a screen switcher.
-- `NavigationErrorListener` called when a navigation error has occurred.
+These types of listeners can be set to `NavigationContext`
+- `TransitionListener` - is called when usual screen transition (not screen switching and not dialog showing) has been executed.
+- `DialogShowingListener` - is called when a fragment dialog has been shown.
+- `ScreenSwitchingListener` - is called when a screen has been switched with a screen switcher.
+- `NavigationErrorListener` is called when a navigation error has occurred.
 
 ### Start external activity
 To use an external activity (for example a phone dialer) register a screen with a custom intent creation function.
@@ -196,12 +191,12 @@ registerActivity(PhoneDialerScreen.class, null, (context, screen) ->
 		new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber())));
 ```
 
-Start the screen with `goForward ` method. You can use `NavigationErrorListener` to check that an activity has been succesfully resolved.
+Start it with `goForward ` method. Use `NavigationErrorListener` to check that an activity has been succesfully resolved.
 
 ### Handle activity result
-Starting an activity for result is necessary to get a result from external activities such as image gallery or contact picker. You can also use it to pass data between your internal activities. With Alligator there are no needs to declare request codes and handle activity result manually.
+Starting an activity for result is necessary to get a result from external activities such as image gallery or contact picker. You can also use it to pass data between your own activities. With Alligator there are no needs to declare request codes and handle activity result manually. 
 
-Declare a screen result class. Register it in a navigation factory. Use [ScreenResultResolver](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenResultResolver.html) to handle screen result.
+Declare and register screen result classes. Use [ScreenResultResolver](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenResultResolver.html) to handle activity result.
 
 See how to do it in [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample).
 

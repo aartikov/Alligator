@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
  */
 public interface ScreenSwitchingListener {
 	/**
-	 * Called after a screen has been switched using {@link ScreenSwitcher}.
+	 * Is called after a screen has been switched using {@link ScreenSwitcher}.
 	 *
 	 * @param screenFrom screen that disappears during a switching or {@code null} if there was no current screen before switching
 	 * @param screenTo   screen that appears during a switching

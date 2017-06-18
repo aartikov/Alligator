@@ -12,7 +12,7 @@ package me.aartikov.alligator;
  */
 public interface DialogShowingListener {
 	/**
-	 * Called when a dialog was shown.
+	 * Is called when a dialog was shown.
 	 *
 	 * @param screenClass class of a screen that represents a dialog.
 	 */

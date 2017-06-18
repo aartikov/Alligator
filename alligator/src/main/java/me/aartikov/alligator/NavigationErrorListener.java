@@ -14,7 +14,7 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
  */
 public interface NavigationErrorListener {
 	/**
-	 * Called when an error has occurred during {@link Command} execution.
+	 * Is called when an error has occurred during {@link Command} execution.
 	 *
 	 * @param e exception with information about an error
 	 */

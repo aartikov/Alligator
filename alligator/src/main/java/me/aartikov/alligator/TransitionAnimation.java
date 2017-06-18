@@ -22,7 +22,7 @@ public interface TransitionAnimation {
 	TransitionAnimation DEFAULT = new DummyTransitionAnimation();
 
 	/**
-	 * Called before starting of an activity. Used to pass an options bundle to a started activity.
+	 * Is called before starting of an activity. Used to pass an options bundle to a started activity.
 	 *
 	 * @param activity current activity
 	 * @return options bundle for activity starting. Can be {@code null} if there are no options needed.
@@ -30,7 +30,7 @@ public interface TransitionAnimation {
 	Bundle getActivityOptionsBundle(Activity activity);
 
 	/**
-	 * Called before finishing of an activity. Checks if there is need to delay an activity finish.
+	 * Is called before finishing of an activity. Checks if there is need to delay an activity finish.
 	 * <p>
 	 * An activity will finish using {@code supportFinishAfterTransition} if this method returns {@code true}, otherwise - using {@code finish}.
 	 *
@@ -39,7 +39,7 @@ public interface TransitionAnimation {
 	boolean needDelayActivityFinish();
 
 	/**
-	 * Called before starting of an activity.
+	 * Is called before starting of an activity.
 	 *
 	 * @param currentActivity activity that will start another activity
 	 * @param intent          intent that will be used to start an activity
@@ -47,28 +47,28 @@ public interface TransitionAnimation {
 	void applyBeforeActivityStarted(Activity currentActivity, Intent intent);
 
 	/**
-	 * Called after starting of an activity.
+	 * Is called after starting of an activity.
 	 *
 	 * @param currentActivity activity that started another activity
 	 */
 	void applyAfterActivityStarted(Activity currentActivity);
 
 	/**
-	 * Called before finishing of an activity.
+	 * Is called before finishing of an activity.
 	 *
 	 * @param activity that will finish
 	 */
 	void applyBeforeActivityFinished(Activity activity);
 
 	/**
-	 * Called after finishing of an activity.
+	 * Is called after finishing of an activity.
 	 *
 	 * @param activity finished activity
 	 */
 	void applyAfterActivityFinished(Activity activity);
 
 	/**
-	 * Called before a fragment transaction executed.
+	 * Is called before a fragment transaction executed.
 	 *
 	 * @param transaction      fragment transaction
 	 * @param enteringFragment fragment that will be added/attached during the transaction
@@ -77,7 +77,7 @@ public interface TransitionAnimation {
 	void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment);
 
 	/**
-	 * Called after a fragment transaction executed.
+	 * Is called after a fragment transaction executed.
 	 *
 	 * @param enteringFragment fragment that will be added/attached during the transaction
 	 * @param exitingFragment  fragment that will be removed/detached  during the transaction

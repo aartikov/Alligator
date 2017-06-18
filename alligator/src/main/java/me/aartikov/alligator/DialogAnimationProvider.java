@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
  */
 public interface DialogAnimationProvider {
 	/**
-	 * Called when a {@link DialogAnimation} is needed to show a screen represented by a dialog fragment.
+	 * Is called when a {@link DialogAnimation} is needed to show a screen represented by a dialog fragment.
 	 *
 	 * @param screenClass   a class of a shown screen
 	 * @param animationData data for an additional animation configuring

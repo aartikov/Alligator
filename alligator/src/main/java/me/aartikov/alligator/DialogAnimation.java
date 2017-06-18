@@ -18,14 +18,14 @@ public interface DialogAnimation {
 	DialogAnimation DEFAULT = new DummyDialogAnimation();
 
 	/**
-	 * Called before a dialog fragment is shown.
+	 * Is called before a dialog fragment is shown.
 	 *
 	 * @param dialogFragment dialog fragment that will be shown
 	 */
 	void applyBeforeShowing(DialogFragment dialogFragment);
 
 	/**
-	 * Called after a dialog fragment was shown and a related fragment transaction was executed.
+	 * Is called after a dialog fragment was shown and a related fragment transaction was executed.
 	 *
 	 * @param dialogFragment dialog fragment that was shown
 	 */

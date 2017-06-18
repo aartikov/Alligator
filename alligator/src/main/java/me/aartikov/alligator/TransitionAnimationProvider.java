@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
  */
 public interface TransitionAnimationProvider {
 	/**
-	 * Called when a {@link TransitionAnimation} is needed to make a transition from one screen to another.
+	 * Is called when a {@link TransitionAnimation} is needed to make a transition from one screen to another.
 	 *
 	 * @param transitionType  type of transition
 	 * @param screenClassFrom class of the screen that disappears during a transition

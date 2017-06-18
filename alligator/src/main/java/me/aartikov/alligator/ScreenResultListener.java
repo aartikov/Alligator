@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
  */
 public interface ScreenResultListener {
 	/**
-	 * Called when a result of a screen is handled.
+	 * Is called when a result of a screen is handled.
 	 *
 	 * @param screenClass screen class
 	 * @param result      screen result. Can be {@code null} when a screen has finished without no result.

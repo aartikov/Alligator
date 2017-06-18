@@ -6,6 +6,5 @@
 	<string name="finish">Finish</string>
 	<string name="back">Back</string>
 	<string name="double_back">Back x 2</string>
-
 	<string name="counter_template">"Counter: %d"</string>
 </resources>

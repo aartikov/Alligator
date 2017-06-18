@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
 		if (fragment != null && fragment instanceof ContainerIdProvider) {
 			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
-					.fragmentManager(fragment.getChildFragmentManager());
+					.fragmentManager(fragment.getChildFragmentManager());       // Use child fragment manager for nested navigation
 		}
 
 		mNavigationContextBinder.bind(builder.build());

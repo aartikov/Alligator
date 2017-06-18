@@ -1,4 +1,4 @@
-package me.aartikov.alligator.internal;
+package me.aartikov.alligator.helpers;
 
 import android.content.Intent;
 import android.os.Bundle;

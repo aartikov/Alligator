@@ -1,4 +1,4 @@
-package me.aartikov.alligator.internal;
+package me.aartikov.alligator.helpers;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;

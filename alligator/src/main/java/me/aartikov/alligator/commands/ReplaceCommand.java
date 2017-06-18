@@ -15,10 +15,10 @@ import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
-import me.aartikov.alligator.internal.ActivityHelper;
-import me.aartikov.alligator.internal.DialogFragmentHelper;
-import me.aartikov.alligator.internal.FragmentStack;
-import me.aartikov.alligator.internal.ScreenClassUtils;
+import me.aartikov.alligator.helpers.ActivityHelper;
+import me.aartikov.alligator.helpers.DialogFragmentHelper;
+import me.aartikov.alligator.helpers.FragmentStack;
+import me.aartikov.alligator.helpers.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016

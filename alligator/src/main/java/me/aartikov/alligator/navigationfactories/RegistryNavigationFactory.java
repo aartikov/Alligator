@@ -13,7 +13,7 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.ViewType;
 import me.aartikov.alligator.functions.Function;
 import me.aartikov.alligator.functions.Function2;
-import me.aartikov.alligator.internal.ScreenClassUtils;
+import me.aartikov.alligator.helpers.ScreenClassUtils;
 import me.aartikov.alligator.navigationfactories.registry.ActivityRegistry;
 import me.aartikov.alligator.navigationfactories.registry.DialogFragmentRegistry;
 import me.aartikov.alligator.navigationfactories.registry.FragmentRegistry;

@@ -15,7 +15,7 @@ import me.aartikov.alligator.ScreenSwitcher;
 import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.ViewType;
 import me.aartikov.alligator.exceptions.ScreenSwitchingException;
-import me.aartikov.alligator.internal.FragmentSwitcher;
+import me.aartikov.alligator.helpers.FragmentSwitcher;
 
 /**
  * Date: 01/30/2016

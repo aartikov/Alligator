@@ -1,4 +1,4 @@
-package me.aartikov.alligator.internal;
+package me.aartikov.alligator.helpers;
 
 import java.util.ArrayList;
 import java.util.List;

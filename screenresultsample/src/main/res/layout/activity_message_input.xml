@@ -15,7 +15,7 @@
 		android:text="@string/input_message_hint" />
 
 	<EditText
-		android:id="@+id/activity_message_input_edit_text_message"
+		android:id="@+id/message_edit_text"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="16dp"
@@ -23,7 +23,7 @@
 		android:maxLength="100" />
 
 	<Button
-		android:id="@+id/activity_input_button_ok"
+		android:id="@+id/ok_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"

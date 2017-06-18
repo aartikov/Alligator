@@ -43,7 +43,7 @@ dependencies {
 
 [NavigationFactory](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/NavigationFactory.html) - converts `Screen`s to theirs Android representation (intents, fragments, dialog fragments) and vice versa. There is ready to use implementation of `NavigationFactory` - [RegistryNavigationFactory](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/navigationfactories/RegistryNavigationFactory.html).
 
-[ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenSwitcher.html) - an object for switching between several screens without theirs recreation. There are ready to use implementations of `ScreenSwitcher` - [FragmentScreenSwitcher]([https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/screenswitchers/FragmentScreenSwitcher.html](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/screenswitchers/FragmentScreenSwitcher.html).
+[ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenSwitcher.html) - an object for switching between several screens without theirs recreation. There are ready to use implementations of `ScreenSwitcher` - [FragmentScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/screenswitchers/FragmentScreenSwitcher.html).
 
 [TransitionAnimation](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/TransitionAnimation.html), [TransitionAnimationProvider](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/TransitionAnimationProvider.html), [DialogAnimation](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/DialogAnimation.html), [DialogAnimationProvider](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/DialogAnimationProvider.html)  - are used to configure animations.
 
@@ -89,18 +89,18 @@ sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
 ```
 
 ### 4. Set NavigationContext
-Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also set a fragment container, a fragment manager (which is by default is taken from an activity), [a screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
+Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also set a fragment container, a fragment manager (which is by default is taken from an activity), a [screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
 
 Activities are responsible to bind and unbind `NavigationContext`. Bind it in `onResumeFragments` (when state of an activity and its fragments is restored) and unbind in `onPause` (when an activity becomes inactive).
 
 ```java
 @Override
 protected void onResumeFragments() {
-		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.containerId(R.id.fragment_container)
-				.build();
-		mNavigationContextBinder.bind(navigationContext);
+    super.onResumeFragments();
+    NavigationContext navigationContext = new NavigationContext.Builder(this)
+            .containerId(R.id.fragment_container)
+            .build();
+    mNavigationContextBinder.bind(navigationContext);
 }
 
 @Override
@@ -114,7 +114,7 @@ protected void onPause() {
 ### 5. Call navigation methods
 ```java
 mNavigator.goForward(new ScreenD("Message for D"));
-
+// or
 mNavigator.goBack();
 ```
 
@@ -139,13 +139,14 @@ ScreenD screen = mScreenResolver.getScreen(this); // 'this' is Activity or Fragm
 String message  = screen.getMessage();
 ```
 
-## What else?
+## Advanced topics
 ### Configure animations
 Create `TransitionAnimationProvider` and set it using `NavigationContext`.
 ```java
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
+	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom,
+    Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
 		switch (transitionType) {
 			case FORWARD:
 				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -180,14 +181,6 @@ To make screen switching posible a special object `ScreenSwitcher` should be cre
 ### Open dialogs
 To use a dialog fragment as a screen register it with `registerDialogFragment` method and start it with `goForward` method.
 
-```java
-// In a registry navigation factory
-registerDialogFragment(TestScreen.class, TestDialogFragment.class);
-
-// In some other place
-navigator.goForward(new TestScreen());
-```
-
 ### Listen navigation
 These types of listeners can be set using `NavigationContext`
 - `TransitionListener` - called when usual screen transition (not screen switching and not dialog showing) has been executed.
@@ -199,88 +192,18 @@ These types of listeners can be set using `NavigationContext`
 To use an external activity (for example a phone dialer) register a screen with a custom intent creation function.
 
 ```java
-registerActivity(PhoneDialerScreen.class, null, (context, screen) -> new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber())));
+registerActivity(PhoneDialerScreen.class, null, (context, screen) -> 
+		new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber())));
 ```
 
-Start the screen with `goForward ` method.
-```java
-mNavigator.goForward(new PhoneDialerScreen("phone-number"));
-```
-
-Use `NavigationErrorListener` to check that an activity has been succesfully resolved.
-```java
-private NavigationErrorListener mNavigationErrorListener = new NavigationErrorListener() {
-    @Override
-    public void onNavigationError(CommandExecutionException e) {
-        if(e instanceof FailedResolveActivityException) {
-            // Failed!
-        }
-    }
-};
-
-@Override
-protected void onResumeFragments() {
-    super.onResumeFragments();
-    NavigationContext navigationContext = new NavigationContext.Builder(this)
-            .navigationErrorListener(mNavigationErrorListener)
-            .build();
-    mNavigationContextBinder.bind(navigationContext);
-}
-```
+Start the screen with `goForward ` method. You can use `NavigationErrorListener` to check that an activity has been succesfully resolved.
 
 ### Handle activity result
 Starting an activity for result is necessary to get a result from external activities such as image gallery or contact picker. You can also use it to pass data between your internal activities. With Alligator there are no needs to declare request codes and handle activity result manually.
 
-Declare your screen and screen result.
-```java
-public class ImagePickerScreen implements Screen {
-	// It is convenient to declare a result as a static inner class.
-	public static class Result implements ScreenResult {
-		private Uri mUri;
+Declare a screen result class. Register it in a navigation factory. Use [ScreenResultResolver](https://jitpack.io/com/github/aartikov/Alligator/1.0.0/javadoc/me/aartikov/alligator/ScreenResultResolver.html) to handle screen result.
 
-		public Result(Uri uri) {
-			mUri = uri;
-		}
-
-		public Uri getUri() {
-			return mUri;
-		}
-	}
-}
-```
-
-Register it in a registry navigation factory.
-```java
-		registerActivity(ImagePickerScreen.class, null, (context, screen) -> new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"));
-
-		registerScreenForResult(ImagePickerScreen.class, ImagePickerScreen.Result.class, activityResult -> {
-			Uri uri = activityResult.getDataUri();
-			return uri != null ? new ImagePickerScreen.Result(uri) : null;
-		});
-```
-
-Start the screen.
-```java
-mNavigator.goForward(new ImagePickerScreen());
-```
-
-Handle screen result.
-```java
-	private ScreenResultListener mScreenResultListener = new ScreenResultListener() {
-		@Override
-		public void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
-			if (screenClass == ImagePickerScreen.class) {
-				onImagePicked((ImagePickerScreen.Result) result);
-			}
-		}
-	};
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		SampleApplication.getScreenResultResolver().handleActivityResult(requestCode, resultCode, data, mScreenResultListener);
-	}
-```
- See a sample: [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample) 
+See how to do it in [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample).
 
 ## Developed by
 Artur Artikov <a href="mailto:a.artikov@gmail.com">a.artikov@gmail.com</a>

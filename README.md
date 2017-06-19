@@ -1,12 +1,14 @@
 # Alligator
-Alligator is a modern Android navigation library that will help you to organize a navigation code in clean and testable way.
+[![Release](https://jitpack.io/v/aartikov/Alligator.svg)](https://jitpack.io/#aartikov/Alligator) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+Alligator is a modern Android navigation library that will help to organize your navigation code in clean and testable way.
 
 ## Features
-- Separation of navigation logic from view implementation.
 - Screens based on activities, fragments and dialog fragments.
-- Navigation is available at any moment (even when an activity is in background).
-- Navigation methods can be combined arbitrarily.
-- Passing screen arguments and hadling activity result in object oriented style.
+- Simple yet powerful navigation methods.
+- Independence from activity lifecycle (navigation is available even when an application is in background).
+- Passing screen arguments without boilerplate code.
+- Handling activity result in object oriented style.
 - Screen switching with nested navigation.
 - Flexible animation configuring.
 

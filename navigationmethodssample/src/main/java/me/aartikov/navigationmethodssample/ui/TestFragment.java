@@ -1,7 +1,5 @@
 package me.aartikov.navigationmethodssample.ui;
 
-import java.util.Random;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.navigationmethodssample.R;
 import me.aartikov.navigationmethodssample.SampleApplication;
 import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
@@ -26,6 +27,7 @@ import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(TestSmallScreen.class)
 public class TestFragment extends Fragment {
 	@BindView(R.id.root_view)
 	View mRootView;

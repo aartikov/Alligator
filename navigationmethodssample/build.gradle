@@ -33,6 +33,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':alligator')
+    compile project(':alligator-core')
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor project(':alligator-compiler')
 }

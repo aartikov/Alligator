@@ -1,1 +1,2 @@
-include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample', ':screenresultsample', ':sharedelementanimationsample', ':alligator-compiler', ':alligator-core'
+include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample', ':screenresultsample', ':sharedelementanimationsample', ':alligator-compiler', ':alligator-stub'
+project(':alligator-stub').projectDir = new File('alligator-compiler/alligator-stub')

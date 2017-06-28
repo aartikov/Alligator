@@ -73,7 +73,7 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 			if (screenParams.screenResult != null && !screenParams.screenResult.equals(ScreenResult.class.getName())) {
 
 				if (!screenParams.availableScreenTypes.equals(AvailableScreenTypes.ACTIVITY)) {
-					throw new GeneratorFailedException("Screen Result can be apply only for activity", elements.get(screenParams.typeClass));
+					throw new GeneratorFailedException("Screen Result can be applied only for activity", elements.get(screenParams.typeClass));
 				}
 
 				ClassName screenResultType = getClassName(screenParams.screenResult);
@@ -87,7 +87,7 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 				.addMethod(constructorBuilder.build())
 				.build();
 
-		JavaFile javaFile = JavaFile.builder(Utils.getDefaultPackageName(), navigationFactory)
+		JavaFile javaFile = JavaFile.builder(Utils.getDefaultPackageName() + ".navigationfactories", navigationFactory)
 				.build();
 
 		list.add(javaFile);
@@ -99,7 +99,7 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 
 		for (ScreenParams screenParams : screenParamsList) {
 			if (screenName.contains(screenParams.screenClass)) {
-				throw new GeneratorFailedException(screenParams.screenClass + " registered for another type.", elements.get(screenParams.typeClass));
+				throw new GeneratorFailedException(screenParams.screenClass + " is already registered.", elements.get(screenParams.typeClass));
 			}
 			screenName.add(screenParams.screenClass);
 
@@ -127,7 +127,7 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 				return null;
 		}
 
-		return prefix + "($1T.class,$2T.class)";
+		return prefix + "($1T.class, $2T.class)";
 	}
 
 	private static class ScreenParams {

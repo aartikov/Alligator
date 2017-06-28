@@ -8,6 +8,6 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':alligator-core')
+    compileOnly project(':alligator-stub')
     compile 'com.squareup:javapoet:1.7.0'
 }

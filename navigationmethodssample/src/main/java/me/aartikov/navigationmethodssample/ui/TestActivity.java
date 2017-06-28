@@ -11,10 +11,10 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.navigationmethodssample.R;
 import me.aartikov.navigationmethodssample.SampleApplication;
 import me.aartikov.navigationmethodssample.SampleTransitionAnimationProvider;

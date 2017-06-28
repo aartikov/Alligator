@@ -40,5 +40,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     annotationProcessor project(':alligator-compiler')
-    compile project(':alligator-core')
 }

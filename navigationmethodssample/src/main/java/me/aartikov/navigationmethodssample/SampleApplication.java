@@ -3,10 +3,10 @@ package me.aartikov.navigationmethodssample;
 import android.app.Application;
 
 import me.aartikov.alligator.AndroidNavigator;
-import me.aartikov.alligator.GeneratedNavigationFactory;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
+import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
 
 /**
  * Date: 29.12.2016

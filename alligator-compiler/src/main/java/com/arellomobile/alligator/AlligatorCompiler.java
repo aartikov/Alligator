@@ -32,7 +32,7 @@ public class AlligatorCompiler extends AbstractProcessor {
 	private static ErrorReporter sErrorReporter;
 	private static Elements elements;
 
-	public static Elements getElementUtils(){
+	public static Elements getElementUtils() {
 		return elements;
 	}
 
@@ -71,6 +71,7 @@ public class AlligatorCompiler extends AbstractProcessor {
 
 	private boolean interruptProcess(final RoundEnvironment roundEnvironment) {
 		checkScreens(roundEnvironment, RegisterScreen.class, new ScreenAnnotationRule());
+
 		NavigationFactoryClassGenerator navigationFactoryClassGenerator = new NavigationFactoryClassGenerator();
 		generateCode(navigationFactoryClassGenerator, roundEnvironment);
 
@@ -114,7 +115,7 @@ public class AlligatorCompiler extends AbstractProcessor {
 			sErrorReporter.reportError(e.getLocalizedMessage(), e.getElement());
 		}
 
-		for (JavaFile javaFile: javaFiles) {
+		for (JavaFile javaFile : javaFiles) {
 			try {
 				javaFile.writeTo(processingEnv.getFiler());
 			}

@@ -8,6 +8,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 
+import me.aartikov.alligator.RegisterScreen;
+
 /**
  * Date: 17-Feb-16
  * Time: 16:57
@@ -49,6 +51,23 @@ public abstract class AnnotationRule {
 			return result.toString();
 		} else {
 			return mValidModifiers.iterator().next() + ".";
+		}
+	}
+
+
+	protected void validateModifiers(final Element annotatedClass) throws IncorrectElementException {
+		StringBuilder errorBuilder = new StringBuilder();
+		if (annotatedClass.getKind() != mValidKind) {
+			errorBuilder.append("Field " + annotatedClass + " of " + annotatedClass.getEnclosingElement().getSimpleName() + " should be " + mValidKind.name() + ", or not mark it as @" + RegisterScreen.class.getSimpleName()).append("\n");
+		}
+
+		for (Modifier modifier : annotatedClass.getModifiers()) {
+			if (!mValidModifiers.contains(modifier)) {
+				errorBuilder.append("Field " + annotatedClass + " of " + annotatedClass.getEnclosingElement().getSimpleName() + " can't be a " + modifier).append(". Use ").append(validModifiersToString()).append("\n");
+			}
+		}
+		if (errorBuilder.length() != 0) {
+			throw new IncorrectElementException(errorBuilder.toString(), annotatedClass);
 		}
 	}
 }

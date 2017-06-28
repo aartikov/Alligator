@@ -14,15 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.alligator.ScreenResult;
+
+import static com.arellomobile.alligator.Utils.getClassName;
 
 public final class NavigationFactoryClassGenerator implements Generator<TypeElement> {
 
@@ -46,23 +45,9 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 	}
 
 	private String getScreenClass(final TypeElement typeElement, RegisterScreenKeys registerScreenKeys) {
-		List<? extends AnnotationMirror> annotationMirrors = typeElement.getAnnotationMirrors();
-		for (AnnotationMirror annotationMirror : annotationMirrors) {
-			Map<? extends ExecutableElement, ? extends AnnotationValue> elemntValues = annotationMirror.getElementValues();
-
-			for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : elemntValues.entrySet()) {
-				String key = entry.getKey().getSimpleName().toString();
-				Object value = entry.getValue().getValue();
-
-				if (registerScreenKeys.key.equals(key)) {
-					TypeMirror screen = (TypeMirror) value;
-					return screen.toString();
-
-				}
-			}
-		}
-
-		return null;
+		String neededKey = registerScreenKeys.key;
+		TypeMirror annotationTypeMirror = Utils.getAnnotationTypeMirror(typeElement, neededKey);
+		return annotationTypeMirror == null ? null : annotationTypeMirror.toString();
 	}
 
 	@Override
@@ -86,6 +71,11 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 			constructorBuilder.addStatement(format, screenClassName, typeClassName);
 
 			if (screenParams.screenResult != null && !screenParams.screenResult.equals(ScreenResult.class.getName())) {
+
+				if (!screenParams.availableScreenTypes.equals(AvailableScreenTypes.ACTIVITY)) {
+					throw new GeneratorFailedException("Screen Result can be apply only for activity", elements.get(screenParams.typeClass));
+				}
+
 				ClassName screenResultType = getClassName(screenParams.screenResult);
 				constructorBuilder.addStatement("registerScreenForResult($1T.class, $2T.class)", screenClassName, screenResultType);
 			}
@@ -93,11 +83,11 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 
 		TypeSpec navigationFactory = TypeSpec.classBuilder("GeneratedNavigationFactory")
 				.addModifiers(Modifier.PUBLIC)
-				.superclass(getClassName("me.aartikov.alligator.navigationfactories.RegistryNavigationFactory"))
+				.superclass(getClassName(Utils.getDefaultPackageName() + ".navigationfactories.RegistryNavigationFactory"))
 				.addMethod(constructorBuilder.build())
 				.build();
 
-		JavaFile javaFile = JavaFile.builder("me.aartikov.alligator", navigationFactory)
+		JavaFile javaFile = JavaFile.builder(Utils.getDefaultPackageName(), navigationFactory)
 				.build();
 
 		list.add(javaFile);
@@ -118,11 +108,6 @@ public final class NavigationFactoryClassGenerator implements Generator<TypeElem
 			}
 			typeName.add(screenParams.screenClass);
 		}
-	}
-
-	private ClassName getClassName(final String className) {
-		int i1 = className.lastIndexOf(".");
-		return ClassName.get(className.substring(0, i1), className.substring(i1 + 1));
 	}
 
 	private String generateRegisterStatement(final AvailableScreenTypes availableScreenTypes) {

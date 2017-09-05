@@ -205,7 +205,9 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			}
 		} catch (CommandExecutionException e) {
 			mCommandQueue.clear();
-			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
+			for(NavigationErrorListener errorListener: mNavigationContext.getNavigationErrorListeners()){
+				errorListener.onNavigationError(e);
+			}
 		} catch (Exception e) {
 			mCommandQueue.clear();
 			throw e;

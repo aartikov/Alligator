@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
 import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.NavigationErrorListener;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
@@ -53,7 +55,9 @@ public class BackCommand implements Command {
 			}
 
 			fragmentStack.pop(animation);
-			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+			for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+				transitionListener.onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+			}
 			return true;
 		} else {
 			Activity activity = navigationContext.getActivity();
@@ -67,7 +71,9 @@ public class BackCommand implements Command {
 
 			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 			activityHelper.finish(animation);
-			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+			for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+				transitionListener.onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+			}
 			return false;
 		}
 	}

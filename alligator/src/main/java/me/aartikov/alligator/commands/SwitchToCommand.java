@@ -6,6 +6,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenSwitcher;
+import me.aartikov.alligator.ScreenSwitchingListener;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 
@@ -45,7 +46,9 @@ public class SwitchToCommand implements Command {
 		} catch (ScreenSwitchingException e) {
 			throw new CommandExecutionException(this, e.getMessage());
 		}
-		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
+		for(ScreenSwitchingListener screenSwitchingListener: navigationContext.getScreenSwitchingListeners()){
+			screenSwitchingListener.onScreenSwitched(previousScreen, mScreen);
+		}
 		return true;
 	}
 }

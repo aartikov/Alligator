@@ -1,6 +1,7 @@
 package me.aartikov.alligator.commands;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,12 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
 import me.aartikov.alligator.DialogAnimation;
+import me.aartikov.alligator.DialogShowingListener;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
@@ -68,7 +71,9 @@ public class ForwardCommand implements Command {
 				} else {
 					activityHelper.start(intent, animation);
 				}
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
+				}
 				return false;
 			}
 
@@ -93,7 +98,9 @@ public class ForwardCommand implements Command {
 				}
 
 				fragmentStack.push(fragment, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
+				}
 				return true;
 			}
 
@@ -101,7 +108,9 @@ public class ForwardCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
-				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
+				for(DialogShowingListener dialogShowingListener: navigationContext.getDialogShowingListeners()){
+					dialogShowingListener.onDialogShown(mScreen.getClass());
+				}
 				return true;
 			}
 

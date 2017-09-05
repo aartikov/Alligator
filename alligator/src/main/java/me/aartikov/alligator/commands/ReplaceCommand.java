@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.AnimationData;
 import me.aartikov.alligator.Command;
 import me.aartikov.alligator.DialogAnimation;
+import me.aartikov.alligator.DialogShowingListener;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
@@ -64,7 +66,9 @@ public class ReplaceCommand implements Command {
 
 				activityHelper.start(intent, animation);
 				activityHelper.finish(animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, true);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, true);
+				}
 				return false;
 			}
 
@@ -85,7 +89,9 @@ public class ReplaceCommand implements Command {
 				}
 
 				fragmentStack.replace(fragment, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, false);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, false);
+				}
 				return true;
 			}
 
@@ -98,7 +104,9 @@ public class ReplaceCommand implements Command {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 				dialogFragmentHelper.showDialog(dialogFragment, animation);
-				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
+				for(DialogShowingListener dialogShowingListener: navigationContext.getDialogShowingListeners()){
+					dialogShowingListener.onDialogShown(mScreen.getClass());
+				}
 				return true;
 
 			default:

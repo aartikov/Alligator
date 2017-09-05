@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	private void bindNavigationContext() {
 		NavigationContext.Builder builder = new NavigationContext.Builder(this)
 				.screenSwitcher(mScreenSwitcher)
-				.screenSwitchingListener(this)
+				.addScreenSwitchingListener(this)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();

@@ -10,6 +10,7 @@ import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.helpers.ActivityHelper;
@@ -63,7 +64,9 @@ public class FinishCommand implements Command {
 
 		ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 		activityHelper.finish(animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+			transitionListener.onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		}
 		return false;
 	}
 }

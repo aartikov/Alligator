@@ -12,6 +12,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.helpers.ActivityHelper;
@@ -60,7 +61,9 @@ public class BackToCommand implements Command {
 
 				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
 				activityHelper.start(intent, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+				}
 				return false;
 			}
 
@@ -87,11 +90,15 @@ public class BackToCommand implements Command {
 				Class<? extends Screen> screenClassTo = mScreenClass;
 				TransitionAnimation animation = TransitionAnimation.DEFAULT;
 				if (screenClassFrom != null) {
-					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+					animation = navigationContext
+							.getTransitionAnimationProvider()
+							.getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
 				}
 
 				fragmentStack.popUntil(fragment, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+				for(TransitionListener transitionListener: navigationContext.getTransitionListeners()){
+					transitionListener.onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+				}
 				return true;
 			}
 

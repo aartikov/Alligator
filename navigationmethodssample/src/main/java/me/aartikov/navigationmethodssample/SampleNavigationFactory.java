@@ -1,8 +1,10 @@
 package me.aartikov.navigationmethodssample;
 
 import me.aartikov.alligator.navigationfactories.RegistryNavigationFactory;
-import me.aartikov.navigationmethodssample.screens.*;
-import me.aartikov.navigationmethodssample.ui.*;
+import me.aartikov.navigationmethodssample.screens.TestScreen;
+import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
+import me.aartikov.navigationmethodssample.ui.TestActivity;
+import me.aartikov.navigationmethodssample.ui.TestFragment;
 
 /**
  * Date: 11.02.2017

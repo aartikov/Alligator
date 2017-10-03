@@ -1,11 +1,11 @@
-package com.arellomobile.alligator;
+package me.aartikov.alligatorcompiler;
 
-import com.arellomobile.alligator.generator.Generator;
-import com.arellomobile.alligator.generator.GeneratorFailedException;
-import com.arellomobile.alligator.generator.NavigationFactoryClassGenerator;
-import com.arellomobile.alligator.rule.AnnotationRule;
-import com.arellomobile.alligator.rule.IncorrectElementException;
-import com.arellomobile.alligator.rule.ScreenAnnotationRule;
+import me.aartikov.alligatorcompiler.generator.Generator;
+import me.aartikov.alligatorcompiler.generator.GeneratorFailedException;
+import me.aartikov.alligatorcompiler.generator.NavigationFactoryClassGenerator;
+import me.aartikov.alligatorcompiler.rule.AnnotationRule;
+import me.aartikov.alligatorcompiler.rule.IncorrectElementException;
+import me.aartikov.alligatorcompiler.rule.ScreenAnnotationRule;
 import com.squareup.javapoet.JavaFile;
 
 import java.io.IOException;

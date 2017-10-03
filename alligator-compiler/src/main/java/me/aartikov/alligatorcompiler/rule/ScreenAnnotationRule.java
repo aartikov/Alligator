@@ -1,7 +1,7 @@
-package com.arellomobile.alligator.rule;
+package me.aartikov.alligatorcompiler.rule;
 
-import com.arellomobile.alligator.AvailableScreenTypes;
-import com.arellomobile.alligator.Utils;
+import me.aartikov.alligatorcompiler.AvailableScreenTypes;
+import me.aartikov.alligatorcompiler.Utils;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;

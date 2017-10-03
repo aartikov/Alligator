@@ -1,7 +1,7 @@
-package com.arellomobile.alligator.generator;
+package me.aartikov.alligatorcompiler.generator;
 
-import com.arellomobile.alligator.AvailableScreenTypes;
-import com.arellomobile.alligator.Utils;
+import me.aartikov.alligatorcompiler.AvailableScreenTypes;
+import me.aartikov.alligatorcompiler.Utils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -21,7 +21,8 @@ import javax.lang.model.type.TypeMirror;
 import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.alligator.ScreenResult;
 
-import static com.arellomobile.alligator.Utils.getClassName;
+
+import static me.aartikov.alligatorcompiler.Utils.getClassName;
 
 public final class NavigationFactoryClassGenerator implements Generator<TypeElement> {
 

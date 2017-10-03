@@ -1,4 +1,4 @@
-package com.arellomobile.alligator;
+package me.aartikov.alligatorcompiler;
 
 public enum AvailableScreenTypes {
 	ACTIVITY("android.app.Activity"),

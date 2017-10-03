@@ -1,4 +1,4 @@
-package com.arellomobile.alligator.generator;
+package me.aartikov.alligatorcompiler.generator;
 
 /**
  * Date: 12-Jan-16

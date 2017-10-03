@@ -1,4 +1,4 @@
-package com.arellomobile.alligator;
+package me.aartikov.alligatorcompiler;
 
 import com.squareup.javapoet.ClassName;
 

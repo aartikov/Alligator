@@ -1,6 +1,6 @@
-package com.arellomobile.alligator.rule;
+package me.aartikov.alligatorcompiler.rule;
 
-import com.arellomobile.alligator.ElementException;
+import me.aartikov.alligatorcompiler.ElementException;
 
 import javax.lang.model.element.Element;
 

@@ -1,4 +1,4 @@
-package com.arellomobile.alligator.rule;
+package me.aartikov.alligatorcompiler.rule;
 
 import java.util.Arrays;
 import java.util.HashSet;

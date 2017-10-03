@@ -1,4 +1,4 @@
-package com.arellomobile.alligator;
+package me.aartikov.alligatorcompiler;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;

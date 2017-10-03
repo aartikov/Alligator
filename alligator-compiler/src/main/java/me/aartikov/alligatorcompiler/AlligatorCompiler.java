@@ -1,43 +1,34 @@
 package me.aartikov.alligatorcompiler;
 
-import me.aartikov.alligatorcompiler.generator.Generator;
-import me.aartikov.alligatorcompiler.generator.GeneratorFailedException;
-import me.aartikov.alligatorcompiler.generator.NavigationFactoryClassGenerator;
-import me.aartikov.alligatorcompiler.rule.AnnotationRule;
-import me.aartikov.alligatorcompiler.rule.IncorrectElementException;
-import me.aartikov.alligatorcompiler.rule.ScreenAnnotationRule;
-import com.squareup.javapoet.JavaFile;
-
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.squareup.javapoet.JavaFile;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.util.Elements;
 
 import me.aartikov.alligator.RegisterScreen;
 
-@SupportedAnnotationTypes("me.aartikov.alligator.RegisterScreen")
 public class AlligatorCompiler extends AbstractProcessor {
-	private static ErrorReporter sErrorReporter;
-	private static Elements elements;
+	private AnnotationProcessingUtils utils;
 
-	public static Elements getElementUtils() {
-		return elements;
+	@Override
+	public synchronized void init(ProcessingEnvironment processingEnv) {
+		super.init(processingEnv);
+		utils = new AnnotationProcessingUtils(processingEnv);
 	}
 
-	public static ErrorReporter getErrorReporter() {
-		return sErrorReporter;
+	@Override
+	public Set<String> getSupportedAnnotationTypes() {
+		return Collections.singleton(RegisterScreen.class.getCanonicalName());
 	}
 
 	@Override
@@ -46,81 +37,32 @@ public class AlligatorCompiler extends AbstractProcessor {
 	}
 
 	@Override
-	public synchronized void init(final ProcessingEnvironment processingEnvironment) {
-		super.init(processingEnvironment);
-		sErrorReporter = new ErrorReporter(processingEnvironment);
-		elements = processingEnvironment.getElementUtils();
-	}
+	public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment roundEnv) {
+		try {
+			List<RegistrationAnnotatedClass> annotatedClasses = new ArrayList<>();
+			for (Element element : roundEnv.getElementsAnnotatedWith(RegisterScreen.class)) {
+				RegistrationAnnotatedClass annotatedClass = RegistrationAnnotatedClass.fromElement(element, utils);
+				checkThatScreenIsNotAlreadyRegistered(annotatedClasses, annotatedClass);
+				annotatedClasses.add(annotatedClass);
+			}
 
-	@Override
-	public Set<String> getSupportedAnnotationTypes() {
-		Set<String> result = new HashSet<>();
-		Collections.addAll(result,
-				RegisterScreen.class.getCanonicalName());
-		return result;
-	}
-
-	@Override
-	public boolean process(final Set<? extends TypeElement> set, final RoundEnvironment roundEnvironment) {
-		if (set.isEmpty()) {
-			return false;
+			if (!annotatedClasses.isEmpty()) {
+				NavigationFactoryGenerator generator = new NavigationFactoryGenerator();
+				JavaFile javaFile = generator.generate(annotatedClasses);
+				javaFile.writeTo(processingEnv.getFiler());
+			}
+		} catch (ProcessingException e) {
+			utils.logError(e.getElement(), e.getMessage());
+		} catch (IOException e) {
+			utils.logError(null, e.getMessage());
 		}
-
-		return interruptProcess(roundEnvironment);
-	}
-
-	private boolean interruptProcess(final RoundEnvironment roundEnvironment) {
-		checkScreens(roundEnvironment, RegisterScreen.class, new ScreenAnnotationRule());
-
-		NavigationFactoryClassGenerator navigationFactoryClassGenerator = new NavigationFactoryClassGenerator();
-		generateCode(navigationFactoryClassGenerator, roundEnvironment);
-
 		return true;
 	}
 
-	private void checkScreens(final RoundEnvironment roundEnv, Class<? extends Annotation> clazz, AnnotationRule annotationRule) {
-		for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(clazz)) {
-			try {
-				annotationRule.checkAnnotation(annotatedElement);
-			}
-			catch (IncorrectElementException e) {
-				e.printStackTrace();
-				sErrorReporter.reportError(e.getLocalizedMessage(), annotatedElement);
-				break;
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T extends Element> void generateCode(Generator<T> generator, RoundEnvironment roundEnvironment) {
-		List<JavaFile> javaFiles = new ArrayList<>();
-		for (String annotationName : generator.getSupportedAnnotations()) {
-			try {
-				for (Element annotatedElements : roundEnvironment.getElementsAnnotatedWith((Class<? extends Annotation>) Class.forName(annotationName))) {
-					generator.implementFor((T) annotatedElements);
-				}
-			}
-			catch (ClassNotFoundException e) {
-				sErrorReporter.reportError("Unknown annotation " + annotationName, null);
-			}
-			catch (ClassCastException e) {
-				sErrorReporter.reportError(e.getLocalizedMessage(), null);
-			}
-		}
-
-		try {
-			generator.generate(javaFiles);
-		}
-		catch (GeneratorFailedException e) {
-			sErrorReporter.reportError(e.getLocalizedMessage(), e.getElement());
-		}
-
-		for (JavaFile javaFile : javaFiles) {
-			try {
-				javaFile.writeTo(processingEnv.getFiler());
-			}
-			catch (IOException e) {
-				e.printStackTrace();
+	private static void checkThatScreenIsNotAlreadyRegistered(List<RegistrationAnnotatedClass> annotatedClasses, RegistrationAnnotatedClass newAnnotatedClass) throws ProcessingException {
+		for (RegistrationAnnotatedClass annotatedClass : annotatedClasses) {
+			if (annotatedClass.getScreenClassName().equals(newAnnotatedClass.getScreenClassName())) {
+				throw new ProcessingException(newAnnotatedClass.getClassElement(), "Screen %s is already registered.", newAnnotatedClass.getScreenClassName());
 			}
 		}
 	}

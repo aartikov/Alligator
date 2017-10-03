@@ -6,7 +6,6 @@ import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
-import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
 
 /**
  * Date: 29.12.2016
@@ -20,7 +19,7 @@ public class SampleApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
+		sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
 	}
 
 	public static Navigator getNavigator() {

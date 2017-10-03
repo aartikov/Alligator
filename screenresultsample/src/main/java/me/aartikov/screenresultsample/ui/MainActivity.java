@@ -16,14 +16,12 @@ import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.RegisterScreen;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.ScreenResultListener;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
-import me.aartikov.screenresultsample.screens.MainScreen;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
 /**
@@ -32,7 +30,6 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  *
  * @author Artur Artikov
  */
-@RegisterScreen(value = MainScreen.class)
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();

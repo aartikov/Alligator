@@ -1,14 +1,14 @@
-package me.aartikov.screenresultsample;
+package me.aartikov.codegenerationsample;
 
 import android.app.Application;
 
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResultResolver;
+import me.aartikov.alligator.ScreenResolver;
 
 /**
- * Date: 12.03.2016
+ * Date: 22.01.2016
  * Time: 15:53
  *
  * @author Artur Artikov
@@ -30,7 +30,7 @@ public class SampleApplication extends Application {
 		return sAndroidNavigator;
 	}
 
-	public static ScreenResultResolver getScreenResultResolver() {
-		return sAndroidNavigator.getScreenResultResolver();
+	public static ScreenResolver getScreenResolver() {
+		return sAndroidNavigator.getScreenResolver();
 	}
 }

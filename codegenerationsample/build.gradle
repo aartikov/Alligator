@@ -4,13 +4,16 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
+
     defaultConfig {
-        applicationId "me.aartikov.navigationsample"
+        applicationId "me.aartikov.codegenerationsample"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -33,6 +36,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':alligator')
+    annotationProcessor project(':alligator-compiler')
+
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

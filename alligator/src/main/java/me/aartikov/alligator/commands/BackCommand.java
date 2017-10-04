@@ -12,8 +12,6 @@ import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.helpers.ActivityHelper;
-import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.helpers.ScreenClassUtils;
 
@@ -36,11 +34,11 @@ public class BackCommand implements Command {
 
 	@Override
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-		if (DialogFragmentHelper.from(navigationContext).isDialogVisible()) {
-			DialogFragmentHelper.from(navigationContext).hideDialog();
+		if (navigationContext.getDialogFragmentHelper().isDialogVisible()) {
+			navigationContext.getDialogFragmentHelper().hideDialog();
 			return true;
-		} else if (navigationContext.hasContainerId() && FragmentStack.from(navigationContext).getFragmentCount() > 1) {
-			FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+		} else if (navigationContext.getFragmentStack() != null && navigationContext.getFragmentStack().getFragmentCount() > 1) {
+			FragmentStack fragmentStack = navigationContext.getFragmentStack();
 			List<Fragment> fragments = fragmentStack.getFragments();
 			Fragment currentFragment = fragments.get(fragments.size() - 1);
 			Fragment previousFragment = fragments.get(fragments.size() - 2);
@@ -65,8 +63,7 @@ public class BackCommand implements Command {
 				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 			}
 
-			ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
-			activityHelper.finish(animation);
+			navigationContext.getActivityHelper().finish(animation);
 			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 			return false;
 		}

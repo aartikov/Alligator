@@ -50,7 +50,7 @@ public class ReplaceCommand implements Command {
 					ScreenClassUtils.putPreviousScreenClass(intent, previousScreenClass);
 				}
 
-				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+				ActivityHelper activityHelper = navigationContext.getActivityHelper();
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
@@ -69,12 +69,12 @@ public class ReplaceCommand implements Command {
 			}
 
 			case FRAGMENT: {
-				if (!navigationContext.hasContainerId()) {
+				if (navigationContext.getFragmentStack() == null) {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
-				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				FragmentStack fragmentStack = navigationContext.getFragmentStack();
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
 
 				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
@@ -90,7 +90,7 @@ public class ReplaceCommand implements Command {
 			}
 
 			case DIALOG_FRAGMENT:
-				DialogFragmentHelper dialogFragmentHelper = DialogFragmentHelper.from(navigationContext);
+				DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 				if (dialogFragmentHelper.isDialogVisible()) {
 					dialogFragmentHelper.hideDialog();
 				}

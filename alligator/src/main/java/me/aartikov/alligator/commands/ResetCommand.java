@@ -46,7 +46,7 @@ public class ResetCommand implements Command {
 				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+				ActivityHelper activityHelper = navigationContext.getActivityHelper();
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
@@ -64,12 +64,12 @@ public class ResetCommand implements Command {
 			}
 
 			case FRAGMENT: {
-				if (!navigationContext.hasContainerId()) {
+				if (navigationContext.getFragmentStack() == null) {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
 				}
 
 				Fragment fragment = navigationFactory.createFragment(mScreen);
-				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				FragmentStack fragmentStack = navigationContext.getFragmentStack();
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
 
 				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
@@ -85,7 +85,7 @@ public class ResetCommand implements Command {
 			}
 
 			case DIALOG_FRAGMENT:
-				DialogFragmentHelper dialogFragmentHelper = DialogFragmentHelper.from(navigationContext);
+				DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 				while (dialogFragmentHelper.isDialogVisible()) {
 					dialogFragmentHelper.hideDialog();
 				}

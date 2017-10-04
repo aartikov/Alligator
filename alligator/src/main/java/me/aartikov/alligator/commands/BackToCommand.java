@@ -14,7 +14,6 @@ import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
-import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.helpers.ScreenClassUtils;
 
@@ -58,18 +57,17 @@ public class BackToCommand implements Command {
 					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
 				}
 
-				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
-				activityHelper.start(intent, animation);
+				navigationContext.getActivityHelper().start(intent, animation);
 				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 				return false;
 			}
 
 			case FRAGMENT: {
-				if (!navigationContext.hasContainerId()) {
+				if (navigationContext.getFragmentStack() == null) {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
 				}
 
-				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				FragmentStack fragmentStack = navigationContext.getFragmentStack();
 				List<Fragment> fragments = fragmentStack.getFragments();
 				Fragment fragment = null;
 				for (int i = fragments.size() - 1; i >= 0; i--) {

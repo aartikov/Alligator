@@ -16,7 +16,6 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
 import me.aartikov.alligator.helpers.ActivityHelper;
-import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.helpers.ScreenClassUtils;
 
@@ -50,7 +49,7 @@ public class ForwardCommand implements Command {
 					ScreenClassUtils.putPreviousScreenClass(intent, previousScreenClass);
 				}
 
-				ActivityHelper activityHelper = ActivityHelper.from(navigationContext);
+				ActivityHelper activityHelper = navigationContext.getActivityHelper();
 				if (!activityHelper.resolve(intent)) {
 					throw new FailedResolveActivityException(this, mScreen);
 				}
@@ -73,7 +72,7 @@ public class ForwardCommand implements Command {
 			}
 
 			case FRAGMENT: {
-				if (!navigationContext.hasContainerId()) {
+				if (navigationContext.getFragmentStack() == null) {
 					throw new CommandExecutionException(this, "ContainerId is not set.");
 				}
 
@@ -82,7 +81,7 @@ public class ForwardCommand implements Command {
 					throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
 				}
 
-				FragmentStack fragmentStack = FragmentStack.from(navigationContext);
+				FragmentStack fragmentStack = navigationContext.getFragmentStack();
 				Fragment currentFragment = fragmentStack.getCurrentFragment();
 
 				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
@@ -100,7 +99,7 @@ public class ForwardCommand implements Command {
 			case DIALOG_FRAGMENT: {
 				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
 				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
-				DialogFragmentHelper.from(navigationContext).showDialog(dialogFragment, animation);
+				navigationContext.getDialogFragmentHelper().showDialog(dialogFragment, animation);
 				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 				return true;
 			}

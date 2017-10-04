@@ -1,6 +1,7 @@
 package me.aartikov.alligator;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,6 +11,9 @@ import me.aartikov.alligator.defaultimpementation.DefaultNavigationErrorListener
 import me.aartikov.alligator.defaultimpementation.DefaultScreenSwitchingListener;
 import me.aartikov.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
 import me.aartikov.alligator.defaultimpementation.DefaultTransitionListener;
+import me.aartikov.alligator.helpers.ActivityHelper;
+import me.aartikov.alligator.helpers.DialogFragmentHelper;
+import me.aartikov.alligator.helpers.FragmentStack;
 
 /**
  * Date: 29.12.2016
@@ -32,6 +36,9 @@ public class NavigationContext {
 	private DialogShowingListener mDialogShowingListener;
 	private ScreenSwitchingListener mScreenSwitchingListener;
 	private NavigationErrorListener mNavigationErrorListener;
+	private ActivityHelper mActivityHelper;
+	private DialogFragmentHelper mDialogFragmentHelper;
+	private FragmentStack mFragmentStack;
 
 	private NavigationContext(Builder builder) {
 		if (builder.mActivity == null) {
@@ -48,6 +55,9 @@ public class NavigationContext {
 		mDialogShowingListener = builder.mDialogShowingListener != null ? builder.mDialogShowingListener : new DefaultDialogShowingListener();
 		mScreenSwitchingListener = builder.mScreenSwitchingListener != null ? builder.mScreenSwitchingListener : new DefaultScreenSwitchingListener();
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
+		mActivityHelper = new ActivityHelper(mActivity);
+		mDialogFragmentHelper = new DialogFragmentHelper(mFragmentManager);
+		mFragmentStack = mContainerId > 0 ? new FragmentStack(mFragmentManager, mContainerId) : null;
 	}
 
 	public AppCompatActivity getActivity() {
@@ -60,10 +70,6 @@ public class NavigationContext {
 
 	public int getContainerId() {
 		return mContainerId;
-	}
-
-	public boolean hasContainerId() {
-		return mContainerId > 0;
 	}
 
 	public ScreenSwitcher getScreenSwitcher() {
@@ -92,6 +98,18 @@ public class NavigationContext {
 
 	public NavigationErrorListener getNavigationErrorListener() {
 		return mNavigationErrorListener;
+	}
+
+	public ActivityHelper getActivityHelper() {
+		return mActivityHelper;
+	}
+
+	public DialogFragmentHelper getDialogFragmentHelper() {
+		return mDialogFragmentHelper;
+	}
+
+	public @Nullable FragmentStack getFragmentStack() {
+		return mFragmentStack;
 	}
 
 	/**

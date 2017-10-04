@@ -14,14 +14,20 @@ public class NavigationFactoryGenerator {
 	private static final String CLASS_NAME = "GeneratedNavigationFactory";
 	private static final String SUPERCLASS_NAME = "RegistryNavigationFactory";
 
+	private ProcessingUtils utils;
+
+	public NavigationFactoryGenerator(ProcessingUtils utils) {
+		this.utils = utils;
+	}
+
 	public JavaFile generate(List<RegistrationAnnotatedClass> annotatedClasses) throws ProcessingException {
 		MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
 				.addModifiers(Modifier.PUBLIC);
 
 		for (RegistrationAnnotatedClass annotatedClass : annotatedClasses) {
-			String registrationMethod = getRegistrationMethod(annotatedClass.getScreenType());
 			ClassName annotatedClassName = ClassName.get(annotatedClass.getClassElement());
 			ClassName screenClassName = ClassName.bestGuess(annotatedClass.getScreenClassName());
+			String registrationMethod = getRegistrationMethod(annotatedClass.getScreenType());
 			constructorBuilder.addStatement(registrationMethod, screenClassName, annotatedClassName);
 
 			if (annotatedClass.getScreenResultClassName() != null) {
@@ -39,16 +45,8 @@ public class NavigationFactoryGenerator {
 		return JavaFile.builder(PACKAGE, navigationFactory).build();
 	}
 
-	private String getRegistrationMethod(ScreenType screenType) throws ProcessingException {
-		switch (screenType) {
-			case ACTIVITY:
-				return "registerActivity($1T.class, $2T.class)";
-			case FRAGMENT:
-				return "registerFragment($1T.class, $2T.class)";
-			case DIALOG_FRAGMENT:
-				return "registerDialogFragment($1T.class, $2T.class)";
-			default:
-				throw new ProcessingException("Unknown screen type %s", screenType);
-		}
+	private String getRegistrationMethod(ScreenType screenType) {
+		String screenTypeName = utils.getSimpleClassName(screenType.getClassName());
+		return "register" + screenTypeName + "($1T.class, $2T.class)";
 	}
 }

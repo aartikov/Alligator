@@ -14,16 +14,20 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 
 import me.aartikov.alligator.RegisterScreen;
 
 public class AlligatorCompiler extends AbstractProcessor {
-	private AnnotationProcessingUtils utils;
+	private RegistrationAnnotatedClassCreator annotatedClassCreator;
+	private NavigationFactoryGenerator navigationFactoryGenerator;
 
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
-		utils = new AnnotationProcessingUtils(processingEnv);
+		ProcessingUtils utils = new ProcessingUtils(processingEnv);
+		annotatedClassCreator = new RegistrationAnnotatedClassCreator(utils);
+		navigationFactoryGenerator = new NavigationFactoryGenerator(utils);
 	}
 
 	@Override
@@ -41,29 +45,32 @@ public class AlligatorCompiler extends AbstractProcessor {
 		try {
 			List<RegistrationAnnotatedClass> annotatedClasses = new ArrayList<>();
 			for (Element element : roundEnv.getElementsAnnotatedWith(RegisterScreen.class)) {
-				RegistrationAnnotatedClass annotatedClass = RegistrationAnnotatedClass.fromElement(element, utils);
+				RegistrationAnnotatedClass annotatedClass = annotatedClassCreator.create(element);
 				checkThatScreenIsNotAlreadyRegistered(annotatedClasses, annotatedClass);
 				annotatedClasses.add(annotatedClass);
 			}
 
 			if (!annotatedClasses.isEmpty()) {
-				NavigationFactoryGenerator generator = new NavigationFactoryGenerator();
-				JavaFile javaFile = generator.generate(annotatedClasses);
+				JavaFile javaFile = navigationFactoryGenerator.generate(annotatedClasses);
 				javaFile.writeTo(processingEnv.getFiler());
 			}
 		} catch (ProcessingException e) {
-			utils.logError(e.getElement(), e.getMessage());
+			logError(e.getElement(), e.getMessage());
 		} catch (IOException e) {
-			utils.logError(null, e.getMessage());
+			logError(null, e.getMessage());
 		}
 		return true;
 	}
 
-	private static void checkThatScreenIsNotAlreadyRegistered(List<RegistrationAnnotatedClass> annotatedClasses, RegistrationAnnotatedClass newAnnotatedClass) throws ProcessingException {
+	private void checkThatScreenIsNotAlreadyRegistered(List<RegistrationAnnotatedClass> annotatedClasses, RegistrationAnnotatedClass newAnnotatedClass) throws ProcessingException {
 		for (RegistrationAnnotatedClass annotatedClass : annotatedClasses) {
 			if (annotatedClass.getScreenClassName().equals(newAnnotatedClass.getScreenClassName())) {
 				throw new ProcessingException(newAnnotatedClass.getClassElement(), "Screen %s is already registered.", newAnnotatedClass.getScreenClassName());
 			}
 		}
+	}
+
+	private void logError(Element element, String message) {
+		processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, message, element);
 	}
 }

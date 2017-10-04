@@ -1,20 +1,15 @@
 package me.aartikov.alligatorcompiler;
 
-import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 
-public class AnnotationProcessingUtils {
-	private Messager messager;
+public class ProcessingUtils {
 	private Types typeUtils;
 
-	public AnnotationProcessingUtils(ProcessingEnvironment processingEnv) {
-		messager = processingEnv.getMessager();
+	public ProcessingUtils(ProcessingEnvironment processingEnv) {
 		typeUtils = processingEnv.getTypeUtils();
 	}
 
@@ -34,7 +29,12 @@ public class AnnotationProcessingUtils {
 		}
 	}
 
-	public void logError(Element element, String message) {
-		messager.printMessage(Diagnostic.Kind.ERROR, message, element);
+	public String getSimpleClassName(String className) {
+		int dotIndex = className.lastIndexOf(".");
+		if (dotIndex == -1) {
+			return className;
+		} else {
+			return className.substring(dotIndex + 1);
+		}
 	}
 }

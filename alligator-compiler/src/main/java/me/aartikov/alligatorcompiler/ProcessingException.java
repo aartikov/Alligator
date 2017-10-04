@@ -10,10 +10,6 @@ public class ProcessingException extends Exception {
 		this.element = element;
 	}
 
-	public ProcessingException(String message, Object... args) {
-		this(null, message, args);
-	}
-
 	public Element getElement() {
 		return element;
 	}

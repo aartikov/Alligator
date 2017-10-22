@@ -2,6 +2,8 @@ package me.aartikov.alligator;
 
 import android.content.Intent;
 
+import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
+
 /**
  * Date: 12.03.2017
  * Time: 11:06
@@ -30,8 +32,11 @@ public class ScreenResultResolver {
 	public void handleActivityResult(int requestCode, int resultCode, Intent data, ScreenResultListener listener) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(requestCode);
 		if (screenClass != null) {
-			ScreenResult screenResult = mNavigationFactory.getScreenResult(screenClass, new ActivityResult(resultCode, data));
-			listener.onScreenResult(screenClass, screenResult);
+			ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
+			if (screenImplementation instanceof ActivityScreenImplementation) {
+				ScreenResult screenResult = ((ActivityScreenImplementation) screenImplementation).getScreenResult(new ActivityResult(resultCode, data));
+				listener.onScreenResult(screenClass, screenResult);
+			}
 		}
 	}
 }

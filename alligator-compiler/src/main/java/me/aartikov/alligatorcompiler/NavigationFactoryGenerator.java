@@ -27,12 +27,14 @@ public class NavigationFactoryGenerator {
 		for (RegistrationAnnotatedClass annotatedClass : annotatedClasses) {
 			ClassName annotatedClassName = ClassName.get(annotatedClass.getClassElement());
 			ClassName screenClassName = ClassName.bestGuess(annotatedClass.getScreenClassName());
-			String registrationMethod = getRegistrationMethod(annotatedClass.getScreenType());
-			constructorBuilder.addStatement(registrationMethod, screenClassName, annotatedClassName);
 
-			if (annotatedClass.getScreenResultClassName() != null) {
+			if (annotatedClass.getScreenResultClassName() == null) {
+				String registrationMethod = getRegistrationMethod(annotatedClass.getScreenType());
+				constructorBuilder.addStatement(registrationMethod, screenClassName, annotatedClassName);
+			} else {
+				String registrationForResultMethod = getRegistrationForResultMethod(annotatedClass.getScreenType());
 				ClassName screenResultClassName = ClassName.bestGuess(annotatedClass.getScreenResultClassName());
-				constructorBuilder.addStatement("registerScreenForResult($1T.class, $2T.class)", screenClassName, screenResultClassName);
+				constructorBuilder.addStatement(registrationForResultMethod, screenClassName, annotatedClassName, screenResultClassName);
 			}
 		}
 
@@ -48,5 +50,10 @@ public class NavigationFactoryGenerator {
 	private String getRegistrationMethod(ScreenType screenType) {
 		String screenTypeName = utils.getSimpleClassName(screenType.getClassName());
 		return "register" + screenTypeName + "($1T.class, $2T.class)";
+	}
+
+	private String getRegistrationForResultMethod(ScreenType screenType) {
+		String screenTypeName = utils.getSimpleClassName(screenType.getClassName());
+		return "register" + screenTypeName + "ForResult($1T.class, $2T.class, $3T.class)";
 	}
 }

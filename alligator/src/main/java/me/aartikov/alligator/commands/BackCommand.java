@@ -13,7 +13,6 @@ import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.helpers.FragmentStack;
-import me.aartikov.alligator.helpers.ScreenClassUtils;
 
 /**
  * Date: 29.12.2016
@@ -57,7 +56,7 @@ public class BackCommand implements Command {
 			Activity activity = navigationContext.getActivity();
 
 			Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
-			Class<? extends Screen> screenClassTo = ScreenClassUtils.getPreviousScreenClass(activity);
+			Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
 			TransitionAnimation animation = TransitionAnimation.DEFAULT;
 			if (screenClassFrom != null && screenClassTo != null) {
 				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);

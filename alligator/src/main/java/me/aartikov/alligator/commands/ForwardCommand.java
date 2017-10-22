@@ -6,7 +6,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.AnimationData;
-import me.aartikov.alligator.Command;
 import me.aartikov.alligator.DialogAnimation;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
@@ -17,7 +16,9 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.FailedResolveActivityException;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
-import me.aartikov.alligator.helpers.ScreenClassUtils;
+import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
+import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
+import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 29.12.2016
@@ -29,83 +30,76 @@ import me.aartikov.alligator.helpers.ScreenClassUtils;
 /**
  * Command implementation for {@code goForward} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class ForwardCommand implements Command {
+public class ForwardCommand extends ScreenImplementationVisitorCommand {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 
 	public ForwardCommand(Screen screen, AnimationData animationData) {
+		super(screen.getClass());
 		mScreen = screen;
 		mAnimationData = animationData;
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		switch (navigationFactory.getViewType(mScreen.getClass())) {
-			case ACTIVITY: {
-				Activity activity = navigationContext.getActivity();
-				Intent intent = navigationFactory.createActivityIntent(activity, mScreen);
-				Class<? extends Screen> previousScreenClass = navigationFactory.getScreenClass(activity);
-				if(previousScreenClass != null) {
-					ScreenClassUtils.putPreviousScreenClass(intent, previousScreenClass);
-				}
+	public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		Activity activity = navigationContext.getActivity();
+		Class<? extends Screen> previousScreenClass = navigationFactory.getScreenClass(activity);
+		Intent intent = screenImplementation.createIntent(activity, mScreen, previousScreenClass);
 
-				ActivityHelper activityHelper = navigationContext.getActivityHelper();
-				if (!activityHelper.resolve(intent)) {
-					throw new FailedResolveActivityException(this, mScreen);
-				}
-
-				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
-				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = TransitionAnimation.DEFAULT;
-				if (screenClassFrom != null) {
-					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
-				}
-
-				if (navigationFactory.isScreenForResult(mScreen.getClass())) {
-					int requestCode = navigationFactory.getRequestCode(mScreen.getClass());
-					activityHelper.startForResult(intent, requestCode, animation);
-				} else {
-					activityHelper.start(intent, animation);
-				}
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
-				return false;
-			}
-
-			case FRAGMENT: {
-				if (navigationContext.getFragmentStack() == null) {
-					throw new CommandExecutionException(this, "ContainerId is not set.");
-				}
-
-				Fragment fragment = navigationFactory.createFragment(mScreen);
-				if (fragment instanceof DialogFragment) {
-					throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
-				}
-
-				FragmentStack fragmentStack = navigationContext.getFragmentStack();
-				Fragment currentFragment = fragmentStack.getCurrentFragment();
-
-				Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
-				Class<? extends Screen> screenClassTo = mScreen.getClass();
-				TransitionAnimation animation = TransitionAnimation.DEFAULT;
-				if (screenClassFrom != null) {
-					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
-				}
-
-				fragmentStack.push(fragment, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
-				return true;
-			}
-
-			case DIALOG_FRAGMENT: {
-				DialogFragment dialogFragment = navigationFactory.createDialogFragment(mScreen);
-				DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
-				navigationContext.getDialogFragmentHelper().showDialog(dialogFragment, animation);
-				navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
-				return true;
-			}
-
-			default:
-				throw new CommandExecutionException(this, "Screen " + mScreen.getClass().getSimpleName() + " is unknown.");
+		ActivityHelper activityHelper = navigationContext.getActivityHelper();
+		if (!activityHelper.resolve(intent)) {
+			throw new FailedResolveActivityException(this, mScreen);
 		}
+
+		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		TransitionAnimation animation = TransitionAnimation.DEFAULT;
+		if (screenClassFrom != null) {
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
+		}
+
+		if (screenImplementation.getScreenResultClass() != null) {
+			activityHelper.startForResult(intent, screenImplementation.getRequestCode(), animation);
+		} else {
+			activityHelper.start(intent, animation);
+		}
+
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
+		return false;
+	}
+
+	@Override
+	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		if (navigationContext.getFragmentStack() == null) {
+			throw new CommandExecutionException(this, "ContainerId is not set.");
+		}
+
+		Fragment fragment = screenImplementation.createFragment(mScreen);
+		if (fragment instanceof DialogFragment) {
+			throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
+		}
+
+		FragmentStack fragmentStack = navigationContext.getFragmentStack();
+		Fragment currentFragment = fragmentStack.getCurrentFragment();
+
+		Class<? extends Screen> screenClassFrom = currentFragment == null ? null : navigationFactory.getScreenClass(currentFragment);
+		Class<? extends Screen> screenClassTo = mScreen.getClass();
+		TransitionAnimation animation = TransitionAnimation.DEFAULT;
+		if (screenClassFrom != null) {
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
+		}
+
+		fragmentStack.push(fragment, animation);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
+		return true;
+	}
+
+	@Override
+	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		DialogFragment dialogFragment = screenImplementation.createDialogFragment(mScreen);
+		DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
+		navigationContext.getDialogFragmentHelper().showDialog(dialogFragment, animation);
+		navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
+		return true;
 	}
 }

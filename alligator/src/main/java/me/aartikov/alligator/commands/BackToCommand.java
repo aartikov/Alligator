@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.AnimationData;
-import me.aartikov.alligator.Command;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
@@ -15,7 +14,9 @@ import me.aartikov.alligator.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.helpers.FragmentStack;
-import me.aartikov.alligator.helpers.ScreenClassUtils;
+import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
+import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
+import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 11.02.2017
@@ -27,77 +28,68 @@ import me.aartikov.alligator.helpers.ScreenClassUtils;
 /**
  * Command implementation for {@code goBackTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class BackToCommand implements Command {
+public class BackToCommand extends ScreenImplementationVisitorCommand {
 	private Class<? extends Screen> mScreenClass;
 	private AnimationData mAnimationData;
 
 	public BackToCommand(Class<? extends Screen> screenClass, AnimationData animationData) {
+		super(screenClass);
 		mScreenClass = screenClass;
 		mAnimationData = animationData;
 	}
 
-	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
-		switch (navigationFactory.getViewType(mScreenClass)) {
-			case ACTIVITY: {
-				Class activityClass = navigationFactory.getActivityClass(mScreenClass);
-				if (activityClass == null) {
-					throw new CommandExecutionException(this, "Activity class for " + mScreenClass.getSimpleName() + " is null.");
-				}
-
-				Activity activity = navigationContext.getActivity();
-				Intent intent = new Intent(activity, activityClass);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				ScreenClassUtils.putScreenClass(intent, mScreenClass);
-
-				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
-				Class<? extends Screen> screenClassTo = mScreenClass;
-				TransitionAnimation animation = TransitionAnimation.DEFAULT;
-				if (screenClassFrom != null) {
-					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
-				}
-
-				navigationContext.getActivityHelper().start(intent, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
-				return false;
-			}
-
-			case FRAGMENT: {
-				if (navigationContext.getFragmentStack() == null) {
-					throw new CommandExecutionException(this, "ContainerId is not set.");
-				}
-
-				FragmentStack fragmentStack = navigationContext.getFragmentStack();
-				List<Fragment> fragments = fragmentStack.getFragments();
-				Fragment fragment = null;
-				for (int i = fragments.size() - 1; i >= 0; i--) {
-					if (mScreenClass == navigationFactory.getScreenClass(fragments.get(i))) {
-						fragment = fragments.get(i);
-						break;
-					}
-				}
-
-				if (fragment == null) {
-					throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
-				}
-
-				Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(fragments.get(fragments.size() - 1));
-				Class<? extends Screen> screenClassTo = mScreenClass;
-				TransitionAnimation animation = TransitionAnimation.DEFAULT;
-				if (screenClassFrom != null) {
-					animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
-				}
-
-				fragmentStack.popUntil(fragment, animation);
-				navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
-				return true;
-			}
-
-			case DIALOG_FRAGMENT:
-				throw new CommandExecutionException(this, "BackTo command is not supported for dialog fragments.");
-
-			default:
-				throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is unknown.");
+	@Override public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		Activity activity = navigationContext.getActivity();
+		Intent intent = screenImplementation.createEmptyIntent(activity, mScreenClass);
+		if (intent == null) {
+			throw new CommandExecutionException(this, "Can't create intent for a screen " + mScreenClass.getSimpleName());
 		}
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
+		Class<? extends Screen> screenClassTo = mScreenClass;
+		TransitionAnimation animation = TransitionAnimation.DEFAULT;
+		if (screenClassFrom != null) {
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+		}
+
+		navigationContext.getActivityHelper().start(intent, animation);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		return false;
+	}
+
+	@Override public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		if (navigationContext.getFragmentStack() == null) {
+			throw new CommandExecutionException(this, "ContainerId is not set.");
+		}
+
+		FragmentStack fragmentStack = navigationContext.getFragmentStack();
+		List<Fragment> fragments = fragmentStack.getFragments();
+		Fragment fragment = null;
+		for (int i = fragments.size() - 1; i >= 0; i--) {
+			if (mScreenClass == navigationFactory.getScreenClass(fragments.get(i))) {
+				fragment = fragments.get(i);
+				break;
+			}
+		}
+
+		if (fragment == null) {
+			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is not found.");
+		}
+
+		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(fragments.get(fragments.size() - 1));
+		Class<? extends Screen> screenClassTo = mScreenClass;
+		TransitionAnimation animation = TransitionAnimation.DEFAULT;
+		if (screenClassFrom != null) {
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+		}
+
+		fragmentStack.popUntil(fragment, animation);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+		return true;
+	}
+
+	@Override public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+		throw new CommandExecutionException(this, "BackTo command is not supported for dialog fragments.");
 	}
 }

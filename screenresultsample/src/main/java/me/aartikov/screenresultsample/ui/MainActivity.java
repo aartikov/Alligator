@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
-		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));    // goForward works as startActivityForResult if a screen is registered for result.
+		// goForward works as startActivityForResult here
+		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
 		mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
 	}
 
 
 	// Use ScreenResultResolver to translate onActivityResult arguments to ScreenResultListener call.
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		SampleApplication.getScreenResultResolver().handleActivityResult(requestCode, resultCode, data, this);

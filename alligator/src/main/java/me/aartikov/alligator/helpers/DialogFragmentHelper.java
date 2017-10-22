@@ -4,7 +4,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import me.aartikov.alligator.DialogAnimation;
+import me.aartikov.alligator.animations.DialogAnimation;
 
 /**
  * Date: 25.03.2017

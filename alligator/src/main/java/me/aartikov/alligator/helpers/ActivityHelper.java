@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 26.03.2017

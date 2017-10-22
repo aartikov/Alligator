@@ -5,15 +5,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import me.aartikov.alligator.defaultimpementation.DefaultDialogAnimationProvider;
-import me.aartikov.alligator.defaultimpementation.DefaultDialogShowingListener;
-import me.aartikov.alligator.defaultimpementation.DefaultNavigationErrorListener;
-import me.aartikov.alligator.defaultimpementation.DefaultScreenSwitchingListener;
-import me.aartikov.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
-import me.aartikov.alligator.defaultimpementation.DefaultTransitionListener;
+import me.aartikov.alligator.animations.DialogAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
+import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
+import me.aartikov.alligator.animations.providers.DefaultDialogAnimationProvider;
+import me.aartikov.alligator.commands.Command;
+import me.aartikov.alligator.listeners.DefaultDialogShowingListener;
+import me.aartikov.alligator.listeners.DefaultNavigationErrorListener;
+import me.aartikov.alligator.listeners.DefaultScreenSwitchingListener;
+import me.aartikov.alligator.animations.providers.DefaultTransitionAnimationProvider;
+import me.aartikov.alligator.listeners.DefaultTransitionListener;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
+import me.aartikov.alligator.listeners.DialogShowingListener;
+import me.aartikov.alligator.listeners.NavigationErrorListener;
+import me.aartikov.alligator.listeners.ScreenSwitchingListener;
+import me.aartikov.alligator.listeners.TransitionListener;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 /**
  * Date: 29.12.2016

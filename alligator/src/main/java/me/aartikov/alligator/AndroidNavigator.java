@@ -5,14 +5,19 @@ import java.util.Queue;
 
 import android.os.Looper;
 
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
 import me.aartikov.alligator.commands.BackToCommand;
+import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.commands.FinishCommand;
 import me.aartikov.alligator.commands.ForwardCommand;
 import me.aartikov.alligator.commands.ReplaceCommand;
 import me.aartikov.alligator.commands.ResetCommand;
 import me.aartikov.alligator.commands.SwitchToCommand;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 /**
  * Date: 29.12.2016

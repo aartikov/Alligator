@@ -3,13 +3,12 @@ package me.aartikov.alligator.commands;
 import android.app.Activity;
 
 import me.aartikov.alligator.ActivityResult;
-import me.aartikov.alligator.AnimationData;
-import me.aartikov.alligator.Command;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;

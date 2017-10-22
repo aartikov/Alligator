@@ -19,7 +19,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenSwitchingListener;
+import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
 /**

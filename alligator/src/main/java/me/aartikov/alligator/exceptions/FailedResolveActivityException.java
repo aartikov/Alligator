@@ -1,6 +1,6 @@
 package me.aartikov.alligator.exceptions;
 
-import me.aartikov.alligator.Command;
+import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.Screen;
 
 /**

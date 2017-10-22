@@ -2,7 +2,10 @@ package me.aartikov.alligator;
 
 import android.content.Intent;
 
+import me.aartikov.alligator.listeners.ScreenResultListener;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
+import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
 /**
  * Date: 12.03.2017

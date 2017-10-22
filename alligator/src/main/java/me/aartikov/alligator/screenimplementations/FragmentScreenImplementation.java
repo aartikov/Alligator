@@ -3,10 +3,8 @@ package me.aartikov.alligator.screenimplementations;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenImplementation;
-import me.aartikov.alligator.ScreenImplementationVisitor;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.functions.FragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;

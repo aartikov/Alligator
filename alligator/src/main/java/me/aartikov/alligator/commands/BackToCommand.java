@@ -6,11 +6,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.helpers.FragmentStack;

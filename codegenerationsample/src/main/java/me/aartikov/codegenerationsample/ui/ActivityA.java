@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.RegisterScreen;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.codegenerationsample.R;
 import me.aartikov.codegenerationsample.SampleApplication;
 import me.aartikov.codegenerationsample.SampleTransitionAnimationProvider;

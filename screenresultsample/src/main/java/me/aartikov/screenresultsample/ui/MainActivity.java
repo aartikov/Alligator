@@ -18,7 +18,7 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.ScreenResultListener;
+import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;

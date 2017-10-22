@@ -1,6 +1,6 @@
 package me.aartikov.sharedelementanimation.ui;
 
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 
 /**
  * Date: 4/19/2017

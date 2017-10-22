@@ -7,6 +7,8 @@ package me.aartikov.alligator;
  * @author Artur Artikov
  */
 
+import me.aartikov.alligator.animations.AnimationData;
+
 /**
  * Interface with navigation methods.
  */

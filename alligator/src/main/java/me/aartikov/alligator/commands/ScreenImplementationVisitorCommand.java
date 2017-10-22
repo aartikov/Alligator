@@ -1,11 +1,10 @@
 package me.aartikov.alligator.commands;
 
-import me.aartikov.alligator.Command;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenImplementation;
-import me.aartikov.alligator.ScreenImplementationVisitor;
+import me.aartikov.alligator.screenimplementations.ScreenImplementation;
+import me.aartikov.alligator.screenimplementations.ScreenImplementationVisitor;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 
 /**

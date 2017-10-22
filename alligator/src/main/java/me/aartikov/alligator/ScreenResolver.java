@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
 import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
 import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
+import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
 /**
  * Date: 22.10.2017

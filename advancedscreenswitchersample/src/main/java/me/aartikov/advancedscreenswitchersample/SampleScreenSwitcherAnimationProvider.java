@@ -1,10 +1,10 @@
 package me.aartikov.advancedscreenswitchersample;
 
 import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.TransitionAnimation;
-import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
 /**

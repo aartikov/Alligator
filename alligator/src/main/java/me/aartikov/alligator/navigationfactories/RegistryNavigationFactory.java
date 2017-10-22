@@ -8,9 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
-import me.aartikov.alligator.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenImplementation;
+import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.functions.ActivityConverter;
 import me.aartikov.alligator.functions.DialogFragmentConverter;

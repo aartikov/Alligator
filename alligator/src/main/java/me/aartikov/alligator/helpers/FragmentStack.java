@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 19.03.2017

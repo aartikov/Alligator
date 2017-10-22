@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.RegisterScreen;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.codegenerationsample.R;
 import me.aartikov.codegenerationsample.SampleApplication;
 import me.aartikov.codegenerationsample.screens.ScreenA;

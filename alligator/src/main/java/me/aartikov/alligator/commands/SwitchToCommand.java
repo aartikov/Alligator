@@ -1,11 +1,10 @@
 package me.aartikov.alligator.commands;
 
-import me.aartikov.alligator.AnimationData;
-import me.aartikov.alligator.Command;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenSwitcher;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
 import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 

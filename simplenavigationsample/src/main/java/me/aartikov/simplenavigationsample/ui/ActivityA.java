@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -21,9 +19,6 @@ import me.aartikov.simplenavigationsample.screens.ScreenB;
  * @author Artur Artikov
  */
 public class ActivityA extends AppCompatActivity {
-	@BindView(R.id.go_forward_to_b_button)
-	Button mGoForwardToBButton;
-
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
@@ -32,9 +27,9 @@ public class ActivityA extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_a);
 		setTitle(R.string.screen_a);
-		ButterKnife.bind(this);
 
-		mGoForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));       // If you use MVP architectural pattern call methods of Navigator in presenters.
+		Button goForwardToBButton = (Button) findViewById(R.id.go_forward_to_b_button);
+		goForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));  // If you use MVP architectural pattern call methods of Navigator in presenters.
 	}
 
 

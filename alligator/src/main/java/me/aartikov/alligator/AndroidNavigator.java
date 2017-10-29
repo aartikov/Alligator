@@ -36,12 +36,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private Queue<Command> mCommandQueue = new LinkedList<>();
 	private boolean mIsExecutingCommands;
 	private ScreenResolver mScreenResolver;
-	private ScreenResultResolver mScreenResultResolver;
+	private ActivityResultHandler mActivityResultHandler;
 
 	public AndroidNavigator(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 		mScreenResolver = new ScreenResolver(navigationFactory);
-		mScreenResultResolver = new ScreenResultResolver(navigationFactory);
+		mActivityResultHandler = new ActivityResultHandler(navigationFactory);
 	}
 
 	public NavigationFactory getNavigationFactory() {
@@ -52,14 +52,15 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		return mScreenResolver;
 	}
 
-	public ScreenResultResolver getScreenResultResolver() {
-		return mScreenResultResolver;
+	public ActivityResultHandler getActivityResultHandler() {
+		return mActivityResultHandler;
 	}
 
 	@Override
 	public void bind(NavigationContext navigationContext) {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
+		mActivityResultHandler.setScreenResultListener(mNavigationContext.getScreenResultListener());
 		setNavigationFactoryToScreenSwitcher();
 		executeQueuedCommands();
 	}
@@ -67,6 +68,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	@Override
 	public void unbind() {
 		checkThatMainThread();
+		mActivityResultHandler.resetScreenResultListener();
 		mNavigationContext = null;
 	}
 
@@ -159,7 +161,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	/**
 	 * Finishes a current activity with result. Implemented with {@link FinishCommand}.
 	 * <p>
-	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ScreenResultResolver}.
+	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ActivityResultHandler}.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */

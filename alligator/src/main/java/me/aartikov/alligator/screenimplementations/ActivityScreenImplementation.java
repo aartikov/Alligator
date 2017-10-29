@@ -102,7 +102,7 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ScreenResult getScreenResult(ActivityResult activityResult) {
+	public @Nullable ScreenResult getScreenResult(ActivityResult activityResult) {
 		return ((ScreenResultConverter<ScreenResult>) mScreenResultConverter).getScreenResult(activityResult);
 	}
 

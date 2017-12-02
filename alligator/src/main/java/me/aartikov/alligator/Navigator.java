@@ -41,6 +41,21 @@ public interface Navigator {
 	void goBack(AnimationData animationData);
 
 	/**
+	 * Finishes a current screen and goes back to the previous screen with result.
+	 *
+	 * @param screenResult screen result that will be returned
+	 */
+	void goBackWithResult(ScreenResult screenResult);
+
+	/**
+	 * {@code goBackWithResult} with an animation data.
+	 *
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackWithResult(ScreenResult screenResult, AnimationData animationData);
+
+	/**
 	 * Goes back to a screen with the given class.
 	 *
 	 * @param screenClass screen class for going back

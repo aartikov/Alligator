@@ -97,7 +97,20 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goBack(AnimationData animationData) {
-		executeCommand(new BackCommand(animationData));
+		executeCommand(new BackCommand(null, animationData));
+	}
+
+	/**
+	 * Finishes a current screen and goes back to the previous screen with result. Implemented with {@link BackCommand}.
+	 */
+	@Override
+	public void goBackWithResult(ScreenResult screenResult) {
+		goBackWithResult(screenResult, null);
+	}
+
+	@Override
+	public void goBackWithResult(ScreenResult screenResult, AnimationData animationData) {
+		executeCommand(new BackCommand(screenResult, animationData));
 	}
 
 	/**

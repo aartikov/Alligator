@@ -9,7 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.functions.ActivityConverter;
 import me.aartikov.alligator.functions.DialogFragmentConverter;
@@ -19,6 +18,7 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
 import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
 import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
+import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
 /**
  * Date: 11.02.2017
@@ -90,20 +90,37 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, FragmentConverter<ScreenT> converter) {
-		registerScreenImplementation(screenClass, new FragmentScreenImplementation(screenClass, converter, mScreenClassHelper));
+		registerScreenImplementation(screenClass, new FragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper));
 	}
 
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass) {
 		registerFragment(screenClass, new FragmentConverter<>(screenClass, fragmentClass));
 	}
 
+	public <ScreenT extends Screen> void registerFragmentForResult(Class<ScreenT> screenClass, FragmentConverter<ScreenT> converter, Class<? extends ScreenResult> screenResultClass) {
+		registerScreenImplementation(screenClass, new FragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper));
+	}
+
+	public <ScreenT extends Screen> void registerFragmentForResult(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass, Class<? extends ScreenResult> screenResultClass) {
+		registerFragmentForResult(screenClass, new FragmentConverter<>(screenClass, fragmentClass), screenResultClass);
+	}
+
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, DialogFragmentConverter<ScreenT> converter) {
-		registerScreenImplementation(screenClass, new DialogFragmentScreenImplementation(screenClass, converter, mScreenClassHelper));
+		registerScreenImplementation(screenClass, new DialogFragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper));
 	}
 
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass) {
 		registerDialogFragment(screenClass, new DialogFragmentConverter<>(screenClass, dialogFragmentClass));
 	}
+
+	public <ScreenT extends Screen> void registerDialogFragmentForResult(Class<ScreenT> screenClass, DialogFragmentConverter<ScreenT> converter, Class<? extends ScreenResult> screenResultClass) {
+		registerScreenImplementation(screenClass, new DialogFragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper));
+	}
+
+	public <ScreenT extends Screen> void registerDialogFragmentForResult(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass, Class<? extends ScreenResult> screenResultClass) {
+		registerDialogFragmentForResult(screenClass, new DialogFragmentConverter<>(screenClass, dialogFragmentClass), screenResultClass);
+	}
+
 
 	protected void registerScreenImplementation(Class<? extends Screen> screenClass, ScreenImplementation screenImplementation) {
 		if (getScreenImplementation(screenClass) != null) {

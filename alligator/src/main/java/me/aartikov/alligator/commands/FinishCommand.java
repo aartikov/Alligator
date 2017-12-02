@@ -36,27 +36,8 @@ public class FinishCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
 		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
-
-			Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
-			if (screenClass == null) {
-				throw new CommandExecutionException(this, "Activity " + activity.getClass().getSimpleName() + " can't return a result.");
-			}
-
-			ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
-			if (activityScreenImplementation == null || activityScreenImplementation.getScreenResultClass() == null) {
-				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
-			}
-
-			Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
-			if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
-				throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't finish with result of class " + mScreenResult.getClass().getCanonicalName() +
-				                                          ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
-			}
-
-			ActivityResult activityResult = activityScreenImplementation.createActivityResult(mScreenResult);
-			activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
+			setActivityResult(activity, navigationFactory);
 		}
-
 		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 		Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
@@ -67,5 +48,30 @@ public class FinishCommand implements Command {
 		navigationContext.getActivityHelper().finish(animation);
 		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 		return false;
+	}
+
+	private void setActivityResult(Activity activity, NavigationFactory navigationFactory) throws CommandExecutionException {
+		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
+		if (screenClass == null) {
+			throw new CommandExecutionException(this, "Failed to get a screen class for " + activity.getClass().getSimpleName());
+		}
+
+		ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
+		if (activityScreenImplementation == null) {
+			throw new CommandExecutionException(this, "Failed to get a screen implementation for " + screenClass.getSimpleName());
+		}
+
+		if (activityScreenImplementation.getScreenResultClass() == null) {
+			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
+		}
+
+		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
+		if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
+			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
+			                                          ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+		}
+
+		ActivityResult activityResult = activityScreenImplementation.createActivityResult(mScreenResult);
+		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 	}
 }

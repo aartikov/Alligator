@@ -3,6 +3,7 @@ package me.aartikov.alligator.screenimplementations;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.exceptions.CommandExecutionException;
@@ -19,11 +20,16 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 public class FragmentScreenImplementation implements ScreenImplementation {
 	private Class<? extends Screen> mScreenClass;
 	private FragmentConverter<? extends Screen> mFragmentConverter;
+	private Class<? extends ScreenResult> mScreenResultClass;
 	private ScreenClassHelper mScreenClassHelper;
 
-	public FragmentScreenImplementation(Class<? extends Screen> screenClass, FragmentConverter<? extends Screen> fragmentConverter, ScreenClassHelper screenClassHelper) {
+	public FragmentScreenImplementation(Class<? extends Screen> screenClass,
+	                                    FragmentConverter<? extends Screen> fragmentConverter,
+	                                    Class<? extends ScreenResult> screenResultClass,
+	                                    ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mFragmentConverter = fragmentConverter;
+		mScreenResultClass = screenResultClass;
 		mScreenClassHelper = screenClassHelper;
 	}
 
@@ -43,6 +49,10 @@ public class FragmentScreenImplementation implements ScreenImplementation {
 	@SuppressWarnings("unchecked")
 	public Screen getScreen(Fragment fragment) {
 		return ((FragmentConverter<Screen>) mFragmentConverter).getScreen(fragment, mScreenClass);
+	}
+
+	public Class<? extends ScreenResult> getScreenResultClass() {
+		return mScreenResultClass;
 	}
 
 	private void checkScreenClass(Class<? extends Screen> screenClass) {

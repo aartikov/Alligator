@@ -1,7 +1,7 @@
 package me.aartikov.alligator.listeners;
 
 import me.aartikov.alligator.commands.Command;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Date: 12.03.2017
@@ -19,5 +19,5 @@ public interface NavigationErrorListener {
 	 *
 	 * @param e exception with information about an error
 	 */
-	void onNavigationError(CommandExecutionException e);
+	void onNavigationError(NavigationException e);
 }

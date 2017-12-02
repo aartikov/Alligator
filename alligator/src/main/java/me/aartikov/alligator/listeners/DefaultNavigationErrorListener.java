@@ -1,7 +1,6 @@
 package me.aartikov.alligator.listeners;
 
-import me.aartikov.alligator.listeners.NavigationErrorListener;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Date: 12.03.2017
@@ -11,11 +10,11 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
  */
 
 /**
- * Default implementation of {@link NavigationErrorListener}. Wraps {@link CommandExecutionException} to {@code RuntimeException} and throws it.
+ * Default implementation of {@link NavigationErrorListener}. Wraps {@link NavigationException} to {@code RuntimeException} and throws it.
  */
 public class DefaultNavigationErrorListener implements NavigationErrorListener {
 	@Override
-	public void onNavigationError(CommandExecutionException e) {
+	public void onNavigationError(NavigationException e) {
 		throw new RuntimeException(e);
 	}
 }

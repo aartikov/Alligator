@@ -1,6 +1,5 @@
 package me.aartikov.alligator.exceptions;
 
-import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.Screen;
 
 /**
@@ -13,12 +12,11 @@ import me.aartikov.alligator.Screen;
 /**
  * Exception thrown when an implicit intent can't be resolved.
  */
-public class FailedResolveActivityException extends CommandExecutionException {
+public class ActivityResolvingException extends NavigationException {
 	private Screen mScreen;
 
-
-	public FailedResolveActivityException(Command command, Screen screen) {
-		super(command, "Failed to resolve an activity for a screen " + screen.getClass().getSimpleName());
+	public ActivityResolvingException(Screen screen) {
+		super("Failed to resolve an activity for a screen " + screen.getClass().getSimpleName());
 		mScreen = screen;
 	}
 

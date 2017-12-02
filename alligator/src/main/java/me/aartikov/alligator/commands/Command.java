@@ -3,7 +3,7 @@ package me.aartikov.alligator.commands;
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Date: 29.12.2016
@@ -22,7 +22,7 @@ public interface Command {
 	 * @param navigationContext navigation context that can be used for a command implementation
 	 * @param navigationFactory navigation factory that can be used for a command implementation
 	 * @return true if after this command other command can be executed, false if command execution should be delayed until a new {@link NavigationContext} will be bound
-	 * @throws CommandExecutionException if command execution failed
+	 * @throws NavigationException if command execution failed
 	 */
-	boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException;
+	boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
 }

@@ -8,13 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import me.aartikov.alligator.animations.AnimationData;
+import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.alligator.animations.TransitionAnimation;
-import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 import me.aartikov.alligator.helpers.FragmentSwitcher;
 import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
@@ -68,7 +68,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 	}
 
 	@Override
-	public void switchTo(Screen screen, @Nullable AnimationData animationData) throws ScreenSwitchingException {
+	public void switchTo(Screen screen, @Nullable AnimationData animationData) throws NavigationException {
 		ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screen.getClass());
 		if (screenImplementation instanceof FragmentScreenImplementation) {
 			Screen currentScreen = getCurrentScreen();
@@ -76,7 +76,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 			TransitionAnimation animation = currentScreen != null ? mAnimationProvider.getAnimation(currentScreen, screen, animationData) : TransitionAnimation.DEFAULT;
 			fragmentSwitcher.switchTo(fragment, animation);
 		} else {
-			throw new ScreenSwitchingException("Screen " + screen.getClass().getSimpleName() + " is not represented by a fragment.");
+			throw new NavigationException("Screen " + screen.getClass().getSimpleName() + " is not represented by a fragment.");
 		}
 	}
 
@@ -122,14 +122,14 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 		return null;
 	}
 
-	private Fragment getOrCreateFragment(Screen screen, FragmentScreenImplementation screenImplementation) throws ScreenSwitchingException {
+	private Fragment getOrCreateFragment(Screen screen, FragmentScreenImplementation screenImplementation) throws NavigationException {
 		Fragment fragment = mFragmentMap.get(screen);
 		if (fragment == null) {
 			fragment = screenImplementation.createFragment(screen);
 			try {
 				mScreenResolver.getScreen(fragment);  // Check that the screen has a valid screen getting function
 			} catch (Exception e) {
-				throw new ScreenSwitchingException(e.getMessage());
+				throw new NavigationException(e.getMessage());
 			}
 			mFragmentMap.put(screen, fragment);
 		}

@@ -1,12 +1,11 @@
 package me.aartikov.alligator.commands;
 
-import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.animations.AnimationData;
+import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
-import me.aartikov.alligator.exceptions.ScreenSwitchingException;
 
 /**
  * Date: 29.12.2016
@@ -28,10 +27,10 @@ public class SwitchToCommand implements Command {
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
 		if (screenSwitcher == null) {
-			throw new CommandExecutionException(this, "ScreenSwitcher is not set.");
+			throw new NavigationException("ScreenSwitcher is not set.");
 		}
 
 		Screen previousScreen = screenSwitcher.getCurrentScreen();
@@ -39,11 +38,7 @@ public class SwitchToCommand implements Command {
 			return true;
 		}
 
-		try {
-			screenSwitcher.switchTo(mScreen, mAnimationData);
-		} catch (ScreenSwitchingException e) {
-			throw new CommandExecutionException(this, e.getMessage());
-		}
+		screenSwitcher.switchTo(mScreen, mAnimationData);
 		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
 		return true;
 	}

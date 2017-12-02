@@ -12,8 +12,8 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
-import me.aartikov.alligator.exceptions.FailedResolveActivityException;
+import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.exceptions.ActivityResolvingException;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
@@ -41,14 +41,14 @@ public class ForwardCommand extends ScreenImplementationVisitorCommand {
 	}
 
 	@Override
-	public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		Class<? extends Screen> previousScreenClass = navigationFactory.getScreenClass(activity);
 		Intent intent = screenImplementation.createIntent(activity, mScreen, previousScreenClass);
 
 		ActivityHelper activityHelper = navigationContext.getActivityHelper();
 		if (!activityHelper.resolve(intent)) {
-			throw new FailedResolveActivityException(this, mScreen);
+			throw new ActivityResolvingException(mScreen);
 		}
 
 		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
@@ -69,14 +69,14 @@ public class ForwardCommand extends ScreenImplementationVisitorCommand {
 	}
 
 	@Override
-	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
-			throw new CommandExecutionException(this, "ContainerId is not set.");
+			throw new NavigationException("ContainerId is not set.");
 		}
 
 		Fragment fragment = screenImplementation.createFragment(mScreen);
 		if (fragment instanceof DialogFragment) {
-			throw new CommandExecutionException(this, "DialogFragment is used as usual Fragment.");
+			throw new NavigationException("DialogFragment is used as usual Fragment.");
 		}
 
 		FragmentStack fragmentStack = navigationContext.getFragmentStack();
@@ -95,7 +95,7 @@ public class ForwardCommand extends ScreenImplementationVisitorCommand {
 	}
 
 	@Override
-	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		DialogFragment dialogFragment = screenImplementation.createDialogFragment(mScreen);
 		DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 		navigationContext.getDialogFragmentHelper().showDialog(dialogFragment, animation);

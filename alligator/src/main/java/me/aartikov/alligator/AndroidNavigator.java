@@ -14,7 +14,7 @@ import me.aartikov.alligator.commands.ForwardCommand;
 import me.aartikov.alligator.commands.ReplaceCommand;
 import me.aartikov.alligator.commands.ResetCommand;
 import me.aartikov.alligator.commands.SwitchToCommand;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
@@ -223,7 +223,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 					mNavigationContext = null;
 				}
 			}
-		} catch (CommandExecutionException e) {
+		} catch (NavigationException e) {
 			mCommandQueue.clear();
 			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
 		} catch (Exception e) {

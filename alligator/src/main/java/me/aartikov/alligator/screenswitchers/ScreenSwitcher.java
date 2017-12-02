@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.exceptions.ScreenSwitchingException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Object for switching between several screens without theirs recreation.
@@ -22,9 +22,9 @@ public interface ScreenSwitcher {
 	 *
 	 * @param screen        screen
 	 * @param animationData animation data for an additional animation configuring
-	 * @throws me.aartikov.alligator.exceptions.ScreenSwitchingException on fail
+	 * @throws me.aartikov.alligator.exceptions.NavigationException on fail
 	 */
-	void switchTo(Screen screen, @Nullable AnimationData animationData) throws ScreenSwitchingException;
+	void switchTo(Screen screen, @Nullable AnimationData animationData) throws NavigationException;
 
 	/**
 	 * Returns a current screen.

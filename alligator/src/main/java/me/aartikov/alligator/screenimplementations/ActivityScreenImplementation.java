@@ -10,7 +10,7 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.functions.ActivityConverter;
 import me.aartikov.alligator.functions.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
@@ -57,7 +57,7 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@Override
-	public boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		return visitor.execute(this, navigationContext, navigationFactory);
 	}
 

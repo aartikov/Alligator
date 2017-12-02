@@ -5,7 +5,7 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 import me.aartikov.alligator.screenimplementations.ScreenImplementationVisitor;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Date: 15.10.2017
@@ -22,10 +22,10 @@ public abstract class ScreenImplementationVisitorCommand implements Command, Scr
 	}
 
 	@Override
-	final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		ScreenImplementation screenImplementation = navigationFactory.getScreenImplementation(mScreenClass);
 		if(screenImplementation == null) {
-			throw new CommandExecutionException(this, "Screen " + mScreenClass.getSimpleName() + " is unknown.");
+			throw new NavigationException("Screen " + mScreenClass.getSimpleName() + " is unknown.");
 		}
 		return screenImplementation.accept(this, navigationContext, navigationFactory);
 	}

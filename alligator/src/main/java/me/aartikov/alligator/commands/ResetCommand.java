@@ -12,8 +12,8 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
-import me.aartikov.alligator.exceptions.FailedResolveActivityException;
+import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.exceptions.ActivityResolvingException;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
@@ -41,14 +41,14 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		mAnimationData = animationData;
 	}
 
-	@Override public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	@Override public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		Intent intent = screenImplementation.createIntent(activity, mScreen, null);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 		ActivityHelper activityHelper = navigationContext.getActivityHelper();
 		if (!activityHelper.resolve(intent)) {
-			throw new FailedResolveActivityException(this, mScreen);
+			throw new ActivityResolvingException(mScreen);
 		}
 
 		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
@@ -63,9 +63,9 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		return false;
 	}
 
-	@Override public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	@Override public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
-			throw new CommandExecutionException(this, "ContainerId is not set.");
+			throw new NavigationException("ContainerId is not set.");
 		}
 
 		Fragment fragment = screenImplementation.createFragment(mScreen);
@@ -84,7 +84,7 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		return true;
 	}
 
-	@Override public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	@Override public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 		while (dialogFragmentHelper.isDialogVisible()) {
 			dialogFragmentHelper.hideDialog();

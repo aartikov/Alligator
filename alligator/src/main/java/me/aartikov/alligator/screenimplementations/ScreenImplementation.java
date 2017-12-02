@@ -2,7 +2,7 @@ package me.aartikov.alligator.screenimplementations;
 
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
  * Date: 15.10.2017
@@ -12,5 +12,5 @@ import me.aartikov.alligator.exceptions.CommandExecutionException;
  */
 
 public interface ScreenImplementation {
-	boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException;
+	boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
 }

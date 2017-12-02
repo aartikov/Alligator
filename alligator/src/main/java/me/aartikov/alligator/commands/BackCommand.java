@@ -13,7 +13,7 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.listeners.ScreenResultListener;
@@ -42,7 +42,7 @@ public class BackCommand implements Command {
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws CommandExecutionException {
+	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getDialogFragmentHelper().isDialogVisible()) {
 			DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 			DialogFragment dialogFragment = dialogFragmentHelper.getDialogFragment();
@@ -85,15 +85,15 @@ public class BackCommand implements Command {
 		}
 	}
 
-	private void callScreenResultListener(Fragment fragment, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws CommandExecutionException {
+	private void callScreenResultListener(Fragment fragment, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(fragment);
 		if (screenClass == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen class for " + fragment.getClass().getSimpleName());
+			throw new NavigationException("Failed to get a screen class for " + fragment.getClass().getSimpleName());
 		}
 
 		FragmentScreenImplementation fragmentScreenImplementation = (FragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (fragmentScreenImplementation == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		if (mScreenResult == null) {
@@ -102,27 +102,27 @@ public class BackCommand implements Command {
 		}
 
 		if (fragmentScreenImplementation.getScreenResultClass() == null) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = fragmentScreenImplementation.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
-			                                          ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
+			                                    ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
 		screenResultListener.onScreenResult(screenClass, mScreenResult);
 	}
 
-	private void callScreenResultListener(DialogFragment dialogFragment, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws CommandExecutionException {
+	private void callScreenResultListener(DialogFragment dialogFragment, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(dialogFragment);
 		if (screenClass == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());
+			throw new NavigationException("Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());
 		}
 
 		DialogFragmentScreenImplementation dialogFragmentScreenImplementation = (DialogFragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (dialogFragmentScreenImplementation == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		if (mScreenResult == null) {
@@ -131,37 +131,37 @@ public class BackCommand implements Command {
 		}
 
 		if (dialogFragmentScreenImplementation.getScreenResultClass() == null) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = dialogFragmentScreenImplementation.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
-			                                          ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
+			                                    ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
 		screenResultListener.onScreenResult(screenClass, mScreenResult);
 	}
 
-	private void setActivityResult(Activity activity, NavigationFactory navigationFactory) throws CommandExecutionException {
+	private void setActivityResult(Activity activity, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen class for " + activity.getClass().getSimpleName());
+			throw new NavigationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
 		}
 
 		ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (activityScreenImplementation == null) {
-			throw new CommandExecutionException(this, "Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		if (activityScreenImplementation.getScreenResultClass() == null) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result.");
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
-			throw new CommandExecutionException(this, "Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
-			                                          ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
+			                                    ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
 		ActivityResult activityResult = activityScreenImplementation.createActivityResult(mScreenResult);

@@ -1,8 +1,19 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
+group = 'com.github.aartikov'
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly project(':alligator-stub')
     compile 'com.squareup:javapoet:1.7.0'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
 }

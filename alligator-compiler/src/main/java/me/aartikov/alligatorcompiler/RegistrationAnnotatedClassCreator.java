@@ -24,9 +24,6 @@ public class RegistrationAnnotatedClassCreator {
 		ScreenType screenType = obtainScreenType(classElement);
 		String screenClassName = obtainScreenClassName(classElement);
 		String screenResultClassName = obtainScreenResultClassName(classElement);
-		if (screenResultClassName != null) {
-			checkThatScreenResultSupported(classElement, screenType);
-		}
 		return new RegistrationAnnotatedClass(classElement, screenType, screenClassName, screenResultClassName);
 	}
 
@@ -82,12 +79,6 @@ public class RegistrationAnnotatedClassCreator {
 			TypeElement typeElement = (TypeElement) type.asElement();
 			String name = typeElement.getQualifiedName().toString();
 			return name.equals(defaultName) ? null : name;
-		}
-	}
-
-	private void checkThatScreenResultSupported(TypeElement classElement, ScreenType screenType) throws ProcessingException {
-		if (screenType != ScreenType.ACTIVITY) {
-			throw new ProcessingException(classElement, "ScreenResult can be applied only for Activity.");
 		}
 	}
 }

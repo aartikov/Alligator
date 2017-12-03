@@ -1,11 +1,9 @@
 package me.aartikov.alligator.helpers;
 
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import me.aartikov.alligator.DialogAnimation;
-import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.animations.DialogAnimation;
 
 /**
  * Date: 25.03.2017
@@ -21,22 +19,24 @@ public class DialogFragmentHelper {
 	private static final String TAG = "me.aartikov.alligator.DIALOG_FRAGMENT_HELPER_TAG";
 	private FragmentManager mFragmentManager;
 
-	public static DialogFragmentHelper from(NavigationContext navigationContext) {
-		return new DialogFragmentHelper(navigationContext.getActivity().getSupportFragmentManager());
-	}
-
 	public DialogFragmentHelper(FragmentManager fragmentManager) {
 		if (fragmentManager == null) {
 			throw new IllegalArgumentException("FragmentManager can't be null.");
 		}
-
 		mFragmentManager = fragmentManager;
 	}
 
+	public DialogFragment getDialogFragment() {
+		DialogFragment dialogFragment = (DialogFragment) mFragmentManager.findFragmentByTag(TAG);
+		if (dialogFragment == null || dialogFragment.isRemoving()) {
+			return null;
+		} else {
+			return dialogFragment;
+		}
+	}
+
 	public boolean isDialogVisible() {
-		mFragmentManager.executePendingTransactions();
-		Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
-		return fragment != null && !fragment.isRemoving();
+		return getDialogFragment() != null;
 	}
 
 	public void showDialog(DialogFragment dialogFragment, DialogAnimation animation) {

@@ -2,10 +2,10 @@ package me.aartikov.screenresultsample;
 
 import android.app.Application;
 
+import me.aartikov.alligator.ActivityResultHandler;
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResultResolver;
 
 /**
  * Date: 12.03.2016
@@ -30,7 +30,7 @@ public class SampleApplication extends Application {
 		return sAndroidNavigator;
 	}
 
-	public static ScreenResultResolver getScreenResultResolver() {
-		return sAndroidNavigator.getScreenResultResolver();
+	public static ActivityResultHandler getActivityResultHandler() {
+		return sAndroidNavigator.getActivityResultHandler();
 	}
 }

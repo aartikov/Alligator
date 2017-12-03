@@ -16,7 +16,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import me.aartikov.alligator.RegisterScreen;
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 public class AlligatorCompiler extends AbstractProcessor {
 	private RegistrationAnnotatedClassCreator annotatedClassCreator;

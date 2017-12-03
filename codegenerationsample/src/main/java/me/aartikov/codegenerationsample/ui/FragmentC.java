@@ -8,11 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.RegisterScreen;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.codegenerationsample.R;
 import me.aartikov.codegenerationsample.SampleApplication;
 import me.aartikov.codegenerationsample.screens.ScreenC;
@@ -26,11 +23,6 @@ import me.aartikov.codegenerationsample.screens.ScreenD;
  */
 @RegisterScreen(ScreenC.class)
 public class FragmentC extends Fragment {
-	@BindView(R.id.go_forward_to_d_button)
-	Button mGoForwardToDButton;
-
-	private Unbinder mButterKnifeUnbinder;
-
 	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
@@ -41,13 +33,7 @@ public class FragmentC extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterKnifeUnbinder = ButterKnife.bind(this, view);
-		mGoForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Message for D from C")));
-	}
-
-	@Override
-	public void onDestroyView() {
-		mButterKnifeUnbinder.unbind();
-		super.onDestroyView();
+		Button goForwardToDButton = (Button) view.findViewById((R.id.go_forward_to_d_button));
+		goForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Message for D from C")));
 	}
 }

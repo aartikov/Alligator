@@ -7,7 +7,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 
-import me.aartikov.alligator.RegisterScreen;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.alligator.ScreenResult;
 
 public class RegistrationAnnotatedClassCreator {

@@ -5,14 +5,19 @@ import java.util.Queue;
 
 import android.os.Looper;
 
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
 import me.aartikov.alligator.commands.BackToCommand;
+import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.commands.FinishCommand;
 import me.aartikov.alligator.commands.ForwardCommand;
 import me.aartikov.alligator.commands.ReplaceCommand;
 import me.aartikov.alligator.commands.ResetCommand;
 import me.aartikov.alligator.commands.SwitchToCommand;
-import me.aartikov.alligator.exceptions.CommandExecutionException;
+import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 /**
  * Date: 29.12.2016
@@ -31,12 +36,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	private Queue<Command> mCommandQueue = new LinkedList<>();
 	private boolean mIsExecutingCommands;
 	private ScreenResolver mScreenResolver;
-	private ScreenResultResolver mScreenResultResolver;
+	private ActivityResultHandler mActivityResultHandler;
 
 	public AndroidNavigator(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 		mScreenResolver = new ScreenResolver(navigationFactory);
-		mScreenResultResolver = new ScreenResultResolver(navigationFactory);
+		mActivityResultHandler = new ActivityResultHandler(navigationFactory);
 	}
 
 	public NavigationFactory getNavigationFactory() {
@@ -47,14 +52,15 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		return mScreenResolver;
 	}
 
-	public ScreenResultResolver getScreenResultResolver() {
-		return mScreenResultResolver;
+	public ActivityResultHandler getActivityResultHandler() {
+		return mActivityResultHandler;
 	}
 
 	@Override
 	public void bind(NavigationContext navigationContext) {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
+		mActivityResultHandler.setScreenResultListener(mNavigationContext.getScreenResultListener());
 		setNavigationFactoryToScreenSwitcher();
 		executeQueuedCommands();
 	}
@@ -62,6 +68,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	@Override
 	public void unbind() {
 		checkThatMainThread();
+		mActivityResultHandler.resetScreenResultListener();
 		mNavigationContext = null;
 	}
 
@@ -90,7 +97,20 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goBack(AnimationData animationData) {
-		executeCommand(new BackCommand(animationData));
+		executeCommand(new BackCommand(null, animationData));
+	}
+
+	/**
+	 * Finishes a current screen and goes back to the previous screen with result. Implemented with {@link BackCommand}.
+	 */
+	@Override
+	public void goBackWithResult(ScreenResult screenResult) {
+		goBackWithResult(screenResult, null);
+	}
+
+	@Override
+	public void goBackWithResult(ScreenResult screenResult, AnimationData animationData) {
+		executeCommand(new BackCommand(screenResult, animationData));
 	}
 
 	/**
@@ -154,7 +174,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	/**
 	 * Finishes a current activity with result. Implemented with {@link FinishCommand}.
 	 * <p>
-	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ScreenResultResolver}.
+	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ActivityResultHandler}.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */
@@ -203,7 +223,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 					mNavigationContext = null;
 				}
 			}
-		} catch (CommandExecutionException e) {
+		} catch (NavigationException e) {
 			mCommandQueue.clear();
 			mNavigationContext.getNavigationErrorListener().onNavigationError(e);
 		} catch (Exception e) {

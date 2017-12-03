@@ -1,15 +1,32 @@
 package me.aartikov.alligator;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import me.aartikov.alligator.defaultimpementation.DefaultDialogAnimationProvider;
-import me.aartikov.alligator.defaultimpementation.DefaultDialogShowingListener;
-import me.aartikov.alligator.defaultimpementation.DefaultNavigationErrorListener;
-import me.aartikov.alligator.defaultimpementation.DefaultScreenSwitchingListener;
-import me.aartikov.alligator.defaultimpementation.DefaultTransitionAnimationProvider;
-import me.aartikov.alligator.defaultimpementation.DefaultTransitionListener;
+import me.aartikov.alligator.animations.DialogAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.animations.providers.DefaultDialogAnimationProvider;
+import me.aartikov.alligator.animations.providers.DefaultTransitionAnimationProvider;
+import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
+import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
+import me.aartikov.alligator.commands.Command;
+import me.aartikov.alligator.helpers.ActivityHelper;
+import me.aartikov.alligator.helpers.DialogFragmentHelper;
+import me.aartikov.alligator.helpers.FragmentStack;
+import me.aartikov.alligator.helpers.ScreenResultHelper;
+import me.aartikov.alligator.listeners.DefaultDialogShowingListener;
+import me.aartikov.alligator.listeners.DefaultNavigationErrorListener;
+import me.aartikov.alligator.listeners.DefaultScreenResultListener;
+import me.aartikov.alligator.listeners.DefaultScreenSwitchingListener;
+import me.aartikov.alligator.listeners.DefaultTransitionListener;
+import me.aartikov.alligator.listeners.DialogShowingListener;
+import me.aartikov.alligator.listeners.NavigationErrorListener;
+import me.aartikov.alligator.listeners.ScreenResultListener;
+import me.aartikov.alligator.listeners.ScreenSwitchingListener;
+import me.aartikov.alligator.listeners.TransitionListener;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 /**
  * Date: 29.12.2016
@@ -30,8 +47,13 @@ public class NavigationContext {
 	private DialogAnimationProvider mDialogAnimationProvider;
 	private TransitionListener mTransitionListener;
 	private DialogShowingListener mDialogShowingListener;
+	private ScreenResultListener mScreenResultListener;
 	private ScreenSwitchingListener mScreenSwitchingListener;
 	private NavigationErrorListener mNavigationErrorListener;
+	private ActivityHelper mActivityHelper;
+	private DialogFragmentHelper mDialogFragmentHelper;
+	private FragmentStack mFragmentStack;
+	private ScreenResultHelper mScreenResultHelper;
 
 	private NavigationContext(Builder builder) {
 		if (builder.mActivity == null) {
@@ -46,8 +68,13 @@ public class NavigationContext {
 		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
 		mTransitionListener = builder.mTransitionListener != null ? builder.mTransitionListener : new DefaultTransitionListener();
 		mDialogShowingListener = builder.mDialogShowingListener != null ? builder.mDialogShowingListener : new DefaultDialogShowingListener();
+		mScreenResultListener = builder.mScreenResultListener != null ? builder.mScreenResultListener : new DefaultScreenResultListener();
 		mScreenSwitchingListener = builder.mScreenSwitchingListener != null ? builder.mScreenSwitchingListener : new DefaultScreenSwitchingListener();
 		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
+		mActivityHelper = new ActivityHelper(mActivity);
+		mDialogFragmentHelper = new DialogFragmentHelper(mFragmentManager);
+		mFragmentStack = mContainerId > 0 ? new FragmentStack(mFragmentManager, mContainerId) : null;
+		mScreenResultHelper = new ScreenResultHelper();
 	}
 
 	public AppCompatActivity getActivity() {
@@ -60,10 +87,6 @@ public class NavigationContext {
 
 	public int getContainerId() {
 		return mContainerId;
-	}
-
-	public boolean hasContainerId() {
-		return mContainerId > 0;
 	}
 
 	public ScreenSwitcher getScreenSwitcher() {
@@ -86,12 +109,32 @@ public class NavigationContext {
 		return mDialogShowingListener;
 	}
 
+	public ScreenResultListener getScreenResultListener() {
+		return mScreenResultListener;
+	}
+
 	public ScreenSwitchingListener getScreenSwitchingListener() {
 		return mScreenSwitchingListener;
 	}
 
 	public NavigationErrorListener getNavigationErrorListener() {
 		return mNavigationErrorListener;
+	}
+
+	public ActivityHelper getActivityHelper() {
+		return mActivityHelper;
+	}
+
+	public DialogFragmentHelper getDialogFragmentHelper() {
+		return mDialogFragmentHelper;
+	}
+
+	public @Nullable FragmentStack getFragmentStack() {
+		return mFragmentStack;
+	}
+
+	public ScreenResultHelper getScreenResultHelper() {
+		return mScreenResultHelper;
 	}
 
 	/**
@@ -105,6 +148,7 @@ public class NavigationContext {
 		private TransitionAnimationProvider mTransitionAnimationProvider;
 		private DialogAnimationProvider mDialogAnimationProvider;
 		private TransitionListener mTransitionListener;
+		private ScreenResultListener mScreenResultListener;
 		private DialogShowingListener mDialogShowingListener;
 		private ScreenSwitchingListener mScreenSwitchingListener;
 		private NavigationErrorListener mNavigationErrorListener;
@@ -177,7 +221,7 @@ public class NavigationContext {
 		/**
 		 * Sets a transition listener. This listener is called after a screen transition.
 		 *
-		 * @param transitionListener transition listener. By default a listener that does nothing is used.
+		 * @param transitionListener transition listener.
 		 * @return this object
 		 */
 		public Builder transitionListener(TransitionListener transitionListener) {
@@ -188,7 +232,7 @@ public class NavigationContext {
 		/**
 		 * Sets a dialog showing listener. This listener is called after a dialog has been shown.
 		 *
-		 * @param dialogShowingListener dialog showing listener. By default a listener that does nothing is used.
+		 * @param dialogShowingListener dialog showing listener.
 		 * @return this object
 		 */
 		public Builder dialogShowingListener(DialogShowingListener dialogShowingListener) {
@@ -197,9 +241,20 @@ public class NavigationContext {
 		}
 
 		/**
+		 * Sets a screen result listener. This listener is called when a screen returned result to a previous screen
+		 *
+		 * @param screenResultListener screenResultListener screen result listener.
+		 * @return this object
+		 */
+		public Builder screenResultListener(ScreenResultListener screenResultListener) {
+			mScreenResultListener = screenResultListener;
+			return this;
+		}
+
+		/**
 		 * Sets a screen switching listener listener. This listener is called after a screen has been switched using {@link ScreenSwitcher}.
 		 *
-		 * @param screenSwitchingListener screen switcher listener. By default a listener that does nothing is used.
+		 * @param screenSwitchingListener screen switcher listener.
 		 * @return this object
 		 */
 		public Builder screenSwitchingListener(ScreenSwitchingListener screenSwitchingListener) {

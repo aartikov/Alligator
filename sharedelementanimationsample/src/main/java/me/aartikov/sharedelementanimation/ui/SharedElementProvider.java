@@ -2,7 +2,7 @@ package me.aartikov.sharedelementanimation.ui;
 
 import android.view.View;
 
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 
 /**
  * Date: 16.04.2017

@@ -2,7 +2,6 @@ package me.aartikov.screenresultsample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,7 +17,7 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.ScreenResultListener;
+import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
@@ -30,7 +29,7 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  *
  * @author Artur Artikov
  */
-public class MainActivity extends AppCompatActivity implements ScreenResultListener {
+public class MainActivity extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
@@ -52,48 +51,48 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
-		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));    // goForward works as startActivityForResult if a screen is registered for result.
+		// goForward works as startActivityForResult here
+		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
 		mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
 	}
 
-
-	// Use ScreenResultResolver to translate onActivityResult arguments to ScreenResultListener call.
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		SampleApplication.getScreenResultResolver().handleActivityResult(requestCode, resultCode, data, this);
-	}
-
-	@Override
-	public void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
-		if (screenClass == MessageInputScreen.class) {
-			onMessageInputted((MessageInputScreen.Result) result);
-		} else if (screenClass == ImagePickerScreen.class) {
-			onImagePicked((ImagePickerScreen.Result) result);
-		}
-	}
-
 	private void onMessageInputted(MessageInputScreen.Result messageInputResult) {
-		if (messageInputResult != null) {
-			mMessageTextView.setText(getString(R.string.inputted_message_template, messageInputResult.getMessage()));
-		} else {
-			Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
-		}
+		mMessageTextView.setText(getString(R.string.inputted_message_template, messageInputResult.getMessage()));
 	}
 
 	private void onImagePicked(ImagePickerScreen.Result imagePickerResult) {
-		if (imagePickerResult != null) {
-			Picasso.with(this).load(imagePickerResult.getUri()).into(mImageView);
-		} else {
-			Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
-		}
+		Picasso.with(this).load(imagePickerResult.getUri()).into(mImageView);
 	}
+
+	private ScreenResultListener mScreenResultListener = new ScreenResultListener() {
+		@Override
+		public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
+			if (result instanceof MessageInputScreen.Result) {
+				onMessageInputted((MessageInputScreen.Result) result);
+			} else if (result instanceof ImagePickerScreen.Result) {
+				onImagePicked((ImagePickerScreen.Result) result);
+			}
+		}
+
+		@Override
+		public void onCancelled(Class<? extends Screen> screenClass) {
+			Toast.makeText(MainActivity.this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
+		}
+	};
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		NavigationContext navigationContext = new NavigationContext.Builder(this)
+				.screenResultListener(mScreenResultListener)      // set ScreenResultListener
+				.build();
 		mNavigationContextBinder.bind(navigationContext);
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		SampleApplication.getActivityResultHandler().handle(requestCode, resultCode, data);     // call handle method of ActivityResultHandler in onActivityResult of an activity
 	}
 
 	@Override

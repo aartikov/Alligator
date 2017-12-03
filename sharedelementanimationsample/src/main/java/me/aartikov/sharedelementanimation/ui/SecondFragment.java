@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.sharedelementanimation.R;
 import me.aartikov.sharedelementanimation.SampleApplication;
 import me.aartikov.sharedelementanimation.screens.SecondScreen;

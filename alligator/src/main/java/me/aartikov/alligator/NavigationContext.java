@@ -15,6 +15,7 @@ import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
+import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.DefaultDialogShowingListener;
 import me.aartikov.alligator.listeners.DefaultNavigationErrorListener;
 import me.aartikov.alligator.listeners.DefaultScreenResultListener;
@@ -52,6 +53,7 @@ public class NavigationContext {
 	private ActivityHelper mActivityHelper;
 	private DialogFragmentHelper mDialogFragmentHelper;
 	private FragmentStack mFragmentStack;
+	private ScreenResultHelper mScreenResultHelper;
 
 	private NavigationContext(Builder builder) {
 		if (builder.mActivity == null) {
@@ -72,6 +74,7 @@ public class NavigationContext {
 		mActivityHelper = new ActivityHelper(mActivity);
 		mDialogFragmentHelper = new DialogFragmentHelper(mFragmentManager);
 		mFragmentStack = mContainerId > 0 ? new FragmentStack(mFragmentManager, mContainerId) : null;
+		mScreenResultHelper = new ScreenResultHelper();
 	}
 
 	public AppCompatActivity getActivity() {
@@ -128,6 +131,10 @@ public class NavigationContext {
 
 	public @Nullable FragmentStack getFragmentStack() {
 		return mFragmentStack;
+	}
+
+	public ScreenResultHelper getScreenResultHelper() {
+		return mScreenResultHelper;
 	}
 
 	/**

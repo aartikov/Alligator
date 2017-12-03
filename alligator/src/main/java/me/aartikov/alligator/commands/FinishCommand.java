@@ -2,16 +2,14 @@ package me.aartikov.alligator.commands;
 
 import android.app.Activity;
 
-import me.aartikov.alligator.ActivityResult;
-import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.TransitionType;
+import me.aartikov.alligator.animations.AnimationData;
+import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 /**
  * Date: 12.02.2017
@@ -36,7 +34,7 @@ public class FinishCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
-			setActivityResult(activity, navigationFactory);
+			navigationContext.getScreenResultHelper().setActivityResult(activity, mScreenResult, navigationFactory);
 		}
 		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
 		Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
@@ -48,30 +46,5 @@ public class FinishCommand implements Command {
 		navigationContext.getActivityHelper().finish(animation);
 		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 		return false;
-	}
-
-	private void setActivityResult(Activity activity, NavigationFactory navigationFactory) throws NavigationException {
-		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
-		if (screenClass == null) {
-			throw new NavigationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
-		}
-
-		ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
-		if (activityScreenImplementation == null) {
-			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
-		}
-
-		if (activityScreenImplementation.getScreenResultClass() == null) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
-		}
-
-		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
-		if (!supportedScreenResultClass.isAssignableFrom(mScreenResult.getClass())) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + mScreenResult.getClass().getCanonicalName() +
-			                                    ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
-		}
-
-		ActivityResult activityResult = activityScreenImplementation.createActivityResult(mScreenResult);
-		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 	}
 }

@@ -31,7 +31,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code reset} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class ResetCommand extends ScreenImplementationVisitorCommand {
+public class ResetCommand extends VisitorCommand {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 
@@ -41,7 +41,8 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		mAnimationData = animationData;
 	}
 
-	@Override public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		Intent intent = screenImplementation.createIntent(activity, mScreen, null);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -63,7 +64,8 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		return false;
 	}
 
-	@Override public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
 			throw new NavigationException("ContainerId is not set.");
 		}
@@ -84,7 +86,8 @@ public class ResetCommand extends ScreenImplementationVisitorCommand {
 		return true;
 	}
 
-	@Override public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 		while (dialogFragmentHelper.isDialogVisible()) {
 			dialogFragmentHelper.hideDialog();

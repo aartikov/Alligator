@@ -1,7 +1,5 @@
 package me.aartikov.alligator.screenimplementations;
 
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
@@ -11,10 +9,10 @@ import me.aartikov.alligator.exceptions.NavigationException;
  * @author Artur Artikov
  */
 
-public interface ScreenImplementationVisitor {
-	boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+public interface ScreenImplementationVisitor<R> {
+	R visit(ActivityScreenImplementation screenImplementation) throws NavigationException;
 
-	boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	R visit(FragmentScreenImplementation screenImplementation) throws NavigationException;
 
-	boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	R visit(DialogFragmentScreenImplementation screenImplementation) throws NavigationException;
 }

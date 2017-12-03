@@ -1,7 +1,5 @@
 package me.aartikov.alligator.screenimplementations;
 
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
@@ -12,5 +10,5 @@ import me.aartikov.alligator.exceptions.NavigationException;
  */
 
 public interface ScreenImplementation {
-	boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	<R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException;
 }

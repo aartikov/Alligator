@@ -2,13 +2,11 @@ package me.aartikov.alligator.screenimplementations;
 
 import android.support.v4.app.DialogFragment;
 
-import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.functions.DialogFragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 /**
  * Date: 15.10.2017
@@ -34,8 +32,8 @@ public class DialogFragmentScreenImplementation implements ScreenImplementation 
 	}
 
 	@Override
-	public boolean accept(ScreenImplementationVisitor visitor, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
-		return visitor.execute(this, navigationContext, navigationFactory);
+	public <R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException {
+		return visitor.visit(this);
 	}
 
 	@SuppressWarnings("unchecked")

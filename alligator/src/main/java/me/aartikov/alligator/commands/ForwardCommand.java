@@ -30,7 +30,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code goForward} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class ForwardCommand extends ScreenImplementationVisitorCommand {
+public class ForwardCommand extends VisitorCommand {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 

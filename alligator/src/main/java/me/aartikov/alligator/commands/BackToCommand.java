@@ -28,7 +28,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code goBackTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class BackToCommand extends ScreenImplementationVisitorCommand {
+public class BackToCommand extends VisitorCommand {
 	private Class<? extends Screen> mScreenClass;
 	private AnimationData mAnimationData;
 
@@ -38,7 +38,8 @@ public class BackToCommand extends ScreenImplementationVisitorCommand {
 		mAnimationData = animationData;
 	}
 
-	@Override public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		Intent intent = screenImplementation.createEmptyIntent(activity, mScreenClass);
 		if (intent == null) {
@@ -58,7 +59,8 @@ public class BackToCommand extends ScreenImplementationVisitorCommand {
 		return false;
 	}
 
-	@Override public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
 			throw new NavigationException("ContainerId is not set.");
 		}
@@ -89,7 +91,8 @@ public class BackToCommand extends ScreenImplementationVisitorCommand {
 		return true;
 	}
 
-	@Override public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		throw new NavigationException("BackTo command is not supported for dialog fragments.");
 	}
 }

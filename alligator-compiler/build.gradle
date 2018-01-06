@@ -5,7 +5,6 @@ group = 'com.github.aartikov'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project (':alligator-stub')
     implementation 'com.squareup:javapoet:1.8.0'
 }
 

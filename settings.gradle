@@ -1,3 +1,2 @@
 include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample',
 		':screenresultsample', ':sharedelementanimationsample', ':codegenerationsample', ':alligator-compiler', ':alligator-stub'
-project(':alligator-stub').projectDir = new File('alligator-compiler/alligator-stub')

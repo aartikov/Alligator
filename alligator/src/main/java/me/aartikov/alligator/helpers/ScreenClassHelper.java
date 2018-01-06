@@ -19,6 +19,9 @@ import me.aartikov.alligator.Screen;
  * @author Artur Artikov
  */
 
+/**
+ * Helper class for storing screen class information in activities and fragments.
+ */
 public class ScreenClassHelper {
 	private static final String KEY_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_SCREEN_CLASS_NAME";
 	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_PREVIOUS_SCREEN_CLASS_NAME";

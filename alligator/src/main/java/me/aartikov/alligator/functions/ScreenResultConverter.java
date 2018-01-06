@@ -16,6 +16,10 @@ import me.aartikov.alligator.ScreenResult;
  * @author Artur Artikov
  */
 
+/**
+ * Converts {@link ScreenResult} to {@link ActivityResult} and vice versa.
+ * @param <ScreenResultT> screen result type
+ */
 public class ScreenResultConverter<ScreenResultT extends ScreenResult> {
 	private static final String KEY_SCREEN_RESULT = "me.aartikov.alligator.KEY_SCREEN_RESULT";
 

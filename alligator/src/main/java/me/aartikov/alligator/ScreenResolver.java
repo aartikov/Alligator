@@ -17,6 +17,9 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
  * @author Artur Artikov
  */
 
+/**
+ * Helps to get screens from activities and fragments
+ */
 public class ScreenResolver {
 	private NavigationFactory mNavigationFactory;
 

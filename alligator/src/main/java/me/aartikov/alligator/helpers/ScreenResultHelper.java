@@ -22,6 +22,9 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
  * @author Artur Artikov
  */
 
+/**
+ * Helps to return a screen result from activities and fragments.
+ */
 public class ScreenResultHelper {
 
 	public void setActivityResult(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {

@@ -8,7 +8,7 @@ import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
  *
  * @author Artur Artikov
  */
-public class SampleNavigationFactory extends GeneratedNavigationFactory {
+public class SampleNavigationFactory extends GeneratedNavigationFactory {   // It is ok that GeneratedNavigationFactory is not defined. Just build the project to generate it.
 	public SampleNavigationFactory() {
 		// Add nontrivial registration here
 	}

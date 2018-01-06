@@ -15,6 +15,10 @@ import me.aartikov.alligator.Screen;
  * @author Artur Artikov
  */
 
+/**
+ * Converts a screen to a dialog fragment and vice versa.
+ * @param <ScreenT> screen type
+ */
 public class DialogFragmentConverter<ScreenT extends Screen> {
 	private static final String KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN";
 

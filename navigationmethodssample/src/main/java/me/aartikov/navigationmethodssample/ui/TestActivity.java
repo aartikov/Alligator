@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.navigationmethodssample.R;
 import me.aartikov.navigationmethodssample.SampleApplication;
 import me.aartikov.navigationmethodssample.SampleTransitionAnimationProvider;
@@ -26,6 +27,7 @@ import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(TestScreen.class)
 public class TestActivity extends AppCompatActivity {
 	@BindView(R.id.root_view)
 	View mRootView;

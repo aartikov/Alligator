@@ -35,4 +35,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation project (':alligator')
+    annotationProcessor project(':alligator-compiler')
 }

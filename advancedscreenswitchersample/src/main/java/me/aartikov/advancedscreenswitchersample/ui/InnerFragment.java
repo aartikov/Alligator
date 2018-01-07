@@ -18,6 +18,7 @@ import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 /**
  * Date: 22.01.2016
@@ -25,6 +26,7 @@ import me.aartikov.alligator.Navigator;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(InnerScreen.class)
 public class InnerFragment extends Fragment {
 	@BindView(R.id.counter_text_view)
 	TextView mCounterTextView;

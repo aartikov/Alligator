@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
 import me.aartikov.simplenavigationsample.screens.ScreenA;
@@ -22,6 +23,7 @@ import me.aartikov.simplenavigationsample.screens.ScreenD;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(ScreenD.class)
 public class FragmentD extends Fragment {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private ScreenResolver mScreenResolver = SampleApplication.getScreenResolver();
@@ -34,8 +36,8 @@ public class FragmentD extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		TextView messageTextView = (TextView) view.findViewById(R.id.message_text_view);
-		Button goBackToAButton = (Button) view.findViewById(R.id.go_back_to_a_button);
+		TextView messageTextView = view.findViewById(R.id.message_text_view);
+		Button goBackToAButton = view.findViewById(R.id.go_back_to_a_button);
 		ScreenD screen = mScreenResolver.getScreen(this);     // use ScreenResolver to get a screen with its arguments
 		messageTextView.setText(screen.getMessage());
 		goBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));

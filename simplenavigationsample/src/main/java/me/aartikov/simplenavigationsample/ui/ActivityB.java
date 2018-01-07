@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
 import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
+import me.aartikov.simplenavigationsample.screens.ScreenB;
 import me.aartikov.simplenavigationsample.screens.ScreenC;
 
 /**
@@ -17,6 +19,7 @@ import me.aartikov.simplenavigationsample.screens.ScreenC;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(ScreenB.class)
 public class ActivityB extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();

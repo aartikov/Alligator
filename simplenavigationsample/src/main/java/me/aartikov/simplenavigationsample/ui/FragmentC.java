@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
+import me.aartikov.simplenavigationsample.screens.ScreenC;
 import me.aartikov.simplenavigationsample.screens.ScreenD;
 
 /**
@@ -19,6 +21,7 @@ import me.aartikov.simplenavigationsample.screens.ScreenD;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(ScreenC.class)
 public class FragmentC extends Fragment {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 
@@ -30,7 +33,7 @@ public class FragmentC extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		Button goForwardToDButton = (Button) view.findViewById((R.id.go_forward_to_d_button));
+		Button goForwardToDButton = view.findViewById((R.id.go_forward_to_d_button));
 		goForwardToDButton.setOnClickListener(v -> mNavigator.goForward(new ScreenD("Message for D from C")));
 	}
 }

@@ -7,9 +7,11 @@ import android.widget.Button;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
 import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
+import me.aartikov.simplenavigationsample.screens.ScreenA;
 import me.aartikov.simplenavigationsample.screens.ScreenB;
 
 /**
@@ -18,6 +20,7 @@ import me.aartikov.simplenavigationsample.screens.ScreenB;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(ScreenA.class)
 public class ActivityA extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
@@ -28,7 +31,7 @@ public class ActivityA extends AppCompatActivity {
 		setContentView(R.layout.activity_a);
 		setTitle(R.string.screen_a);
 
-		Button goForwardToBButton = (Button) findViewById(R.id.go_forward_to_b_button);
+		Button goForwardToBButton = findViewById(R.id.go_forward_to_b_button);
 		goForwardToBButton.setOnClickListener(v -> mNavigator.goForward(new ScreenB()));  // If you use MVP architectural pattern call methods of Navigator in presenters.
 	}
 

@@ -1,40 +1,36 @@
 package me.aartikov.simplescreenswitchersample.screens;
 
-import android.support.annotation.IdRes;
+import java.io.Serializable;
 
 import me.aartikov.alligator.Screen;
-import me.aartikov.simplescreenswitchersample.R;
 
 /**
- * Date: 11.02.2017
- * Time: 14:15
+ * Date: 07.01.2018
+ * Time: 10:59
  *
  * @author Artur Artikov
  */
 
-// Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden. Or you can use enums that already have valid equals and hashCode.
+// Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden.
 
-public enum TabScreen implements Screen {
-	ANDROID(R.id.tab_android),
-	BUG(R.id.tab_bug),
-	DOG(R.id.tab_dog);
+public abstract class TabScreen implements Screen, Serializable {
 
-	private int mId;
-
-	TabScreen(@IdRes int id) {
-		mId = id;
+	@Override
+	public boolean equals(Object obj) {
+		return obj != null && this.getClass() == obj.getClass();
 	}
 
-	public @IdRes int getId() {
-		return mId;
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
 	}
 
-	public static TabScreen getById(@IdRes int id) {
-		for (TabScreen screen : values()) {
-			if (screen.getId() == id) {
-				return screen;
-			}
-		}
-		throw new IllegalArgumentException("Unknown id " + id);
+	public static class Android extends TabScreen {
+	}
+
+	public static class Bug extends TabScreen {
+	}
+
+	public static class Dog extends TabScreen {
 	}
 }

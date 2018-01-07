@@ -17,10 +17,12 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
+import me.aartikov.screenresultsample.screens.MainScreen;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
 /**
@@ -29,6 +31,7 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();

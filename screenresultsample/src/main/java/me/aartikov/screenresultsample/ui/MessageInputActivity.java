@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
@@ -20,6 +21,7 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(value = MessageInputScreen.class, screenResult = MessageInputScreen.Result.class)
 public class MessageInputActivity extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();

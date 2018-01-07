@@ -16,6 +16,7 @@ import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
 import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 /**
  * Date: 21.01.2016
@@ -23,6 +24,7 @@ import me.aartikov.alligator.Navigator;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(TabScreen.class)
 public class TabFragment extends Fragment implements ContainerIdProvider {
 	@BindView(R.id.name_text_view)
 	TextView mNameTextView;

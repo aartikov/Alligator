@@ -1,2 +1,2 @@
 include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample',
-		':screenresultsample', ':sharedelementanimationsample', ':codegenerationsample', ':alligator-compiler', ':alligator-stub'
+		':screenresultsample', ':sharedelementanimationsample', ':alligator-compiler'

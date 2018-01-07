@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplescreenswitchersample.R;
+import me.aartikov.simplescreenswitchersample.screens.TabScreen;
 
 /**
  * Date: 21.01.2016
@@ -15,6 +17,7 @@ import me.aartikov.simplescreenswitchersample.R;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(TabScreen.Dog.class)
 public class DogFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

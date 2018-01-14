@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 26.03.2017
@@ -20,10 +19,6 @@ import me.aartikov.alligator.TransitionAnimation;
  */
 public class ActivityHelper {
 	private AppCompatActivity mActivity;
-
-	public static ActivityHelper from(NavigationContext navigationContext) {
-		return new ActivityHelper(navigationContext.getActivity());
-	}
 
 	public ActivityHelper(AppCompatActivity activity) {
 		if (activity == null) {

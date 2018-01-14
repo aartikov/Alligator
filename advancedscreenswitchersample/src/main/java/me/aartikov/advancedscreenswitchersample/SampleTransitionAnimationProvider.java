@@ -2,12 +2,12 @@ package me.aartikov.advancedscreenswitchersample;
 
 import android.support.annotation.Nullable;
 
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.TransitionAnimation;
-import me.aartikov.alligator.TransitionAnimationProvider;
+import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
+import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 
 /**
  * Date: 28.02.2017

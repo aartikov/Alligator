@@ -5,15 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Date: 12.03.2016
@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(value = MessageInputScreen.class, screenResult = MessageInputScreen.Result.class)
 public class MessageInputActivity extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();

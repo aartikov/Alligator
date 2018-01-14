@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.ScreenResolver;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.simplenavigationsample.R;
 import me.aartikov.simplenavigationsample.SampleApplication;
 import me.aartikov.simplenavigationsample.screens.ScreenA;
@@ -24,16 +23,10 @@ import me.aartikov.simplenavigationsample.screens.ScreenD;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(ScreenD.class)
 public class FragmentD extends Fragment {
-	@BindView(R.id.message_text_view)
-	TextView mMessageTextView;
-
-	@BindView(R.id.go_back_to_a_button)
-	Button mGoBackToAButton;
-
-	private Unbinder mButterKnifeUnbinder;
-
 	private Navigator mNavigator = SampleApplication.getNavigator();
+	private ScreenResolver mScreenResolver = SampleApplication.getScreenResolver();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,16 +36,10 @@ public class FragmentD extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mButterKnifeUnbinder = ButterKnife.bind(this, view);
-
-		ScreenD screen = SampleApplication.getScreenResolver().getScreen(this);     // use ScreenResolver to get a screen with its arguments
-		mMessageTextView.setText(screen.getMessage());
-		mGoBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));   // mNavigator.finish() will have the same effect in this case
-	}
-
-	@Override
-	public void onDestroyView() {
-		mButterKnifeUnbinder.unbind();
-		super.onDestroyView();
+		TextView messageTextView = view.findViewById(R.id.message_text_view);
+		Button goBackToAButton = view.findViewById(R.id.go_back_to_a_button);
+		ScreenD screen = mScreenResolver.getScreen(this);     // use ScreenResolver to get a screen with its arguments
+		messageTextView.setText(screen.getMessage());
+		goBackToAButton.setOnClickListener(v -> mNavigator.goBackTo(ScreenA.class));
 	}
 }

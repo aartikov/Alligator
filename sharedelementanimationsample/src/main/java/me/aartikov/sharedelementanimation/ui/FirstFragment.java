@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.sharedelementanimation.R;
 import me.aartikov.sharedelementanimation.SampleApplication;
+import me.aartikov.sharedelementanimation.screens.FirstScreen;
 import me.aartikov.sharedelementanimation.screens.SecondScreen;
 
 /**
@@ -23,7 +25,7 @@ import me.aartikov.sharedelementanimation.screens.SecondScreen;
  *
  * @author Artur Artikov
  */
-
+@RegisterScreen(FirstScreen.class)
 public class FirstFragment extends Fragment implements SharedElementProvider {
 	@BindViews({R.id.kitten_image_view_0, R.id.kitten_image_view_1})
 	ImageView[] mKittenImageViews;

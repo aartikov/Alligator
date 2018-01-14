@@ -7,8 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.TransitionAnimation;
+import me.aartikov.alligator.animations.TransitionAnimation;
 
 /**
  * Date: 19.03.2017
@@ -24,10 +23,6 @@ public class FragmentStack {
 	private static final String TAG_PREFIX = "me.aartikov.alligator.FRAGMENT_STACK_TAG_";
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
-
-	public static FragmentStack from(NavigationContext navigationContext) {
-		return new FragmentStack(navigationContext.getFragmentManager(), navigationContext.getContainerId());
-	}
 
 	public FragmentStack(FragmentManager fragmentManager, int containerId) {
 		if (fragmentManager == null) {

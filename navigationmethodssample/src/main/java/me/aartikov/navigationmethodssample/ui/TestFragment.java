@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.navigationmethodssample.R;
 import me.aartikov.navigationmethodssample.SampleApplication;
 import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
@@ -26,6 +27,7 @@ import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
  *
  * @author Artur Artikov
  */
+@RegisterScreen(TestSmallScreen.class)
 public class TestFragment extends Fragment {
 	@BindView(R.id.root_view)
 	View mRootView;

@@ -11,13 +11,13 @@ import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.View;
 
-import me.aartikov.alligator.AnimationData;
+import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.TransitionAnimation;
-import me.aartikov.alligator.TransitionAnimationProvider;
+import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.animations.transition.LollipopTransitionAnimation;
-import me.aartikov.alligator.animations.transition.SimpleTransitionAnimation;
+import me.aartikov.alligator.animations.LollipopTransitionAnimation;
+import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.sharedelementanimation.ui.SharedElementProvider;
 
 /**

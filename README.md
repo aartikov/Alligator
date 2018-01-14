@@ -186,7 +186,7 @@ These types of listeners can be set to `NavigationContext`
 - [DialogShowingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/DialogShowingListener.html) - is called when a dialog fragment has been shown.
 - [ScreenSwitchingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenSwitchingListener.html) - is called when a screen has been switched with a screen switcher.
 - [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) - is called when a screen that can return a result has finished.
-- [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) is called when a navigation error has occurred.
+- [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) - is called when a navigation error has occurred.
 
 ### Start external activity
 To use an external activity (for example a phone dialer) extend `GeneratedNavigationFactory` and register a screen with a custom activity converter.

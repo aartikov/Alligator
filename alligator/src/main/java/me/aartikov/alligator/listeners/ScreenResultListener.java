@@ -7,6 +7,8 @@ package me.aartikov.alligator.listeners;
  * @author Artur Artikov
  */
 
+import android.support.annotation.Nullable;
+
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 
@@ -15,17 +17,11 @@ import me.aartikov.alligator.ScreenResult;
  */
 public interface ScreenResultListener {
 	/**
-	 * Is called when a result of a screen is handled.
+	 * Is called when a screen result is handled.
 	 *
 	 * @param screenClass screen class
-	 * @param result      screen result
+	 * @param result      screen result. Can be null when a screen has finished without no result.
 	 */
-	void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result);
+	void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result);
 
-	/**
-	 * Is called when a screen has finished without no result.
-	 *
-	 * @param screenClass screen class
-	 */
-	void onCancelled(Class<? extends Screen> screenClass);
 }

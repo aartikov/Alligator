@@ -18,7 +18,7 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
  */
 
 /**
- * Helper class for handling a screen result. Can be obtained with {@code getActivityResultHandler} method of {@link AndroidNavigator}.
+ * Helper class for handling a screen result.
  */
 public class ActivityResultHandler {
 	private NavigationFactory mNavigationFactory;
@@ -60,11 +60,7 @@ public class ActivityResultHandler {
 	private void handlePendingScreenResults() {
 		while (mScreenResultListener != null && !mScreenResultQueue.isEmpty()) {
 			ScreenResultPair pair = mScreenResultQueue.remove();
-			if (pair.mScreenResult != null) {
-				mScreenResultListener.onScreenResult(pair.mScreenClass, pair.mScreenResult);
-			} else {
-				mScreenResultListener.onCancelled(pair.mScreenClass);
-			}
+			mScreenResultListener.onScreenResult(pair.mScreenClass, pair.mScreenResult);
 		}
 	}
 

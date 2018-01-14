@@ -2,6 +2,7 @@ package me.aartikov.screenresultsample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,7 +33,7 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
  * @author Artur Artikov
  */
 @RegisterScreen(MainScreen.class)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
@@ -67,27 +68,25 @@ public class MainActivity extends AppCompatActivity {
 		Picasso.with(this).load(imagePickerResult.getUri()).into(mImageView);
 	}
 
-	private ScreenResultListener mScreenResultListener = new ScreenResultListener() {
-		@Override
-		public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
-			if (result instanceof MessageInputScreen.Result) {
-				onMessageInputted((MessageInputScreen.Result) result);
-			} else if (result instanceof ImagePickerScreen.Result) {
-				onImagePicked((ImagePickerScreen.Result) result);
-			}
+	@Override
+	public void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
+		if (result == null) {
+			Toast.makeText(MainActivity.this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
+			return;
 		}
 
-		@Override
-		public void onCancelled(Class<? extends Screen> screenClass) {
-			Toast.makeText(MainActivity.this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
+		if (result instanceof MessageInputScreen.Result) {
+			onMessageInputted((MessageInputScreen.Result) result);
+		} else if (result instanceof ImagePickerScreen.Result) {
+			onImagePicked((ImagePickerScreen.Result) result);
 		}
-	};
+	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		NavigationContext navigationContext = new NavigationContext.Builder(this)
-				.screenResultListener(mScreenResultListener)      // set ScreenResultListener
+				.screenResultListener(this)      // set ScreenResultListener
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}

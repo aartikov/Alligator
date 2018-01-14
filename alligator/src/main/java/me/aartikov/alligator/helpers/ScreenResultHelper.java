@@ -63,17 +63,16 @@ public class ScreenResultHelper {
 			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
-		if (screenResult == null) {
-			screenResultListener.onCancelled(screenClass);
-			return;
-		}
-
-		if (fragmentScreenImplementation.getScreenResultClass() == null) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
-		}
-
 		Class<? extends ScreenResult> supportedScreenResultClass = fragmentScreenImplementation.getScreenResultClass();
-		if (!supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
+		if (supportedScreenResultClass == null) {
+			if (screenResult == null) {
+				return;
+			} else {
+				throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
+			}
+		}
+
+		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
@@ -92,17 +91,16 @@ public class ScreenResultHelper {
 			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
-		if (screenResult == null) {
-			screenResultListener.onCancelled(screenClass);
-			return;
-		}
-
-		if (dialogFragmentScreenImplementation.getScreenResultClass() == null) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
-		}
-
 		Class<? extends ScreenResult> supportedScreenResultClass = dialogFragmentScreenImplementation.getScreenResultClass();
-		if (!supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
+		if (supportedScreenResultClass == null) {
+			if (screenResult == null) {
+				return;
+			} else {
+				throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
+			}
+		}
+
+		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}

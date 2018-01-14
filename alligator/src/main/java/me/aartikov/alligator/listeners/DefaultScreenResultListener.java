@@ -11,9 +11,7 @@ import me.aartikov.alligator.ScreenResult;
  */
 
 public class DefaultScreenResultListener implements ScreenResultListener {
-	@Override public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
-	}
 
-	@Override public void onCancelled(Class<? extends Screen> screenClass) {
+	@Override public void onScreenResult(Class<? extends Screen> screenClass, ScreenResult result) {
 	}
 }

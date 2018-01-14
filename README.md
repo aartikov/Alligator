@@ -182,11 +182,11 @@ To open a dialog register screen implemented by a dialog fragment and start it w
 
 ### Listen navigation
 These types of listeners can be set to `NavigationContext`
-- `TransitionListener` - is called when usual screen transition (not screen switching and not dialog showing) has been executed.
-- `DialogShowingListener` - is called when a dialog fragment has been shown.
-- `ScreenSwitchingListener` - is called when a screen has been switched with a screen switcher.
-- `ScreenResultListener` - is called when a screen that can return a result has finished.
-- `NavigationErrorListener` is called when a navigation error has occurred.
+- [TransitionListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/TransitionListener.html) - is called when usual screen transition (not screen switching and not dialog showing) has been executed.
+- [DialogShowingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/DialogShowingListener.html) - is called when a dialog fragment has been shown.
+- [ScreenSwitchingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenSwitchingListener.html) - is called when a screen has been switched with a screen switcher.
+- [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) - is called when a screen that can return a result has finished.
+- [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) is called when a navigation error has occurred.
 
 ### Start external activity
 To use an external activity (for example a phone dialer) extend `GeneratedNavigationFactory` and register a screen with a custom activity converter.
@@ -201,12 +201,12 @@ public class SampleNavigationFactory extends GeneratedNavigationFactory {
    }
 ```
 
-Start it with `goForward` method. Use `NavigationErrorListener` to check that an activity has been succesfully resolved.
+Start it with `goForward` method. Use [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) to check that an activity has been succesfully resolved.
 
 ### Handle screen result
 A screen can return [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ScreenResult.html) to a previous screen. It is like `startActivityForResult`, but with Alligator there are no needs to declare request codes and handle `onActivityResult` manually. Alligator defines unique request codes for screens implemented by activities that can return results. For screens implemented by fragments Alligator uses usual listeners.
 
-Declare and register screen result classes. Return a result with `goBackWithResult` or `finishWithResult` methods of `Navigator` Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
+Declare and register screen result classes. Return a result with `goBackWithResult` or `finishWithResult` methods of `Navigator`. Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
 
 See how to do it in [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample).
 

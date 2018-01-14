@@ -17,10 +17,10 @@ import me.aartikov.alligator.ScreenResult;
  */
 public interface ScreenResultListener {
 	/**
-	 * Is called when a screen result is handled.
+	 * Is called when a screen that can return a result has finished.
 	 *
-	 * @param screenClass screen class
-	 * @param result      screen result. Can be null when a screen has finished without no result.
+	 * @param screenClass class of a finished screen
+	 * @param result      returned screen result. Can be null if a screen has finished without no result.
 	 */
 	void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result);
 

@@ -206,13 +206,12 @@ Start it with `goForward` method. Use `NavigationErrorListener` to check that an
 ### Handle screen result
 A screen can return [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ScreenResult.html) to a previous screen. It is like `startActivityForResult`, but with Alligator there are no needs to declare request codes and handle `onActivityResult` manually. Alligator defines unique request codes for screens implemented by activities that can return results. For screens implemented by fragments Alligator uses usual listeners.
 
-Declare and register screen result classes. Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
+Declare and register screen result classes. Return a result with `goBackWithResult` or `finishWithResult` methods of `Navigator` Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/2.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
 
 See how to do it in [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample).
 
 ## Developed by
-Artur Artikov <a href="mailto:a.artikov@gmail.com">a.artikov@gmail.com</a>
-Mikhail Savin <a href="mailto:savinmike.u@gmail.com">savinmike.u@gmail.com</a>
+Artur Artikov <a href="mailto:a.artikov@gmail.com">a.artikov@gmail.com</a></br>Mikhail Savin <a href="mailto:savinmike.u@gmail.com">savinmike.u@gmail.com</a>
 ## License
 ```
 The MIT License (MIT)

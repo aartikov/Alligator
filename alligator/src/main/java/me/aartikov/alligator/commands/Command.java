@@ -27,9 +27,9 @@ public interface Command {
     boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
 
     /**
-     * Property meaning the command can be discarded if cannot be executed immediately.
+     * Property meaning the command can be discarded if there is no screen switcher.
      *
-     * @return true if can be discarded if not executed immediately, false otherwise
+     * @return true if can be discarded, false otherwise
      */
-    boolean discardIfNotImmediate();
+    boolean discardIfNoScreenSwitcher();
 }

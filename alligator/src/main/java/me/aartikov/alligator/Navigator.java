@@ -145,9 +145,9 @@ public interface Navigator {
     /**
      * {@code switchTo} with an animation data.
      *
-     * @param screen                screen for switching to
-     * @param animationData         animation data for an additional animation configuring
-     * @param discardIfNotImmediate if command can be discarded if cannot be immediately executed.
+     * @param screen                    screen for switching to
+     * @param animationData             animation data for an additional animation configuring
+     * @param discardIfNoScreenSwitcher if command can be discarded if there's no screen switcher.
      */
-    void switchTo(Screen screen, AnimationData animationData, boolean discardIfNotImmediate);
+    void switchTo(Screen screen, AnimationData animationData, boolean discardIfNoScreenSwitcher);
 }

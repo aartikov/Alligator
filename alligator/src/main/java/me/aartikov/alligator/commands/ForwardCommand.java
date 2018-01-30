@@ -104,7 +104,7 @@ public class ForwardCommand extends VisitorCommand {
 	}
 
 	@Override
-	public boolean discardIfNotImmediate() {
+	public boolean discardIfNoScreenSwitcher() {
 		return false;
 	}
 }

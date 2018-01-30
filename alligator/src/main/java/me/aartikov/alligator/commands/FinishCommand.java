@@ -49,7 +49,7 @@ public class FinishCommand implements Command {
 	}
 
 	@Override
-	public boolean discardIfNotImmediate() {
+	public boolean discardIfNoScreenSwitcher() {
 		return false;
 	}
 }

@@ -46,7 +46,7 @@ public class SwitchToCommand implements Command {
     }
 
     @Override
-    public boolean discardIfNotImmediate() {
+    public boolean discardIfNoScreenSwitcher() {
         return discardIfNotImmediate;
     }
 }

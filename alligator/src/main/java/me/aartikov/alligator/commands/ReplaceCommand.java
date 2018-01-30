@@ -102,7 +102,7 @@ public class ReplaceCommand extends VisitorCommand {
 	}
 
 	@Override
-	public boolean discardIfNotImmediate() {
+	public boolean discardIfNoScreenSwitcher() {
 		return false;
 	}
 }

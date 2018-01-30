@@ -81,7 +81,7 @@ public class BackCommand implements Command {
 	}
 
 	@Override
-	public boolean discardIfNotImmediate() {
+	public boolean discardIfNoScreenSwitcher() {
 		return false;
 	}
 }

@@ -204,8 +204,8 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
     }
 
     @Override
-    public void switchTo(Screen screen, AnimationData animationData, boolean discardIfNotImmediate) {
-        executeCommand(new SwitchToCommand(screen, animationData, discardIfNotImmediate));
+    public void switchTo(Screen screen, AnimationData animationData, boolean discardIfNoScreenSwitcher) {
+        executeCommand(new SwitchToCommand(screen, animationData, discardIfNoScreenSwitcher));
     }
 
     protected void executeCommand(Command command) {
@@ -216,12 +216,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
     private void executeQueuedCommands() {
         if (mIsExecutingCommands) {
-            if(!mCommandQueue.isEmpty()){
-                boolean discardable = mCommandQueue.peek().discardIfNotImmediate();
-                if(discardable){
-                    mCommandQueue.remove();
-                }
-            }
             return;
         }
 
@@ -229,6 +223,9 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
         try {
             while (mNavigationContext != null && !mCommandQueue.isEmpty()) {
                 Command command = mCommandQueue.remove();
+                if (command.discardIfNoScreenSwitcher() && mNavigationContext.getScreenSwitcher() == null) {
+                    return;
+                }
                 boolean canExecuteCommands = command.execute(mNavigationContext, mNavigationFactory);
                 if (!canExecuteCommands) {
                     mNavigationContext = null;

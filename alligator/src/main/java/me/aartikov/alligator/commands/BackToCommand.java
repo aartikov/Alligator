@@ -95,4 +95,9 @@ public class BackToCommand extends VisitorCommand {
 	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		throw new NavigationException("BackTo command is not supported for dialog fragments.");
 	}
+
+	@Override
+	public boolean discardIfNotImmediate() {
+		return false;
+	}
 }

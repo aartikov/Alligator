@@ -18,28 +18,35 @@ import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
  * Command implementation for {@code switchTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
 public class SwitchToCommand implements Command {
-	private Screen mScreen;
-	private AnimationData mAnimationData;
+    private Screen mScreen;
+    private AnimationData mAnimationData;
+    private boolean discardIfNotImmediate;
 
-	public SwitchToCommand(Screen screen, AnimationData animationData) {
-		mScreen = screen;
-		mAnimationData = animationData;
-	}
+    public SwitchToCommand(Screen screen, AnimationData animationData, boolean discardIfNotImmediate) {
+        mScreen = screen;
+        mAnimationData = animationData;
+        this.discardIfNotImmediate = discardIfNotImmediate;
+    }
 
-	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
-		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
-		if (screenSwitcher == null) {
-			throw new NavigationException("ScreenSwitcher is not set.");
-		}
+    @Override
+    public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+        ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
+        if (screenSwitcher == null) {
+            throw new NavigationException("ScreenSwitcher is not set.");
+        }
 
-		Screen previousScreen = screenSwitcher.getCurrentScreen();
-		if(previousScreen != null && previousScreen.equals(mScreen)) {
-			return true;
-		}
+        Screen previousScreen = screenSwitcher.getCurrentScreen();
+        if (previousScreen != null && previousScreen.equals(mScreen)) {
+            return true;
+        }
 
-		screenSwitcher.switchTo(mScreen, mAnimationData);
-		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
-		return true;
-	}
+        screenSwitcher.switchTo(mScreen, mAnimationData);
+        navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
+        return true;
+    }
+
+    @Override
+    public boolean discardIfNotImmediate() {
+        return discardIfNotImmediate;
+    }
 }

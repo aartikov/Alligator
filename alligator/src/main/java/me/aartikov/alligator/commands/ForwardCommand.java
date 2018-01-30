@@ -102,4 +102,9 @@ public class ForwardCommand extends VisitorCommand {
 		navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 		return true;
 	}
+
+	@Override
+	public boolean discardIfNotImmediate() {
+		return false;
+	}
 }

@@ -79,4 +79,9 @@ public class BackCommand implements Command {
 			return false;
 		}
 	}
+
+	@Override
+	public boolean discardIfNotImmediate() {
+		return false;
+	}
 }

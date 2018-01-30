@@ -99,4 +99,9 @@ public class ResetCommand extends VisitorCommand {
 		navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());
 		return true;
 	}
+
+	@Override
+	public boolean discardIfNoScreenSwitcher() {
+		return false;
+	}
 }

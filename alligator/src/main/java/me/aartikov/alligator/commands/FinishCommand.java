@@ -47,4 +47,9 @@ public class FinishCommand implements Command {
 		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
 		return false;
 	}
+
+	@Override
+	public boolean discardIfNoScreenSwitcher() {
+		return false;
+	}
 }

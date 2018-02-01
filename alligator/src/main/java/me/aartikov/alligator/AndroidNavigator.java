@@ -1,9 +1,9 @@
 package me.aartikov.alligator;
 
+import android.os.Looper;
+
 import java.util.LinkedList;
 import java.util.Queue;
-
-import android.os.Looper;
 
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
@@ -16,8 +16,6 @@ import me.aartikov.alligator.commands.ResetCommand;
 import me.aartikov.alligator.commands.SwitchToCommand;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
-import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 /**
  * Date: 29.12.2016
@@ -66,7 +64,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
 		mActivityResultHandler.setScreenResultListener(mNavigationContext.getScreenResultListener());
-		setNavigationFactoryToScreenSwitcher();
 		executeQueuedCommands();
 	}
 
@@ -246,17 +243,6 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 			throw e;
 		} finally {
 			mIsExecutingCommands = false;
-		}
-	}
-
-	private void setNavigationFactoryToScreenSwitcher() {
-		if (mNavigationContext == null) {
-			return;
-		}
-
-		ScreenSwitcher screenSwitcher = mNavigationContext.getScreenSwitcher();
-		if (screenSwitcher instanceof NavigationFactorySetter) {
-			((NavigationFactorySetter) screenSwitcher).setNavigationFactory(mNavigationFactory);
 		}
 	}
 

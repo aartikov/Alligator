@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 		initTabScreenMap();
 		mBottomBar.setOnNavigationItemSelectedListener(this);
-		mScreenSwitcher = new FragmentScreenSwitcher(getSupportFragmentManager(), R.id.main_container, new SampleScreenSwitcherAnimationProvider(getTabScreens()));
+		mScreenSwitcher = new FragmentScreenSwitcher(SampleApplication.getNavigationFactory(), getSupportFragmentManager(),
+				R.id.main_container, new SampleScreenSwitcherAnimationProvider(getTabScreens()));
 
 		if (savedInstanceState == null) {
 			mNavigator.switchTo(getTabScreen(R.id.tab_android));

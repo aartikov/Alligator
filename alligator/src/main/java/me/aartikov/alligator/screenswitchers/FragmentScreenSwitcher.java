@@ -11,7 +11,6 @@ import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 import me.aartikov.alligator.ScreenResolver;
@@ -30,7 +29,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
  * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments and get screens back from it.
  * Screens used by {@code FragmentScreenSwitcher} must have {@code equals} and {@code hashCode} correctly overridden.
  */
-public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactorySetter {
+public class FragmentScreenSwitcher implements ScreenSwitcher {
 	public interface AnimationProvider {
 		TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData);
 	}
@@ -42,30 +41,26 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 	private Map<Screen, Fragment> mFragmentMap;
 
 	/**
+	 * @param navigationFactory navigation factory used to create fragments
 	 * @param fragmentManager   fragment manager used for fragment transactions
 	 * @param containerId       id of a container where fragments will be added
 	 * @param animationProvider animation provider
 	 */
-	public FragmentScreenSwitcher(FragmentManager fragmentManager, int containerId, AnimationProvider animationProvider) {
+	public FragmentScreenSwitcher(NavigationFactory navigationFactory, FragmentManager fragmentManager, int containerId, AnimationProvider animationProvider) {
+		mNavigationFactory = navigationFactory;
+		mScreenResolver = new ScreenResolver(mNavigationFactory);
 		fragmentSwitcher = new FragmentSwitcher(fragmentManager, containerId);
 		mAnimationProvider = animationProvider;
+		initFragmentMap();
 	}
 
 	/**
+	 * @param navigationFactory navigation factory used to create fragments
 	 * @param fragmentManager fragment manager used for fragment transactions
 	 * @param containerId     id of a container where fragments will be added
 	 */
-	public FragmentScreenSwitcher(FragmentManager fragmentManager, int containerId) {
-		this(fragmentManager, containerId, createDefaultAnimationProvider());
-	}
-
-	@Override
-	public void setNavigationFactory(NavigationFactory navigationFactory) {
-		mNavigationFactory = navigationFactory;
-		mScreenResolver = new ScreenResolver(mNavigationFactory);
-		if (mFragmentMap == null) {
-			initFragmentMap();
-		}
+	public FragmentScreenSwitcher(NavigationFactory navigationFactory, FragmentManager fragmentManager, int containerId) {
+		this(navigationFactory, fragmentManager, containerId, createDefaultAnimationProvider());
 	}
 
 	@Override

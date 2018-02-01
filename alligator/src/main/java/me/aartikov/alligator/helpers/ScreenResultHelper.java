@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
+import me.aartikov.alligator.exceptions.InvalidScreenResultException;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
@@ -30,21 +32,21 @@ public class ScreenResultHelper {
 	public void setActivityResult(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
-			throw new NavigationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
 		}
 
 		ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (activityScreenImplementation == null) {
-			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		if (activityScreenImplementation.getScreenResultClass() == null) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
+			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
+			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
@@ -55,12 +57,12 @@ public class ScreenResultHelper {
 	public void callScreenResultListener(Fragment fragment, @Nullable ScreenResult screenResult, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(fragment);
 		if (screenClass == null) {
-			throw new NavigationException("Failed to get a screen class for " + fragment.getClass().getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen class for " + fragment.getClass().getSimpleName());
 		}
 
 		FragmentScreenImplementation fragmentScreenImplementation = (FragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (fragmentScreenImplementation == null) {
-			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = fragmentScreenImplementation.getScreenResultClass();
@@ -68,12 +70,12 @@ public class ScreenResultHelper {
 			if (screenResult == null) {
 				return;
 			} else {
-				throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
+				throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 			}
 		}
 
 		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
+			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
@@ -83,12 +85,12 @@ public class ScreenResultHelper {
 	public void callScreenResultListener(DialogFragment dialogFragment, @Nullable ScreenResult screenResult, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(dialogFragment);
 		if (screenClass == null) {
-			throw new NavigationException("Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());
 		}
 
 		DialogFragmentScreenImplementation dialogFragmentScreenImplementation = (DialogFragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
 		if (dialogFragmentScreenImplementation == null) {
-			throw new NavigationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
 		}
 
 		Class<? extends ScreenResult> supportedScreenResultClass = dialogFragmentScreenImplementation.getScreenResultClass();
@@ -96,12 +98,12 @@ public class ScreenResultHelper {
 			if (screenResult == null) {
 				return;
 			} else {
-				throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result.");
+				throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 			}
 		}
 
 		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
-			throw new NavigationException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
+			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 

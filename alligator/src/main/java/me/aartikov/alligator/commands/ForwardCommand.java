@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.exceptions.MissingFragmentStackException;
+import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.TransitionAnimation;
@@ -71,12 +73,12 @@ public class ForwardCommand extends VisitorCommand {
 	@Override
 	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
-			throw new NavigationException("ContainerId is not set.");
+			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
 
 		Fragment fragment = screenImplementation.createFragment(mScreen);
 		if (fragment instanceof DialogFragment) {
-			throw new NavigationException("DialogFragment is used as usual Fragment.");
+			throw new ScreenRegistrationException("DialogFragment is used as usual Fragment.");
 		}
 
 		FragmentStack fragmentStack = navigationContext.getFragmentStack();

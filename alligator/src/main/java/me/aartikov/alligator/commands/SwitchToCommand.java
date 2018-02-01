@@ -3,6 +3,7 @@ package me.aartikov.alligator.commands;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
+import me.aartikov.alligator.exceptions.MissingScreenSwitcherException;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
@@ -30,7 +31,7 @@ public class SwitchToCommand implements Command {
 	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
 		if (screenSwitcher == null) {
-			throw new NavigationException("ScreenSwitcher is not set.");
+			throw new MissingScreenSwitcherException("ScreenSwitcher is not set.");
 		}
 
 		Screen previousScreen = screenSwitcher.getCurrentScreen();

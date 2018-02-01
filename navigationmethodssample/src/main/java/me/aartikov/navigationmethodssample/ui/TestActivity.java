@@ -56,10 +56,6 @@ public class TestActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_test);
 		ButterKnife.bind(this);
 
-		if (savedInstanceState == null) {
-			mNavigator.reset(new TestSmallScreen(1));
-		}
-
 		TestScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
@@ -70,6 +66,15 @@ public class TestActivity extends AppCompatActivity {
 		mFinishButton.setOnClickListener(view -> mNavigator.finish());
 
 		mRootView.setBackgroundColor(getRandomColor());
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		boolean hasFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container) != null;
+		if (!hasFragment && !mNavigator.hasPendingCommands()) {
+			mNavigator.reset(new TestSmallScreen(1));
+		}
 	}
 
 	@Override

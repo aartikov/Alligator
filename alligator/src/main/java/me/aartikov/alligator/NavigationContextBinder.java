@@ -11,6 +11,13 @@ package me.aartikov.alligator;
  * Interface for binding and unbinding of a {@link NavigationContext}.
  */
 public interface NavigationContextBinder {
+
+	/**
+	 * Returns if a navigation context is bound.
+	 * @return true if a navigation context is bound
+	 */
+	boolean isBound();
+
 	/**
 	 * Bind a navigation context. This method should be called from {@code onResumeFragments} of an activity.
 	 *

@@ -3,6 +3,7 @@ package me.aartikov.alligator.commands;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
 import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
@@ -34,7 +35,7 @@ abstract class VisitorCommand implements Command {
 	final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		ScreenImplementation screenImplementation = navigationFactory.getScreenImplementation(mScreenClass);
 		if (screenImplementation == null) {
-			throw new NavigationException("Screen " + mScreenClass.getSimpleName() + " is unknown.");
+			throw new ScreenRegistrationException("Screen " + mScreenClass.getSimpleName() + " is not registered.");
 		}
 		return screenImplementation.accept(new VisitorAdapter(navigationContext, navigationFactory));
 	}

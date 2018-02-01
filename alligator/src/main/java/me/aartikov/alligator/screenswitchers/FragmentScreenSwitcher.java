@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.navigationfactories.NavigationFactorySetter;
 import me.aartikov.alligator.Screen;
@@ -76,7 +77,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 			TransitionAnimation animation = currentScreen != null ? mAnimationProvider.getAnimation(currentScreen, screen, animationData) : TransitionAnimation.DEFAULT;
 			fragmentSwitcher.switchTo(fragment, animation);
 		} else {
-			throw new NavigationException("Screen " + screen.getClass().getSimpleName() + " is not represented by a fragment.");
+			throw new ScreenRegistrationException("Screen " + screen.getClass().getSimpleName() + " is not represented by a fragment.");
 		}
 	}
 
@@ -129,7 +130,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher, NavigationFactory
 			try {
 				mScreenResolver.getScreen(fragment);  // Check that the screen has a valid screen getting function
 			} catch (Exception e) {
-				throw new NavigationException(e.getMessage());
+				throw new ScreenRegistrationException(e.getMessage());
 			}
 			mFragmentMap.put(screen, fragment);
 		}

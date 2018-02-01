@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.exceptions.MissingFragmentStackException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.TransitionAnimation;
@@ -68,7 +69,7 @@ public class ReplaceCommand extends VisitorCommand {
 	@Override
 	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
-			throw new NavigationException("ContainerId is not set.");
+			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
 
 		Fragment fragment = screenImplementation.createFragment(mScreen);

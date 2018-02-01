@@ -8,6 +8,10 @@ import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.NavigationContext;
+import me.aartikov.alligator.exceptions.MissingFragmentStackException;
+import me.aartikov.alligator.exceptions.NotSupportedOperationException;
+import me.aartikov.alligator.exceptions.ScreenNotFoundException;
+import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.TransitionAnimation;
@@ -43,7 +47,7 @@ public class BackToCommand extends VisitorCommand {
 		Activity activity = navigationContext.getActivity();
 		Intent intent = screenImplementation.createEmptyIntent(activity, mScreenClass);
 		if (intent == null) {
-			throw new NavigationException("Can't create intent for a screen " + mScreenClass.getSimpleName());
+			throw new ScreenRegistrationException("Can't create intent for a screen " + mScreenClass.getSimpleName());
 		}
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -62,7 +66,7 @@ public class BackToCommand extends VisitorCommand {
 	@Override
 	public boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
-			throw new NavigationException("ContainerId is not set.");
+			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
 
 		FragmentStack fragmentStack = navigationContext.getFragmentStack();
@@ -76,7 +80,7 @@ public class BackToCommand extends VisitorCommand {
 		}
 
 		if (fragment == null) {
-			throw new NavigationException("Screen " + mScreenClass.getSimpleName() + " is not found.");
+			throw new ScreenNotFoundException(mScreenClass);
 		}
 
 		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(fragments.get(fragments.size() - 1));
@@ -93,6 +97,6 @@ public class BackToCommand extends VisitorCommand {
 
 	@Override
 	public boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
-		throw new NavigationException("BackTo command is not supported for dialog fragments.");
+		throw new NotSupportedOperationException("BackTo command is not supported for dialog fragments.");
 	}
 }

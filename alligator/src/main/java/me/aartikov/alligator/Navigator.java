@@ -13,6 +13,19 @@ import me.aartikov.alligator.animations.AnimationData;
  * Interface with navigation methods.
  */
 public interface Navigator {
+
+	/**
+	 * Returns if a navigator can execute a command immediately
+	 * @return true if a navigator can execute a command immediately
+	 */
+	boolean canExecuteCommandImmediately();
+
+	/**
+	 * Returns if a navigator has pending commands
+	 * @return true if a navigator has pending commands
+	 */
+	boolean hasPendingCommands();
+
 	/**
 	 * Adds a new screen and goes to it.
 	 *

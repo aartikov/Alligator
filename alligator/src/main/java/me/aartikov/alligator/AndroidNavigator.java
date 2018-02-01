@@ -57,6 +57,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
+	public boolean isBound() {
+		return mNavigationContext != null;
+	}
+
+	@Override
 	public void bind(NavigationContext navigationContext) {
 		checkThatMainThread();
 		mNavigationContext = navigationContext;
@@ -70,6 +75,16 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		checkThatMainThread();
 		mActivityResultHandler.resetScreenResultListener();
 		mNavigationContext = null;
+	}
+
+	@Override
+	public boolean canExecuteCommandImmediately() {
+		return mCommandQueue.isEmpty() && mNavigationContext != null;
+	}
+
+	@Override
+	public boolean hasPendingCommands() {
+		return !mCommandQueue.isEmpty();
 	}
 
 	/**

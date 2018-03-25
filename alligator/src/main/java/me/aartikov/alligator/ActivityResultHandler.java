@@ -1,10 +1,8 @@
 package me.aartikov.alligator;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import android.content.Intent;
 
+import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
@@ -23,7 +21,7 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 public class ActivityResultHandler {
 	private NavigationFactory mNavigationFactory;
 	private ScreenResultListener mScreenResultListener;
-	private Queue<ScreenResultPair> mScreenResultQueue = new LinkedList<>();
+	private ScreenResultPair mPendingScreenResultPair;
 
 	ActivityResultHandler(NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
@@ -31,7 +29,7 @@ public class ActivityResultHandler {
 
 	void setScreenResultListener(ScreenResultListener screenResultListener) {
 		mScreenResultListener = screenResultListener;
-		handlePendingScreenResults();
+		handlePendingScreenResult();
 	}
 
 	void resetScreenResultListener() {
@@ -45,22 +43,37 @@ public class ActivityResultHandler {
 	 * @param resultCode  resultCode passed to {@code onActivityResult}
 	 * @param data        intent passed to {@code onActivityResult}
 	 */
-	public void handle(final int requestCode, final int resultCode, final Intent data) {
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(requestCode);
 		if (screenClass != null) {
 			ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
 			if (screenImplementation instanceof ActivityScreenImplementation) {
 				ScreenResult screenResult = ((ActivityScreenImplementation) screenImplementation).getScreenResult(new ActivityResult(resultCode, data));
-				mScreenResultQueue.add(new ScreenResultPair(screenClass, screenResult));
-				handlePendingScreenResults();
+				if (mPendingScreenResultPair == null || mPendingScreenResultPair.mScreenResult == null) {
+					mPendingScreenResultPair = new ScreenResultPair(screenClass, screenResult);
+				}
+				handlePendingScreenResult();
 			}
 		}
 	}
 
-	private void handlePendingScreenResults() {
-		while (mScreenResultListener != null && !mScreenResultQueue.isEmpty()) {
-			ScreenResultPair pair = mScreenResultQueue.remove();
-			mScreenResultListener.onScreenResult(pair.mScreenClass, pair.mScreenResult);
+	/**
+	 * Handles activity result. This method should be called from {@code onNewIntent} of an activity.
+	 *
+	 * @param intent intent passed to {@code onNewIntent}
+	 */
+	public void onNewIntent(Intent intent) {
+		int requestCode = intent.getIntExtra(ScreenResultHelper.KEY_REQUEST_CODE, -1);
+		if (requestCode != -1) {
+			int resultCode = intent.getIntExtra(ScreenResultHelper.KEY_RESULT_CODE, 0);
+			onActivityResult(requestCode, resultCode, intent);
+		}
+	}
+
+	private void handlePendingScreenResult() {
+		if (mScreenResultListener != null && mPendingScreenResultPair != null) {
+			mScreenResultListener.onScreenResult(mPendingScreenResultPair.mScreenClass, mPendingScreenResultPair.mScreenResult);
+			mPendingScreenResultPair = null;
 		}
 	}
 

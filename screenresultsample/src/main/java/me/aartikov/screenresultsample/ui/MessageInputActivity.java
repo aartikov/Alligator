@@ -40,7 +40,7 @@ public class MessageInputActivity extends AppCompatActivity {
 
 		mOkButton.setOnClickListener(v -> {
 			String message = mMessageEditText.getText().toString();
-			mNavigator.finishWithResult(new MessageInputScreen.Result(message));    // Easy-peasy!
+			mNavigator.goBackWithResult(new MessageInputScreen.Result(message));    // Easy-peasy!
 		});
 	}
 

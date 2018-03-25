@@ -16,12 +16,14 @@ public interface Navigator {
 
 	/**
 	 * Returns if a navigator can execute a command immediately
+	 *
 	 * @return true if a navigator can execute a command immediately
 	 */
 	boolean canExecuteCommandImmediately();
 
 	/**
 	 * Returns if a navigator has pending commands
+	 *
 	 * @return true if a navigator has pending commands
 	 */
 	boolean hasPendingCommands();
@@ -82,6 +84,23 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData);
+
+	/**
+	 * Goes back to a screen with the given class and returns result to it.
+	 *
+	 * @param screenClass  screen class for going back
+	 * @param screenResult screen result that will be returned
+	 */
+	void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult);
+
+	/**
+	 * {@code goBackToWithResult} with an animation data.
+	 *
+	 * @param screenClass   screen class for going back
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult, AnimationData animationData);
 
 	/**
 	 * Replaces the last screen with a new screen.

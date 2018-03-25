@@ -1,6 +1,7 @@
 package me.aartikov.alligator.helpers;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -28,8 +29,24 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
  * Helps to return a screen result from activities and fragments.
  */
 public class ScreenResultHelper {
+	public static final String KEY_REQUEST_CODE = "me.aartikov.alligator.KEY_REQUEST_CODE";
+	public static final String KEY_RESULT_CODE = "me.aartikov.alligator.KEY_RESULT_CODE";
 
 	public void setActivityResult(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
+		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
+		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
+		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
+	}
+
+	public void setResultToIntent(Intent intent, Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
+		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
+		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
+		intent.putExtra(KEY_REQUEST_CODE, activityScreenImplementation.getRequestCode());
+		intent.putExtra(KEY_RESULT_CODE, activityResult.getResultCode());
+		intent.putExtras(activityResult.getIntent());
+	}
+
+	private ActivityScreenImplementation getAndValidateActivityScreenImplementation(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
@@ -47,11 +64,10 @@ public class ScreenResultHelper {
 		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
-			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			                                       ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
-		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
-		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
+		return activityScreenImplementation;
 	}
 
 	public void callScreenResultListener(Fragment fragment, @Nullable ScreenResult screenResult, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
@@ -76,7 +92,7 @@ public class ScreenResultHelper {
 
 		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
-			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			                                       ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
 		screenResultListener.onScreenResult(screenClass, screenResult);
@@ -104,7 +120,7 @@ public class ScreenResultHelper {
 
 		if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
-			                              ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
+			                                       ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
 		screenResultListener.onScreenResult(screenClass, screenResult);

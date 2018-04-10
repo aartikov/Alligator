@@ -1,9 +1,9 @@
 package me.aartikov.alligator;
 
-import android.os.Looper;
-
 import java.util.LinkedList;
 import java.util.Queue;
+
+import android.os.Looper;
 
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
@@ -137,7 +137,23 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData) {
-		executeCommand(new BackToCommand(screenClass, animationData));
+		executeCommand(new BackToCommand(screenClass, null, animationData));
+	}
+
+	/**
+	 * Goes back to a screen with the given class and returns result to it. Implemented with {@link BackToCommand}.
+	 *
+	 * @param screenClass  screen class for going back
+	 * @param screenResult screen result that will be returned
+	 */
+	@Override
+	public void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult) {
+		goBackToWithResult(screenClass, screenResult, null);
+	}
+
+	@Override
+	public void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult, AnimationData animationData) {
+		executeCommand(new BackToCommand(screenClass, screenResult, animationData));
 	}
 
 	/**

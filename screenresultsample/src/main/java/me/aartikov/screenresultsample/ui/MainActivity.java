@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.aartikov.alligator.ActivityResultHandler;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -36,6 +37,7 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private ActivityResultHandler mActivityResultHandler = SampleApplication.getActivityResultHandler();
 
 	@BindView(R.id.input_message_button)
 	Button mInputMessageButton;
@@ -91,10 +93,15 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 		mNavigationContextBinder.bind(navigationContext);
 	}
 
+	@Override protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		mActivityResultHandler.onNewIntent(intent);     // handle result
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		SampleApplication.getActivityResultHandler().handle(requestCode, resultCode, data);     // call handle method of ActivityResultHandler in onActivityResult of an activity
+		super.onActivityResult(requestCode, resultCode, data);
+		mActivityResultHandler.onActivityResult(requestCode, resultCode, data);     // handle result
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 
@@ -45,7 +46,7 @@ public class DefaultIntentConverter<ScreenT extends Screen> implements IntentCon
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ScreenT getScreen(Intent intent) {
+	public @Nullable ScreenT getScreen(Intent intent) {
 		if (Serializable.class.isAssignableFrom(mScreenClass)) {
 			return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
 		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {

@@ -59,11 +59,18 @@ public class DefaultFragmentConverter<ScreenT extends Screen> implements Fragmen
 		if (fragment.getArguments() == null) {
 			throw new IllegalArgumentException("Fragment has no arguments.");
 		} else if (Serializable.class.isAssignableFrom(mScreenClass)) {
-			return (ScreenT) fragment.getArguments().getSerializable(KEY_SCREEN);
+			return checkNotNull((ScreenT) (fragment.getArguments().getSerializable(KEY_SCREEN)));
 		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {
-			return (ScreenT) fragment.getArguments().getParcelable(KEY_SCREEN);
+			return checkNotNull((ScreenT) fragment.getArguments().getParcelable(KEY_SCREEN));
 		} else {
 			throw new IllegalArgumentException("Screen " + mScreenClass.getSimpleName() + " should be Serializable or Parcelable.");
 		}
+	}
+
+	private ScreenT checkNotNull(ScreenT screen) {
+		if(screen == null) {
+			throw new IllegalArgumentException("Failed to get screen from arguments of fragment.");
+		}
+		return screen;
 	}
 }

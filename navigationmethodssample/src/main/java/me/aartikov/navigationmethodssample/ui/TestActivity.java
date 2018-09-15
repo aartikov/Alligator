@@ -56,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_test);
 		ButterKnife.bind(this);
 
-		TestScreen screen = SampleApplication.getScreenResolver().getScreen(this);
+		TestScreen screen = SampleApplication.getScreenResolver().getScreenOrNull(this);
 		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 

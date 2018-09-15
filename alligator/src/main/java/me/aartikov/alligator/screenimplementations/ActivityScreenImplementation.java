@@ -87,7 +87,7 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Screen getScreen(Activity activity) {
+	public @Nullable Screen getScreen(Activity activity) {
 		return mIntentConverter.getScreen(activity.getIntent());
 	}
 

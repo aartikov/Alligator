@@ -4,8 +4,8 @@ import android.support.v4.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
+import me.aartikov.alligator.converters.DialogFragmentConverter;
 import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.functions.DialogFragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 /**
@@ -46,7 +46,7 @@ public class DialogFragmentScreenImplementation implements ScreenImplementation 
 
 	@SuppressWarnings("unchecked")
 	public Screen getScreen(DialogFragment dialogFragment) {
-		return ((DialogFragmentConverter<Screen>) mDialogFragmentConverter).getScreen(dialogFragment, mScreenClass);
+		return mDialogFragmentConverter.getScreen(dialogFragment);
 	}
 
 	public Class<? extends ScreenResult> getScreenResultClass() {

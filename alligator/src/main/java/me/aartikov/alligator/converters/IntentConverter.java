@@ -20,7 +20,7 @@ import me.aartikov.alligator.Screen;
  */
 public interface IntentConverter<ScreenT extends Screen> {
 
-	<T extends ScreenT> Intent createIntent(Context context, T screen);
+	Intent createIntent(Context context, ScreenT screen);
 
 	@Nullable ScreenT getScreen(Intent intent);
 }

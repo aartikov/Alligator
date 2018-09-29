@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.converters.IntentConverter;
-import me.aartikov.alligator.converters.ScreenResultConverter;
+import me.aartikov.alligator.converters.ImplicitIntentConverter;
+import me.aartikov.alligator.converters.ImplicitScreenResultConverter;
 
 /**
  * Date: 3/17/2017
@@ -32,26 +32,17 @@ public class ImagePickerScreen implements Screen {
 		}
 	}
 
-	// Intent converter
-	public static class Converter implements IntentConverter<ImagePickerScreen> {
-		@Override
-		public <T extends ImagePickerScreen> Intent createIntent(Context context, T screen) {
-			return new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
-		}
+	// Intent converter. Creates an intent from a screen.
+	public static class Converter extends ImplicitIntentConverter<ImagePickerScreen> {
 
 		@Override
-		public ImagePickerScreen getScreen(Intent intent) {
-			throw new UnsupportedOperationException();  // never called, because because we started an external activity
+		public Intent createIntent(Context context, ImagePickerScreen screen) {
+			return new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
 		}
 	}
 
-	// Screen result converter
-	public static class ResultConverter implements ScreenResultConverter<Result> {
-
-		@Override
-		public ActivityResult createActivityResult(@Nullable ImagePickerScreen.Result screenResult) {
-			throw new UnsupportedOperationException();  // never called, because we started an external activity
-		}
+	// Screen result converter. Creates a screen result from ActivityResult.
+	public static class ResultConverter extends ImplicitScreenResultConverter<Result> {
 
 		@Nullable
 		@Override

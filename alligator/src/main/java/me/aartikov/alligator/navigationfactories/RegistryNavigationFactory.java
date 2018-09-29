@@ -16,6 +16,8 @@ import me.aartikov.alligator.converters.DefaultIntentConverter;
 import me.aartikov.alligator.converters.DefaultScreenResultConverter;
 import me.aartikov.alligator.converters.DialogFragmentConverter;
 import me.aartikov.alligator.converters.FragmentConverter;
+import me.aartikov.alligator.converters.ImplicitIntentConverter;
+import me.aartikov.alligator.converters.ImplicitScreenResultConverter;
 import me.aartikov.alligator.converters.IntentConverter;
 import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
@@ -75,7 +77,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 *
 	 * @param screenClass   screen class
 	 * @param activityClass activity class
-	 * @param converter     activity converter
+	 * @param converter     intent converter
 	 * @param <ScreenT>     screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
@@ -99,12 +101,25 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	/**
+	 * Registers a screen represented by an activity using {@link ImplicitIntentConverter}.
+	 *
+	 * @param screenClass   screen class
+	 * @param converter     intent converter
+	 * @param <ScreenT>     screen type
+	 * @throws IllegalArgumentException if the screen is already registered
+	 */
+	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, ImplicitIntentConverter<ScreenT> converter) {
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
+	}
+
+	/**
 	 * Registers a screen represented by an activity for result using a custom {@link IntentConverter} and a custom {@link ScreenResultConverter}.
 	 *
 	 * @param screenClass           screen class
 	 * @param activityClass         activity class
 	 * @param screenResultClass     screen result class
-	 * @param converter             activity converter
+	 * @param converter             intent converter
 	 * @param screenResultConverter screen result converter
 	 * @param <ScreenT>             screen type
 	 * @param <ScreenResultT>       screen result type
@@ -140,6 +155,28 @@ public class RegistryNavigationFactory implements NavigationFactory {
 		IntentConverter<ScreenT> converter = new DefaultIntentConverter<>(screenClass, activityClass);
 		ScreenResultConverter<ScreenResultT> screenResultConverter = new DefaultScreenResultConverter<>(screenResultClass);
 		registerActivityForResult(screenClass, activityClass, screenResultClass, converter, screenResultConverter);
+	}
+
+	/**
+	 * Registers a screen represented by an activity for result using {@link ImplicitIntentConverter} and {@link ImplicitScreenResultConverter}.
+	 *
+	 * @param screenClass           screen class
+	 * @param screenResultClass     screen result class
+	 * @param converter             implicit intent converter
+	 * @param screenResultConverter implicit screen result converter
+	 * @param <ScreenT>             screen type
+	 * @param <ScreenResultT>       screen result type
+	 * @throws IllegalArgumentException if the screen is already registered
+	 */
+	public <ScreenT extends Screen, ScreenResultT extends ScreenResult> void registerActivityForResult(Class<ScreenT> screenClass,
+	                                                                                                   Class<ScreenResultT> screenResultClass,
+	                                                                                                   ImplicitIntentConverter<ScreenT> converter,
+	                                                                                                   ImplicitScreenResultConverter<ScreenResultT> screenResultConverter) {
+
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
+		mScreenClassHelper.addRequestCode(mRequestCode, screenClass);
+		mRequestCode++;
 	}
 
 	/**

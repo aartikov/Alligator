@@ -16,6 +16,7 @@ import me.aartikov.alligator.Screen;
  * @param <ScreenT> screen type
  */
 public interface DialogFragmentConverter<ScreenT extends Screen> {
+
 	DialogFragment createDialogFragment(ScreenT screen);
 
 	ScreenT getScreen(DialogFragment fragment);

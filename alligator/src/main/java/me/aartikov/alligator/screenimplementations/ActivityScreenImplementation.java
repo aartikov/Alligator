@@ -31,7 +31,7 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	private ScreenClassHelper mScreenClassHelper;
 
 	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
+	                                    @Nullable Class<? extends Activity> activityClass,
 	                                    IntentConverter<? extends Screen> intentConverter,
 	                                    Class<? extends ScreenResult> screenResultClass,
 	                                    ScreenResultConverter<? extends ScreenResult> screenResultConverter,
@@ -47,7 +47,7 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
+	                                    @Nullable Class<? extends Activity> activityClass,
 	                                    IntentConverter<? extends Screen> intentConverter,
 	                                    ScreenClassHelper screenClassHelper) {
 		this(screenClass, activityClass, intentConverter, null, null, -1, screenClassHelper);

@@ -34,7 +34,7 @@ public class DefaultIntentConverter<ScreenT extends Screen> implements IntentCon
 	}
 
 	@Override
-	public <T extends ScreenT> Intent createIntent(Context context, T screen) {
+	public Intent createIntent(Context context, ScreenT screen) {
 		Intent intent = new Intent(context, mActivityClass);
 		if (screen instanceof Serializable) {
 			intent.putExtra(KEY_SCREEN, (Serializable) screen);

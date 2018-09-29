@@ -10,14 +10,9 @@ import me.aartikov.screenresultsample.screens.ImagePickerScreen;
  * @author Artur Artikov
  */
 
-public class SampleNavigationFactory extends GeneratedNavigationFactory {   // extends GeneratedNavigationFactory register custom converters
+public class SampleNavigationFactory extends GeneratedNavigationFactory {   // extends GeneratedNavigationFactory to register custom converters
 
 	public SampleNavigationFactory() {
-		registerActivityForResult(
-				ImagePickerScreen.class,                     // screen class
-				null,                                        // activity class (null, because an implicit intent is used)
-				ImagePickerScreen.Result.class,              // screen result class
-				new ImagePickerScreen.Converter(),           // intent converter
-				new ImagePickerScreen.ResultConverter());    // screen result converter
+		registerActivityForResult(ImagePickerScreen.class, ImagePickerScreen.Result.class, new ImagePickerScreen.Converter(), new ImagePickerScreen.ResultConverter());
 	}
 }

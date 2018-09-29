@@ -10,7 +10,6 @@ import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.IntentConverter;
 import me.aartikov.alligator.converters.ScreenResultConverter;
-import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 /**
@@ -52,11 +51,6 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	                                    IntentConverter<? extends Screen> intentConverter,
 	                                    ScreenClassHelper screenClassHelper) {
 		this(screenClass, activityClass, intentConverter, null, null, -1, screenClassHelper);
-	}
-
-	@Override
-	public <R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException {
-		return visitor.visit(this);
 	}
 
 	@SuppressWarnings("unchecked")

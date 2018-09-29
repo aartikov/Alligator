@@ -33,7 +33,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code goBackTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class BackToCommand extends VisitorCommand {
+public class BackToCommand extends BaseCommand {
 	private Class<? extends Screen> mScreenClass;
 	private ScreenResult mScreenResult;
 	private AnimationData mAnimationData;

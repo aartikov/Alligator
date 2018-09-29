@@ -32,7 +32,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code replace} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class ReplaceCommand extends VisitorCommand {
+public class ReplaceCommand extends BaseCommand {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 

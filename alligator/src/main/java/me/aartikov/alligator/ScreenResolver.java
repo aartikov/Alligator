@@ -42,7 +42,7 @@ public class ScreenResolver {
 		if (screen != null) {
 			return screen;
 		} else {
-			throw new IllegalArgumentException("IntentConverter returns null for " + activity.getClass().getSimpleName());
+			throw new IllegalArgumentException("IntentConverter returns null for " + activity.getClass().getCanonicalName());
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ScreenResolver {
 	 * @param <ScreenT> screen type
 	 * @param activity  activity
 	 * @return a screen gotten from the activity intent or null if there are no screen data in the activity.
-	 * @throws IllegalArgumentException if ScreenT is not registered for a class of this activity.
+	 * @throws IllegalArgumentException if there are no screens registered for this activity.
 	 */
 	@SuppressWarnings("unchecked")
 	public  @Nullable <ScreenT extends Screen> ScreenT getScreenOrNull(Activity activity) {

@@ -12,7 +12,7 @@ import me.aartikov.alligator.ScreenResult;
  * Can be used to register activities, fragments and dialog fragments with the help of an annotation processor.
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface RegisterScreen {
 	Class<? extends Screen> value();
 

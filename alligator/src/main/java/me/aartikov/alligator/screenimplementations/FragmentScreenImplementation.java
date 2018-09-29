@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.functions.FragmentConverter;
+import me.aartikov.alligator.converters.FragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 /**
@@ -31,11 +30,6 @@ public class FragmentScreenImplementation implements ScreenImplementation {
 		mScreenClassHelper = screenClassHelper;
 	}
 
-	@Override
-	public <R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException {
-		return visitor.visit(this);
-	}
-
 	@SuppressWarnings("unchecked")
 	public Fragment createFragment(Screen screen) {
 		checkScreenClass(screen.getClass());
@@ -44,9 +38,8 @@ public class FragmentScreenImplementation implements ScreenImplementation {
 		return fragment;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Screen getScreen(Fragment fragment) {
-		return ((FragmentConverter<Screen>) mFragmentConverter).getScreen(fragment, mScreenClass);
+		return mFragmentConverter.getScreen(fragment);
 	}
 
 	public Class<? extends ScreenResult> getScreenResultClass() {

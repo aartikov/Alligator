@@ -32,7 +32,7 @@ import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 /**
  * Command implementation for {@code reset} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class ResetCommand extends VisitorCommand {
+public class ResetCommand extends BaseCommand {
 	private Screen mScreen;
 	private AnimationData mAnimationData;
 

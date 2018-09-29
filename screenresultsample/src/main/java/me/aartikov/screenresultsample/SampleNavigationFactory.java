@@ -1,10 +1,5 @@
 package me.aartikov.screenresultsample;
 
-import android.content.Intent;
-import android.net.Uri;
-
-import me.aartikov.alligator.functions.ActivityConverter;
-import me.aartikov.alligator.functions.ScreenResultConverter;
 import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
 import me.aartikov.screenresultsample.screens.ImagePickerScreen;
 
@@ -15,22 +10,9 @@ import me.aartikov.screenresultsample.screens.ImagePickerScreen;
  * @author Artur Artikov
  */
 
-public class SampleNavigationFactory extends GeneratedNavigationFactory {   // extends GeneratedNavigationFactory to add non-trivial registration
+public class SampleNavigationFactory extends GeneratedNavigationFactory {   // extends GeneratedNavigationFactory to register custom converters
 
 	public SampleNavigationFactory() {
-
-		// Custom activity converter
-		ActivityConverter<ImagePickerScreen> imagePickerConverter = new ActivityConverter<>(
-				(context, screen) -> new Intent(Intent.ACTION_GET_CONTENT).setType("image/*")
-		);
-
-		// Custom screen result converter
-		ScreenResultConverter<ImagePickerScreen.Result> imagePickerResultConverter = new ScreenResultConverter<>(
-				activityResult -> {
-					Uri uri = activityResult.getDataUri();
-					return uri != null ? new ImagePickerScreen.Result(uri) : null;
-				});
-
-		registerActivityForResult(ImagePickerScreen.class, null, ImagePickerScreen.Result.class, imagePickerConverter, imagePickerResultConverter);
+		registerActivityForResult(ImagePickerScreen.class, ImagePickerScreen.Result.class, new ImagePickerScreen.Converter(), new ImagePickerScreen.ResultConverter());
 	}
 }

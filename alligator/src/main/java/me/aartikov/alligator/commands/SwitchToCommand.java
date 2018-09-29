@@ -34,13 +34,7 @@ public class SwitchToCommand implements Command {
 			throw new MissingScreenSwitcherException("ScreenSwitcher is not set.");
 		}
 
-		Screen previousScreen = screenSwitcher.getCurrentScreen();
-		if(previousScreen != null && previousScreen.equals(mScreen)) {
-			return true;
-		}
-
-		screenSwitcher.switchTo(mScreen, mAnimationData);
-		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
+		screenSwitcher.switchTo(mScreen, navigationContext.getScreenSwitchingListener(), mAnimationData);
 		return true;
 	}
 }

@@ -9,7 +9,7 @@ import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface RegisterScreen {
 	Class<? extends Screen> value();
 

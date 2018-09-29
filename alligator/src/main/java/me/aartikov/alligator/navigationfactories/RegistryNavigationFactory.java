@@ -10,10 +10,16 @@ import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.functions.ActivityConverter;
-import me.aartikov.alligator.functions.DialogFragmentConverter;
-import me.aartikov.alligator.functions.FragmentConverter;
-import me.aartikov.alligator.functions.ScreenResultConverter;
+import me.aartikov.alligator.converters.DefaultDialogFragmentConverter;
+import me.aartikov.alligator.converters.DefaultFragmentConverter;
+import me.aartikov.alligator.converters.DefaultIntentConverter;
+import me.aartikov.alligator.converters.DefaultScreenResultConverter;
+import me.aartikov.alligator.converters.DialogFragmentConverter;
+import me.aartikov.alligator.converters.FragmentConverter;
+import me.aartikov.alligator.converters.ImplicitIntentConverter;
+import me.aartikov.alligator.converters.ImplicitScreenResultConverter;
+import me.aartikov.alligator.converters.IntentConverter;
+import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
 import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
@@ -37,48 +43,52 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	private int mRequestCode = 1000;
 
 	@Override
-	public @Nullable ScreenImplementation getScreenImplementation(Class<? extends Screen> screenClass) {
+	public @Nullable
+	ScreenImplementation getScreenImplementation(Class<? extends Screen> screenClass) {
 		return mImplementations.get(screenClass);
 	}
 
 	@Override
-	public @Nullable Class<? extends Screen> getScreenClass(Activity activity) {
+	public @Nullable
+	Class<? extends Screen> getScreenClass(Activity activity) {
 		return mScreenClassHelper.getScreenClass(activity);
 	}
 
 	@Override
-	public @Nullable Class<? extends Screen> getScreenClass(Fragment fragment) {
+	public @Nullable
+	Class<? extends Screen> getScreenClass(Fragment fragment) {
 		return mScreenClassHelper.getScreenClass(fragment);
 	}
 
 	@Override
-	public @Nullable Class<? extends Screen> getScreenClass(int requestCode) {
+	public @Nullable
+	Class<? extends Screen> getScreenClass(int requestCode) {
 		return mScreenClassHelper.getScreenClass(requestCode);
 	}
 
 	@Override
-	public @Nullable Class<? extends Screen> getPreviousScreenClass(Activity activity) {
+	public @Nullable
+	Class<? extends Screen> getPreviousScreenClass(Activity activity) {
 		return mScreenClassHelper.getPreviousScreenClass(activity);
 	}
 
 	/**
-	 * Registers a screen represented by an activity using a custom {@link ActivityConverter}.
+	 * Registers a screen represented by an activity using a custom {@link IntentConverter}.
 	 *
 	 * @param screenClass   screen class
 	 * @param activityClass activity class
-	 * @param converter     activity converter
+	 * @param converter     intent converter
 	 * @param <ScreenT>     screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, ActivityConverter<ScreenT> converter) {
-		registerScreenImplementation(screenClass, new ActivityScreenImplementation(screenClass, activityClass, converter, mScreenClassHelper));
+	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass, IntentConverter<ScreenT> converter) {
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, activityClass, converter, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 		mScreenClassHelper.addActivityClass(activityClass, screenClass);
 	}
 
 	/**
-	 * Registers a screen represented by an activity using the default {@link ActivityConverter}.
-	 * <p>
-	 * The default activity converter creates an intent that starts an activity of the class {@code activityClass}. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+	 * Registers a screen represented by an activity using {@link DefaultIntentConverter}.
 	 *
 	 * @param screenClass   screen class
 	 * @param activityClass activity class
@@ -86,16 +96,30 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, Class<? extends Activity> activityClass) {
-		registerActivity(screenClass, activityClass, new ActivityConverter<>(screenClass, activityClass));
+		IntentConverter<ScreenT> converter = new DefaultIntentConverter<>(screenClass, activityClass);
+		registerActivity(screenClass, activityClass, converter);
 	}
 
 	/**
-	 * Registers a screen represented by an activity for result using a custom {@link ActivityConverter} and a custom {@link ScreenResultConverter}.
+	 * Registers a screen represented by an activity using {@link ImplicitIntentConverter}.
+	 *
+	 * @param screenClass   screen class
+	 * @param converter     intent converter
+	 * @param <ScreenT>     screen type
+	 * @throws IllegalArgumentException if the screen is already registered
+	 */
+	public <ScreenT extends Screen> void registerActivity(Class<ScreenT> screenClass, ImplicitIntentConverter<ScreenT> converter) {
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
+	}
+
+	/**
+	 * Registers a screen represented by an activity for result using a custom {@link IntentConverter} and a custom {@link ScreenResultConverter}.
 	 *
 	 * @param screenClass           screen class
 	 * @param activityClass         activity class
 	 * @param screenResultClass     screen result class
-	 * @param converter             activity converter
+	 * @param converter             intent converter
 	 * @param screenResultConverter screen result converter
 	 * @param <ScreenT>             screen type
 	 * @param <ScreenResultT>       screen result type
@@ -104,21 +128,18 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	public <ScreenT extends Screen, ScreenResultT extends ScreenResult> void registerActivityForResult(Class<ScreenT> screenClass,
 	                                                                                                   Class<? extends Activity> activityClass,
 	                                                                                                   Class<ScreenResultT> screenResultClass,
-	                                                                                                   ActivityConverter<ScreenT> converter,
+	                                                                                                   IntentConverter<ScreenT> converter,
 	                                                                                                   ScreenResultConverter<ScreenResultT> screenResultConverter) {
 
-		registerScreenImplementation(screenClass, new ActivityScreenImplementation(screenClass, activityClass, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper));
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, activityClass, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 		mScreenClassHelper.addActivityClass(activityClass, screenClass);
 		mScreenClassHelper.addRequestCode(mRequestCode, screenClass);
 		mRequestCode++;
 	}
 
 	/**
-	 * Registers a screen represented by an activity for result using the default {@link ActivityConverter} and the default {@link ScreenResultConverter}.
-	 * <p>
-	 * The default activity converter creates an intent that starts an activity of the class {@code activityClass}. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
-	 * The default screen result converter returns {@code ActivityResult(Activity.RESULT_OK, data)} (where {@code data} contains a serialized screen result) if a screen result is not {@code null},
-	 * and {@code ActivityResult(Activity.RESULT_CANCELED, null)} otherwise.
+	 * Registers a screen represented by an activity for result using {@link DefaultIntentConverter} and the default {@link ScreenResultConverter}.
 	 *
 	 * @param screenClass       screen class
 	 * @param activityClass     activity class
@@ -131,7 +152,31 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                                                                   Class<? extends Activity> activityClass,
 	                                                                                                   Class<ScreenResultT> screenResultClass) {
 
-		registerActivityForResult(screenClass, activityClass, screenResultClass, new ActivityConverter<>(screenClass, activityClass), new ScreenResultConverter<>(screenResultClass));
+		IntentConverter<ScreenT> converter = new DefaultIntentConverter<>(screenClass, activityClass);
+		ScreenResultConverter<ScreenResultT> screenResultConverter = new DefaultScreenResultConverter<>(screenResultClass);
+		registerActivityForResult(screenClass, activityClass, screenResultClass, converter, screenResultConverter);
+	}
+
+	/**
+	 * Registers a screen represented by an activity for result using {@link ImplicitIntentConverter} and {@link ImplicitScreenResultConverter}.
+	 *
+	 * @param screenClass           screen class
+	 * @param screenResultClass     screen result class
+	 * @param converter             implicit intent converter
+	 * @param screenResultConverter implicit screen result converter
+	 * @param <ScreenT>             screen type
+	 * @param <ScreenResultT>       screen result type
+	 * @throws IllegalArgumentException if the screen is already registered
+	 */
+	public <ScreenT extends Screen, ScreenResultT extends ScreenResult> void registerActivityForResult(Class<ScreenT> screenClass,
+	                                                                                                   Class<ScreenResultT> screenResultClass,
+	                                                                                                   ImplicitIntentConverter<ScreenT> converter,
+	                                                                                                   ImplicitScreenResultConverter<ScreenResultT> screenResultConverter) {
+
+		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
+		mScreenClassHelper.addRequestCode(mRequestCode, screenClass);
+		mRequestCode++;
 	}
 
 	/**
@@ -143,13 +188,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, FragmentConverter<ScreenT> converter) {
-		registerScreenImplementation(screenClass, new FragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper));
+		FragmentScreenImplementation implementation = new FragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 	}
 
 	/**
-	 * Registers a screen represented by a fragment using the default {@link FragmentConverter}.
-	 * <p>
-	 * The default fragment converter creates a fragment of the class {@code fragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+	 * Registers a screen represented by a fragment using {@link DefaultFragmentConverter}.
 	 *
 	 * @param screenClass   screen class
 	 * @param fragmentClass fragment class
@@ -157,7 +201,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass) {
-		registerFragment(screenClass, new FragmentConverter<>(screenClass, fragmentClass));
+		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<ScreenT>(screenClass, fragmentClass);
+		registerFragment(screenClass, converter);
 	}
 
 	/**
@@ -170,13 +215,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragmentForResult(Class<ScreenT> screenClass, FragmentConverter<ScreenT> converter, Class<? extends ScreenResult> screenResultClass) {
-		registerScreenImplementation(screenClass, new FragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper));
+		FragmentScreenImplementation implementation = new FragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 	}
 
 	/**
-	 * Registers a screen represented by a fragment for result using the default {@link FragmentConverter}.
-	 * <p>
-	 * The default fragment converter creates a fragment of the class {@code fragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+	 * Registers a screen represented by a fragment for result using {@link DefaultFragmentConverter}.
 	 *
 	 * @param screenClass       screen class
 	 * @param fragmentClass     fragment class
@@ -185,7 +229,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragmentForResult(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass, Class<? extends ScreenResult> screenResultClass) {
-		registerFragmentForResult(screenClass, new FragmentConverter<>(screenClass, fragmentClass), screenResultClass);
+		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<>(screenClass, fragmentClass);
+		registerFragmentForResult(screenClass, converter, screenResultClass);
 	}
 
 	/**
@@ -197,13 +242,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, DialogFragmentConverter<ScreenT> converter) {
-		registerScreenImplementation(screenClass, new DialogFragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper));
+		DialogFragmentScreenImplementation implementation = new DialogFragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 	}
 
 	/**
-	 * Registers a screen represented by a fragment using the default {@link DialogFragmentConverter}.
-	 * <p>
-	 * The default dialog fragment converter creates a dialog fragment of the class {@code dialogFragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+	 * Registers a screen represented by a fragment using {@link DefaultDialogFragmentConverter}.
 	 *
 	 * @param screenClass         screen class
 	 * @param dialogFragmentClass dialog fragment class
@@ -211,7 +255,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass) {
-		registerDialogFragment(screenClass, new DialogFragmentConverter<>(screenClass, dialogFragmentClass));
+		DialogFragmentConverter<ScreenT> converter = new DefaultDialogFragmentConverter<>(screenClass, dialogFragmentClass);
+		registerDialogFragment(screenClass, converter);
 	}
 
 	/**
@@ -224,13 +269,12 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragmentForResult(Class<ScreenT> screenClass, DialogFragmentConverter<ScreenT> converter, Class<? extends ScreenResult> screenResultClass) {
-		registerScreenImplementation(screenClass, new DialogFragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper));
+		DialogFragmentScreenImplementation implementation = new DialogFragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper);
+		registerScreenImplementation(screenClass, implementation);
 	}
 
 	/**
-	 * Registers a screen represented by a dialog fragment for result using the default {@link FragmentConverter}.
-	 * <p>
-	 * The default dialog fragment converter creates a dialog fragment of the class {@code dialogFragmentClass}. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+	 * Registers a screen represented by a dialog fragment for result using {@link DefaultDialogFragmentConverter}.
 	 *
 	 * @param screenClass         screen class
 	 * @param dialogFragmentClass fragment class
@@ -239,7 +283,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragmentForResult(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass, Class<? extends ScreenResult> screenResultClass) {
-		registerDialogFragmentForResult(screenClass, new DialogFragmentConverter<>(screenClass, dialogFragmentClass), screenResultClass);
+		DialogFragmentConverter<ScreenT> converter = new DefaultDialogFragmentConverter<ScreenT>(screenClass, dialogFragmentClass);
+		registerDialogFragmentForResult(screenClass, converter, screenResultClass);
 	}
 
 

@@ -9,7 +9,6 @@ import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
 import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
 import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 import me.aartikov.alligator.screenimplementations.ScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementationVisitor;
 
 /**
  * Date: 15.10.2017
@@ -18,10 +17,10 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementationVisitor;
  * @author Artur Artikov
  */
 
-abstract class VisitorCommand implements Command {
+abstract class BaseCommand implements Command {
 	private Class<? extends Screen> mScreenClass;
 
-	VisitorCommand(Class<? extends Screen> screenClass) {
+	BaseCommand(Class<? extends Screen> screenClass) {
 		mScreenClass = screenClass;
 	}
 
@@ -31,37 +30,20 @@ abstract class VisitorCommand implements Command {
 
 	abstract protected boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
 
-	@Override
-	final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override    final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
 		ScreenImplementation screenImplementation = navigationFactory.getScreenImplementation(mScreenClass);
 		if (screenImplementation == null) {
 			throw new ScreenRegistrationException("Screen " + mScreenClass.getSimpleName() + " is not registered.");
 		}
-		return screenImplementation.accept(new VisitorAdapter(navigationContext, navigationFactory));
-	}
 
-	private class VisitorAdapter implements ScreenImplementationVisitor<Boolean> {
-		private NavigationContext mNavigationContext;
-		private NavigationFactory mNavigationFactory;
-
-		private VisitorAdapter(NavigationContext navigationContext, NavigationFactory navigationFactory) {
-			mNavigationContext = navigationContext;
-			mNavigationFactory = navigationFactory;
-		}
-
-		@Override
-		public Boolean visit(ActivityScreenImplementation screenImplementation) throws NavigationException {
-			return execute(screenImplementation, mNavigationContext, mNavigationFactory);
-		}
-
-		@Override
-		public Boolean visit(FragmentScreenImplementation screenImplementation)throws NavigationException {
-			return execute(screenImplementation, mNavigationContext, mNavigationFactory);
-		}
-
-		@Override
-		public Boolean visit(DialogFragmentScreenImplementation screenImplementation)throws NavigationException {
-			return execute(screenImplementation, mNavigationContext, mNavigationFactory);
+		if (screenImplementation instanceof ActivityScreenImplementation) {
+			return execute((ActivityScreenImplementation) screenImplementation, navigationContext, navigationFactory);
+		} else if (screenImplementation instanceof FragmentScreenImplementation) {
+			return execute((FragmentScreenImplementation) screenImplementation, navigationContext, navigationFactory);
+		} else if (screenImplementation instanceof DialogFragmentScreenImplementation) {
+			return execute((DialogFragmentScreenImplementation) screenImplementation, navigationContext, navigationFactory);
+		} else {
+			throw new UnsupportedOperationException("Unsupported screen implementation type " + screenImplementation);
 		}
 	}
 }

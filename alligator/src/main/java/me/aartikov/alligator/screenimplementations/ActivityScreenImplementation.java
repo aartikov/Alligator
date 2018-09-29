@@ -8,9 +8,8 @@ import android.support.annotation.Nullable;
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.functions.ActivityConverter;
-import me.aartikov.alligator.functions.ScreenResultConverter;
+import me.aartikov.alligator.converters.IntentConverter;
+import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 /**
@@ -23,7 +22,7 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 public class ActivityScreenImplementation implements ScreenImplementation {
 	private Class<? extends Screen> mScreenClass;
 	private Class<? extends Activity> mActivityClass;
-	private ActivityConverter<? extends Screen> mActivityConverter;
+	private IntentConverter<? extends Screen> mIntentConverter;
 
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private int mRequestCode;
@@ -32,15 +31,15 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	private ScreenClassHelper mScreenClassHelper;
 
 	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
-	                                    ActivityConverter<? extends Screen> activityConverter,
+	                                    @Nullable Class<? extends Activity> activityClass,
+	                                    IntentConverter<? extends Screen> intentConverter,
 	                                    Class<? extends ScreenResult> screenResultClass,
 	                                    ScreenResultConverter<? extends ScreenResult> screenResultConverter,
 	                                    int requestCode,
 	                                    ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mActivityClass = activityClass;
-		mActivityConverter = activityConverter;
+		mIntentConverter = intentConverter;
 		mScreenResultClass = screenResultClass;
 		mScreenResultConverter = screenResultConverter;
 		mRequestCode = requestCode;
@@ -48,21 +47,16 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
-	                                    ActivityConverter<? extends Screen> activityConverter,
+	                                    @Nullable Class<? extends Activity> activityClass,
+	                                    IntentConverter<? extends Screen> intentConverter,
 	                                    ScreenClassHelper screenClassHelper) {
-		this(screenClass, activityClass, activityConverter, null, null, -1, screenClassHelper);
-	}
-
-	@Override
-	public <R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException {
-		return visitor.visit(this);
+		this(screenClass, activityClass, intentConverter, null, null, -1, screenClassHelper);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Intent createIntent(Context context, Screen screen, @Nullable Class<? extends Screen> previousScreenClass) {
 		checkScreenClass(screen.getClass());
-		Intent intent = ((ActivityConverter<Screen>) mActivityConverter).createIntent(context, screen);
+		Intent intent = ((IntentConverter<Screen>) mIntentConverter).createIntent(context, screen);
 		mScreenClassHelper.putScreenClass(intent, screen.getClass());
 		if (previousScreenClass != null) {
 			mScreenClassHelper.putPreviousScreenClass(intent, previousScreenClass);
@@ -87,8 +81,8 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Screen getScreen(Activity activity) {
-		return ((ActivityConverter<Screen>) mActivityConverter).getScreen(activity, mScreenClass);
+	public @Nullable Screen getScreen(Activity activity) {
+		return mIntentConverter.getScreen(activity.getIntent());
 	}
 
 	public @Nullable Class<? extends ScreenResult> getScreenResultClass() {

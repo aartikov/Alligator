@@ -67,7 +67,7 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 	@Override
 	public void switchTo(Screen screen, ScreenSwitchingListener listener, @Nullable AnimationData animationData) throws NavigationException {
 		Screen currentScreen = getCurrentScreen();
-		if(currentScreen != null && currentScreen.equals(screen)) {
+		if (currentScreen != null && currentScreen.equals(screen)) {
 			return;
 		}
 
@@ -87,11 +87,13 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 	 *
 	 * @return current fragment in the container, or {@code null} if there are no fragments in the container
 	 */
+	@Nullable
 	public Fragment getCurrentFragment() {
 		return fragmentSwitcher.getCurrentFragment();
 	}
 
-	private @Nullable Screen getCurrentScreen() {
+	@Nullable
+	private Screen getCurrentScreen() {
 		Fragment currentFragment = getCurrentFragment();
 		return currentFragment != null ? getScreen(currentFragment) : null;
 	}

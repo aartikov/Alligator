@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
@@ -33,7 +35,8 @@ public class DefaultFragmentConverter<ScreenT extends Screen> implements Fragmen
 	}
 
 	@Override
-	public Fragment createFragment(ScreenT screen) {
+	@NonNull
+	public Fragment createFragment(@NonNull ScreenT screen) {
 		try {
 			Fragment fragment = mFragmentClass.newInstance();
 			if (screen instanceof Serializable) {
@@ -53,9 +56,10 @@ public class DefaultFragmentConverter<ScreenT extends Screen> implements Fragmen
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public ScreenT getScreen(Fragment fragment) {
+	@NonNull
+	@SuppressWarnings("unchecked")
+	public ScreenT getScreen(@NonNull Fragment fragment) {
 		if (fragment.getArguments() == null) {
 			throw new IllegalArgumentException("Fragment has no arguments.");
 		} else if (Serializable.class.isAssignableFrom(mScreenClass)) {
@@ -67,8 +71,8 @@ public class DefaultFragmentConverter<ScreenT extends Screen> implements Fragmen
 		}
 	}
 
-	private ScreenT checkNotNull(ScreenT screen) {
-		if(screen == null) {
+	private ScreenT checkNotNull(@Nullable ScreenT screen) {
+		if (screen == null) {
 			throw new IllegalArgumentException("Failed to get screen from arguments of fragment.");
 		}
 		return screen;

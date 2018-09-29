@@ -1,13 +1,14 @@
 package me.aartikov.navigationmethodssample;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.TransitionType;
+import me.aartikov.alligator.animations.AnimationData;
+import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
-import me.aartikov.alligator.TransitionType;
-import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 
 /**
  * Date: 25.02.2017
@@ -17,7 +18,9 @@ import me.aartikov.alligator.animations.SimpleTransitionAnimation;
  */
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
+	@NonNull
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	                                        boolean isActivity, @Nullable AnimationData animationData) {
 		switch (transitionType) {
 			case FORWARD:
 				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);

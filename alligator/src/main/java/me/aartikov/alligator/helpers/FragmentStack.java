@@ -3,6 +3,8 @@ package me.aartikov.alligator.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,11 +26,7 @@ public class FragmentStack {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 
-	public FragmentStack(FragmentManager fragmentManager, int containerId) {
-		if (fragmentManager == null) {
-			throw new IllegalArgumentException("FragmentManager can't be null.");
-		}
-
+	public FragmentStack(@NonNull FragmentManager fragmentManager, int containerId) {
 		if (containerId <= 0) {
 			throw new IllegalArgumentException("ContainerId is not set.");
 		}
@@ -37,6 +35,7 @@ public class FragmentStack {
 		mContainerId = containerId;
 	}
 
+	@NonNull
 	public List<Fragment> getFragments() {
 		List<Fragment> result = new ArrayList<>();
 		int index = 0;
@@ -59,11 +58,12 @@ public class FragmentStack {
 		return getFragments().size();
 	}
 
+	@Nullable
 	public Fragment getCurrentFragment() {
 		return mFragmentManager.findFragmentById(mContainerId);
 	}
 
-	public void pop(TransitionAnimation animation) {
+	public void pop(@NonNull TransitionAnimation animation) {
 		List<Fragment> fragments = getFragments();
 		int count = fragments.size();
 		if (count == 0) {
@@ -87,7 +87,7 @@ public class FragmentStack {
 		}
 	}
 
-	public void popUntil(Fragment fragment, TransitionAnimation animation) {
+	public void popUntil(@NonNull Fragment fragment, @NonNull TransitionAnimation animation) {
 		List<Fragment> fragments = getFragments();
 		int count = fragments.size();
 
@@ -113,7 +113,7 @@ public class FragmentStack {
 		animation.applyAfterFragmentTransactionExecuted(fragment, fragments.get(count - 1));
 	}
 
-	public void push(Fragment fragment, TransitionAnimation animation) {
+	public void push(@NonNull Fragment fragment, @NonNull TransitionAnimation animation) {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -131,7 +131,7 @@ public class FragmentStack {
 		}
 	}
 
-	public void replace(Fragment fragment, TransitionAnimation animation) {
+	public void replace(@NonNull Fragment fragment, @NonNull TransitionAnimation animation) {
 		Fragment currentFragment = getCurrentFragment();
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -150,7 +150,7 @@ public class FragmentStack {
 		}
 	}
 
-	public void reset(Fragment fragment, TransitionAnimation animation) {
+	public void reset(@NonNull Fragment fragment, @NonNull TransitionAnimation animation) {
 		List<Fragment> fragments = getFragments();
 		int count = fragments.size();
 

@@ -3,6 +3,8 @@ package me.aartikov.alligator.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,11 +26,7 @@ public class FragmentSwitcher {
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
 
-	public FragmentSwitcher(FragmentManager fragmentManager, int containerId) {
-		if (fragmentManager == null) {
-			throw new IllegalArgumentException("FragmentManager can't be null.");
-		}
-
+	public FragmentSwitcher(@NonNull FragmentManager fragmentManager, int containerId) {
 		if (containerId <= 0) {
 			throw new IllegalArgumentException("ContainerId is not set.");
 		}
@@ -37,6 +35,7 @@ public class FragmentSwitcher {
 		mContainerId = containerId;
 	}
 
+	@NonNull
 	public List<Fragment> getFragments() {
 		List<Fragment> result = new ArrayList<>();
 		int index = 0;
@@ -55,7 +54,7 @@ public class FragmentSwitcher {
 		return result;
 	}
 
-	public void switchTo(Fragment fragment, TransitionAnimation animation) {
+	public void switchTo(@NonNull Fragment fragment, @NonNull TransitionAnimation animation) {
 		List<Fragment> fragments = getFragments();
 		boolean isNewFragment = !fragments.contains(fragment);
 		Fragment currentFragment = getCurrentFragment();
@@ -78,6 +77,7 @@ public class FragmentSwitcher {
 		}
 	}
 
+	@Nullable
 	public Fragment getCurrentFragment() {
 		return mFragmentManager.findFragmentById(mContainerId);
 	}

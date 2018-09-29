@@ -1,9 +1,11 @@
 package me.aartikov.alligator.commands;
 
+import android.support.annotation.NonNull;
+
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 /**
  * Date: 29.12.2016
@@ -24,5 +26,5 @@ public interface Command {
 	 * @return true if after this command other command can be executed, false if command execution should be delayed until a new {@link NavigationContext} will be bound
 	 * @throws NavigationException if command execution failed
 	 */
-	boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
 }

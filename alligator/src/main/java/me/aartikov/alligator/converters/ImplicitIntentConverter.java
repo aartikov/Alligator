@@ -1,6 +1,7 @@
 package me.aartikov.alligator.converters;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import me.aartikov.alligator.Screen;
 
@@ -18,7 +19,7 @@ import me.aartikov.alligator.Screen;
  */
 public abstract class ImplicitIntentConverter<ScreenT extends Screen> implements IntentConverter<ScreenT> {
 
-	final public ScreenT getScreen(Intent intent) {
+	final public ScreenT getScreen(@NonNull Intent intent) {
 		throw new UnsupportedOperationException();
 	}
 }

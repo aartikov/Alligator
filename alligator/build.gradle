@@ -21,7 +21,6 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	implementation 'com.android.support:appcompat-v7:26.1.0'
-	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 task sourcesJar(type: Jar) {

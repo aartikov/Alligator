@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	}
 
 	@Override
-	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
+	public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
 		int tabId = getTabId(screenTo);
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 	}

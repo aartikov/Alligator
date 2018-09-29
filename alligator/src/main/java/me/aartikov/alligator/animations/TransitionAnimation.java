@@ -3,6 +3,8 @@ package me.aartikov.alligator.animations;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -25,7 +27,8 @@ public interface TransitionAnimation {
 	 * @param activity current activity
 	 * @return options bundle for activity starting. Can be {@code null} if there are no options needed.
 	 */
-	Bundle getActivityOptionsBundle(Activity activity);
+	@Nullable
+	Bundle getActivityOptionsBundle(@NonNull Activity activity);
 
 	/**
 	 * Is called before finishing of an activity. Checks if there is need to delay an activity finish.
@@ -42,28 +45,28 @@ public interface TransitionAnimation {
 	 * @param currentActivity activity that will start another activity
 	 * @param intent          intent that will be used to start an activity
 	 */
-	void applyBeforeActivityStarted(Activity currentActivity, Intent intent);
+	void applyBeforeActivityStarted(@NonNull Activity currentActivity, @NonNull Intent intent);
 
 	/**
 	 * Is called after starting of an activity.
 	 *
 	 * @param currentActivity activity that started another activity
 	 */
-	void applyAfterActivityStarted(Activity currentActivity);
+	void applyAfterActivityStarted(@NonNull Activity currentActivity);
 
 	/**
 	 * Is called before finishing of an activity.
 	 *
 	 * @param activity that will finish
 	 */
-	void applyBeforeActivityFinished(Activity activity);
+	void applyBeforeActivityFinished(@NonNull Activity activity);
 
 	/**
 	 * Is called after finishing of an activity.
 	 *
 	 * @param activity finished activity
 	 */
-	void applyAfterActivityFinished(Activity activity);
+	void applyAfterActivityFinished(@NonNull Activity activity);
 
 	/**
 	 * Is called before a fragment transaction executed.
@@ -72,7 +75,7 @@ public interface TransitionAnimation {
 	 * @param enteringFragment fragment that will be added/attached during the transaction
 	 * @param exitingFragment  fragment that will be removed/detached  during the transaction
 	 */
-	void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment);
+	void applyBeforeFragmentTransactionExecuted(@NonNull FragmentTransaction transaction, @NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment);
 
 	/**
 	 * Is called after a fragment transaction executed.
@@ -80,5 +83,5 @@ public interface TransitionAnimation {
 	 * @param enteringFragment fragment that will be added/attached during the transaction
 	 * @param exitingFragment  fragment that will be removed/detached  during the transaction
 	 */
-	void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment);
+	void applyAfterFragmentTransactionExecuted(@NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment);
 }

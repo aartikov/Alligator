@@ -1,6 +1,7 @@
 package me.aartikov.alligator.listeners;
 
-import me.aartikov.alligator.listeners.DialogShowingListener;
+import android.support.annotation.NonNull;
+
 import me.aartikov.alligator.Screen;
 
 /**
@@ -15,7 +16,7 @@ import me.aartikov.alligator.Screen;
  */
 public class DefaultDialogShowingListener implements DialogShowingListener {
 	@Override
-	public void onDialogShown(Class<? extends Screen> screenClass) {
+	public void onDialogShown(@NonNull Class<? extends Screen> screenClass) {
 
 	}
 }

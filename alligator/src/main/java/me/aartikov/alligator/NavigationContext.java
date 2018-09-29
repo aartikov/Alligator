@@ -1,6 +1,7 @@
 package me.aartikov.alligator;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,7 @@ public class NavigationContext {
 	private AppCompatActivity mActivity;
 	private FragmentManager mFragmentManager;
 	private int mContainerId;
+	@Nullable
 	private ScreenSwitcher mScreenSwitcher;
 	private TransitionAnimationProvider mTransitionAnimationProvider;
 	private DialogAnimationProvider mDialogAnimationProvider;
@@ -52,6 +54,7 @@ public class NavigationContext {
 	private NavigationErrorListener mNavigationErrorListener;
 	private ActivityHelper mActivityHelper;
 	private DialogFragmentHelper mDialogFragmentHelper;
+	@Nullable
 	private FragmentStack mFragmentStack;
 	private ScreenResultHelper mScreenResultHelper;
 
@@ -89,47 +92,58 @@ public class NavigationContext {
 		return mContainerId;
 	}
 
+	@Nullable
 	public ScreenSwitcher getScreenSwitcher() {
 		return mScreenSwitcher;
 	}
 
+	@NonNull
 	public TransitionAnimationProvider getTransitionAnimationProvider() {
 		return mTransitionAnimationProvider;
 	}
 
+	@NonNull
 	public DialogAnimationProvider getDialogAnimationProvider() {
 		return mDialogAnimationProvider;
 	}
 
+	@NonNull
 	public TransitionListener getTransitionListener() {
 		return mTransitionListener;
 	}
 
+	@NonNull
 	public DialogShowingListener getDialogShowingListener() {
 		return mDialogShowingListener;
 	}
 
+	@NonNull
 	public ScreenResultListener getScreenResultListener() {
 		return mScreenResultListener;
 	}
 
+	@NonNull
 	public ScreenSwitchingListener getScreenSwitchingListener() {
 		return mScreenSwitchingListener;
 	}
 
+	@NonNull
 	public NavigationErrorListener getNavigationErrorListener() {
 		return mNavigationErrorListener;
 	}
 
+	@NonNull
 	public ActivityHelper getActivityHelper() {
 		return mActivityHelper;
 	}
 
+	@NonNull
 	public DialogFragmentHelper getDialogFragmentHelper() {
 		return mDialogFragmentHelper;
 	}
 
-	public @Nullable FragmentStack getFragmentStack() {
+	@Nullable
+	public FragmentStack getFragmentStack() {
 		return mFragmentStack;
 	}
 
@@ -142,15 +156,24 @@ public class NavigationContext {
 	 */
 	public static class Builder {
 		private AppCompatActivity mActivity;
+		@Nullable
 		private FragmentManager mFragmentManager;
 		private int mContainerId;
+		@Nullable
 		private ScreenSwitcher mScreenSwitcher;
+		@Nullable
 		private TransitionAnimationProvider mTransitionAnimationProvider;
+		@Nullable
 		private DialogAnimationProvider mDialogAnimationProvider;
+		@Nullable
 		private TransitionListener mTransitionListener;
+		@Nullable
 		private ScreenResultListener mScreenResultListener;
+		@Nullable
 		private DialogShowingListener mDialogShowingListener;
+		@Nullable
 		private ScreenSwitchingListener mScreenSwitchingListener;
+		@Nullable
 		private NavigationErrorListener mNavigationErrorListener;
 
 		/**
@@ -158,7 +181,7 @@ public class NavigationContext {
 		 *
 		 * @param activity activity that should be current when the navigation context is bound.
 		 */
-		public Builder(AppCompatActivity activity) {
+		public Builder(@NonNull AppCompatActivity activity) {
 			mActivity = activity;
 		}
 
@@ -168,6 +191,7 @@ public class NavigationContext {
 		 * @param containerId container id for fragments
 		 * @return this object
 		 */
+		@NonNull
 		public Builder containerId(@IdRes int containerId) {
 			mContainerId = containerId;
 			return this;
@@ -180,7 +204,8 @@ public class NavigationContext {
 		 *                        This method can be useful to set a child fragment manager.
 		 * @return this object
 		 */
-		public Builder fragmentManager(FragmentManager fragmentManager) {
+		@NonNull
+		public Builder fragmentManager(@Nullable FragmentManager fragmentManager) {
 			mFragmentManager = fragmentManager;
 			return this;
 		}
@@ -191,7 +216,8 @@ public class NavigationContext {
 		 * @param screenSwitcher screen switcher that will be used to switch screens by {@code switchTo} method of {@link Navigator}
 		 * @return this object
 		 */
-		public Builder screenSwitcher(ScreenSwitcher screenSwitcher) {
+		@NonNull
+		public Builder screenSwitcher(@Nullable ScreenSwitcher screenSwitcher) {
 			mScreenSwitcher = screenSwitcher;
 			return this;
 		}
@@ -202,7 +228,8 @@ public class NavigationContext {
 		 * @param transitionAnimationProvider provider of {@link TransitionAnimation}s. By default a provider that returns {@code TransitionAnimation.DEFAULT} is used.
 		 * @return this object
 		 */
-		public Builder transitionAnimationProvider(TransitionAnimationProvider transitionAnimationProvider) {
+		@NonNull
+		public Builder transitionAnimationProvider(@Nullable TransitionAnimationProvider transitionAnimationProvider) {
 			mTransitionAnimationProvider = transitionAnimationProvider;
 			return this;
 		}
@@ -213,7 +240,8 @@ public class NavigationContext {
 		 * @param dialogAnimationProvider provider of {@link DialogAnimation}s. By default a provider that returns {@code DialogAnimation.DEFAULT} is used.
 		 * @return this object
 		 */
-		public Builder dialogAnimationProvider(DialogAnimationProvider dialogAnimationProvider) {
+		@NonNull
+		public Builder dialogAnimationProvider(@Nullable DialogAnimationProvider dialogAnimationProvider) {
 			mDialogAnimationProvider = dialogAnimationProvider;
 			return this;
 		}
@@ -224,7 +252,8 @@ public class NavigationContext {
 		 * @param transitionListener transition listener.
 		 * @return this object
 		 */
-		public Builder transitionListener(TransitionListener transitionListener) {
+		@NonNull
+		public Builder transitionListener(@Nullable TransitionListener transitionListener) {
 			mTransitionListener = transitionListener;
 			return this;
 		}
@@ -235,7 +264,8 @@ public class NavigationContext {
 		 * @param dialogShowingListener dialog showing listener.
 		 * @return this object
 		 */
-		public Builder dialogShowingListener(DialogShowingListener dialogShowingListener) {
+		@NonNull
+		public Builder dialogShowingListener(@Nullable DialogShowingListener dialogShowingListener) {
 			mDialogShowingListener = dialogShowingListener;
 			return this;
 		}
@@ -246,7 +276,8 @@ public class NavigationContext {
 		 * @param screenResultListener screenResultListener screen result listener.
 		 * @return this object
 		 */
-		public Builder screenResultListener(ScreenResultListener screenResultListener) {
+		@NonNull
+		public Builder screenResultListener(@Nullable ScreenResultListener screenResultListener) {
 			mScreenResultListener = screenResultListener;
 			return this;
 		}
@@ -257,7 +288,8 @@ public class NavigationContext {
 		 * @param screenSwitchingListener screen switcher listener.
 		 * @return this object
 		 */
-		public Builder screenSwitchingListener(ScreenSwitchingListener screenSwitchingListener) {
+		@NonNull
+		public Builder screenSwitchingListener(@Nullable ScreenSwitchingListener screenSwitchingListener) {
 			mScreenSwitchingListener = screenSwitchingListener;
 			return this;
 		}
@@ -268,7 +300,8 @@ public class NavigationContext {
 		 * @param navigationErrorListener navigation error listener. By default a listener that wraps errors to {@code RuntimeException} and throws it is used.
 		 * @return this object
 		 */
-		public Builder navigationErrorListener(NavigationErrorListener navigationErrorListener) {
+		@NonNull
+		public Builder navigationErrorListener(@Nullable NavigationErrorListener navigationErrorListener) {
 			mNavigationErrorListener = navigationErrorListener;
 			return this;
 		}
@@ -278,6 +311,7 @@ public class NavigationContext {
 		 *
 		 * @return created navigation context
 		 */
+		@NonNull
 		public NavigationContext build() {
 			return new NavigationContext(this);
 		}

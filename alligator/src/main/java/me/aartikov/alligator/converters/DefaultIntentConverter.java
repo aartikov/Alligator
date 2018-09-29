@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
@@ -34,7 +35,8 @@ public class DefaultIntentConverter<ScreenT extends Screen> implements IntentCon
 	}
 
 	@Override
-	public Intent createIntent(Context context, ScreenT screen) {
+	@NonNull
+	public Intent createIntent(@NonNull Context context, @NonNull ScreenT screen) {
 		Intent intent = new Intent(context, mActivityClass);
 		if (screen instanceof Serializable) {
 			intent.putExtra(KEY_SCREEN, (Serializable) screen);
@@ -46,7 +48,8 @@ public class DefaultIntentConverter<ScreenT extends Screen> implements IntentCon
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public @Nullable ScreenT getScreen(Intent intent) {
+	@Nullable
+	public ScreenT getScreen(@NonNull Intent intent) {
 		if (Serializable.class.isAssignableFrom(mScreenClass)) {
 			return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
 		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {

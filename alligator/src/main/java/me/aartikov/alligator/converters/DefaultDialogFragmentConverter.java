@@ -11,6 +11,8 @@ import java.io.Serializable;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
@@ -33,7 +35,8 @@ public class DefaultDialogFragmentConverter<ScreenT extends Screen> implements D
 	}
 
 	@Override
-	public DialogFragment createDialogFragment(ScreenT screen) {
+	@NonNull
+	public DialogFragment createDialogFragment(@NonNull ScreenT screen) {
 		try {
 			DialogFragment dialogFragment = mDialogFragmentClass.newInstance();
 			if (screen instanceof Serializable) {
@@ -53,9 +56,10 @@ public class DefaultDialogFragmentConverter<ScreenT extends Screen> implements D
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public ScreenT getScreen(DialogFragment dialogFragment) {
+	@NonNull
+	@SuppressWarnings("unchecked")
+	public ScreenT getScreen(@NonNull DialogFragment dialogFragment) {
 		if (dialogFragment.getArguments() == null) {
 			throw new IllegalArgumentException("Fragment has no arguments.");
 		} else if (Serializable.class.isAssignableFrom(mScreenClass)) {
@@ -67,8 +71,8 @@ public class DefaultDialogFragmentConverter<ScreenT extends Screen> implements D
 		}
 	}
 
-	private ScreenT checkNotNull(ScreenT screen) {
-		if(screen == null) {
+	private ScreenT checkNotNull(@Nullable ScreenT screen) {
+		if (screen == null) {
 			throw new IllegalArgumentException("Failed to get screen from arguments of fragment.");
 		}
 		return screen;

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -39,7 +41,8 @@ public class SimpleTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public Bundle getActivityOptionsBundle(Activity activity) {
+	@Nullable
+	public Bundle getActivityOptionsBundle(@NonNull Activity activity) {
 		return null;
 	}
 
@@ -49,29 +52,29 @@ public class SimpleTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public void applyBeforeActivityStarted(Activity currentActivity, Intent intent) {
+	public void applyBeforeActivityStarted(@NonNull Activity currentActivity, @NonNull Intent intent) {
 	}
 
 	@Override
-	public void applyAfterActivityStarted(Activity currentActivity) {
+	public void applyAfterActivityStarted(@NonNull Activity currentActivity) {
 		currentActivity.overridePendingTransition(mEnterAnimation, mExitAnimation);
 	}
 
 	@Override
-	public void applyBeforeActivityFinished(Activity activity) {
+	public void applyBeforeActivityFinished(@NonNull Activity activity) {
 	}
 
 	@Override
-	public void applyAfterActivityFinished(Activity activity) {
+	public void applyAfterActivityFinished(@NonNull Activity activity) {
 		activity.overridePendingTransition(mEnterAnimation, mExitAnimation);
 	}
 
 	@Override
-	public void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment) {
+	public void applyBeforeFragmentTransactionExecuted(@NonNull FragmentTransaction transaction, @NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
 		transaction.setCustomAnimations(mEnterAnimation, mExitAnimation);
 	}
 
 	@Override
-	public void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment) {
+	public void applyAfterFragmentTransactionExecuted(@NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
 	}
 }

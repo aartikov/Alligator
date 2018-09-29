@@ -1,6 +1,8 @@
 package me.aartikov.alligator;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
@@ -23,11 +25,11 @@ public class ActivityResultHandler {
 	private ScreenResultListener mScreenResultListener;
 	private ScreenResultPair mPendingScreenResultPair;
 
-	ActivityResultHandler(NavigationFactory navigationFactory) {
+	ActivityResultHandler(@NonNull NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 	}
 
-	void setScreenResultListener(ScreenResultListener screenResultListener) {
+	void setScreenResultListener(@NonNull ScreenResultListener screenResultListener) {
 		mScreenResultListener = screenResultListener;
 		handlePendingScreenResult();
 	}
@@ -43,7 +45,7 @@ public class ActivityResultHandler {
 	 * @param resultCode  resultCode passed to {@code onActivityResult}
 	 * @param data        intent passed to {@code onActivityResult}
 	 */
-	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(requestCode);
 		if (screenClass != null) {
 			ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
@@ -62,7 +64,7 @@ public class ActivityResultHandler {
 	 *
 	 * @param intent intent passed to {@code onNewIntent}
 	 */
-	public void onNewIntent(Intent intent) {
+	public void onNewIntent(@NonNull Intent intent) {
 		int requestCode = intent.getIntExtra(ScreenResultHelper.KEY_REQUEST_CODE, -1);
 		if (requestCode != -1) {
 			int resultCode = intent.getIntExtra(ScreenResultHelper.KEY_RESULT_CODE, 0);
@@ -81,7 +83,7 @@ public class ActivityResultHandler {
 		Class<? extends Screen> mScreenClass;
 		ScreenResult mScreenResult;
 
-		ScreenResultPair(Class<? extends Screen> screenClass, ScreenResult screenResult) {
+		ScreenResultPair(@NonNull Class<? extends Screen> screenClass, @Nullable ScreenResult screenResult) {
 			mScreenClass = screenClass;
 			mScreenResult = screenResult;
 		}

@@ -3,6 +3,7 @@ package me.aartikov.screenresultsample.screens;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.ActivityResult;
@@ -35,8 +36,9 @@ public class ImagePickerScreen implements Screen {
 	// Intent converter. Creates an intent from a screen.
 	public static class Converter extends ImplicitIntentConverter<ImagePickerScreen> {
 
+		@NonNull
 		@Override
-		public Intent createIntent(Context context, ImagePickerScreen screen) {
+		public Intent createIntent(@NonNull Context context, @NonNull ImagePickerScreen screen) {
 			return new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
 		}
 	}
@@ -46,7 +48,7 @@ public class ImagePickerScreen implements Screen {
 
 		@Nullable
 		@Override
-		public ImagePickerScreen.Result getScreenResult(ActivityResult activityResult) {
+		public ImagePickerScreen.Result getScreenResult(@NonNull ActivityResult activityResult) {
 			Uri uri = activityResult.getDataUri();
 			return uri != null ? new ImagePickerScreen.Result(uri) : null;
 		}

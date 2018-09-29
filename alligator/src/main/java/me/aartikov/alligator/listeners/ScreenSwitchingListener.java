@@ -7,6 +7,7 @@ package me.aartikov.alligator.listeners;
  * @author Artur Artikov
  */
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
@@ -22,5 +23,5 @@ public interface ScreenSwitchingListener {
 	 * @param screenFrom screen that disappears during a switching or {@code null} if there was no current screen before switching
 	 * @param screenTo   screen that appears during a switching
 	 */
-	void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo);
+	void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo);
 }

@@ -1,5 +1,6 @@
 package me.aartikov.alligator.listeners;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
@@ -24,5 +25,5 @@ public interface TransitionListener {
 	 * @param screenClassTo   class of the screen that appears during a transition or {@code null} if there was no previous screen before transition
 	 * @param isActivity      true if the screens involved in the transition are represented by activities
 	 */
-	void onScreenTransition(TransitionType transitionType, @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo, boolean isActivity);
+	void onScreenTransition(@NonNull TransitionType transitionType, @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo, boolean isActivity);
 }

@@ -1,5 +1,6 @@
 package me.aartikov.alligator.converters;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
@@ -18,7 +19,9 @@ import me.aartikov.alligator.Screen;
  */
 public interface FragmentConverter<ScreenT extends Screen> {
 
-	Fragment createFragment(ScreenT screen);
+	@NonNull
+	Fragment createFragment(@NonNull ScreenT screen);
 
-	ScreenT getScreen(Fragment fragment);
+	@NonNull
+	ScreenT getScreen(@NonNull Fragment fragment);
 }

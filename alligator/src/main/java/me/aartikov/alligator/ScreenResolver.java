@@ -1,6 +1,7 @@
 package me.aartikov.alligator;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,7 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 public class ScreenResolver {
 	private NavigationFactory mNavigationFactory;
 
-	public ScreenResolver(NavigationFactory navigationFactory) {
+	public ScreenResolver(@NonNull NavigationFactory navigationFactory) {
 		mNavigationFactory = navigationFactory;
 	}
 
@@ -37,7 +38,8 @@ public class ScreenResolver {
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
 	@SuppressWarnings("unchecked")
-	public <ScreenT extends Screen> ScreenT getScreen(Activity activity) {
+	@NonNull
+	public <ScreenT extends Screen> ScreenT getScreen(@NonNull Activity activity) {
 		ScreenT screen = (ScreenT) getScreenImplementation(activity).getScreen(activity);
 		if (screen != null) {
 			return screen;
@@ -55,7 +57,8 @@ public class ScreenResolver {
 	 * @throws IllegalArgumentException if there are no screens registered for this activity.
 	 */
 	@SuppressWarnings("unchecked")
-	public  @Nullable <ScreenT extends Screen> ScreenT getScreenOrNull(Activity activity) {
+	@Nullable
+	public <ScreenT extends Screen> ScreenT getScreenOrNull(@NonNull Activity activity) {
 		return (ScreenT) getScreenImplementation(activity).getScreen(activity);
 	}
 
@@ -68,7 +71,8 @@ public class ScreenResolver {
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
 	@SuppressWarnings("unchecked")
-	public <ScreenT extends Screen> ScreenT getScreen(Fragment fragment) {
+	@NonNull
+	public <ScreenT extends Screen> ScreenT getScreen(@NonNull Fragment fragment) {
 		return (ScreenT) getScreenImplementation(fragment).getScreen(fragment);
 	}
 
@@ -81,11 +85,13 @@ public class ScreenResolver {
 	 * @throws IllegalArgumentException if screen getting failed
 	 */
 	@SuppressWarnings("unchecked")
-	public <ScreenT extends Screen> ScreenT getScreen(DialogFragment dialogFragment) {
+	@NonNull
+	public <ScreenT extends Screen> ScreenT getScreen(@NonNull DialogFragment dialogFragment) {
 		return (ScreenT) getScreenImplementation(dialogFragment).getScreen(dialogFragment);
 	}
 
-	private ActivityScreenImplementation getScreenImplementation(Activity activity) {
+	@NonNull
+	private ActivityScreenImplementation getScreenImplementation(@NonNull Activity activity) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + activity.getClass().getSimpleName());
@@ -99,7 +105,8 @@ public class ScreenResolver {
 		return (ActivityScreenImplementation) screenImplementation;
 	}
 
-	private FragmentScreenImplementation getScreenImplementation(Fragment fragment) {
+	@NonNull
+	private FragmentScreenImplementation getScreenImplementation(@NonNull Fragment fragment) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(fragment);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + fragment.getClass().getSimpleName());
@@ -113,7 +120,8 @@ public class ScreenResolver {
 		return (FragmentScreenImplementation) screenImplementation;
 	}
 
-	private DialogFragmentScreenImplementation getScreenImplementation(DialogFragment dialogFragment) {
+	@NonNull
+	private DialogFragmentScreenImplementation getScreenImplementation(@NonNull DialogFragment dialogFragment) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(dialogFragment);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + dialogFragment.getClass().getSimpleName());

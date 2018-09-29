@@ -1,5 +1,7 @@
 package me.aartikov.alligator.screenimplementations;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
@@ -17,13 +19,14 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 public class DialogFragmentScreenImplementation implements ScreenImplementation {
 	private Class<? extends Screen> mScreenClass;
 	private DialogFragmentConverter<? extends Screen> mDialogFragmentConverter;
+	@Nullable
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private ScreenClassHelper mScreenClassHelper;
 
-	public DialogFragmentScreenImplementation(Class<? extends Screen> screenClass,
-	                                          DialogFragmentConverter<? extends Screen> fragmentConverter,
-	                                          Class<? extends ScreenResult> screenResultClass,
-	                                          ScreenClassHelper screenClassHelper) {
+	public DialogFragmentScreenImplementation(@NonNull Class<? extends Screen> screenClass,
+	                                          @NonNull DialogFragmentConverter<? extends Screen> fragmentConverter,
+	                                          @Nullable Class<? extends ScreenResult> screenResultClass,
+	                                          @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mDialogFragmentConverter = fragmentConverter;
 		mScreenResultClass = screenResultClass;
@@ -31,7 +34,8 @@ public class DialogFragmentScreenImplementation implements ScreenImplementation 
 	}
 
 	@SuppressWarnings("unchecked")
-	public DialogFragment createDialogFragment(Screen screen) {
+	@NonNull
+	public DialogFragment createDialogFragment(@NonNull Screen screen) {
 		checkScreenClass(screen.getClass());
 		DialogFragment dialogFragment = ((DialogFragmentConverter<Screen>) mDialogFragmentConverter).createDialogFragment(screen);
 		mScreenClassHelper.putScreenClass(dialogFragment, screen.getClass());
@@ -39,15 +43,17 @@ public class DialogFragmentScreenImplementation implements ScreenImplementation 
 	}
 
 	@SuppressWarnings("unchecked")
-	public Screen getScreen(DialogFragment dialogFragment) {
+	@NonNull
+	public Screen getScreen(@NonNull DialogFragment dialogFragment) {
 		return mDialogFragmentConverter.getScreen(dialogFragment);
 	}
 
+	@Nullable
 	public Class<? extends ScreenResult> getScreenResultClass() {
 		return mScreenResultClass;
 	}
 
-	private void checkScreenClass(Class<? extends Screen> screenClass) {
+	private void checkScreenClass(@NonNull Class<? extends Screen> screenClass) {
 		if (!mScreenClass.isAssignableFrom(screenClass)) {
 			throw new IllegalArgumentException("Invalid screen class " + screenClass.getSimpleName() + ". Expected " + mScreenClass.getSimpleName());
 		}

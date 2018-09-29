@@ -2,6 +2,7 @@ package me.aartikov.alligator.converters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
@@ -20,7 +21,9 @@ import me.aartikov.alligator.Screen;
  */
 public interface IntentConverter<ScreenT extends Screen> {
 
-	Intent createIntent(Context context, ScreenT screen);
+	@NonNull
+	Intent createIntent(@NonNull Context context, @NonNull ScreenT screen);
 
-	@Nullable ScreenT getScreen(Intent intent);
+	@Nullable
+	ScreenT getScreen(@NonNull Intent intent);
 }

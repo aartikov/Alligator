@@ -1,6 +1,6 @@
 package me.aartikov.alligator.converters;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.ScreenResult;
@@ -19,7 +19,8 @@ import me.aartikov.alligator.ScreenResult;
  */
 public abstract class ImplicitScreenResultConverter<ScreenResultT extends ScreenResult> implements ScreenResultConverter<ScreenResultT> {
 
-	public ActivityResult createActivityResult(@Nullable ScreenResultT screenResult) {
+	@NonNull
+	public ActivityResult createActivityResult(@NonNull ScreenResultT screenResult) {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -1,5 +1,7 @@
 package me.aartikov.alligator.screenimplementations;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import me.aartikov.alligator.Screen;
@@ -17,13 +19,14 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 public class FragmentScreenImplementation implements ScreenImplementation {
 	private Class<? extends Screen> mScreenClass;
 	private FragmentConverter<? extends Screen> mFragmentConverter;
+	@Nullable
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private ScreenClassHelper mScreenClassHelper;
 
-	public FragmentScreenImplementation(Class<? extends Screen> screenClass,
-	                                    FragmentConverter<? extends Screen> fragmentConverter,
-	                                    Class<? extends ScreenResult> screenResultClass,
-	                                    ScreenClassHelper screenClassHelper) {
+	public FragmentScreenImplementation(@NonNull Class<? extends Screen> screenClass,
+	                                    @NonNull FragmentConverter<? extends Screen> fragmentConverter,
+	                                    @Nullable Class<? extends ScreenResult> screenResultClass,
+	                                    @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mFragmentConverter = fragmentConverter;
 		mScreenResultClass = screenResultClass;
@@ -31,22 +34,25 @@ public class FragmentScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Fragment createFragment(Screen screen) {
+	@NonNull
+	public Fragment createFragment(@NonNull Screen screen) {
 		checkScreenClass(screen.getClass());
 		Fragment fragment = ((FragmentConverter<Screen>) mFragmentConverter).createFragment(screen);
 		mScreenClassHelper.putScreenClass(fragment, screen.getClass());
 		return fragment;
 	}
 
-	public Screen getScreen(Fragment fragment) {
+	@NonNull
+	public Screen getScreen(@NonNull Fragment fragment) {
 		return mFragmentConverter.getScreen(fragment);
 	}
 
+	@Nullable
 	public Class<? extends ScreenResult> getScreenResultClass() {
 		return mScreenResultClass;
 	}
 
-	private void checkScreenClass(Class<? extends Screen> screenClass) {
+	private void checkScreenClass(@NonNull Class<? extends Screen> screenClass) {
 		if (!mScreenClass.isAssignableFrom(screenClass)) {
 			throw new IllegalArgumentException("Invalid screen class " + screenClass.getSimpleName() + ". Expected " + mScreenClass.getSimpleName());
 		}

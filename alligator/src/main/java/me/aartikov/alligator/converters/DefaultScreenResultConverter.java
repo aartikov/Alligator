@@ -5,6 +5,7 @@ import java.io.Serializable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.ActivityResult;
@@ -34,11 +35,8 @@ public class DefaultScreenResultConverter<ScreenResultT extends ScreenResult> im
 	}
 
 	@Override
-	public ActivityResult createActivityResult(@Nullable ScreenResultT screenResult) {
-		if (screenResult == null) {
-			return new ActivityResult(Activity.RESULT_CANCELED, null);
-		}
-
+	@NonNull
+	public ActivityResult createActivityResult(@NonNull ScreenResultT screenResult) {
 		Intent data = new Intent();
 		if (screenResult instanceof Serializable) {
 			data.putExtra(KEY_SCREEN_RESULT, (Serializable) screenResult);
@@ -52,7 +50,8 @@ public class DefaultScreenResultConverter<ScreenResultT extends ScreenResult> im
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public @Nullable ScreenResultT getScreenResult(ActivityResult activityResult) {
+	@Nullable
+	public ScreenResultT getScreenResult(@NonNull ActivityResult activityResult) {
 		if (activityResult.getIntent() == null || activityResult.getResultCode() != Activity.RESULT_OK) {
 			return null;
 		} else if (Serializable.class.isAssignableFrom(mScreenResultClass)) {

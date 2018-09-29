@@ -1,5 +1,7 @@
 package me.aartikov.alligator.commands;
 
+import android.support.annotation.NonNull;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.exceptions.NavigationException;
@@ -20,17 +22,18 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 abstract class BaseCommand implements Command {
 	private Class<? extends Screen> mScreenClass;
 
-	BaseCommand(Class<? extends Screen> screenClass) {
+	BaseCommand(@NonNull Class<? extends Screen> screenClass) {
 		mScreenClass = screenClass;
 	}
 
-	abstract protected boolean execute(ActivityScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull ActivityScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
 
-	abstract protected boolean execute(FragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull FragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
 
-	abstract protected boolean execute(DialogFragmentScreenImplementation screenImplementation, NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull DialogFragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
 
-	@Override    final public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	@Override
+	final public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		ScreenImplementation screenImplementation = navigationFactory.getScreenImplementation(mScreenClass);
 		if (screenImplementation == null) {
 			throw new ScreenRegistrationException("Screen " + mScreenClass.getSimpleName() + " is not registered.");

@@ -1,6 +1,8 @@
 package me.aartikov.alligator.commands;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
@@ -22,16 +24,18 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
  * Command implementation for {@code finish} method and {@code finishWithResult} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
 public class FinishCommand implements Command {
+	@Nullable
 	private ScreenResult mScreenResult;
+	@Nullable
 	private AnimationData mAnimationData;
 
-	public FinishCommand(ScreenResult screenResult, AnimationData animationData) {
+	public FinishCommand(@Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
 		mScreenResult = screenResult;
 		mAnimationData = animationData;
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		if (mScreenResult != null) {
 			navigationContext.getScreenResultHelper().setActivityResult(activity, mScreenResult, navigationFactory);

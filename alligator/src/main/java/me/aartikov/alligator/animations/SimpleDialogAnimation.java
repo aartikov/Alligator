@@ -1,5 +1,6 @@
 package me.aartikov.alligator.animations;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 
@@ -18,23 +19,23 @@ public class SimpleDialogAnimation implements DialogAnimation {
 
 	/**
 	 * @param windowAnimationsStyleRes window animation style resource
-	 * <pre>{@code For example:
-	 * <style name="SlideDialogAnimation">
-	 *   <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
-	 *   <item name="android:windowExitAnimation">@anim/slide_out_right</item>
-	 * </style>
-	 * }</pre>
+	 *                                 <pre>{@code For example:
+	 *                                                                 <style name="SlideDialogAnimation">
+	 *                                                                   <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+	 *                                                                   <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+	 *                                                                 </style>
+	 *                                                                 }</pre>
 	 */
 	public SimpleDialogAnimation(@StyleRes int windowAnimationsStyleRes) {
 		mWindowAnimationsStyleRes = windowAnimationsStyleRes;
 	}
 
 	@Override
-	public void applyBeforeShowing(DialogFragment dialogFragment) {
+	public void applyBeforeShowing(@NonNull DialogFragment dialogFragment) {
 	}
 
 	@Override
-	public void applyAfterShowing(DialogFragment dialogFragment) {
+	public void applyAfterShowing(@NonNull DialogFragment dialogFragment) {
 		if (dialogFragment.getDialog() != null && dialogFragment.getDialog().getWindow() != null) {
 			dialogFragment.getDialog().getWindow().setWindowAnimations(mWindowAnimationsStyleRes);
 		}

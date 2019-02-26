@@ -1,10 +1,10 @@
 package me.aartikov.alligator;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;

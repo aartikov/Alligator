@@ -3,8 +3,8 @@ package me.aartikov.alligator.screenimplementations;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;

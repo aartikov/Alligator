@@ -1,6 +1,6 @@
 package me.aartikov.alligator.listeners;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.exceptions.NavigationException;
 

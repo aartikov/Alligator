@@ -7,8 +7,8 @@ package me.aartikov.alligator.animations.providers;
  * @author Artur Artikov
  */
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;

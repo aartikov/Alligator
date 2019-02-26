@@ -7,7 +7,7 @@ package me.aartikov.alligator;
  * @author Artur Artikov
  */
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Interface for binding and unbinding of a {@link NavigationContext}.

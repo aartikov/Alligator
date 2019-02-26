@@ -1,8 +1,8 @@
 package me.aartikov.alligator.commands;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;

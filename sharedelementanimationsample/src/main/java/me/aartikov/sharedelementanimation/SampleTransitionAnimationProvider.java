@@ -2,16 +2,16 @@ package me.aartikov.sharedelementanimation;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;

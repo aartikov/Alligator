@@ -7,7 +7,7 @@ package me.aartikov.alligator.exceptions;
  * @author Artur Artikov
  */
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.Screen;
 

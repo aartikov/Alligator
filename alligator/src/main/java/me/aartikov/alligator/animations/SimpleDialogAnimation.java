@@ -1,8 +1,8 @@
 package me.aartikov.alligator.animations;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Date: 26.03.2017

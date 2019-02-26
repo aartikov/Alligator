@@ -3,7 +3,7 @@ package me.aartikov.alligator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Date: 12.03.2017

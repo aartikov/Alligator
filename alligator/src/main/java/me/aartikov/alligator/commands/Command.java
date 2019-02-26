@@ -1,6 +1,6 @@
 package me.aartikov.alligator.commands;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContext;

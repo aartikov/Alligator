@@ -1,10 +1,10 @@
 package me.aartikov.screenresultsample.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;

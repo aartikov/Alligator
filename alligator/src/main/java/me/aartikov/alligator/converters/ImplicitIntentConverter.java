@@ -1,7 +1,7 @@
 package me.aartikov.alligator.converters;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.Screen;
 

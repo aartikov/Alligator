@@ -7,14 +7,14 @@ package me.aartikov.alligator.converters;
  * @author Artur Artikov
  */
 
-import java.io.Serializable;
-
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 
+import java.io.Serializable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import me.aartikov.alligator.Screen;
 
 /**

@@ -1,6 +1,6 @@
 package me.aartikov.alligator.listeners;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;

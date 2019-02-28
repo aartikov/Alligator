@@ -2,8 +2,8 @@ package me.aartikov.alligatorcompiler;
 
 public enum ScreenType {
 	ACTIVITY("android.app.Activity"),
-	DIALOG_FRAGMENT("android.support.v4.app.DialogFragment"),
-	FRAGMENT("android.support.v4.app.Fragment");
+	DIALOG_FRAGMENT("androidx.fragment.app.DialogFragment"),
+	FRAGMENT("androidx.fragment.app.Fragment");
 
 	private final String className;
 

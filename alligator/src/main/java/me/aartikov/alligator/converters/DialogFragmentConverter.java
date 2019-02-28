@@ -1,7 +1,7 @@
 package me.aartikov.alligator.converters;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
 

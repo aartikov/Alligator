@@ -1,14 +1,14 @@
 package me.aartikov.simplenavigationsample.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.alligator.annotations.RegisterScreen;

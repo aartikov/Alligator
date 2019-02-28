@@ -1,6 +1,6 @@
 package me.aartikov.alligator.converters;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.ScreenResult;

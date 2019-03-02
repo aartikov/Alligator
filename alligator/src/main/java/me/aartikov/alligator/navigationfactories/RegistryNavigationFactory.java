@@ -1,9 +1,9 @@
 package me.aartikov.alligator.navigationfactories;
 
-import android.app.Activity;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,9 +17,9 @@ import me.aartikov.alligator.converters.DefaultIntentConverter;
 import me.aartikov.alligator.converters.DefaultScreenResultConverter;
 import me.aartikov.alligator.converters.DialogFragmentConverter;
 import me.aartikov.alligator.converters.FragmentConverter;
-import me.aartikov.alligator.converters.ImplicitIntentConverter;
-import me.aartikov.alligator.converters.ImplicitScreenResultConverter;
 import me.aartikov.alligator.converters.IntentConverter;
+import me.aartikov.alligator.converters.OneWayIntentConverter;
+import me.aartikov.alligator.converters.OneWayScreenResultConverter;
 import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
@@ -102,14 +102,14 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	/**
-	 * Registers a screen represented by an activity using {@link ImplicitIntentConverter}.
+	 * Registers a screen represented by an activity using {@link OneWayIntentConverter}. Should be used for external activities only.
 	 *
 	 * @param screenClass screen class
-	 * @param converter   intent converter
+	 * @param converter   one-way intent converter
 	 * @param <ScreenT>   screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerActivity(@NonNull Class<ScreenT> screenClass, @NonNull ImplicitIntentConverter<ScreenT> converter) {
+	public <ScreenT extends Screen> void registerActivity(@NonNull Class<ScreenT> screenClass, @NonNull OneWayIntentConverter<ScreenT> converter) {
 		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, mScreenClassHelper);
 		registerScreenImplementation(screenClass, implementation);
 	}
@@ -159,20 +159,20 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	}
 
 	/**
-	 * Registers a screen represented by an activity for result using {@link ImplicitIntentConverter} and {@link ImplicitScreenResultConverter}.
+	 * Registers a screen represented by an activity for result using {@link OneWayIntentConverter} and {@link OneWayScreenResultConverter}. Should be used for external activities only.
 	 *
 	 * @param screenClass           screen class
 	 * @param screenResultClass     screen result class
-	 * @param converter             implicit intent converter
-	 * @param screenResultConverter implicit screen result converter
+	 * @param converter             one-way intent converter
+	 * @param screenResultConverter one-way screen result converter
 	 * @param <ScreenT>             screen type
 	 * @param <ScreenResultT>       screen result type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen, ScreenResultT extends ScreenResult> void registerActivityForResult(@NonNull Class<ScreenT> screenClass,
 	                                                                                                   @NonNull Class<ScreenResultT> screenResultClass,
-	                                                                                                   @NonNull ImplicitIntentConverter<ScreenT> converter,
-	                                                                                                   @NonNull ImplicitScreenResultConverter<ScreenResultT> screenResultConverter) {
+	                                                                                                   @NonNull OneWayIntentConverter<ScreenT> converter,
+	                                                                                                   @NonNull OneWayScreenResultConverter<ScreenResultT> screenResultConverter) {
 
 		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
 		registerScreenImplementation(screenClass, implementation);

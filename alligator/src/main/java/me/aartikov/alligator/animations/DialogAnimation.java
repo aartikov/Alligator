@@ -1,6 +1,7 @@
 package me.aartikov.alligator.animations;
 
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Date: 26.03.2017
@@ -20,12 +21,12 @@ public interface DialogAnimation {
 	 *
 	 * @param dialogFragment dialog fragment that will be shown
 	 */
-	void applyBeforeShowing(DialogFragment dialogFragment);
+	void applyBeforeShowing(@NonNull DialogFragment dialogFragment);
 
 	/**
 	 * Is called after a dialog fragment was shown and a related fragment transaction was executed.
 	 *
 	 * @param dialogFragment dialog fragment that was shown
 	 */
-	void applyAfterShowing(DialogFragment dialogFragment);
+	void applyAfterShowing(@NonNull DialogFragment dialogFragment);
 }

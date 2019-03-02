@@ -7,30 +7,25 @@ package me.aartikov.alligator.screenswitchers;
  * @author Artur Artikov
  */
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 
 /**
  * Object for switching between several screens without theirs recreation.
  */
 public interface ScreenSwitcher {
 	/**
-	 * Switches to a given screen.
+	 * Switches to a given screen. Implementation must call the passed screen switching listener properly.
 	 *
 	 * @param screen        screen
+	 * @param listener      screen switching listener
 	 * @param animationData animation data for an additional animation configuring
 	 * @throws me.aartikov.alligator.exceptions.NavigationException on fail
 	 */
-	void switchTo(Screen screen, @Nullable AnimationData animationData) throws NavigationException;
+	void switchTo(Screen screen, ScreenSwitchingListener listener, @Nullable AnimationData animationData) throws NavigationException;
 
-	/**
-	 * Returns a current screen.
-	 *
-	 * @return current screen or {@code null} if there is no current screen.
-	 */
-	@Nullable
-	Screen getCurrentScreen();
 }

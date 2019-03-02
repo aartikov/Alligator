@@ -1,5 +1,7 @@
 package me.aartikov.alligator.listeners;
 
+import androidx.annotation.NonNull;
+
 import me.aartikov.alligator.exceptions.NavigationException;
 
 /**
@@ -14,7 +16,7 @@ import me.aartikov.alligator.exceptions.NavigationException;
  */
 public class DefaultNavigationErrorListener implements NavigationErrorListener {
 	@Override
-	public void onNavigationError(NavigationException e) {
+	public void onNavigationError(@NonNull NavigationException e) {
 		throw new RuntimeException(e);
 	}
 }

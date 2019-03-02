@@ -1,19 +1,22 @@
 package me.aartikov.alligator.animations;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.Pair;
 import android.transition.Transition;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * Date: 16.04.2017
@@ -51,6 +54,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		mExitTransition = exitTransition;
 	}
 
+	@Nullable
 	public Transition getEnterTransition() {
 		return mEnterTransition;
 	}
@@ -66,6 +70,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return this;
 	}
 
+	@Nullable
 	public Transition getExitTransition() {
 		return mExitTransition;
 	}
@@ -81,6 +86,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return this;
 	}
 
+	@Nullable
 	public Transition getSharedElementTransition() {
 		return mSharedElementTransition;
 	}
@@ -111,6 +117,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 		return this;
 	}
 
+	@Nullable
 	public List<Pair<View, String>> getSharedElements() {
 		return mSharedElements;
 	}
@@ -132,7 +139,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Bundle getActivityOptionsBundle(Activity activity) {
+	public Bundle getActivityOptionsBundle(@NonNull Activity activity) {
 		if (mSharedElements == null) {
 			return ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
 		} else {
@@ -147,23 +154,23 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public void applyBeforeActivityStarted(Activity currentActivity, Intent intent) {
+	public void applyBeforeActivityStarted(@NonNull Activity currentActivity, @NonNull Intent intent) {
 	}
 
 	@Override
-	public void applyAfterActivityStarted(Activity currentActivity) {
+	public void applyAfterActivityStarted(@NonNull Activity currentActivity) {
 	}
 
 	@Override
-	public void applyBeforeActivityFinished(Activity activity) {
+	public void applyBeforeActivityFinished(@NonNull Activity activity) {
 	}
 
 	@Override
-	public void applyAfterActivityFinished(Activity activity) {
+	public void applyAfterActivityFinished(@NonNull Activity activity) {
 	}
 
 	@Override
-	public void applyBeforeFragmentTransactionExecuted(FragmentTransaction transaction, Fragment enteringFragment, Fragment exitingFragment) {
+	public void applyBeforeFragmentTransactionExecuted(@NonNull FragmentTransaction transaction, @NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
 		enteringFragment.setEnterTransition(mEnterTransition);
 		exitingFragment.setExitTransition(mExitTransition);
 		enteringFragment.setSharedElementEnterTransition(mSharedElementTransition);
@@ -176,7 +183,7 @@ public class LollipopTransitionAnimation implements TransitionAnimation {
 	}
 
 	@Override
-	public void applyAfterFragmentTransactionExecuted(Fragment enteringFragment, Fragment exitingFragment) {
+	public void applyAfterFragmentTransactionExecuted(@NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
 		enteringFragment.setEnterTransition(null);
 		exitingFragment.setExitTransition(null);
 		enteringFragment.setSharedElementEnterTransition(null);

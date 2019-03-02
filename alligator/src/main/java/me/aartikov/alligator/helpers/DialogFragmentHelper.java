@@ -1,7 +1,9 @@
 package me.aartikov.alligator.helpers;
 
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import me.aartikov.alligator.animations.DialogAnimation;
 
@@ -19,13 +21,11 @@ public class DialogFragmentHelper {
 	private static final String TAG = "me.aartikov.alligator.DIALOG_FRAGMENT_HELPER_TAG";
 	private FragmentManager mFragmentManager;
 
-	public DialogFragmentHelper(FragmentManager fragmentManager) {
-		if (fragmentManager == null) {
-			throw new IllegalArgumentException("FragmentManager can't be null.");
-		}
+	public DialogFragmentHelper(@NonNull FragmentManager fragmentManager) {
 		mFragmentManager = fragmentManager;
 	}
 
+	@Nullable
 	public DialogFragment getDialogFragment() {
 		DialogFragment dialogFragment = (DialogFragment) mFragmentManager.findFragmentByTag(TAG);
 		if (dialogFragment == null || dialogFragment.isRemoving()) {
@@ -39,7 +39,7 @@ public class DialogFragmentHelper {
 		return getDialogFragment() != null;
 	}
 
-	public void showDialog(DialogFragment dialogFragment, DialogAnimation animation) {
+	public void showDialog(@NonNull DialogFragment dialogFragment, @NonNull DialogAnimation animation) {
 		animation.applyBeforeShowing(dialogFragment);
 		dialogFragment.show(mFragmentManager, TAG);
 		mFragmentManager.executePendingTransactions();

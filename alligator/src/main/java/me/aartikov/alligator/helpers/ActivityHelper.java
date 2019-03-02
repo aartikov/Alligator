@@ -2,8 +2,9 @@ package me.aartikov.alligator.helpers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 
 import me.aartikov.alligator.animations.TransitionAnimation;
 
@@ -20,32 +21,29 @@ import me.aartikov.alligator.animations.TransitionAnimation;
 public class ActivityHelper {
 	private AppCompatActivity mActivity;
 
-	public ActivityHelper(AppCompatActivity activity) {
-		if (activity == null) {
-			throw new IllegalArgumentException("Activity can't be null.");
-		}
+	public ActivityHelper(@NonNull AppCompatActivity activity) {
 		mActivity = activity;
 	}
 
-	public boolean resolve(Intent intent) {
+	public boolean resolve(@NonNull Intent intent) {
 		return intent.resolveActivity(mActivity.getPackageManager()) != null;
 	}
 
-	public void start(Intent intent, TransitionAnimation animation) {
+	public void start(@NonNull Intent intent, @NonNull TransitionAnimation animation) {
 		Bundle optionsBundle = animation.getActivityOptionsBundle(mActivity);
 		animation.applyBeforeActivityStarted(mActivity, intent);
 		ActivityCompat.startActivity(mActivity, intent, optionsBundle);
 		animation.applyAfterActivityStarted(mActivity);
 	}
 
-	public void startForResult(Intent intent, int requestCode, TransitionAnimation animation) {
+	public void startForResult(@NonNull Intent intent, int requestCode, @NonNull TransitionAnimation animation) {
 		Bundle optionsBundle = animation.getActivityOptionsBundle(mActivity);
 		animation.applyBeforeActivityStarted(mActivity, intent);
 		ActivityCompat.startActivityForResult(mActivity, intent, requestCode, optionsBundle);
 		animation.applyAfterActivityStarted(mActivity);
 	}
 
-	public void finish(TransitionAnimation animation) {
+	public void finish(@NonNull TransitionAnimation animation) {
 		animation.applyBeforeActivityFinished(mActivity);
 		if (animation.needDelayActivityFinish()) {
 			mActivity.supportFinishAfterTransition();

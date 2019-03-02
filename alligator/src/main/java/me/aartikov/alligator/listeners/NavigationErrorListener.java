@@ -1,5 +1,7 @@
 package me.aartikov.alligator.listeners;
 
+import androidx.annotation.NonNull;
+
 import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.exceptions.NavigationException;
 
@@ -19,5 +21,5 @@ public interface NavigationErrorListener {
 	 *
 	 * @param e exception with information about an error
 	 */
-	void onNavigationError(NavigationException e);
+	void onNavigationError(@NonNull NavigationException e);
 }

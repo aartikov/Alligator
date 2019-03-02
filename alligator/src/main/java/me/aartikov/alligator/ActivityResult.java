@@ -3,6 +3,7 @@ package me.aartikov.alligator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import androidx.annotation.Nullable;
 
 /**
  * Date: 12.03.2017
@@ -16,9 +17,10 @@ import android.net.Uri;
  */
 public class ActivityResult {
 	private int mResultCode;
+	@Nullable
 	private Intent mIntent;
 
-	public ActivityResult(int resultCode, Intent intent) {
+	public ActivityResult(int resultCode, @Nullable Intent intent) {
 		mResultCode = resultCode;
 		mIntent = intent;
 	}
@@ -27,10 +29,12 @@ public class ActivityResult {
 		return mResultCode;
 	}
 
+	@Nullable
 	public Intent getIntent() {
 		return mIntent;
 	}
 
+	@Nullable
 	public Uri getDataUri() {
 		return mIntent != null ? mIntent.getData() : null;
 	}

@@ -2,9 +2,10 @@ package me.aartikov.alligator.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
@@ -32,21 +33,25 @@ public class ScreenResultHelper {
 	public static final String KEY_REQUEST_CODE = "me.aartikov.alligator.KEY_REQUEST_CODE";
 	public static final String KEY_RESULT_CODE = "me.aartikov.alligator.KEY_RESULT_CODE";
 
-	public void setActivityResult(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
+	public void setActivityResult(@NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
 		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
 		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 	}
 
-	public void setResultToIntent(Intent intent, Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
+	public void setResultToIntent(@NonNull Intent intent, @NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
 		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
 		intent.putExtra(KEY_REQUEST_CODE, activityScreenImplementation.getRequestCode());
 		intent.putExtra(KEY_RESULT_CODE, activityResult.getResultCode());
-		intent.putExtras(activityResult.getIntent());
+		Intent resultIntent = activityResult.getIntent();
+		if (resultIntent != null) {
+			intent.putExtras(resultIntent);
+		}
 	}
 
-	private ActivityScreenImplementation getAndValidateActivityScreenImplementation(Activity activity, ScreenResult screenResult, NavigationFactory navigationFactory) throws NavigationException {
+	@NonNull
+	private ActivityScreenImplementation getAndValidateActivityScreenImplementation(@NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
@@ -70,7 +75,7 @@ public class ScreenResultHelper {
 		return activityScreenImplementation;
 	}
 
-	public void callScreenResultListener(Fragment fragment, @Nullable ScreenResult screenResult, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
+	public void callScreenResultListener(@NonNull Fragment fragment, @Nullable ScreenResult screenResult, @NonNull ScreenResultListener screenResultListener, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(fragment);
 		if (screenClass == null) {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + fragment.getClass().getSimpleName());
@@ -98,7 +103,7 @@ public class ScreenResultHelper {
 		screenResultListener.onScreenResult(screenClass, screenResult);
 	}
 
-	public void callScreenResultListener(DialogFragment dialogFragment, @Nullable ScreenResult screenResult, ScreenResultListener screenResultListener, NavigationFactory navigationFactory) throws NavigationException {
+	public void callScreenResultListener(@NonNull DialogFragment dialogFragment, @Nullable ScreenResult screenResult, @NonNull ScreenResultListener screenResultListener, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(dialogFragment);
 		if (screenClass == null) {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());

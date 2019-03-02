@@ -7,6 +7,9 @@ package me.aartikov.alligator;
  * @author Artur Artikov
  */
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import me.aartikov.alligator.animations.AnimationData;
 
 /**
@@ -33,7 +36,7 @@ public interface Navigator {
 	 *
 	 * @param screen new screen
 	 */
-	void goForward(Screen screen);
+	void goForward(@NonNull Screen screen);
 
 	/**
 	 * {@code goForward} with an animation data.
@@ -41,7 +44,7 @@ public interface Navigator {
 	 * @param screen        new screen
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void goForward(Screen screen, AnimationData animationData);
+	void goForward(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
 	 * Finishes a current screen and goes back to the previous screen.
@@ -53,14 +56,14 @@ public interface Navigator {
 	 *
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void goBack(AnimationData animationData);
+	void goBack(@Nullable AnimationData animationData);
 
 	/**
 	 * Finishes a current screen and goes back to the previous screen with result.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */
-	void goBackWithResult(ScreenResult screenResult);
+	void goBackWithResult(@NonNull ScreenResult screenResult);
 
 	/**
 	 * {@code goBackWithResult} with an animation data.
@@ -68,14 +71,14 @@ public interface Navigator {
 	 * @param screenResult  screen result that will be returned
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void goBackWithResult(ScreenResult screenResult, AnimationData animationData);
+	void goBackWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Goes back to a screen with the given class.
 	 *
 	 * @param screenClass screen class for going back
 	 */
-	void goBackTo(Class<? extends Screen> screenClass);
+	void goBackTo(@NonNull Class<? extends Screen> screenClass);
 
 	/**
 	 * {@code goBackTo} with an animation data.
@@ -83,7 +86,7 @@ public interface Navigator {
 	 * @param screenClass   screen class for going back
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData);
+	void goBackTo(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
 
 	/**
 	 * Goes back to a screen with the given class and returns result to it.
@@ -91,7 +94,7 @@ public interface Navigator {
 	 * @param screenClass  screen class for going back
 	 * @param screenResult screen result that will be returned
 	 */
-	void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult);
+	void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult);
 
 	/**
 	 * {@code goBackToWithResult} with an animation data.
@@ -100,14 +103,14 @@ public interface Navigator {
 	 * @param screenResult  screen result that will be returned
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult, AnimationData animationData);
+	void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Replaces the last screen with a new screen.
 	 *
 	 * @param screen new screen
 	 */
-	void replace(Screen screen);
+	void replace(@NonNull Screen screen);
 
 	/**
 	 * {@code replace} with an animation data.
@@ -115,14 +118,14 @@ public interface Navigator {
 	 * @param screen        new screen
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void replace(Screen screen, AnimationData animationData);
+	void replace(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
 	 * Removes all other screens and adds a new screen.
 	 *
 	 * @param screen new screen
 	 */
-	void reset(Screen screen);
+	void reset(@NonNull Screen screen);
 
 	/**
 	 * {@code reset} with an animation data.
@@ -130,7 +133,7 @@ public interface Navigator {
 	 * @param screen        new screen
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void reset(Screen screen, AnimationData animationData);
+	void reset(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
 	 * Finishes a last screen or a group of screens executing some common task.
@@ -142,14 +145,14 @@ public interface Navigator {
 	 *
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void finish(AnimationData animationData);
+	void finish(@Nullable AnimationData animationData);
 
 	/**
 	 * Finishes a last screen or a group of screens executing some common task and returns a screen result.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */
-	void finishWithResult(ScreenResult screenResult);
+	void finishWithResult(@NonNull ScreenResult screenResult);
 
 	/**
 	 * {@code finishWithResult} with an animation data.
@@ -157,14 +160,14 @@ public interface Navigator {
 	 * @param screenResult  screen result that will be returned
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void finishWithResult(ScreenResult screenResult, AnimationData animationData);
+	void finishWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Switches screens.
 	 *
 	 * @param screen screen for switching to
 	 */
-	void switchTo(Screen screen);
+	void switchTo(@NonNull Screen screen);
 
 	/**
 	 * {@code switchTo} with an animation data.
@@ -172,5 +175,5 @@ public interface Navigator {
 	 * @param screen        screen for switching to
 	 * @param animationData animation data for an additional animation configuring
 	 */
-	void switchTo(Screen screen, AnimationData animationData);
+	void switchTo(@NonNull Screen screen, @Nullable AnimationData animationData);
 }

@@ -1,6 +1,7 @@
 package me.aartikov.alligator.listeners;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 
@@ -16,6 +17,6 @@ import me.aartikov.alligator.Screen;
  */
 public class DefaultScreenSwitchingListener implements ScreenSwitchingListener {
 	@Override
-	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
+	public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
 	}
 }

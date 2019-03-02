@@ -1,5 +1,8 @@
 package me.aartikov.alligator.commands;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
@@ -20,27 +23,22 @@ import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
  */
 public class SwitchToCommand implements Command {
 	private Screen mScreen;
+	@Nullable
 	private AnimationData mAnimationData;
 
-	public SwitchToCommand(Screen screen, AnimationData animationData) {
+	public SwitchToCommand(@NonNull Screen screen, @Nullable AnimationData animationData) {
 		mScreen = screen;
 		mAnimationData = animationData;
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
 		if (screenSwitcher == null) {
 			throw new MissingScreenSwitcherException("ScreenSwitcher is not set.");
 		}
 
-		Screen previousScreen = screenSwitcher.getCurrentScreen();
-		if(previousScreen != null && previousScreen.equals(mScreen)) {
-			return true;
-		}
-
-		screenSwitcher.switchTo(mScreen, mAnimationData);
-		navigationContext.getScreenSwitchingListener().onScreenSwitched(previousScreen, mScreen);
+		screenSwitcher.switchTo(mScreen, navigationContext.getScreenSwitchingListener(), mAnimationData);
 		return true;
 	}
 }

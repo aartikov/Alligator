@@ -1,11 +1,13 @@
 package me.aartikov.alligator.commands;
 
+import android.app.Activity;
+
 import java.util.List;
 
-import android.app.Activity;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -28,16 +30,18 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
  * Command implementation for {@code goBack} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
 public class BackCommand implements Command {
+	@Nullable
 	private ScreenResult mScreenResult;
+	@Nullable
 	private AnimationData mAnimationData;
 
-	public BackCommand(ScreenResult screenResult, AnimationData animationData) {
+	public BackCommand(@Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
 		mScreenResult = screenResult;
 		mAnimationData = animationData;
 	}
 
 	@Override
-	public boolean execute(NavigationContext navigationContext, NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getDialogFragmentHelper().isDialogVisible()) {
 			DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 			DialogFragment dialogFragment = dialogFragmentHelper.getDialogFragment();

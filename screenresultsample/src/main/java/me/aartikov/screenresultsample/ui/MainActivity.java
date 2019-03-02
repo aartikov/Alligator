@@ -2,8 +2,6 @@ package me.aartikov.screenresultsample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +9,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.ActivityResultHandler;
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 

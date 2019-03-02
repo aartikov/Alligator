@@ -5,12 +5,13 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	}
 
 	@Override
-	public void onScreenSwitched(@Nullable Screen screenFrom, Screen screenTo) {
+	public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
 		int tabId = getTabId(screenTo);
 		mBottomBar.getMenu().findItem(tabId).setChecked(true);
 	}

@@ -1,6 +1,7 @@
 package me.aartikov.alligator.animations.providers;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
@@ -18,8 +19,11 @@ import me.aartikov.alligator.animations.TransitionAnimation;
  * Default implementation of {@link TransitionAnimationProvider}. Always returns {@code TransitionAnimation.DEFAULT}.
  */
 public class DefaultTransitionAnimationProvider implements TransitionAnimationProvider {
+
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom, Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
+	@NonNull
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	                                        boolean isActivity, @Nullable AnimationData animationData) {
 		return TransitionAnimation.DEFAULT;
 	}
 }

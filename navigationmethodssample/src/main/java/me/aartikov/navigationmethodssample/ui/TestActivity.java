@@ -4,11 +4,11 @@ import java.util.Random;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
@@ -56,7 +56,7 @@ public class TestActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_test);
 		ButterKnife.bind(this);
 
-		TestScreen screen = SampleApplication.getScreenResolver().getScreen(this);
+		TestScreen screen = SampleApplication.getScreenResolver().getScreenOrNull(this);
 		int counter = screen != null ? screen.getCounter() : 1;
 		mCounterTextView.setText(getString(R.string.counter_template, counter));
 
@@ -89,7 +89,7 @@ public class TestActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 

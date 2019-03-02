@@ -7,6 +7,8 @@ package me.aartikov.alligator.listeners;
  * @author Artur Artikov
  */
 
+import androidx.annotation.NonNull;
+
 import me.aartikov.alligator.Screen;
 
 /**
@@ -18,5 +20,5 @@ public interface DialogShowingListener {
 	 *
 	 * @param screenClass class of a screen that represents a dialog.
 	 */
-	void onDialogShown(Class<? extends Screen> screenClass);
+	void onDialogShown(@NonNull Class<? extends Screen> screenClass);
 }

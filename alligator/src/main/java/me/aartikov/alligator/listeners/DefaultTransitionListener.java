@@ -1,9 +1,9 @@
 package me.aartikov.alligator.listeners;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.listeners.TransitionListener;
 import me.aartikov.alligator.TransitionType;
 
 /**
@@ -18,6 +18,6 @@ import me.aartikov.alligator.TransitionType;
  */
 public class DefaultTransitionListener implements TransitionListener {
 	@Override
-	public void onScreenTransition(TransitionType transitionType, @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo, boolean isActivity) {
+	public void onScreenTransition(@NonNull TransitionType transitionType, @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo, boolean isActivity) {
 	}
 }

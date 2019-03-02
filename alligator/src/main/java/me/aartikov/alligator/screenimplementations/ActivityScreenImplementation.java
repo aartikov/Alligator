@@ -3,14 +3,14 @@ package me.aartikov.alligator.screenimplementations;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.functions.ActivityConverter;
-import me.aartikov.alligator.functions.ScreenResultConverter;
+import me.aartikov.alligator.converters.IntentConverter;
+import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 /**
@@ -22,47 +22,46 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
 
 public class ActivityScreenImplementation implements ScreenImplementation {
 	private Class<? extends Screen> mScreenClass;
+	@Nullable
 	private Class<? extends Activity> mActivityClass;
-	private ActivityConverter<? extends Screen> mActivityConverter;
+	private IntentConverter<? extends Screen> mIntentConverter;
 
+	@Nullable
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private int mRequestCode;
+	@Nullable
 	private ScreenResultConverter<? extends ScreenResult> mScreenResultConverter;
 
 	private ScreenClassHelper mScreenClassHelper;
 
-	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
-	                                    ActivityConverter<? extends Screen> activityConverter,
-	                                    Class<? extends ScreenResult> screenResultClass,
-	                                    ScreenResultConverter<? extends ScreenResult> screenResultConverter,
+	public ActivityScreenImplementation(@NonNull Class<? extends Screen> screenClass,
+	                                    @Nullable Class<? extends Activity> activityClass,
+	                                    @NonNull IntentConverter<? extends Screen> intentConverter,
+	                                    @Nullable Class<? extends ScreenResult> screenResultClass,
+	                                    @Nullable ScreenResultConverter<? extends ScreenResult> screenResultConverter,
 	                                    int requestCode,
-	                                    ScreenClassHelper screenClassHelper) {
+	                                    @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mActivityClass = activityClass;
-		mActivityConverter = activityConverter;
+		mIntentConverter = intentConverter;
 		mScreenResultClass = screenResultClass;
 		mScreenResultConverter = screenResultConverter;
 		mRequestCode = requestCode;
 		mScreenClassHelper = screenClassHelper;
 	}
 
-	public ActivityScreenImplementation(Class<? extends Screen> screenClass,
-	                                    Class<? extends Activity> activityClass,
-	                                    ActivityConverter<? extends Screen> activityConverter,
-	                                    ScreenClassHelper screenClassHelper) {
-		this(screenClass, activityClass, activityConverter, null, null, -1, screenClassHelper);
-	}
-
-	@Override
-	public <R> R accept(ScreenImplementationVisitor<R> visitor) throws NavigationException {
-		return visitor.visit(this);
+	public ActivityScreenImplementation(@NonNull Class<? extends Screen> screenClass,
+	                                    @Nullable Class<? extends Activity> activityClass,
+	                                    @NonNull IntentConverter<? extends Screen> intentConverter,
+	                                    @NonNull ScreenClassHelper screenClassHelper) {
+		this(screenClass, activityClass, intentConverter, null, null, -1, screenClassHelper);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Intent createIntent(Context context, Screen screen, @Nullable Class<? extends Screen> previousScreenClass) {
+	@NonNull
+	public Intent createIntent(@NonNull Context context, @NonNull Screen screen, @Nullable Class<? extends Screen> previousScreenClass) {
 		checkScreenClass(screen.getClass());
-		Intent intent = ((ActivityConverter<Screen>) mActivityConverter).createIntent(context, screen);
+		Intent intent = ((IntentConverter<Screen>) mIntentConverter).createIntent(context, screen);
 		mScreenClassHelper.putScreenClass(intent, screen.getClass());
 		if (previousScreenClass != null) {
 			mScreenClassHelper.putPreviousScreenClass(intent, previousScreenClass);
@@ -70,7 +69,8 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 		return intent;
 	}
 
-	public @Nullable Intent createEmptyIntent(Context context, Class<? extends Screen> screenClass) {
+	@Nullable
+	public Intent createEmptyIntent(@NonNull Context context, @NonNull Class<? extends Screen> screenClass) {
 		if (mActivityClass == null) {
 			return null;
 		}
@@ -81,17 +81,23 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
+	@NonNull
 	public ActivityResult createActivityResult(ScreenResult screenResult) {
 		checkScreenResultClass(screenResult.getClass());
+		if (mScreenResultConverter == null) {
+			throw new RuntimeException("mScreenResultConverter is null");
+		}
 		return ((ScreenResultConverter<ScreenResult>) mScreenResultConverter).createActivityResult(screenResult);
 	}
 
 	@SuppressWarnings("unchecked")
+	@Nullable
 	public Screen getScreen(Activity activity) {
-		return ((ActivityConverter<Screen>) mActivityConverter).getScreen(activity, mScreenClass);
+		return mIntentConverter.getScreen(activity.getIntent());
 	}
 
-	public @Nullable Class<? extends ScreenResult> getScreenResultClass() {
+	@Nullable
+	public Class<? extends ScreenResult> getScreenResultClass() {
 		return mScreenResultClass;
 	}
 
@@ -100,17 +106,24 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 	}
 
 	@SuppressWarnings("unchecked")
-	public @Nullable ScreenResult getScreenResult(ActivityResult activityResult) {
+	@Nullable
+	public ScreenResult getScreenResult(ActivityResult activityResult) {
+		if (mScreenResultConverter == null) {
+			throw new RuntimeException("mScreenResultConverter is null");
+		}
 		return ((ScreenResultConverter<ScreenResult>) mScreenResultConverter).getScreenResult(activityResult);
 	}
 
-	private void checkScreenClass(Class<? extends Screen> screenClass) {
+	private void checkScreenClass(@NonNull Class<? extends Screen> screenClass) {
 		if (!mScreenClass.isAssignableFrom(screenClass)) {
 			throw new IllegalArgumentException("Invalid screen class " + screenClass.getSimpleName() + ". Expected " + mScreenClass.getSimpleName());
 		}
 	}
 
-	private void checkScreenResultClass(Class<? extends ScreenResult> screenResultClass) {
+	private void checkScreenResultClass(@NonNull Class<? extends ScreenResult> screenResultClass) {
+		if (mScreenResultClass == null) {
+			throw new RuntimeException("mScreenResultClass is null");
+		}
 		if (!mScreenResultClass.isAssignableFrom(screenResultClass)) {
 			throw new IllegalArgumentException("Invalid screen result class " + screenResultClass.getCanonicalName() + ". Expected " + mScreenResultClass.getCanonicalName());
 		}

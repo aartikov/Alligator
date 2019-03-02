@@ -7,8 +7,8 @@ package me.aartikov.alligator.animations;
  * @author Artur Artikov
  */
 
-import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 
 /**

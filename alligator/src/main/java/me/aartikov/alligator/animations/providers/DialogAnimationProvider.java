@@ -7,7 +7,8 @@ package me.aartikov.alligator.animations.providers;
  * @author Artur Artikov
  */
 
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
@@ -24,5 +25,6 @@ public interface DialogAnimationProvider {
 	 * @param animationData data for an additional animation configuring
 	 * @return an animation that will be used to show a dialog fragment
 	 */
-	DialogAnimation getAnimation(Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
+	@NonNull
+	DialogAnimation getAnimation(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
 }

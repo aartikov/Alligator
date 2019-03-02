@@ -5,6 +5,9 @@ import java.util.Queue;
 
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
 import me.aartikov.alligator.commands.BackToCommand;
@@ -60,16 +63,22 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void bind(NavigationContext navigationContext) {
+	public void bind(@NonNull NavigationContext navigationContext) {
 		checkThatMainThread();
+		if (mNavigationContext != null && mNavigationContext.getActivity() != navigationContext.getActivity()) {
+			return;
+		}
 		mNavigationContext = navigationContext;
 		mActivityResultHandler.setScreenResultListener(mNavigationContext.getScreenResultListener());
 		executeQueuedCommands();
 	}
 
 	@Override
-	public void unbind() {
+	public void unbind(AppCompatActivity activity) {
 		checkThatMainThread();
+		if (mNavigationContext != null && mNavigationContext.getActivity() != activity) {
+			return;
+		}
 		mActivityResultHandler.resetScreenResultListener();
 		mNavigationContext = null;
 	}
@@ -90,12 +99,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screen new screen
 	 */
 	@Override
-	public void goForward(Screen screen) {
+	public void goForward(@NonNull Screen screen) {
 		goForward(screen, null);
 	}
 
 	@Override
-	public void goForward(Screen screen, AnimationData animationData) {
+	public void goForward(@NonNull Screen screen, @Nullable AnimationData animationData) {
 		executeCommand(new ForwardCommand(screen, animationData));
 	}
 
@@ -108,7 +117,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void goBack(AnimationData animationData) {
+	public void goBack(@Nullable AnimationData animationData) {
 		executeCommand(new BackCommand(null, animationData));
 	}
 
@@ -116,12 +125,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * Finishes a current screen and goes back to the previous screen with result. Implemented with {@link BackCommand}.
 	 */
 	@Override
-	public void goBackWithResult(ScreenResult screenResult) {
+	public void goBackWithResult(@NonNull ScreenResult screenResult) {
 		goBackWithResult(screenResult, null);
 	}
 
 	@Override
-	public void goBackWithResult(ScreenResult screenResult, AnimationData animationData) {
+	public void goBackWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
 		executeCommand(new BackCommand(screenResult, animationData));
 	}
 
@@ -131,12 +140,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screenClass screen class for going back
 	 */
 	@Override
-	public void goBackTo(Class<? extends Screen> screenClass) {
+	public void goBackTo(@NonNull Class<? extends Screen> screenClass) {
 		goBackTo(screenClass, null);
 	}
 
 	@Override
-	public void goBackTo(Class<? extends Screen> screenClass, AnimationData animationData) {
+	public void goBackTo(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData) {
 		executeCommand(new BackToCommand(screenClass, null, animationData));
 	}
 
@@ -147,12 +156,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screenResult screen result that will be returned
 	 */
 	@Override
-	public void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult) {
+	public void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult) {
 		goBackToWithResult(screenClass, screenResult, null);
 	}
 
 	@Override
-	public void goBackToWithResult(Class<? extends Screen> screenClass, ScreenResult screenResult, AnimationData animationData) {
+	public void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
 		executeCommand(new BackToCommand(screenClass, screenResult, animationData));
 	}
 
@@ -162,12 +171,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screen new screen
 	 */
 	@Override
-	public void replace(Screen screen) {
+	public void replace(@NonNull Screen screen) {
 		replace(screen, null);
 	}
 
 	@Override
-	public void replace(Screen screen, AnimationData animationData) {
+	public void replace(@NonNull Screen screen, @Nullable AnimationData animationData) {
 		executeCommand(new ReplaceCommand(screen, animationData));
 	}
 
@@ -177,12 +186,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screen new screen
 	 */
 	@Override
-	public void reset(Screen screen) {
+	public void reset(@NonNull Screen screen) {
 		reset(screen, null);
 	}
 
 	@Override
-	public void reset(Screen screen, AnimationData animationData) {
+	public void reset(@NonNull Screen screen, @Nullable AnimationData animationData) {
 		executeCommand(new ResetCommand(screen, animationData));
 	}
 
@@ -195,7 +204,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	@Override
-	public void finish(AnimationData animationData) {
+	public void finish(@Nullable AnimationData animationData) {
 		executeCommand(new FinishCommand(null, animationData));
 	}
 
@@ -207,12 +216,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screenResult screen result that will be returned
 	 */
 	@Override
-	public void finishWithResult(ScreenResult screenResult) {
+	public void finishWithResult(@NonNull ScreenResult screenResult) {
 		finishWithResult(screenResult, null);
 	}
 
 	@Override
-	public void finishWithResult(ScreenResult screenResult, AnimationData animationData) {
+	public void finishWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
 		executeCommand(new FinishCommand(screenResult, animationData));
 	}
 
@@ -222,12 +231,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	 * @param screen screen
 	 */
 	@Override
-	public void switchTo(Screen screen) {
-		executeCommand(new SwitchToCommand(screen, null));
+	public void switchTo(@NonNull Screen screen) {
+		switchTo(screen, null);
 	}
 
 	@Override
-	public void switchTo(Screen screen, AnimationData animationData) {
+	public void switchTo(@NonNull Screen screen, AnimationData animationData) {
 		executeCommand(new SwitchToCommand(screen, animationData));
 	}
 

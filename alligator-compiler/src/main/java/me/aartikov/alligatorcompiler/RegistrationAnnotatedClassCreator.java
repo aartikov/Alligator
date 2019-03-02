@@ -7,8 +7,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 
-import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.alligator.ScreenResult;
+import me.aartikov.alligator.annotations.RegisterScreen;
 
 public class RegistrationAnnotatedClassCreator {
 	private ProcessingUtils utils;
@@ -52,7 +52,7 @@ public class RegistrationAnnotatedClassCreator {
 				return screenType;
 			}
 		}
-		throw new ProcessingException(classElement, "Only Activity, support Fragment and support DialogFragment can be annotated with @RegisterScreen.");
+		throw new ProcessingException(classElement, "Only Activity, AndroidX Fragment and AndroidX DialogFragment can be annotated with @RegisterScreen.");
 	}
 
 	private String obtainScreenClassName(TypeElement classElement) {

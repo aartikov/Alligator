@@ -1,12 +1,13 @@
 package me.aartikov.alligator;
 
-import android.os.Looper;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
+import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
 import me.aartikov.alligator.commands.BackToCommand;
@@ -64,14 +65,20 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	@Override
 	public void bind(@NonNull NavigationContext navigationContext) {
 		checkThatMainThread();
+		if (mNavigationContext != null && mNavigationContext.getActivity() != navigationContext.getActivity()) {
+			return;
+		}
 		mNavigationContext = navigationContext;
 		mActivityResultHandler.setScreenResultListener(mNavigationContext.getScreenResultListener());
 		executeQueuedCommands();
 	}
 
 	@Override
-	public void unbind() {
+	public void unbind(AppCompatActivity activity) {
 		checkThatMainThread();
+		if (mNavigationContext != null && mNavigationContext.getActivity() != activity) {
+			return;
+		}
 		mActivityResultHandler.resetScreenResultListener();
 		mNavigationContext = null;
 	}

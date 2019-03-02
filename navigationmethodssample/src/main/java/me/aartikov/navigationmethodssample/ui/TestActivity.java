@@ -1,12 +1,12 @@
 package me.aartikov.navigationmethodssample.ui;
 
+import java.util.Random;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -89,7 +89,7 @@ public class TestActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 

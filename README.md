@@ -107,7 +107,7 @@ protected void onResumeFragments() {
 
 @Override
 protected void onPause() {
-    mNavigationContextBinder.unbind();
+    mNavigationContextBinder.unbind(this);
     super.onPause();
 }
 ```

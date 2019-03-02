@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 

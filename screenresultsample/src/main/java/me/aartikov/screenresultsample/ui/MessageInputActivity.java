@@ -53,7 +53,7 @@ public class MessageInputActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		mNavigationContextBinder.unbind();
+		mNavigationContextBinder.unbind(this);
 		super.onPause();
 	}
 

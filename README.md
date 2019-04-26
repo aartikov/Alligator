@@ -193,7 +193,7 @@ These types of listeners can be set to `NavigationContext`
 ### Start external activity
 To use an external activity (for example a phone dialer) extend `GeneratedNavigationFactory` and register a screen with a custom intent converter.
 ```java
-public class PhoneDialerConverter extends ImplicitIntentConverter<PhoneDialerScreen> {
+public class PhoneDialerConverter extends OneWayIntentConverter<PhoneDialerScreen> {
 	@Override
 	public Intent createIntent(Context context, PhoneDialerScreen screen) {
 		return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber()));

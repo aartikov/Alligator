@@ -26,7 +26,7 @@ Add the dependencies in module level build.gradle:
 
 ```gradle
 dependencies {
-    compile 'com.github.aartikov.Alligator:alligator:3.0.0'
+    implementation 'com.github.aartikov.Alligator:alligator:3.0.0'
     annotationProcessor 'com.github.aartikov.Alligator:alligator-compiler:3.0.0'
 }
 ```

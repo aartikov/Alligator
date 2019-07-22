@@ -15,6 +15,7 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.exceptions.NavigationException;
+import me.aartikov.alligator.flowmanagers.FragmentFlowManager;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
@@ -65,7 +66,14 @@ public class BackCommand implements Command {
 			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
 			navigationContext.getScreenResultHelper().callScreenResultListener(currentFragment, mScreenResult, navigationContext.getScreenResultListener(), navigationFactory);
 			return true;
-		} else {
+		} else if (navigationContext.getFlowManager() instanceof FragmentFlowManager &&
+                ((FragmentFlowManager) navigationContext.getFlowManager()).getFragmentStack().getFragmentCount() > 1) {
+            return navigationContext.getFlowManager().back(navigationContext.getFlowTransitionListener(),
+                    navigationContext.getScreenResultHelper(),
+                    navigationContext.getScreenResultListener(),
+                    mScreenResult,
+                    mAnimationData);
+        } else{
 			Activity activity = navigationContext.getActivity();
 			if (mScreenResult != null) {
 				navigationContext.getScreenResultHelper().setActivityResult(activity, mScreenResult, navigationFactory);

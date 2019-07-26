@@ -47,6 +47,21 @@ public interface Navigator {
 	void goForward(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
+	 * Adds a new flow screen and goes to it.
+	 *
+	 * @param screen new screen
+	 */
+	void addFlow(@NonNull Screen screen);
+
+	/**
+	 * {@code addFlow} with an animation data.
+	 *
+	 * @param screen        new screen
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void addFlow(@NonNull Screen screen, @Nullable AnimationData animationData);
+
+	/**
 	 * Finishes a current screen and goes back to the previous screen.
 	 */
 	void goBack();
@@ -89,6 +104,21 @@ public interface Navigator {
 	void goBackTo(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
 
 	/**
+	 * Goes back to a flow screen with the given class.
+	 *
+	 * @param screenClass screen class for going back
+	 */
+	void goBackToFlow(@NonNull Class<? extends Screen> screenClass);
+
+	/**
+	 * {@code goBackToFlow} with an animation data.
+	 *
+	 * @param screenClass   screen class for going back
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackToFlow(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
+
+	/**
 	 * Goes back to a screen with the given class and returns result to it.
 	 *
 	 * @param screenClass  screen class for going back
@@ -106,6 +136,23 @@ public interface Navigator {
 	void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
+	 * Goes back to a flow screen with the given class and returns result to it.
+	 *
+	 * @param screenClass  screen class for going back
+	 * @param screenResult screen result that will be returned
+	 */
+	void goBackToFlowWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult);
+
+	/**
+	 * {@code goBackToFlowWithResult} with an animation data.
+	 *
+	 * @param screenClass   screen class for going back
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackToFlowWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
+
+	/**
 	 * Replaces the last screen with a new screen.
 	 *
 	 * @param screen new screen
@@ -119,6 +166,21 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void replace(@NonNull Screen screen, @Nullable AnimationData animationData);
+
+	/**
+	 * Replaces the last flow screen with a new flow screen.
+	 *
+	 * @param screen new screen
+	 */
+	void replaceFlow(@NonNull Screen screen);
+
+	/**
+	 * {@code replaceFlow} with an animation data.
+	 *
+	 * @param screen        new screen
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void replaceFlow(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
 	 * Removes all other screens and adds a new screen.
@@ -136,6 +198,21 @@ public interface Navigator {
 	void reset(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
+	 * Removes all other flow screens and adds a new flow screen.
+	 *
+	 * @param screen new screen
+	 */
+	void resetFlow(@NonNull Screen screen);
+
+	/**
+	 * {@code resetFlow} with an animation data.
+	 *
+	 * @param screen        new screen
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void resetFlow(@NonNull Screen screen, @Nullable AnimationData animationData);
+
+	/**
 	 * Finishes a last screen or a group of screens executing some common task.
 	 */
 	void finish();
@@ -146,6 +223,18 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void finish(@Nullable AnimationData animationData);
+
+	/**
+	 * Finishes a last flow screen.
+	 */
+	void finishFlow();
+
+	/**
+	 * {@code finishFlow} with an animation data.
+	 *
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void finishFlow(@Nullable AnimationData animationData);
 
 	/**
 	 * Finishes a last screen or a group of screens executing some common task and returns a screen result.
@@ -161,6 +250,21 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void finishWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
+
+	/**
+	 * Finishes a last flow screen and returns a screen result.
+	 *
+	 * @param screenResult screen result that will be returned
+	 */
+	void finishFlowWithResult(@NonNull ScreenResult screenResult);
+
+	/**
+	 * {@code finishWithFlowResult} with an animation data.
+	 *
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void finishWithFlowResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Switches screens.

@@ -3,9 +3,8 @@ package me.aartikov.alligator;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.fragment.app.FragmentManager;
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.DefaultDialogAnimationProvider;
@@ -13,6 +12,7 @@ import me.aartikov.alligator.animations.providers.DefaultTransitionAnimationProv
 import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.alligator.commands.Command;
+import me.aartikov.alligator.flowmanagers.FlowManager;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
@@ -45,9 +45,12 @@ public class NavigationContext {
 	private int mContainerId;
 	@Nullable
 	private ScreenSwitcher mScreenSwitcher;
+	@Nullable
+	private FlowManager mFlowManager;
 	private TransitionAnimationProvider mTransitionAnimationProvider;
 	private DialogAnimationProvider mDialogAnimationProvider;
 	private TransitionListener mTransitionListener;
+	private TransitionListener mFlowTransitionListener;
 	private DialogShowingListener mDialogShowingListener;
 	private ScreenResultListener mScreenResultListener;
 	private ScreenSwitchingListener mScreenSwitchingListener;
@@ -67,9 +70,11 @@ public class NavigationContext {
 		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
 		mContainerId = builder.mContainerId;
 		mScreenSwitcher = builder.mScreenSwitcher;
+		mFlowManager = builder.mFlowManager;
 		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
 		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
 		mTransitionListener = builder.mTransitionListener != null ? builder.mTransitionListener : new DefaultTransitionListener();
+		mFlowTransitionListener = builder.mFlowTransitionListener != null ? builder.mFlowTransitionListener : new DefaultTransitionListener();
 		mDialogShowingListener = builder.mDialogShowingListener != null ? builder.mDialogShowingListener : new DefaultDialogShowingListener();
 		mScreenResultListener = builder.mScreenResultListener != null ? builder.mScreenResultListener : new DefaultScreenResultListener();
 		mScreenSwitchingListener = builder.mScreenSwitchingListener != null ? builder.mScreenSwitchingListener : new DefaultScreenSwitchingListener();
@@ -123,6 +128,11 @@ public class NavigationContext {
 	}
 
 	@NonNull
+	public TransitionListener getFlowTransitionListener() {
+		return mFlowTransitionListener;
+	}
+
+	@NonNull
 	public ScreenSwitchingListener getScreenSwitchingListener() {
 		return mScreenSwitchingListener;
 	}
@@ -147,6 +157,11 @@ public class NavigationContext {
 		return mFragmentStack;
 	}
 
+	@Nullable
+	public FlowManager getFlowManager() {
+		return mFlowManager;
+	}
+
 	public ScreenResultHelper getScreenResultHelper() {
 		return mScreenResultHelper;
 	}
@@ -162,11 +177,15 @@ public class NavigationContext {
 		@Nullable
 		private ScreenSwitcher mScreenSwitcher;
 		@Nullable
+		private FlowManager mFlowManager;
+		@Nullable
 		private TransitionAnimationProvider mTransitionAnimationProvider;
 		@Nullable
 		private DialogAnimationProvider mDialogAnimationProvider;
 		@Nullable
 		private TransitionListener mTransitionListener;
+		@Nullable
+		private TransitionListener mFlowTransitionListener;
 		@Nullable
 		private ScreenResultListener mScreenResultListener;
 		@Nullable
@@ -223,6 +242,18 @@ public class NavigationContext {
 		}
 
 		/**
+		 * Sets a flow manager.
+		 *
+		 * @param flowManager flow manager that will be used to navigate between flow screens by {@code addFlow, replaceFlow, resetFlow, backToFlow} and {@code finishFlow} methods of {@link Navigator}
+		 * @return this object
+		 */
+		@NonNull
+		public Builder flowManager(@Nullable FlowManager flowManager) {
+			mFlowManager = flowManager;
+			return this;
+		}
+
+		/**
 		 * Sets a provider of {@link TransitionAnimation}s.
 		 *
 		 * @param transitionAnimationProvider provider of {@link TransitionAnimation}s. By default a provider that returns {@code TransitionAnimation.DEFAULT} is used.
@@ -255,6 +286,18 @@ public class NavigationContext {
 		@NonNull
 		public Builder transitionListener(@Nullable TransitionListener transitionListener) {
 			mTransitionListener = transitionListener;
+			return this;
+		}
+
+		/**
+		 * Sets a flow transition listener. This listener is called after a flow screen transition.
+		 *
+		 * @param transitionListener transition listener.
+		 * @return this object
+		 */
+		@NonNull
+		public Builder flowTransitionListener(@Nullable TransitionListener transitionListener) {
+			mFlowTransitionListener = transitionListener;
 			return this;
 		}
 

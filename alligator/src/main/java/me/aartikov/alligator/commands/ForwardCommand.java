@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
@@ -61,7 +62,7 @@ public class ForwardCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		if (destination.getScreenResultClass() != null) {
@@ -70,7 +71,7 @@ public class ForwardCommand extends BaseCommand {
 			activityHelper.start(intent, animation);
 		}
 
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, true);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
 		return false;
 	}
 
@@ -92,11 +93,11 @@ public class ForwardCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, false, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, DestinationType.FRAGMENT, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		fragmentStack.push(fragment, animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, screenClassFrom, screenClassTo, false);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.FORWARD, DestinationType.FRAGMENT, screenClassFrom, screenClassTo);
 		return true;
 	}
 

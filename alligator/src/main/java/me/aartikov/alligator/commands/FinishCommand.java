@@ -1,9 +1,11 @@
 package me.aartikov.alligator.commands;
 
 import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -44,11 +46,11 @@ public class FinishCommand implements Command {
 		Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null && screenClassTo != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		navigationContext.getActivityHelper().finish(animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
 		return false;
 	}
 }

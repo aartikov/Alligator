@@ -1,5 +1,6 @@
 package me.aartikov.alligator.screenswitchers;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -32,7 +33,8 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory;
  */
 public class FragmentScreenSwitcher implements ScreenSwitcher {
 	public interface AnimationProvider {
-		TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData);
+		@NonNull
+		TransitionAnimation getAnimation(@NonNull Screen screenFrom, @NonNull Screen screenTo, @Nullable AnimationData animationData);
 	}
 
 	private FragmentSwitcher fragmentSwitcher;
@@ -101,7 +103,8 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 	private static AnimationProvider createDefaultAnimationProvider() {
 		return new AnimationProvider() {
 			@Override
-			public TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData) {
+			@NonNull
+			public TransitionAnimation getAnimation(@NonNull Screen screenFrom, @NonNull Screen screenTo, @Nullable AnimationData animationData) {
 				return TransitionAnimation.DEFAULT;
 			}
 		};

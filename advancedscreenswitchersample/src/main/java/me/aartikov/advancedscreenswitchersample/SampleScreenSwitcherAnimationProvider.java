@@ -1,5 +1,8 @@
 package me.aartikov.advancedscreenswitchersample;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import me.aartikov.alligator.Screen;
@@ -22,9 +25,10 @@ public class SampleScreenSwitcherAnimationProvider implements FragmentScreenSwit
 	}
 
 	@Override
-	public TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData) {
-		int indexFrom = mTabScreens.indexOf (screenFrom);
-		int indexTo = mTabScreens.indexOf (screenTo);
+	@NonNull
+	public TransitionAnimation getAnimation(@NonNull Screen screenFrom, @NonNull Screen screenTo, @Nullable AnimationData animationData) {
+		int indexFrom = mTabScreens.indexOf(screenFrom);
+		int indexTo = mTabScreens.indexOf(screenTo);
 		if (indexTo > indexFrom) {
 			return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
 		} else {

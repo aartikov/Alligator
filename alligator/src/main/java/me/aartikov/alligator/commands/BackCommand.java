@@ -2,12 +2,14 @@ package me.aartikov.alligator.commands;
 
 import android.app.Activity;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import java.util.List;
+
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -59,21 +61,21 @@ public class BackCommand implements Command {
 			Class<? extends Screen> screenClassTo = navigationFactory.getScreenClass(previousFragment);
 			TransitionAnimation animation = TransitionAnimation.DEFAULT;
 			if (screenClassFrom != null && screenClassTo != null) {
-				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.FRAGMENT, screenClassFrom, screenClassTo, mAnimationData);
 			}
 
 			fragmentStack.pop(animation);
-			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.FRAGMENT, screenClassFrom, screenClassTo);
 			navigationContext.getScreenResultHelper().callScreenResultListener(currentFragment, mScreenResult, navigationContext.getScreenResultListener(), navigationFactory);
 			return true;
 		} else if (navigationContext.getFlowManager() instanceof FragmentFlowManager &&
-                ((FragmentFlowManager) navigationContext.getFlowManager()).getFragmentStack().getFragmentCount() > 1) {
-            return navigationContext.getFlowManager().back(navigationContext.getFlowTransitionListener(),
-                    navigationContext.getScreenResultHelper(),
-                    navigationContext.getScreenResultListener(),
-                    mScreenResult,
-                    mAnimationData);
-        } else{
+				((FragmentFlowManager) navigationContext.getFlowManager()).getFragmentStack().getFragmentCount() > 1) {
+			return navigationContext.getFlowManager().back(navigationContext.getFlowTransitionListener(),
+					navigationContext.getScreenResultHelper(),
+					navigationContext.getScreenResultListener(),
+					mScreenResult,
+					mAnimationData);
+		} else {
 			Activity activity = navigationContext.getActivity();
 			if (mScreenResult != null) {
 				navigationContext.getScreenResultHelper().setActivityResult(activity, mScreenResult, navigationFactory);
@@ -83,11 +85,11 @@ public class BackCommand implements Command {
 			Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
 			TransitionAnimation animation = TransitionAnimation.DEFAULT;
 			if (screenClassFrom != null && screenClassTo != null) {
-				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+				animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
 			}
 
 			navigationContext.getActivityHelper().finish(animation);
-			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+			navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
 			return false;
 		}
 	}

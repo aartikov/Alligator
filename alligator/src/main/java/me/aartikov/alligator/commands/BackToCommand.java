@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -66,11 +67,11 @@ public class BackToCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreenClass;
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, true, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		navigationContext.getActivityHelper().start(intent, animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, true);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
 		return false;
 	}
 
@@ -101,11 +102,11 @@ public class BackToCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreenClass;
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, false, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.FRAGMENT, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		fragmentStack.popUntil(requiredFragment, animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, screenClassFrom, screenClassTo, false);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.FRAGMENT, screenClassFrom, screenClassTo);
 		if (mScreenResult != null || toPrevious) {
 			navigationContext.getScreenResultHelper().callScreenResultListener(currentFragment, mScreenResult, navigationContext.getScreenResultListener(), navigationFactory);
 		}

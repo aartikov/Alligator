@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
@@ -61,12 +62,12 @@ public class ReplaceCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, true, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.REPLACE, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		activityHelper.start(intent, animation);
 		activityHelper.finish(animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, true);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
 		return false;
 	}
 
@@ -84,11 +85,11 @@ public class ReplaceCommand extends BaseCommand {
 		Class<? extends Screen> screenClassTo = mScreen.getClass();
 		TransitionAnimation animation = TransitionAnimation.DEFAULT;
 		if (screenClassFrom != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, false, mAnimationData);
+			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.REPLACE, DestinationType.FRAGMENT, screenClassFrom, screenClassTo, mAnimationData);
 		}
 
 		fragmentStack.replace(fragment, animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, screenClassFrom, screenClassTo, false);
+		navigationContext.getTransitionListener().onScreenTransition(TransitionType.REPLACE, DestinationType.FRAGMENT, screenClassFrom, screenClassTo);
 		return true;
 	}
 

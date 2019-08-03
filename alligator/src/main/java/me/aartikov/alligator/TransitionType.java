@@ -8,7 +8,7 @@ package me.aartikov.alligator;
  */
 
 /**
- * Type of a screen transition.
+ * Type of screen transition for {@link me.aartikov.alligator.listeners.TransitionListener} and {@link me.aartikov.alligator.animations.providers.TransitionAnimationProvider}.
  */
 public enum TransitionType {
 	FORWARD,

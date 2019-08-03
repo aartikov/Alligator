@@ -2,6 +2,7 @@ package me.aartikov.alligator.commands;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -13,6 +14,9 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.ActivityResolvingException;
 import me.aartikov.alligator.exceptions.MissingFragmentStackException;
 import me.aartikov.alligator.exceptions.NavigationException;
@@ -20,9 +24,6 @@ import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 29.12.2016
@@ -46,9 +47,9 @@ public class ResetCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull ActivityScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
-		Intent intent = screenImplementation.createIntent(activity, mScreen, null);
+		Intent intent = destination.createIntent(activity, mScreen, null);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 		ActivityHelper activityHelper = navigationContext.getActivityHelper();
@@ -69,12 +70,12 @@ public class ResetCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull FragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
 			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
 
-		Fragment fragment = screenImplementation.createFragment(mScreen);
+		Fragment fragment = destination.createFragment(mScreen);
 		FragmentStack fragmentStack = navigationContext.getFragmentStack();
 		Fragment currentFragment = fragmentStack.getCurrentFragment();
 
@@ -91,13 +92,13 @@ public class ResetCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull DialogFragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		DialogFragmentHelper dialogFragmentHelper = navigationContext.getDialogFragmentHelper();
 		while (dialogFragmentHelper.isDialogVisible()) {
 			dialogFragmentHelper.hideDialog();
 		}
 
-		DialogFragment dialogFragment = screenImplementation.createDialogFragment(mScreen);
+		DialogFragment dialogFragment = destination.createDialogFragment(mScreen);
 		DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 		dialogFragmentHelper.showDialog(dialogFragment, animation);
 		navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());

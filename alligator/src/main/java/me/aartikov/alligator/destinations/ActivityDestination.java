@@ -1,8 +1,9 @@
-package me.aartikov.alligator.screenimplementations;
+package me.aartikov.alligator.destinations;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,7 +21,7 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
  * @author Artur Artikov
  */
 
-public class ActivityScreenImplementation implements ScreenImplementation {
+public class ActivityDestination implements Destination {
 	private Class<? extends Screen> mScreenClass;
 	@Nullable
 	private Class<? extends Activity> mActivityClass;
@@ -34,13 +35,13 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 
 	private ScreenClassHelper mScreenClassHelper;
 
-	public ActivityScreenImplementation(@NonNull Class<? extends Screen> screenClass,
-	                                    @Nullable Class<? extends Activity> activityClass,
-	                                    @NonNull IntentConverter<? extends Screen> intentConverter,
-	                                    @Nullable Class<? extends ScreenResult> screenResultClass,
-	                                    @Nullable ScreenResultConverter<? extends ScreenResult> screenResultConverter,
-	                                    int requestCode,
-	                                    @NonNull ScreenClassHelper screenClassHelper) {
+	public ActivityDestination(@NonNull Class<? extends Screen> screenClass,
+							   @Nullable Class<? extends Activity> activityClass,
+							   @NonNull IntentConverter<? extends Screen> intentConverter,
+							   @Nullable Class<? extends ScreenResult> screenResultClass,
+							   @Nullable ScreenResultConverter<? extends ScreenResult> screenResultConverter,
+							   int requestCode,
+							   @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mActivityClass = activityClass;
 		mIntentConverter = intentConverter;
@@ -50,10 +51,10 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 		mScreenClassHelper = screenClassHelper;
 	}
 
-	public ActivityScreenImplementation(@NonNull Class<? extends Screen> screenClass,
-	                                    @Nullable Class<? extends Activity> activityClass,
-	                                    @NonNull IntentConverter<? extends Screen> intentConverter,
-	                                    @NonNull ScreenClassHelper screenClassHelper) {
+	public ActivityDestination(@NonNull Class<? extends Screen> screenClass,
+							   @Nullable Class<? extends Activity> activityClass,
+							   @NonNull IntentConverter<? extends Screen> intentConverter,
+							   @NonNull ScreenClassHelper screenClassHelper) {
 		this(screenClass, activityClass, intentConverter, null, null, -1, screenClassHelper);
 	}
 
@@ -90,7 +91,6 @@ public class ActivityScreenImplementation implements ScreenImplementation {
 		return ((ScreenResultConverter<ScreenResult>) mScreenResultConverter).createActivityResult(screenResult);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Nullable
 	public Screen getScreen(Activity activity) {
 		return mIntentConverter.getScreen(activity.getIntent());

@@ -8,25 +8,26 @@ package me.aartikov.alligator.navigationfactories;
  */
 
 import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
+import me.aartikov.alligator.destinations.Destination;
 
 /**
  * Associates {@link Screen} with its Android implementation.
  */
 public interface NavigationFactory {
 	/**
-	 * Returns {@link ScreenImplementation} for a given screen.
+	 * Returns {@link Destination} for a given screen.
 	 *
 	 * @param screenClass screen class
-	 * @return screen implementation or null if there is no implementation associated with this screen
+	 * @return destination or null if there is no destination associated with this screen
 	 */
 	@Nullable
-	ScreenImplementation getScreenImplementation(@NonNull Class<? extends Screen> screenClass);
+	Destination getDestination(@NonNull Class<? extends Screen> screenClass);
 
 	/**
 	 * Retrieves screen class from an activity.

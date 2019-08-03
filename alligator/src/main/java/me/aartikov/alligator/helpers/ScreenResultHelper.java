@@ -2,6 +2,7 @@ package me.aartikov.alligator.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -10,14 +11,14 @@ import androidx.fragment.app.Fragment;
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.InvalidScreenResultException;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 03.12.2017
@@ -34,15 +35,15 @@ public class ScreenResultHelper {
 	public static final String KEY_RESULT_CODE = "me.aartikov.alligator.KEY_RESULT_CODE";
 
 	public void setActivityResult(@NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
-		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
-		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
+		ActivityDestination activityDestination = getAndValidateActivityDestination(activity, screenResult, navigationFactory);
+		ActivityResult activityResult = activityDestination.createActivityResult(screenResult);
 		activity.setResult(activityResult.getResultCode(), activityResult.getIntent());
 	}
 
 	public void setResultToIntent(@NonNull Intent intent, @NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
-		ActivityScreenImplementation activityScreenImplementation = getAndValidateActivityScreenImplementation(activity, screenResult, navigationFactory);
-		ActivityResult activityResult = activityScreenImplementation.createActivityResult(screenResult);
-		intent.putExtra(KEY_REQUEST_CODE, activityScreenImplementation.getRequestCode());
+		ActivityDestination activityDestination = getAndValidateActivityDestination(activity, screenResult, navigationFactory);
+		ActivityResult activityResult = activityDestination.createActivityResult(screenResult);
+		intent.putExtra(KEY_REQUEST_CODE, activityDestination.getRequestCode());
 		intent.putExtra(KEY_RESULT_CODE, activityResult.getResultCode());
 		Intent resultIntent = activityResult.getIntent();
 		if (resultIntent != null) {
@@ -51,28 +52,28 @@ public class ScreenResultHelper {
 	}
 
 	@NonNull
-	private ActivityScreenImplementation getAndValidateActivityScreenImplementation(@NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	private ActivityDestination getAndValidateActivityDestination(@NonNull Activity activity, @NonNull ScreenResult screenResult, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Class<? extends Screen> screenClass = navigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + activity.getClass().getSimpleName());
 		}
 
-		ActivityScreenImplementation activityScreenImplementation = (ActivityScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
-		if (activityScreenImplementation == null) {
-			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+		ActivityDestination activityDestination = (ActivityDestination) navigationFactory.getDestination(screenClass);
+		if (activityDestination == null) {
+			throw new ScreenRegistrationException("Failed to get a destination for " + screenClass.getSimpleName());
 		}
 
-		if (activityScreenImplementation.getScreenResultClass() == null) {
+		if (activityDestination.getScreenResultClass() == null) {
 			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result.");
 		}
 
-		Class<? extends ScreenResult> supportedScreenResultClass = activityScreenImplementation.getScreenResultClass();
+		Class<? extends ScreenResult> supportedScreenResultClass = activityDestination.getScreenResultClass();
 		if (!supportedScreenResultClass.isAssignableFrom(screenResult.getClass())) {
 			throw new InvalidScreenResultException("Screen " + screenClass.getSimpleName() + " can't return a result of class " + screenResult.getClass().getCanonicalName() +
 			                                       ". It returns a result of class " + supportedScreenResultClass.getCanonicalName());
 		}
 
-		return activityScreenImplementation;
+		return activityDestination;
 	}
 
 	public void callScreenResultListener(@NonNull Fragment fragment, @Nullable ScreenResult screenResult, @NonNull ScreenResultListener screenResultListener, @NonNull NavigationFactory navigationFactory) throws NavigationException {
@@ -81,12 +82,12 @@ public class ScreenResultHelper {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + fragment.getClass().getSimpleName());
 		}
 
-		FragmentScreenImplementation fragmentScreenImplementation = (FragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
-		if (fragmentScreenImplementation == null) {
-			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+		FragmentDestination fragmentDestination = (FragmentDestination) navigationFactory.getDestination(screenClass);
+		if (fragmentDestination == null) {
+			throw new ScreenRegistrationException("Failed to get a destination for " + screenClass.getSimpleName());
 		}
 
-		Class<? extends ScreenResult> supportedScreenResultClass = fragmentScreenImplementation.getScreenResultClass();
+		Class<? extends ScreenResult> supportedScreenResultClass = fragmentDestination.getScreenResultClass();
 		if (supportedScreenResultClass == null) {
 			if (screenResult == null) {
 				return;
@@ -109,12 +110,12 @@ public class ScreenResultHelper {
 			throw new ScreenRegistrationException("Failed to get a screen class for " + dialogFragment.getClass().getSimpleName());
 		}
 
-		DialogFragmentScreenImplementation dialogFragmentScreenImplementation = (DialogFragmentScreenImplementation) navigationFactory.getScreenImplementation(screenClass);
-		if (dialogFragmentScreenImplementation == null) {
-			throw new ScreenRegistrationException("Failed to get a screen implementation for " + screenClass.getSimpleName());
+		DialogFragmentDestination dialogFragmentDestination = (DialogFragmentDestination) navigationFactory.getDestination(screenClass);
+		if (dialogFragmentDestination == null) {
+			throw new ScreenRegistrationException("Failed to get a destination for " + screenClass.getSimpleName());
 		}
 
-		Class<? extends ScreenResult> supportedScreenResultClass = dialogFragmentScreenImplementation.getScreenResultClass();
+		Class<? extends ScreenResult> supportedScreenResultClass = dialogFragmentDestination.getScreenResultClass();
 		if (supportedScreenResultClass == null) {
 			if (screenResult == null) {
 				return;

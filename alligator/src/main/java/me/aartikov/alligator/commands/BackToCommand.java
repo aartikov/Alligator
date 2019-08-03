@@ -3,17 +3,21 @@ package me.aartikov.alligator.commands;
 import android.app.Activity;
 import android.content.Intent;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.List;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.MissingFragmentStackException;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.NotSupportedOperationException;
@@ -21,9 +25,6 @@ import me.aartikov.alligator.exceptions.ScreenNotFoundException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 11.02.2017
@@ -50,9 +51,9 @@ public class BackToCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull ActivityScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
-		Intent intent = screenImplementation.createEmptyIntent(activity, mScreenClass);
+		Intent intent = destination.createEmptyIntent(activity, mScreenClass);
 		if (intent == null) {
 			throw new ScreenRegistrationException("Can't create intent for a screen " + mScreenClass.getSimpleName());
 		}
@@ -74,7 +75,7 @@ public class BackToCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull FragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
 			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
@@ -112,7 +113,7 @@ public class BackToCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull DialogFragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		throw new NotSupportedOperationException("BackTo command is not supported for dialog fragments.");
 	}
 }

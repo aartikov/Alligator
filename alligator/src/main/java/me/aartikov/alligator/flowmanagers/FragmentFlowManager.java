@@ -1,12 +1,13 @@
 package me.aartikov.alligator.flowmanagers;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import java.util.List;
+
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.TransitionType;
@@ -14,6 +15,8 @@ import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.DefaultTransitionAnimationProvider;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
+import me.aartikov.alligator.destinations.Destination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenNotFoundException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
@@ -22,8 +25,6 @@ import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.listeners.TransitionListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
 /**
  * Date: 22.07.2019
@@ -125,8 +126,8 @@ public class FragmentFlowManager implements FlowManager {
                           @NonNull ScreenResultListener screenResultListener,
                           @Nullable ScreenResult screenResult,
                           @Nullable AnimationData animationData) throws NavigationException {
-        ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClassTo);
-        if (screenImplementation instanceof FragmentScreenImplementation) {
+        Destination destination = mNavigationFactory.getDestination(screenClassTo);
+        if (destination instanceof FragmentDestination) {
             List<Fragment> fragments = mFragmentStack.getFragments();
             Fragment requiredFragment = null;
             boolean toPrevious = false;
@@ -168,9 +169,9 @@ public class FragmentFlowManager implements FlowManager {
     public boolean add(@NonNull Screen screen,
                        @NonNull TransitionListener transitionListener,
                        @Nullable AnimationData animationData) throws NavigationException {
-        ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screen.getClass());
-        if (screenImplementation instanceof FragmentScreenImplementation) {
-            Fragment fragment = ((FragmentScreenImplementation) screenImplementation).createFragment(screen);
+        Destination destination = mNavigationFactory.getDestination(screen.getClass());
+        if (destination instanceof FragmentDestination) {
+            Fragment fragment = ((FragmentDestination) destination).createFragment(screen);
             if (fragment instanceof DialogFragment) {
                 throw new ScreenRegistrationException("DialogFragment is used as a flow Fragment.");
             }
@@ -200,9 +201,9 @@ public class FragmentFlowManager implements FlowManager {
     public boolean replace(@NonNull Screen screen,
                            @NonNull TransitionListener transitionListener,
                            @Nullable AnimationData animationData) throws NavigationException {
-        ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screen.getClass());
-        if (screenImplementation instanceof FragmentScreenImplementation) {
-            Fragment fragment = ((FragmentScreenImplementation) screenImplementation).createFragment(screen);
+        Destination destination = mNavigationFactory.getDestination(screen.getClass());
+        if (destination instanceof FragmentDestination) {
+            Fragment fragment = ((FragmentDestination) destination).createFragment(screen);
             if (fragment instanceof DialogFragment) {
                 throw new ScreenRegistrationException("DialogFragment is used as a flow Fragment.");
             }
@@ -232,9 +233,9 @@ public class FragmentFlowManager implements FlowManager {
     public boolean reset(@NonNull Screen screen,
                          @NonNull TransitionListener transitionListener,
                          @Nullable AnimationData animationData) throws NavigationException {
-        ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screen.getClass());
-        if (screenImplementation instanceof FragmentScreenImplementation) {
-            Fragment fragment = ((FragmentScreenImplementation) screenImplementation).createFragment(screen);
+        Destination destination = mNavigationFactory.getDestination(screen.getClass());
+        if (destination instanceof FragmentDestination) {
+            Fragment fragment = ((FragmentDestination) destination).createFragment(screen);
             if (fragment instanceof DialogFragment) {
                 throw new ScreenRegistrationException("DialogFragment is used as a flow Fragment.");
             }

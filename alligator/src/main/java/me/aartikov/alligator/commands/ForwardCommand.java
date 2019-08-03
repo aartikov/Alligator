@@ -2,6 +2,7 @@ package me.aartikov.alligator.commands;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -13,6 +14,9 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.ActivityResolvingException;
 import me.aartikov.alligator.exceptions.MissingFragmentStackException;
 import me.aartikov.alligator.exceptions.NavigationException;
@@ -20,9 +24,6 @@ import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
 
 /**
  * Date: 29.12.2016
@@ -46,10 +47,10 @@ public class ForwardCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull ActivityScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		Activity activity = navigationContext.getActivity();
 		Class<? extends Screen> previousScreenClass = navigationFactory.getScreenClass(activity);
-		Intent intent = screenImplementation.createIntent(activity, mScreen, previousScreenClass);
+		Intent intent = destination.createIntent(activity, mScreen, previousScreenClass);
 
 		ActivityHelper activityHelper = navigationContext.getActivityHelper();
 		if (!activityHelper.resolve(intent)) {
@@ -63,8 +64,8 @@ public class ForwardCommand extends BaseCommand {
 			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.FORWARD, screenClassFrom, screenClassTo, true, mAnimationData);
 		}
 
-		if (screenImplementation.getScreenResultClass() != null) {
-			activityHelper.startForResult(intent, screenImplementation.getRequestCode(), animation);
+		if (destination.getScreenResultClass() != null) {
+			activityHelper.startForResult(intent, destination.getRequestCode(), animation);
 		} else {
 			activityHelper.start(intent, animation);
 		}
@@ -74,12 +75,12 @@ public class ForwardCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull FragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+	public boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
 		if (navigationContext.getFragmentStack() == null) {
 			throw new MissingFragmentStackException("ContainerId is not set.");
 		}
 
-		Fragment fragment = screenImplementation.createFragment(mScreen);
+		Fragment fragment = destination.createFragment(mScreen);
 		if (fragment instanceof DialogFragment) {
 			throw new ScreenRegistrationException("DialogFragment is used as usual Fragment.");
 		}
@@ -100,8 +101,8 @@ public class ForwardCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull DialogFragmentScreenImplementation screenImplementation, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
-		DialogFragment dialogFragment = screenImplementation.createDialogFragment(mScreen);
+	public boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
+		DialogFragment dialogFragment = destination.createDialogFragment(mScreen);
 		DialogAnimation animation = navigationContext.getDialogAnimationProvider().getAnimation(mScreen.getClass(), mAnimationData);
 		navigationContext.getDialogFragmentHelper().showDialog(dialogFragment, animation);
 		navigationContext.getDialogShowingListener().onDialogShown(mScreen.getClass());

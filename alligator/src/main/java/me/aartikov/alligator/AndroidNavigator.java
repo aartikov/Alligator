@@ -1,13 +1,14 @@
 package me.aartikov.alligator;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.AddFlowCommand;
 import me.aartikov.alligator.commands.BackCommand;
@@ -25,12 +26,6 @@ import me.aartikov.alligator.commands.SwitchToCommand;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 29.12.2016
- * Time: 10:13
- *
- * @author Artur Artikov
- */
 
 /**
  * Main library object. It translates calls of navigation methods to commands and puts them to a command queue.

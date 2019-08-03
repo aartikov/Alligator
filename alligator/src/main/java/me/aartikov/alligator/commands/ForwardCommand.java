@@ -26,12 +26,6 @@ import me.aartikov.alligator.helpers.ActivityHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 29.12.2016
- * Time: 10:22
- *
- * @author Artur Artikov
- */
 
 /**
  * Command implementation for {@code goForward} method of {@link me.aartikov.alligator.AndroidNavigator}.

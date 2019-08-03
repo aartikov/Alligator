@@ -14,12 +14,6 @@ import me.aartikov.alligator.converters.IntentConverter;
 import me.aartikov.alligator.converters.ScreenResultConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
-/**
- * Date: 15.10.2017
- * Time: 11:21
- *
- * @author Artur Artikov
- */
 
 public class ActivityDestination implements Destination {
 	private Class<? extends Screen> mScreenClass;

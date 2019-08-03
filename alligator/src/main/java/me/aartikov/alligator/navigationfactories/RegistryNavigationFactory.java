@@ -28,12 +28,6 @@ import me.aartikov.alligator.destinations.DialogFragmentDestination;
 import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
-/**
- * Date: 11.02.2017
- * Time: 11:41
- *
- * @author Artur Artikov
- */
 
 /**
  * Navigation factory with screen registration methods.
@@ -203,7 +197,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(@NonNull Class<ScreenT> screenClass, @NonNull Class<? extends Fragment> fragmentClass) {
-		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<ScreenT>(screenClass, fragmentClass);
+		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<>(screenClass, fragmentClass);
 		registerFragment(screenClass, converter);
 	}
 

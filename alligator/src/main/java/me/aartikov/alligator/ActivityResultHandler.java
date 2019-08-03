@@ -11,12 +11,6 @@ import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 12.03.2017
- * Time: 11:06
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for handling a screen result.

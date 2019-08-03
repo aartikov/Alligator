@@ -2,6 +2,7 @@ package me.aartikov.alligator.flowmanagers;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -11,12 +12,6 @@ import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.listeners.TransitionListener;
 
-/**
- * Date: 22.07.2019
- * Time: 14:22
- *
- * @author Terenfear
- */
 
 /**
  * Used to navigate between flow screens which can hold their own navigation stacks

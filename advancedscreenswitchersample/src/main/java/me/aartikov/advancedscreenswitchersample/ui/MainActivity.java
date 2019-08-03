@@ -1,20 +1,21 @@
 package me.aartikov.advancedscreenswitchersample.ui;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.advancedscreenswitchersample.R;
@@ -31,12 +32,7 @@ import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
-/**
- * Date: 21.01.2016
- * Time: 23:30
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
 	@BindView(R.id.bottom_bar)
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
-		if (fragment != null && fragment instanceof ContainerIdProvider) {
+		if (fragment instanceof ContainerIdProvider) {
 			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
 					.fragmentManager(fragment.getChildFragmentManager());       // Use child fragment manager for nested navigation
 		}

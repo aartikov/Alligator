@@ -9,12 +9,6 @@ import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
 
-/**
- * Date: 24.02.2017
- * Time: 19:14
- *
- * @author Artur Artikov
- */
 
 /**
  * Default implementation of {@link TransitionAnimationProvider}. Always returns {@code TransitionAnimation.DEFAULT}.

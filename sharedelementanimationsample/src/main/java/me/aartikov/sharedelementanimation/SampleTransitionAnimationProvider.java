@@ -23,12 +23,7 @@ import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.sharedelementanimation.ui.SharedElementProvider;
 
-/**
- * Date: 08.05.2017
- * Time: 01:47
- *
- * @author Artur Artikov
- */
+
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	private AppCompatActivity mActivity;
 

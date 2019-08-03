@@ -4,12 +4,6 @@ import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 09.05.2017
- * Time: 16:21
- *
- * @author Artur Artikov
- */
 
 /**
  * Dialog showing listener that does nothing.

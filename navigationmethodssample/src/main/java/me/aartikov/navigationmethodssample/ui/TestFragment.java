@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Random;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -21,12 +23,7 @@ import me.aartikov.navigationmethodssample.R;
 import me.aartikov.navigationmethodssample.SampleApplication;
 import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
 
-/**
- * Date: 29.12.2016
- * Time: 11:33
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(TestSmallScreen.class)
 public class TestFragment extends Fragment {
 	@BindView(R.id.root_view)
@@ -55,12 +52,12 @@ public class TestFragment extends Fragment {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_test, container, false);
 	}
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 

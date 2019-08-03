@@ -1,22 +1,16 @@
 package me.aartikov.alligator.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.aartikov.alligator.animations.TransitionAnimation;
 
-/**
- * Date: 13.05.2017
- * Time: 13:45
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for fragment switching.

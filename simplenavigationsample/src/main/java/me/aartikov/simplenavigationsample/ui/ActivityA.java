@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -14,12 +15,7 @@ import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
 import me.aartikov.simplenavigationsample.screens.ScreenA;
 import me.aartikov.simplenavigationsample.screens.ScreenB;
 
-/**
- * Date: 22.01.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(ScreenA.class)
 public class ActivityA extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();

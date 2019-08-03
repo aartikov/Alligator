@@ -7,12 +7,6 @@ import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.DialogAnimation;
 
-/**
- * Date: 26.03.2017
- * Time: 12:41
- *
- * @author Artur Artikov
- */
 
 /**
  * Default implementation of {@link DialogAnimationProvider}. Always returns {@code DialogAnimation.DEFAULT}.

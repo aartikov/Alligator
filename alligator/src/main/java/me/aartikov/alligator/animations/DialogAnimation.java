@@ -3,12 +3,6 @@ package me.aartikov.alligator.animations;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-/**
- * Date: 26.03.2017
- * Time: 12:37
- *
- * @author Artur Artikov
- */
 
 /**
  * Animation that played when a dialog fragment is shown.

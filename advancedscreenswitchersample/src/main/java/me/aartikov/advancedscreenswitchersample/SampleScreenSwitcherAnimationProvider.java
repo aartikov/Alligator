@@ -11,12 +11,7 @@ import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
-/**
- * Date: 5/15/2017
- * Time: 15:02
- *
- * @author Artur Artikov
- */
+
 public class SampleScreenSwitcherAnimationProvider implements FragmentScreenSwitcher.AnimationProvider {
 	private List<Screen> mTabScreens;
 

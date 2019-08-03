@@ -26,12 +26,6 @@ import me.aartikov.alligator.helpers.DialogFragmentHelper;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 29.12.2016
- * Time: 14:30
- *
- * @author Artur Artikov
- */
 
 /**
  * Command implementation for {@code reset} method of {@link me.aartikov.alligator.AndroidNavigator}.

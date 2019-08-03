@@ -27,12 +27,6 @@ import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.helpers.FragmentStack;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 11.02.2017
- * Time: 11:14
- *
- * @author Artur Artikov
- */
 
 /**
  * Command implementation for {@code goBackTo} method of {@link me.aartikov.alligator.AndroidNavigator}.

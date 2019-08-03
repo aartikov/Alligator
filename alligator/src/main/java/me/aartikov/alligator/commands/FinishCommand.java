@@ -15,12 +15,6 @@ import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 12.02.2017
- * Time: 0:53
- *
- * @author Artur Artikov
- */
 
 /**
  * Command implementation for {@code finish} method and {@code finishWithResult} method of {@link me.aartikov.alligator.AndroidNavigator}.

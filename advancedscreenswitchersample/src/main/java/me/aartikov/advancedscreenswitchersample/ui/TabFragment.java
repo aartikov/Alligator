@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -18,12 +20,7 @@ import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.annotations.RegisterScreen;
 
-/**
- * Date: 21.01.2016
- * Time: 23:30
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(TabScreen.class)
 public class TabFragment extends Fragment implements ContainerIdProvider {
 	@BindView(R.id.name_text_view)
@@ -34,12 +31,12 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_tab, container, false);
 	}
 
 	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mButterKnifeUnbinder = ButterKnife.bind(this, view);
 

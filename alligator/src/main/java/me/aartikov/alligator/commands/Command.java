@@ -7,12 +7,6 @@ import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 29.12.2016
- * Time: 10:14
- *
- * @author Artur Artikov
- */
 
 /**
  * Command executed by a {@link AndroidNavigator}.

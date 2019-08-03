@@ -4,19 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import exp.terenfear.singleactivitynavigation.flowcontainer.FlowContainer
+import exp.terenfear.singleactivitynavigation.flowcontainer.letter.LetterFlowScreen
 import me.aartikov.alligator.NavigationContext
 import me.aartikov.alligator.flowmanagers.FragmentFlowManager
 import me.aartikov.alligator.listeners.ScreenResultListener
 import me.aartikov.alligator.listeners.TransitionListener
-import exp.terenfear.singleactivitynavigation.flowcontainer.FlowContainer
-import exp.terenfear.singleactivitynavigation.flowcontainer.letter.LetterFlowScreen
 
-/**
- * Date: 22.07.2019
- * Time: 19:34
- *
- * @author Terenfear
- */
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var flowManager: FragmentFlowManager

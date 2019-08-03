@@ -7,12 +7,6 @@ import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
 
-/**
- * Date: 09.05.2017
- * Time: 16:06
- *
- * @author Artur Artikov
- */
 
 /**
  * Interface for listening of screen transition.

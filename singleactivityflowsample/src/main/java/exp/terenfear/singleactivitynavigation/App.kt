@@ -8,12 +8,7 @@ import me.aartikov.alligator.ScreenResolver
 import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory
 import me.aartikov.alligator.navigationfactories.NavigationFactory
 
-/**
- * Date: 22.07.2019
- * Time: 19:34
- *
- * @author Terenfear
- */
+
 class App : Application() {
     companion object {
         private lateinit var androidNavigator: AndroidNavigator

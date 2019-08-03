@@ -6,20 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_flow.*
-import me.aartikov.alligator.annotations.RegisterScreen
-import me.aartikov.alligator.listeners.ScreenResultListener
 import exp.terenfear.singleactivitynavigation.App
 import exp.terenfear.singleactivitynavigation.R
 import exp.terenfear.singleactivitynavigation.flowcontainer.FlowContainer
 import exp.terenfear.singleactivitynavigation.fragment.a.AScreen
+import kotlinx.android.synthetic.main.fragment_flow.*
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.alligator.listeners.ScreenResultListener
 
-/**
- * Date: 22.07.2019
- * Time: 19:34
- *
- * @author Terenfear
- */
+
 @RegisterScreen(LetterFlowScreen::class)
 class LetterFlowFragment : Fragment(), FlowContainer {
 

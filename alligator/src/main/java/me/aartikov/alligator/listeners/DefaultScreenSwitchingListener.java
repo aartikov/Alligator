@@ -5,12 +5,6 @@ import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 09.05.2017
- * Time: 16:22
- *
- * @author Artur Artikov
- */
 
 /**
  * Screen switching listener that does nothing.

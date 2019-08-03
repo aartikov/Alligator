@@ -20,12 +20,6 @@ import me.aartikov.alligator.helpers.FragmentSwitcher;
 import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 01/30/2016
- * Time: 10:13
- *
- * @author Artur Artikov
- */
 
 /**
  * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments and get screens back from it.

@@ -11,12 +11,6 @@ import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
-/**
- * Date: 29.12.2016
- * Time: 11:24
- *
- * @author Artur Artikov
- */
 
 /**
  * Command implementation for {@code switchTo} method of {@link me.aartikov.alligator.AndroidNavigator}.

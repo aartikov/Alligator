@@ -13,12 +13,6 @@ import me.aartikov.alligator.destinations.DialogFragmentDestination;
 import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 22.10.2017
- * Time: 10:34
- *
- * @author Artur Artikov
- */
 
 /**
  * Helps to get screens from activities and fragments.

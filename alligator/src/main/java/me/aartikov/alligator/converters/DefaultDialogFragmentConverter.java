@@ -1,20 +1,15 @@
 package me.aartikov.alligator.converters;
 
-/**
- * Date: 15.09.2018
- * Time: 10:18
- *
- * @author Artur Artikov
- */
 
 import android.os.Bundle;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.io.Serializable;
+
 import me.aartikov.alligator.Screen;
 
 /**

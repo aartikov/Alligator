@@ -5,12 +5,6 @@ import androidx.annotation.NonNull;
 import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.exceptions.NavigationException;
 
-/**
- * Date: 12.03.2017
- * Time: 15:15
- *
- * @author Artur Artikov
- */
 
 /**
  * Interface for navigation error handling.

@@ -12,12 +12,6 @@ import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 15.10.2017
- * Time: 12:39
- *
- * @author Artur Artikov
- */
 
 abstract class BaseCommand implements Command {
 	private Class<? extends Screen> mScreenClass;

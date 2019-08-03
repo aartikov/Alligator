@@ -9,12 +9,7 @@ import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 21.01.2016
- * Time: 23:30
- *
- * @author Artur Artikov
- */
+
 public class SampleApplication extends Application {
 	private static AndroidNavigator sAndroidNavigator;
 

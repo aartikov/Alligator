@@ -7,10 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.squareup.picasso.Picasso;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.ActivityResultHandler;
@@ -27,12 +28,7 @@ import me.aartikov.screenresultsample.screens.ImagePickerScreen;
 import me.aartikov.screenresultsample.screens.MainScreen;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
-/**
- * Date: 12.03.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
 	private Navigator mNavigator = SampleApplication.getNavigator();

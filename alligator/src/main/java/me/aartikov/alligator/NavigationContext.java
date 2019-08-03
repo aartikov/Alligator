@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
 import me.aartikov.alligator.animations.DialogAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.DefaultDialogAnimationProvider;
@@ -29,12 +30,6 @@ import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.listeners.TransitionListener;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
-/**
- * Date: 29.12.2016
- * Time: 10:13
- *
- * @author Artur Artikov
- */
 
 /**
  * Used to configure an {@link AndroidNavigator}.

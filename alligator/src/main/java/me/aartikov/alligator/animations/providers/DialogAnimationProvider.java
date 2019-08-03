@@ -1,12 +1,5 @@
 package me.aartikov.alligator.animations.providers;
 
-/**
- * Date: 26.03.2017
- * Time: 12:37
- *
- * @author Artur Artikov
- */
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

@@ -27,12 +27,6 @@ import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.listeners.TransitionListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 22.07.2019
- * Time: 14:22
- *
- * @author Terenfear
- */
 
 /**
  * Implementation of {@link FlowManager} that uses fragments as flow screens and inner screens

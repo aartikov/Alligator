@@ -1,7 +1,5 @@
 package me.aartikov.navigationmethodssample.ui;
 
-import java.util.Random;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
@@ -21,12 +22,7 @@ import me.aartikov.navigationmethodssample.SampleTransitionAnimationProvider;
 import me.aartikov.navigationmethodssample.screens.TestScreen;
 import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
 
-/**
- * Date: 29.12.2016
- * Time: 11:33
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(TestScreen.class)
 public class TestActivity extends AppCompatActivity {
 	@BindView(R.id.root_view)

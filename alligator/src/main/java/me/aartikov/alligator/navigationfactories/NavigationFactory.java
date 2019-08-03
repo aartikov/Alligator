@@ -1,11 +1,5 @@
 package me.aartikov.alligator.navigationfactories;
 
-/**
- * Date: 11.02.2017
- * Time: 11:37
- *
- * @author Artur Artikov
- */
 
 import android.app.Activity;
 

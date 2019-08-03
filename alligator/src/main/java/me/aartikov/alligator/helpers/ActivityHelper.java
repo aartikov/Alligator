@@ -2,18 +2,13 @@ package me.aartikov.alligator.helpers;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import me.aartikov.alligator.animations.TransitionAnimation;
 
-/**
- * Date: 26.03.2017
- * Time: 0:17
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for starting and finishing an activity with animation.

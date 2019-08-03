@@ -9,12 +9,6 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.DialogFragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
-/**
- * Date: 15.10.2017
- * Time: 11:35
- *
- * @author Artur Artikov
- */
 
 public class DialogFragmentDestination implements Destination {
 	private Class<? extends Screen> mScreenClass;

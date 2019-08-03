@@ -20,12 +20,6 @@ import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 03.12.2017
- * Time: 10:24
- *
- * @author Artur Artikov
- */
 
 /**
  * Helps to return a screen result from activities and fragments.

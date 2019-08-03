@@ -1,11 +1,5 @@
 package me.aartikov.alligator;
 
-/**
- * Date: 11.02.2017
- * Time: 11:27
- *
- * @author Artur Artikov
- */
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

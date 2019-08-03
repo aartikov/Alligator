@@ -1,12 +1,5 @@
 package me.aartikov.alligator.listeners;
 
-/**
- * Date: 09.05.2017
- * Time: 16:11
- *
- * @author Artur Artikov
- */
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 

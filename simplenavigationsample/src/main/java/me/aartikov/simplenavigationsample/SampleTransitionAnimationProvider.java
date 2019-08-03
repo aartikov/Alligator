@@ -11,12 +11,6 @@ import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 
-/**
- * Date: 25.02.2017
- * Time: 12:00
- *
- * @author Artur Artikov
- */
 
 // Lets make a nice slide animation.
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {

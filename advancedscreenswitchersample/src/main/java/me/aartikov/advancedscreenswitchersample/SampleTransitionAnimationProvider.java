@@ -11,12 +11,7 @@ import me.aartikov.alligator.animations.SimpleTransitionAnimation;
 import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 
-/**
- * Date: 28.02.2017
- * Time: 21:01
- *
- * @author Artur Artikov
- */
+
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	@NonNull

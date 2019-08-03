@@ -4,20 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_b.*
-import me.aartikov.alligator.annotations.RegisterScreen
-import exp.terenfear.singleactivitynavigation.App
 import androidx.fragment.app.Fragment
+import exp.terenfear.singleactivitynavigation.App
 import exp.terenfear.singleactivitynavigation.R
 import exp.terenfear.singleactivitynavigation.fragment.c.CScreen
 import exp.terenfear.singleactivitynavigation.fragment.f.FScreen
+import kotlinx.android.synthetic.main.fragment_b.*
+import me.aartikov.alligator.annotations.RegisterScreen
 
-/**
- * Date: 22.07.2019
- * Time: 19:34
- *
- * @author Terenfear
- */
+
 @RegisterScreen(BScreen::class)
 class BFragment : Fragment() {
 

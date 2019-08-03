@@ -4,12 +4,6 @@ import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.exceptions.NavigationException;
 
-/**
- * Date: 12.03.2017
- * Time: 15:16
- *
- * @author Artur Artikov
- */
 
 /**
  * Default implementation of {@link NavigationErrorListener}. Wraps {@link NavigationException} to {@code RuntimeException} and throws it.

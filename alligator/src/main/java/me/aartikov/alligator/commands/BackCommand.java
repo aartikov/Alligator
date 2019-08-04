@@ -31,6 +31,9 @@ public class BackCommand implements Command {
 		} else if (navigationContext.getFragmentNavigator() != null && navigationContext.getFragmentNavigator().canGoBack()) {
 			navigationContext.getFragmentNavigator().goBack(mScreenResult, mAnimationData);
 			return true;
+		} else if (navigationContext.getFlowFragmentNavigator() != null && navigationContext.getFlowFragmentNavigator().canGoBack()) {
+			navigationContext.getFlowFragmentNavigator().goBack(mScreenResult, mAnimationData);
+			return true;
 		} else {
 			navigationContext.getActivityNavigator().goBack(mScreenResult, mAnimationData);
 			return false;

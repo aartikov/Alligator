@@ -42,8 +42,17 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 
 		TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		mNameTextView.setText(screen.getName());
+	}
 
-		if (getChildFragmentManager().findFragmentById(R.id.inner_container) == null) {
+	@Override
+	public void onResume() {
+		super.onResume();
+		setInitialFragmentIfRequired();
+	}
+
+	private void setInitialFragmentIfRequired() {
+		boolean hasFragment = getChildFragmentManager().findFragmentById(R.id.inner_container) != null;
+		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
 			mNavigator.reset(new InnerScreen(1));
 		}
 	}

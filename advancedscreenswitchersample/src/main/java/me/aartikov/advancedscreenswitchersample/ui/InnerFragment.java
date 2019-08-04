@@ -60,7 +60,7 @@ public class InnerFragment extends Fragment {
 	// Workaround for issue https://code.google.com/p/android/issues/detail?id=55228
 	@Override
 	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-		if (getParentFragment() != null && getParentFragment().isDetached()) {
+		if (getParentFragment() != null && (getParentFragment().isDetached() || getParentFragment().isRemoving())) {
 			return AnimationUtils.loadAnimation(getContext(), R.anim.stay);
 		}
 		return super.onCreateAnimation(transit, enter, nextAnim);

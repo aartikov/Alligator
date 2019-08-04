@@ -48,7 +48,7 @@ public class DefaultActivityNavigator implements ActivityNavigator {
 		mActivity = activity;
 		mNavigationFactory = navigationFactory;
 		mActivityHelper = new ActivityHelper(activity);
-		mScreenResultHelper = new ScreenResultHelper();
+		mScreenResultHelper = new ScreenResultHelper(mNavigationFactory);
 		mTransitionListener = transitionListener;
 		mAnimationProvider = animationProvider;
 	}
@@ -124,7 +124,7 @@ public class DefaultActivityNavigator implements ActivityNavigator {
 					   @Nullable AnimationData animationData) throws NavigationException {
 
 		if (screenResult != null) {
-			mScreenResultHelper.setActivityResult(mActivity, screenResult, mNavigationFactory);
+			mScreenResultHelper.setActivityResult(mActivity, screenResult);
 		}
 
 		Class<? extends Screen> screenClassFrom = mNavigationFactory.getScreenClass(mActivity);
@@ -147,7 +147,7 @@ public class DefaultActivityNavigator implements ActivityNavigator {
 		}
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		if (screenResult != null) {
-			mScreenResultHelper.setResultToIntent(intent, mActivity, screenResult, mNavigationFactory);
+			mScreenResultHelper.setResultToIntent(intent, mActivity, screenResult);
 		}
 
 		Class<? extends Screen> screenClassFrom = mNavigationFactory.getScreenClass(mActivity);

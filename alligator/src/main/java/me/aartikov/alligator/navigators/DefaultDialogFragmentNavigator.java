@@ -44,7 +44,7 @@ public class DefaultDialogFragmentNavigator implements DialogFragmentNavigator {
 										  @NonNull DialogAnimationProvider animationProvider) {
 		mDialogFragmentHelper = new DialogFragmentHelper(fragmentManager);
 		mNavigationFactory = navigationFactory;
-		mScreenResultHelper = new ScreenResultHelper();
+		mScreenResultHelper = new ScreenResultHelper(mNavigationFactory);
 		mDialogShowingListener = dialogShowingListener;
 		mScreenResultListener = screenResultListener;
 		mAnimationProvider = animationProvider;
@@ -100,7 +100,13 @@ public class DefaultDialogFragmentNavigator implements DialogFragmentNavigator {
 		DialogFragment dialogFragment = mDialogFragmentHelper.getDialogFragment();
 		mDialogFragmentHelper.hideDialog();
 		if (dialogFragment != null) {
-			mScreenResultHelper.callScreenResultListener(dialogFragment, screenResult, mScreenResultListener, mNavigationFactory);
+			mScreenResultHelper.callScreenResultListener(dialogFragment, screenResult, mScreenResultListener);
 		}
+	}
+
+	@Nullable
+	@Override
+	public DialogFragment getCurrentDialogFragment() {
+		return mDialogFragmentHelper.getDialogFragment();
 	}
 }

@@ -65,22 +65,25 @@ public class TestActivity extends AppCompatActivity {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		boolean hasFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container) != null;
-		if (!hasFragment && !mNavigator.hasPendingCommands()) {
-			mNavigator.reset(new TestSmallScreen(1));
-		}
-	}
-
-	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
+		bindNavigationContext();
+		setInitialFragmentIfRequired();
+	}
+
+	private void bindNavigationContext() {
 		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
 				.fragmentNavigation(getSupportFragmentManager(), R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);
+	}
+
+	private void setInitialFragmentIfRequired() {
+		boolean hasFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container) != null;
+		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
+			mNavigator.reset(new TestSmallScreen(1));
+		}
 	}
 
 	@Override

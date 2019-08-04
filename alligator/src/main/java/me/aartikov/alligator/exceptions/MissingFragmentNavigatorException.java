@@ -4,7 +4,7 @@ package me.aartikov.alligator.exceptions;
 import androidx.fragment.app.FragmentManager;
 
 /**
- * Exception thrown when fragment navigation was requested but fragment navigation was not configured
+ * Exception thrown when fragment navigation was requested but it was not configured
  * with method {@link me.aartikov.alligator.NavigationContext.Builder#fragmentNavigation(FragmentManager, int)}.
  */
 public class MissingFragmentNavigatorException extends NavigationException {

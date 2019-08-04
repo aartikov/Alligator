@@ -49,6 +49,9 @@ public class NavigationContext {
 	@Nullable
 	private FragmentNavigator mFragmentNavigator;
 
+	@Nullable
+	private FragmentNavigator mFlowFragmentNavigator;
+
 	@NonNull
 	private DialogFragmentNavigator mDialogFragmentNavigator;
 
@@ -56,32 +59,34 @@ public class NavigationContext {
 	private ScreenSwitcher mScreenSwitcher;
 
 	@NonNull
+	private ScreenSwitchingListener mScreenSwitchingListener;
+
+	@NonNull
 	private ScreenResultListener mScreenResultListener;
 
 	@NonNull
 	private NavigationErrorListener mNavigationErrorListener;
 
-	@NonNull
-	private ScreenSwitchingListener mScreenSwitchingListener;
-
 	private NavigationContext(@NonNull AppCompatActivity activity,
 							  @NonNull NavigationFactory navigationFactory,
 							  @NonNull ActivityNavigator activityNavigator,
 							  @Nullable FragmentNavigator fragmentNavigator,
+							  @Nullable FragmentNavigator flowFragmentNavigator,
 							  @NonNull DialogFragmentNavigator dialogFragmentNavigator,
 							  @Nullable ScreenSwitcher screenSwitcher,
+							  @NonNull ScreenSwitchingListener screenSwitchingListener,
 							  @NonNull ScreenResultListener screenResultListener,
-							  @NonNull NavigationErrorListener navigationErrorListener,
-							  @NonNull ScreenSwitchingListener screenSwitchingListener) {
+							  @NonNull NavigationErrorListener navigationErrorListener) {
 		mActivity = activity;
 		mNavigationFactory = navigationFactory;
 		mActivityNavigator = activityNavigator;
 		mFragmentNavigator = fragmentNavigator;
+		mFlowFragmentNavigator = flowFragmentNavigator;
 		mDialogFragmentNavigator = dialogFragmentNavigator;
 		mScreenSwitcher = screenSwitcher;
+		mScreenSwitchingListener = screenSwitchingListener;
 		mScreenResultListener = screenResultListener;
 		mNavigationErrorListener = navigationErrorListener;
-		mScreenSwitchingListener = screenSwitchingListener;
 	}
 
 	@NonNull
@@ -104,6 +109,11 @@ public class NavigationContext {
 		return mFragmentNavigator;
 	}
 
+	@Nullable
+	public FragmentNavigator getFlowFragmentNavigator() {
+		return mFlowFragmentNavigator;
+	}
+
 	@NonNull
 	public DialogFragmentNavigator getDialogFragmentNavigator() {
 		return mDialogFragmentNavigator;
@@ -115,6 +125,11 @@ public class NavigationContext {
 	}
 
 	@NonNull
+	public ScreenSwitchingListener getScreenSwitchingListener() {
+		return mScreenSwitchingListener;
+	}
+
+	@NonNull
 	public ScreenResultListener getScreenResultListener() {
 		return mScreenResultListener;
 	}
@@ -122,11 +137,6 @@ public class NavigationContext {
 	@NonNull
 	public NavigationErrorListener getNavigationErrorListener() {
 		return mNavigationErrorListener;
-	}
-
-	@NonNull
-	public ScreenSwitchingListener getScreenSwitchingListener() {
-		return mScreenSwitchingListener;
 	}
 
 	/**
@@ -140,6 +150,9 @@ public class NavigationContext {
 		@Nullable
 		private FragmentManager mFragmentManager;
 		private int mFragmentContainerId;
+		@Nullable
+		private FragmentManager mFlowFragmentManager;
+		private int mFlowFragmentContainerId;
 		@Nullable
 		private ScreenSwitcher mScreenSwitcher;
 		@Nullable
@@ -179,6 +192,20 @@ public class NavigationContext {
 		public Builder fragmentNavigation(@NonNull FragmentManager fragmentManager, @IdRes int containerId) {
 			mFragmentManager = fragmentManager;
 			mFragmentContainerId = containerId;
+			return this;
+		}
+
+		/**
+		 * Configure flow fragment navigation
+		 *
+		 * @param fragmentManager that will be used for flow fragment transactions
+		 * @param containerId     container id for fragments
+		 * @return this object
+		 */
+		@NonNull
+		public Builder flowFragmentNavigation(@NonNull FragmentManager fragmentManager, @IdRes int containerId) {
+			mFlowFragmentManager = fragmentManager;
+			mFlowFragmentContainerId = containerId;
 			return this;
 		}
 
@@ -243,18 +270,6 @@ public class NavigationContext {
 		}
 
 		/**
-		 * Sets a screen result listener. This listener is called when a screen returned result to a previous screen
-		 *
-		 * @param screenResultListener screenResultListener screen result listener.
-		 * @return this object
-		 */
-		@NonNull
-		public Builder screenResultListener(@Nullable ScreenResultListener screenResultListener) {
-			mScreenResultListener = screenResultListener;
-			return this;
-		}
-
-		/**
 		 * Sets a screen switching listener listener. This listener is called after a screen has been switched using {@link ScreenSwitcher}.
 		 *
 		 * @param screenSwitchingListener screen switcher listener.
@@ -263,6 +278,18 @@ public class NavigationContext {
 		@NonNull
 		public Builder screenSwitchingListener(@Nullable ScreenSwitchingListener screenSwitchingListener) {
 			mScreenSwitchingListener = screenSwitchingListener;
+			return this;
+		}
+
+		/**
+		 * Sets a screen result listener. This listener is called when a screen returned result to a previous screen
+		 *
+		 * @param screenResultListener screenResultListener screen result listener.
+		 * @return this object
+		 */
+		@NonNull
+		public Builder screenResultListener(@Nullable ScreenResultListener screenResultListener) {
+			mScreenResultListener = screenResultListener;
 			return this;
 		}
 
@@ -296,13 +323,16 @@ public class NavigationContext {
 			ActivityNavigator activityNavigator = new DefaultActivityNavigator(mActivity, mNavigationFactory, transitionListener, transitionAnimationProvider);
 
 			FragmentNavigator fragmentNavigator = mFragmentManager != null ?
-					new DefaultFragmentNavigator(mFragmentManager, mFragmentContainerId, mNavigationFactory, transitionListener, screenResultListener, transitionAnimationProvider) : null;
+					new DefaultFragmentNavigator(false, mFragmentManager, mFragmentContainerId, mNavigationFactory, transitionListener, screenResultListener, transitionAnimationProvider) : null;
+
+			FragmentNavigator flowFragmentNavigator = mFlowFragmentManager != null ?
+					new DefaultFragmentNavigator(true, mFlowFragmentManager, mFlowFragmentContainerId, mNavigationFactory, transitionListener, screenResultListener, transitionAnimationProvider) : null;
 
 			DialogFragmentNavigator dialogFragmentNavigator = new DefaultDialogFragmentNavigator(mActivity.getSupportFragmentManager(), mNavigationFactory,
 					dialogShowingListener, screenResultListener, dialogAnimationProvider);
 
-			return new NavigationContext(mActivity, mNavigationFactory, activityNavigator, fragmentNavigator, dialogFragmentNavigator,
-					mScreenSwitcher, screenResultListener, navigationErrorListener, screenSwitchingListener);
+			return new NavigationContext(mActivity, mNavigationFactory, activityNavigator, fragmentNavigator, flowFragmentNavigator, dialogFragmentNavigator,
+					mScreenSwitcher, screenSwitchingListener, screenResultListener, navigationErrorListener);
 		}
 	}
 }

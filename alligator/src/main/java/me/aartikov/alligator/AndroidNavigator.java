@@ -52,6 +52,12 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		return mActivityResultHandler;
 	}
 
+	@Nullable
+	@Override
+	public NavigationContext getNavigationContext() {
+		return mNavigationContext;
+	}
+
 	@Override
 	public boolean isBound() {
 		return mNavigationContext != null;

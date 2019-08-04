@@ -2,6 +2,7 @@ package me.aartikov.alligator.navigators;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -26,4 +27,7 @@ public interface DialogFragmentNavigator {
 	boolean canGoBack();
 
 	void goBack(@Nullable ScreenResult screenResult) throws NavigationException;
+
+	@Nullable
+	DialogFragment getCurrentDialogFragment();
 }

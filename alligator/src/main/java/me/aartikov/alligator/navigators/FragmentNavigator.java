@@ -2,6 +2,7 @@ package me.aartikov.alligator.navigators;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
@@ -32,4 +33,7 @@ public interface FragmentNavigator {
 				  @NonNull FragmentDestination destination,
 				  @Nullable ScreenResult screenResult,
 				  @Nullable AnimationData animationData) throws NavigationException;
+
+	@Nullable
+	Fragment getCurrentFragment();
 }

@@ -3,16 +3,17 @@ package me.aartikov.alligator.commands;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.destinations.ActivityDestination;
 import me.aartikov.alligator.destinations.DialogFragmentDestination;
 import me.aartikov.alligator.destinations.FragmentDestination;
-import me.aartikov.alligator.exceptions.MissingFragmentNavigatorException;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.NotSupportedOperationException;
+import me.aartikov.alligator.navigators.ActivityNavigator;
+import me.aartikov.alligator.navigators.DialogFragmentNavigator;
+import me.aartikov.alligator.navigators.FragmentNavigator;
 
 
 /**
@@ -33,22 +34,17 @@ public class BackToCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException {
-		navigationContext.getActivityNavigator().goBackTo(mScreenClass, destination, mScreenResult, mAnimationData);
-		return false;
+	protected void executeForActivity(@NonNull ActivityDestination destination, @NonNull ActivityNavigator activityNavigator) throws NavigationException {
+		activityNavigator.goBackTo(mScreenClass, destination, mScreenResult, mAnimationData);
 	}
 
 	@Override
-	public boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException {
-		if (navigationContext.getFragmentNavigator() == null) {
-			throw new MissingFragmentNavigatorException();
-		}
-		navigationContext.getFragmentNavigator().goBackTo(mScreenClass, destination, mScreenResult, mAnimationData);
-		return true;
+	protected void executeForFragment(@NonNull FragmentDestination destination, @NonNull FragmentNavigator fragmentNavigator) throws NavigationException {
+		fragmentNavigator.goBackTo(mScreenClass, destination, mScreenResult, mAnimationData);
 	}
 
 	@Override
-	public boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException {
+	protected void executeForDialogFragment(@NonNull DialogFragmentDestination destination, @NonNull DialogFragmentNavigator dialogFragmentNavigator) throws NavigationException {
 		throw new NotSupportedOperationException("BackTo command is not supported for dialog fragments.");
 	}
 }

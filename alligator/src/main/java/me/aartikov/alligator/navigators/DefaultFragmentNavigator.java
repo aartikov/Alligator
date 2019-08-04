@@ -27,6 +27,9 @@ import me.aartikov.alligator.listeners.TransitionListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 public class DefaultFragmentNavigator implements FragmentNavigator {
+
+	private boolean mFlowNavigation;
+
 	@NonNull
 	private FragmentStack mFragmentStack;
 
@@ -45,15 +48,17 @@ public class DefaultFragmentNavigator implements FragmentNavigator {
 	@NonNull
 	private TransitionAnimationProvider mAnimationProvider;
 
-	public DefaultFragmentNavigator(@NonNull FragmentManager fragmentManager,
+	public DefaultFragmentNavigator(boolean flowNavigation,
+									@NonNull FragmentManager fragmentManager,
 									@IdRes int containerId,
 									@NonNull NavigationFactory navigationFactory,
 									@NonNull TransitionListener transitionListener,
 									@NonNull ScreenResultListener screenResultListener,
 									@NonNull TransitionAnimationProvider animationProvider) {
+		mFlowNavigation = flowNavigation;
 		mFragmentStack = new FragmentStack(fragmentManager, containerId);
 		mNavigationFactory = navigationFactory;
-		mScreenResultHelper = new ScreenResultHelper();
+		mScreenResultHelper = new ScreenResultHelper(mNavigationFactory);
 		mTransitionListener = transitionListener;
 		mScreenResultListener = screenResultListener;
 		mAnimationProvider = animationProvider;
@@ -128,7 +133,7 @@ public class DefaultFragmentNavigator implements FragmentNavigator {
 		TransitionAnimation animation = getAnimation(TransitionType.BACK, screenClassFrom, screenClassTo, animationData);
 		mFragmentStack.pop(animation);
 		callTransitionListener(TransitionType.BACK, screenClassFrom, screenClassTo);
-		mScreenResultHelper.callScreenResultListener(currentFragment, screenResult, mScreenResultListener, mNavigationFactory);
+		mScreenResultHelper.callScreenResultListener(currentFragment, screenResult, mScreenResultListener);
 	}
 
 	@Override
@@ -159,8 +164,14 @@ public class DefaultFragmentNavigator implements FragmentNavigator {
 		mFragmentStack.popUntil(requiredFragment, animation);
 		callTransitionListener(TransitionType.BACK, screenClassFrom, screenClass);
 		if (screenResult != null || toPrevious) {
-			mScreenResultHelper.callScreenResultListener(currentFragment, screenResult, mScreenResultListener, mNavigationFactory);
+			mScreenResultHelper.callScreenResultListener(currentFragment, screenResult, mScreenResultListener);
 		}
+	}
+
+	@Nullable
+	@Override
+	public Fragment getCurrentFragment() {
+		return mFragmentStack.getCurrentFragment();
 	}
 
 	private TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
@@ -171,14 +182,15 @@ public class DefaultFragmentNavigator implements FragmentNavigator {
 		if (screenClassFrom == null || screenClassTo == null) {
 			return TransitionAnimation.DEFAULT;
 		} else {
-			return mAnimationProvider.getAnimation(transitionType, DestinationType.FRAGMENT, screenClassFrom, screenClassTo, animationData);
+			DestinationType destinationType = mFlowNavigation ? DestinationType.FLOW_FRAGMENT : DestinationType.FRAGMENT;
+			return mAnimationProvider.getAnimation(transitionType, destinationType, screenClassFrom, screenClassTo, animationData);
 		}
 	}
 
 	private void callTransitionListener(@NonNull TransitionType transitionType,
 										@Nullable Class<? extends Screen> screenClassFrom,
 										@Nullable Class<? extends Screen> screenClassTo) {
-
-		mTransitionListener.onScreenTransition(transitionType, DestinationType.FRAGMENT, screenClassFrom, screenClassTo);
+		DestinationType destinationType = mFlowNavigation ? DestinationType.FLOW_FRAGMENT : DestinationType.FRAGMENT;
+		mTransitionListener.onScreenTransition(transitionType, destinationType, screenClassFrom, screenClassTo);
 	}
 }

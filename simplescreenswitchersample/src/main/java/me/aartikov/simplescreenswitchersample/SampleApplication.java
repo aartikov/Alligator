@@ -19,12 +19,12 @@ public class SampleApplication extends Application {
 		sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
 	}
 
-	public static NavigationFactory getNavigationFactory() {
-		return sAndroidNavigator.getNavigationFactory();
-	}
-
 	public static Navigator getNavigator() {
 		return sAndroidNavigator;
+	}
+
+	public static NavigationFactory getNavigationFactory() {
+		return sAndroidNavigator.getNavigationFactory();
 	}
 
 	public static NavigationContextBinder getNavigationContextBinder() {

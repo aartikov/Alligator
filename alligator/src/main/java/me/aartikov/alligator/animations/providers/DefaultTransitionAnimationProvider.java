@@ -17,8 +17,10 @@ public class DefaultTransitionAnimationProvider implements TransitionAnimationPr
 
 	@Override
 	@NonNull
-	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-											@NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
+											@NonNull DestinationType destinationType,
+											@NonNull Class<? extends Screen> screenClassFrom,
+											@NonNull Class<? extends Screen> screenClassTo,
 											@Nullable AnimationData animationData) {
 		return TransitionAnimation.DEFAULT;
 	}

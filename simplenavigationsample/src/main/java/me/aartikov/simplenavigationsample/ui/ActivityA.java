@@ -21,6 +21,7 @@ public class ActivityA extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
 	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class ActivityA extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

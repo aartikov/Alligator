@@ -10,7 +10,6 @@ import me.aartikov.alligator.destinations.DialogFragmentDestination;
 import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 
 abstract class BaseCommand implements Command {
@@ -20,25 +19,25 @@ abstract class BaseCommand implements Command {
 		mScreenClass = screenClass;
 	}
 
-    abstract protected boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull ActivityDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException;
 
-    abstract protected boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull FragmentDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException;
 
-    abstract protected boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException;
+	abstract protected boolean execute(@NonNull DialogFragmentDestination destination, @NonNull NavigationContext navigationContext) throws NavigationException;
 
 	@Override
-	final public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
-        Destination destination = navigationFactory.getDestination(mScreenClass);
+	final public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
+		Destination destination = navigationContext.getNavigationFactory().getDestination(mScreenClass);
         if (destination == null) {
 			throw new ScreenRegistrationException("Screen " + mScreenClass.getSimpleName() + " is not registered.");
 		}
 
         if (destination instanceof ActivityDestination) {
-            return execute((ActivityDestination) destination, navigationContext, navigationFactory);
+			return execute((ActivityDestination) destination, navigationContext);
         } else if (destination instanceof FragmentDestination) {
-            return execute((FragmentDestination) destination, navigationContext, navigationFactory);
+			return execute((FragmentDestination) destination, navigationContext);
         } else if (destination instanceof DialogFragmentDestination) {
-            return execute((DialogFragmentDestination) destination, navigationContext, navigationFactory);
+			return execute((DialogFragmentDestination) destination, navigationContext);
 		} else {
             throw new UnsupportedOperationException("Unsupported destination type " + destination);
 		}

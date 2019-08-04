@@ -80,15 +80,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	}
 
 	private void bindNavigationContext() {
-		NavigationContext.Builder builder = new NavigationContext.Builder(this)
+		NavigationContext.Builder builder = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
 				.screenSwitcher(mScreenSwitcher)
 				.screenSwitchingListener(this)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
 
 		Fragment fragment = mScreenSwitcher.getCurrentFragment();
 		if (fragment instanceof ContainerIdProvider) {
-			builder.containerId(((ContainerIdProvider) fragment).getContainerId())
-					.fragmentManager(fragment.getChildFragmentManager());       // Use child fragment manager for nested navigation
+			builder.fragmentNavigation(fragment.getChildFragmentManager(), ((ContainerIdProvider) fragment).getContainerId());  // Use child fragment manager for nested navigation
 		}
 
 		mNavigationContextBinder.bind(builder.build());

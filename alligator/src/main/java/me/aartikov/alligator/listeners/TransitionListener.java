@@ -20,6 +20,8 @@ public interface TransitionListener {
 	 * @param screenClassFrom class of the screen that disappears during a transition or {@code null} if there was no current screen before transition
 	 * @param screenClassTo   class of the screen that appears during a transition or {@code null} if there was no previous screen before transition
 	 */
-	void onScreenTransition(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-							@Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo);
+	void onScreenTransition(@NonNull TransitionType transitionType,
+							@NonNull DestinationType destinationType,
+							@Nullable Class<? extends Screen> screenClassFrom,
+							@Nullable Class<? extends Screen> screenClassTo);
 }

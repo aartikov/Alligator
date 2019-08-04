@@ -1,19 +1,12 @@
 package me.aartikov.alligator.commands;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 
 /**
@@ -31,20 +24,8 @@ public class FinishCommand implements Command {
 	}
 
 	@Override
-	public boolean execute(@NonNull NavigationContext navigationContext, @NonNull NavigationFactory navigationFactory) throws NavigationException {
-		Activity activity = navigationContext.getActivity();
-		if (mScreenResult != null) {
-			navigationContext.getScreenResultHelper().setActivityResult(activity, mScreenResult, navigationFactory);
-		}
-		Class<? extends Screen> screenClassFrom = navigationFactory.getScreenClass(activity);
-		Class<? extends Screen> screenClassTo = navigationFactory.getPreviousScreenClass(activity);
-		TransitionAnimation animation = TransitionAnimation.DEFAULT;
-		if (screenClassFrom != null && screenClassTo != null) {
-			animation = navigationContext.getTransitionAnimationProvider().getAnimation(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo, mAnimationData);
-		}
-
-		navigationContext.getActivityHelper().finish(animation);
-		navigationContext.getTransitionListener().onScreenTransition(TransitionType.BACK, DestinationType.ACTIVITY, screenClassFrom, screenClassTo);
+	public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
+		navigationContext.getActivityNavigator().goBack(mScreenResult, mAnimationData);
 		return false;
 	}
 }

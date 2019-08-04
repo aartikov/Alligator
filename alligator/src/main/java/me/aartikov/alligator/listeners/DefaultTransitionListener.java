@@ -13,7 +13,9 @@ import me.aartikov.alligator.TransitionType;
  */
 public class DefaultTransitionListener implements TransitionListener {
 	@Override
-	public void onScreenTransition(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-								   @Nullable Class<? extends Screen> screenClassFrom, @Nullable Class<? extends Screen> screenClassTo) {
+	public void onScreenTransition(@NonNull TransitionType transitionType,
+								   @NonNull DestinationType destinationType,
+								   @Nullable Class<? extends Screen> screenClassFrom,
+								   @Nullable Class<? extends Screen> screenClassTo) {
 	}
 }

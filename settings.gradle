@@ -1,2 +1,2 @@
-include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample', ':singleactivityflowsample',
+include ':alligator', ':simplenavigationsample', ':navigationmethodssample', ':simplescreenswitchersample', ':advancedscreenswitchersample',
 		':screenresultsample', ':sharedelementanimationsample', ':alligator-compiler'

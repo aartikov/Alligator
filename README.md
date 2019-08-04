@@ -88,7 +88,7 @@ public class FragmentD extends Fragment
 ### 3. Create AndroidNavigator
 It should be a single instance in your application.
 ```java
-sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
+androidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
 ```
 
 ### 4. Set NavigationContext
@@ -100,8 +100,8 @@ Activities are responsible to bind and unbind `NavigationContext`. Bind it in `o
 @Override
 protected void onResumeFragments() {
     super.onResumeFragments();
-    NavigationContext navigationContext = new NavigationContext.Builder(this)
-            .containerId(R.id.fragment_container)
+    NavigationContext navigationContext = new NavigationContext.Builder(this, androidNavigator.getNavigationFactory())
+            .fragmentNavigation(getSupportFragmentManager(0, R.id.fragment_container)
             .build();
     mNavigationContextBinder.bind(navigationContext);
 }
@@ -165,7 +165,7 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 }
 ```
 ```java
-    NavigationContext navigationContext = new NavigationContext.Builder(this)
+    NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
             .transitionAnimationProvider(new SampleTransitionAnimationProvider())
             .build();
 ```

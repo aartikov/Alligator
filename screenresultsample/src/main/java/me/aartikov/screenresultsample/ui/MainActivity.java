@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
 				.screenResultListener(this)      // set ScreenResultListener
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

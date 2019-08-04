@@ -33,8 +33,8 @@ public class ActivityB extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)       // Same as in ActivityA but we also set a containerId for fragments there.
-				.containerId(R.id.fragment_container)
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
+				.fragmentNavigation(getSupportFragmentManager(), R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

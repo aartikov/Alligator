@@ -7,6 +7,7 @@ import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
 
 public class SampleApplication extends Application {
@@ -20,6 +21,10 @@ public class SampleApplication extends Application {
 
 	public static Navigator getNavigator() {
 		return sAndroidNavigator;
+	}
+
+	public static NavigationFactory getNavigationFactory() {
+		return sAndroidNavigator.getNavigationFactory();
 	}
 
 	public static NavigationContextBinder getNavigationContextBinder() {

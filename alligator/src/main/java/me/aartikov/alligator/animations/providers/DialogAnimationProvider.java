@@ -19,5 +19,6 @@ public interface DialogAnimationProvider {
 	 * @return an animation that will be used to show a dialog fragment
 	 */
 	@NonNull
-	DialogAnimation getAnimation(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
+	DialogAnimation getAnimation(@NonNull Class<? extends Screen> screenClass,
+								 @Nullable AnimationData animationData);
 }

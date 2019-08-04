@@ -14,7 +14,8 @@ import me.aartikov.alligator.animations.DialogAnimation;
 public class DefaultDialogAnimationProvider implements DialogAnimationProvider {
 	@Override
 	@NonNull
-	public DialogAnimation getAnimation(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData) {
+	public DialogAnimation getAnimation(@NonNull Class<? extends Screen> screenClass,
+										@Nullable AnimationData animationData) {
 		return DialogAnimation.DEFAULT;
 	}
 }

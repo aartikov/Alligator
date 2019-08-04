@@ -43,7 +43,8 @@ public class MessageInputActivity extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
+				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}
 

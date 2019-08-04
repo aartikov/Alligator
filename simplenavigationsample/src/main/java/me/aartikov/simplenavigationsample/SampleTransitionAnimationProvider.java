@@ -16,8 +16,10 @@ import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
 	@NonNull
-	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-											@NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
+											@NonNull DestinationType destinationType,
+											@NonNull Class<? extends Screen> screenClassFrom,
+											@NonNull Class<? extends Screen> screenClassTo,
 											@Nullable AnimationData animationData) {
 		switch (transitionType) {
 			case FORWARD:

@@ -13,11 +13,6 @@ import me.aartikov.alligator.animations.providers.DefaultTransitionAnimationProv
 import me.aartikov.alligator.animations.providers.DialogAnimationProvider;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.alligator.commands.Command;
-import me.aartikov.alligator.flowmanagers.FlowManager;
-import me.aartikov.alligator.helpers.ActivityHelper;
-import me.aartikov.alligator.helpers.DialogFragmentHelper;
-import me.aartikov.alligator.helpers.FragmentStack;
-import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.DefaultDialogShowingListener;
 import me.aartikov.alligator.listeners.DefaultNavigationErrorListener;
 import me.aartikov.alligator.listeners.DefaultScreenResultListener;
@@ -28,6 +23,13 @@ import me.aartikov.alligator.listeners.NavigationErrorListener;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.listeners.TransitionListener;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
+import me.aartikov.alligator.navigators.ActivityNavigator;
+import me.aartikov.alligator.navigators.DefaultActivityNavigator;
+import me.aartikov.alligator.navigators.DefaultDialogFragmentNavigator;
+import me.aartikov.alligator.navigators.DefaultFragmentNavigator;
+import me.aartikov.alligator.navigators.DialogFragmentNavigator;
+import me.aartikov.alligator.navigators.FragmentNavigator;
 import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
 
 
@@ -35,61 +37,76 @@ import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
  * Used to configure an {@link AndroidNavigator}.
  */
 public class NavigationContext {
+	@NonNull
 	private AppCompatActivity mActivity;
-	private FragmentManager mFragmentManager;
-	private int mContainerId;
+
+	@NonNull
+	private NavigationFactory mNavigationFactory;
+
+	@NonNull
+	private ActivityNavigator mActivityNavigator;
+
+	@Nullable
+	private FragmentNavigator mFragmentNavigator;
+
+	@NonNull
+	private DialogFragmentNavigator mDialogFragmentNavigator;
+
 	@Nullable
 	private ScreenSwitcher mScreenSwitcher;
-	@Nullable
-	private FlowManager mFlowManager;
-	private TransitionAnimationProvider mTransitionAnimationProvider;
-	private DialogAnimationProvider mDialogAnimationProvider;
-	private TransitionListener mTransitionListener;
-	private TransitionListener mFlowTransitionListener;
-	private DialogShowingListener mDialogShowingListener;
+
+	@NonNull
 	private ScreenResultListener mScreenResultListener;
-	private ScreenSwitchingListener mScreenSwitchingListener;
+
+	@NonNull
 	private NavigationErrorListener mNavigationErrorListener;
-	private ActivityHelper mActivityHelper;
-	private DialogFragmentHelper mDialogFragmentHelper;
-	@Nullable
-	private FragmentStack mFragmentStack;
-	private ScreenResultHelper mScreenResultHelper;
 
-	private NavigationContext(Builder builder) {
-		if (builder.mActivity == null) {
-			throw new NullPointerException("Activity can't be null.");
-		}
+	@NonNull
+	private ScreenSwitchingListener mScreenSwitchingListener;
 
-		mActivity = builder.mActivity;
-		mFragmentManager = builder.mFragmentManager != null ? builder.mFragmentManager : builder.mActivity.getSupportFragmentManager();
-		mContainerId = builder.mContainerId;
-		mScreenSwitcher = builder.mScreenSwitcher;
-		mFlowManager = builder.mFlowManager;
-		mTransitionAnimationProvider = builder.mTransitionAnimationProvider != null ? builder.mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
-		mDialogAnimationProvider = builder.mDialogAnimationProvider != null ? builder.mDialogAnimationProvider : new DefaultDialogAnimationProvider();
-		mTransitionListener = builder.mTransitionListener != null ? builder.mTransitionListener : new DefaultTransitionListener();
-		mFlowTransitionListener = builder.mFlowTransitionListener != null ? builder.mFlowTransitionListener : new DefaultTransitionListener();
-		mDialogShowingListener = builder.mDialogShowingListener != null ? builder.mDialogShowingListener : new DefaultDialogShowingListener();
-		mScreenResultListener = builder.mScreenResultListener != null ? builder.mScreenResultListener : new DefaultScreenResultListener();
-		mScreenSwitchingListener = builder.mScreenSwitchingListener != null ? builder.mScreenSwitchingListener : new DefaultScreenSwitchingListener();
-		mNavigationErrorListener = builder.mNavigationErrorListener != null ? builder.mNavigationErrorListener : new DefaultNavigationErrorListener();
-		mActivityHelper = new ActivityHelper(mActivity);
-		mDialogFragmentHelper = new DialogFragmentHelper(mFragmentManager);
-		mFragmentStack = mContainerId > 0 ? new FragmentStack(mFragmentManager, mContainerId) : null;
-		mScreenResultHelper = new ScreenResultHelper();
+	private NavigationContext(@NonNull AppCompatActivity activity,
+							  @NonNull NavigationFactory navigationFactory,
+							  @NonNull ActivityNavigator activityNavigator,
+							  @Nullable FragmentNavigator fragmentNavigator,
+							  @NonNull DialogFragmentNavigator dialogFragmentNavigator,
+							  @Nullable ScreenSwitcher screenSwitcher,
+							  @NonNull ScreenResultListener screenResultListener,
+							  @NonNull NavigationErrorListener navigationErrorListener,
+							  @NonNull ScreenSwitchingListener screenSwitchingListener) {
+		mActivity = activity;
+		mNavigationFactory = navigationFactory;
+		mActivityNavigator = activityNavigator;
+		mFragmentNavigator = fragmentNavigator;
+		mDialogFragmentNavigator = dialogFragmentNavigator;
+		mScreenSwitcher = screenSwitcher;
+		mScreenResultListener = screenResultListener;
+		mNavigationErrorListener = navigationErrorListener;
+		mScreenSwitchingListener = screenSwitchingListener;
 	}
 
+	@NonNull
 	public AppCompatActivity getActivity() {
 		return mActivity;
 	}
 
-	public FragmentManager getFragmentManager() {
-		return mFragmentManager;
+	@NonNull
+	public NavigationFactory getNavigationFactory() {
+		return mNavigationFactory;
 	}
 
-	public int getContainerId() {
-		return mContainerId;
+	@NonNull
+	public ActivityNavigator getActivityNavigator() {
+		return mActivityNavigator;
+	}
+
+	@Nullable
+	public FragmentNavigator getFragmentNavigator() {
+		return mFragmentNavigator;
+	}
+
+	@NonNull
+	public DialogFragmentNavigator getDialogFragmentNavigator() {
+		return mDialogFragmentNavigator;
 	}
 
 	@Nullable
@@ -98,38 +115,8 @@ public class NavigationContext {
 	}
 
 	@NonNull
-	public TransitionAnimationProvider getTransitionAnimationProvider() {
-		return mTransitionAnimationProvider;
-	}
-
-	@NonNull
-	public DialogAnimationProvider getDialogAnimationProvider() {
-		return mDialogAnimationProvider;
-	}
-
-	@NonNull
-	public TransitionListener getTransitionListener() {
-		return mTransitionListener;
-	}
-
-	@NonNull
-	public DialogShowingListener getDialogShowingListener() {
-		return mDialogShowingListener;
-	}
-
-	@NonNull
 	public ScreenResultListener getScreenResultListener() {
 		return mScreenResultListener;
-	}
-
-	@NonNull
-	public TransitionListener getFlowTransitionListener() {
-		return mFlowTransitionListener;
-	}
-
-	@NonNull
-	public ScreenSwitchingListener getScreenSwitchingListener() {
-		return mScreenSwitchingListener;
 	}
 
 	@NonNull
@@ -138,49 +125,29 @@ public class NavigationContext {
 	}
 
 	@NonNull
-	public ActivityHelper getActivityHelper() {
-		return mActivityHelper;
-	}
-
-	@NonNull
-	public DialogFragmentHelper getDialogFragmentHelper() {
-		return mDialogFragmentHelper;
-	}
-
-	@Nullable
-	public FragmentStack getFragmentStack() {
-		return mFragmentStack;
-	}
-
-	@Nullable
-	public FlowManager getFlowManager() {
-		return mFlowManager;
-	}
-
-	public ScreenResultHelper getScreenResultHelper() {
-		return mScreenResultHelper;
+	public ScreenSwitchingListener getScreenSwitchingListener() {
+		return mScreenSwitchingListener;
 	}
 
 	/**
 	 * Builder for a {@link NavigationContext}.
 	 */
 	public static class Builder {
+		@NonNull
 		private AppCompatActivity mActivity;
+		@NonNull
+		private NavigationFactory mNavigationFactory;
 		@Nullable
 		private FragmentManager mFragmentManager;
-		private int mContainerId;
+		private int mFragmentContainerId;
 		@Nullable
 		private ScreenSwitcher mScreenSwitcher;
-		@Nullable
-		private FlowManager mFlowManager;
 		@Nullable
 		private TransitionAnimationProvider mTransitionAnimationProvider;
 		@Nullable
 		private DialogAnimationProvider mDialogAnimationProvider;
 		@Nullable
 		private TransitionListener mTransitionListener;
-		@Nullable
-		private TransitionListener mFlowTransitionListener;
 		@Nullable
 		private ScreenResultListener mScreenResultListener;
 		@Nullable
@@ -193,34 +160,25 @@ public class NavigationContext {
 		/**
 		 * Creates with the given activity.
 		 *
-		 * @param activity activity that should be current when the navigation context is bound.
+		 * @param activity          activity that should be current when the navigation context is bound.
+		 * @param navigationFactory navigation factory that was used to create {@link AndroidNavigator}
 		 */
-		public Builder(@NonNull AppCompatActivity activity) {
+		public Builder(@NonNull AppCompatActivity activity, @NonNull NavigationFactory navigationFactory) {
 			mActivity = activity;
+			mNavigationFactory = navigationFactory;
 		}
 
 		/**
-		 * Sets a container id.
+		 * Configure fragment navigation
 		 *
-		 * @param containerId container id for fragments
+		 * @param fragmentManager that will be used for fragment transactions
+		 * @param containerId     container id for fragments
 		 * @return this object
 		 */
 		@NonNull
-		public Builder containerId(@IdRes int containerId) {
-			mContainerId = containerId;
-			return this;
-		}
-
-		/**
-		 * Sets a fragment manager.
-		 *
-		 * @param fragmentManager that will be used for fragment transactions. By default a support fragment manager of the current activity will be used.
-		 *                        This method can be useful to set a child fragment manager.
-		 * @return this object
-		 */
-		@NonNull
-		public Builder fragmentManager(@Nullable FragmentManager fragmentManager) {
+		public Builder fragmentNavigation(@NonNull FragmentManager fragmentManager, @IdRes int containerId) {
 			mFragmentManager = fragmentManager;
+			mFragmentContainerId = containerId;
 			return this;
 		}
 
@@ -233,18 +191,6 @@ public class NavigationContext {
 		@NonNull
 		public Builder screenSwitcher(@Nullable ScreenSwitcher screenSwitcher) {
 			mScreenSwitcher = screenSwitcher;
-			return this;
-		}
-
-		/**
-		 * Sets a flow manager.
-		 *
-		 * @param flowManager flow manager that will be used to navigate between flow screens by {@code addFlow, replaceFlow, resetFlow, backToFlow} and {@code finishFlow} methods of {@link Navigator}
-		 * @return this object
-		 */
-		@NonNull
-		public Builder flowManager(@Nullable FlowManager flowManager) {
-			mFlowManager = flowManager;
 			return this;
 		}
 
@@ -281,18 +227,6 @@ public class NavigationContext {
 		@NonNull
 		public Builder transitionListener(@Nullable TransitionListener transitionListener) {
 			mTransitionListener = transitionListener;
-			return this;
-		}
-
-		/**
-		 * Sets a flow transition listener. This listener is called after a flow screen transition.
-		 *
-		 * @param transitionListener transition listener.
-		 * @return this object
-		 */
-		@NonNull
-		public Builder flowTransitionListener(@Nullable TransitionListener transitionListener) {
-			mFlowTransitionListener = transitionListener;
 			return this;
 		}
 
@@ -351,7 +285,24 @@ public class NavigationContext {
 		 */
 		@NonNull
 		public NavigationContext build() {
-			return new NavigationContext(this);
+			TransitionListener transitionListener = mTransitionListener != null ? mTransitionListener : new DefaultTransitionListener();
+			TransitionAnimationProvider transitionAnimationProvider = mTransitionAnimationProvider != null ? mTransitionAnimationProvider : new DefaultTransitionAnimationProvider();
+			DialogShowingListener dialogShowingListener = mDialogShowingListener != null ? mDialogShowingListener : new DefaultDialogShowingListener();
+			DialogAnimationProvider dialogAnimationProvider = mDialogAnimationProvider != null ? mDialogAnimationProvider : new DefaultDialogAnimationProvider();
+			ScreenSwitchingListener screenSwitchingListener = mScreenSwitchingListener != null ? mScreenSwitchingListener : new DefaultScreenSwitchingListener();
+			ScreenResultListener screenResultListener = mScreenResultListener != null ? mScreenResultListener : new DefaultScreenResultListener();
+			NavigationErrorListener navigationErrorListener = mNavigationErrorListener != null ? mNavigationErrorListener : new DefaultNavigationErrorListener();
+
+			ActivityNavigator activityNavigator = new DefaultActivityNavigator(mActivity, mNavigationFactory, transitionListener, transitionAnimationProvider);
+
+			FragmentNavigator fragmentNavigator = mFragmentManager != null ?
+					new DefaultFragmentNavigator(mFragmentManager, mFragmentContainerId, mNavigationFactory, transitionListener, screenResultListener, transitionAnimationProvider) : null;
+
+			DialogFragmentNavigator dialogFragmentNavigator = new DefaultDialogFragmentNavigator(mActivity.getSupportFragmentManager(), mNavigationFactory,
+					dialogShowingListener, screenResultListener, dialogAnimationProvider);
+
+			return new NavigationContext(mActivity, mNavigationFactory, activityNavigator, fragmentNavigator, dialogFragmentNavigator,
+					mScreenSwitcher, screenResultListener, navigationErrorListener, screenSwitchingListener);
 		}
 	}
 }

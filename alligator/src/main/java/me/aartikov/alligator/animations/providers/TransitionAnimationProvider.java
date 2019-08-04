@@ -24,7 +24,9 @@ public interface TransitionAnimationProvider {
 	 * @return an animation that will be used for a transition
 	 */
 	@NonNull
-	TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-									 @NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
+									 @NonNull DestinationType destinationType,
+									 @NonNull Class<? extends Screen> screenClassFrom,
+									 @NonNull Class<? extends Screen> screenClassTo,
 									 @Nullable AnimationData animationData);
 }

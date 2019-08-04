@@ -33,9 +33,12 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 
 	@Override
 	@NonNull
-	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull DestinationType destinationType,
-											@NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
+											@NonNull DestinationType destinationType,
+											@NonNull Class<? extends Screen> screenClassFrom,
+											@NonNull Class<? extends Screen> screenClassTo,
 											@Nullable AnimationData animationData) {
+
 		if (transitionType == TransitionType.FORWARD) {
 			return createSlideAnimation(true, animationData);
 		} else if (transitionType == TransitionType.BACK) {

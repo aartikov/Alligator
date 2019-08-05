@@ -129,7 +129,7 @@ public interface Navigator {
 	void reset(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
-	 * Finishes a last screen or a group of screens executing some common task.
+	 * Finishes a current flow or a current top-level screen.
 	 */
 	void finish();
 
@@ -141,7 +141,7 @@ public interface Navigator {
 	void finish(@Nullable AnimationData animationData);
 
 	/**
-	 * Finishes a last screen or a group of screens executing some common task and returns a screen result.
+	 * Finishes a current flow or a current top-level screen and returns a screen result.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */
@@ -154,6 +154,33 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void finishWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
+
+	/**
+	 * Finishes a current top-level screen.
+	 */
+	void finishTopLevel();
+
+	/**
+	 * {@code finishTopLevel} with an animation data.
+	 *
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void finishTopLevel(@Nullable AnimationData animationData);
+
+	/**
+	 * Finishes a current top-level screen and returns a screen result.
+	 *
+	 * @param screenResult screen result that will be returned
+	 */
+	void finishTopLevelWithResult(@NonNull ScreenResult screenResult);
+
+	/**
+	 * {@code finishTopLevelWithResult} with an animation data.
+	 *
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void finishTopLevelWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Switches screens.

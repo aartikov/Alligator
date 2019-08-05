@@ -15,17 +15,26 @@ import me.aartikov.alligator.exceptions.NavigationException;
 public class FinishCommand implements Command {
 	@Nullable
 	private ScreenResult mScreenResult;
+
+	private boolean mForTopLevel;
+
 	@Nullable
 	private AnimationData mAnimationData;
 
-	public FinishCommand(@Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
+	public FinishCommand(@Nullable ScreenResult screenResult, boolean forTopLevel, @Nullable AnimationData animationData) {
 		mScreenResult = screenResult;
+		mForTopLevel = forTopLevel;
 		mAnimationData = animationData;
 	}
 
 	@Override
 	public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
-		navigationContext.getActivityNavigator().goBack(mScreenResult, mAnimationData);
-		return false;
+		if (!mForTopLevel && navigationContext.getFlowFragmentNavigator() != null && navigationContext.getFlowFragmentNavigator().canGoBack()) {
+			navigationContext.getFlowFragmentNavigator().goBack(mScreenResult, mAnimationData);
+			return true;
+		} else {
+			navigationContext.getActivityNavigator().goBack(mScreenResult, mAnimationData);
+			return false;
+		}
 	}
 }

@@ -7,13 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -23,6 +19,8 @@ import me.aartikov.flowsample.R;
 import me.aartikov.flowsample.SampleApplication;
 import me.aartikov.flowsample.screens.TestFlowScreen;
 import me.aartikov.flowsample.screens.TestSmallScreen;
+
+import java.util.Random;
 
 
 @RegisterScreen(TestFlowScreen.class)
@@ -44,6 +42,9 @@ public class TestFlowFragment extends Fragment implements ContainerIdProvider {
 
 	@BindView(R.id.finish_button)
 	Button mFinishButton;
+
+	@BindView(R.id.finish_all_button)
+	Button mFinishAllButton;
 
 	private Unbinder mButterKnifeUnbinder;
 
@@ -67,6 +68,7 @@ public class TestFlowFragment extends Fragment implements ContainerIdProvider {
 		mReplaceButton.setOnClickListener(v -> mNavigator.replace(new TestFlowScreen(counter)));
 		mResetButton.setOnClickListener(v -> mNavigator.reset(new TestFlowScreen(1)));
 		mFinishButton.setOnClickListener(v -> mNavigator.finish());
+		mFinishAllButton.setOnClickListener(v -> mNavigator.finishTopLevel());
 
 		mRootView.setBackgroundColor(getRandomColor());
 	}

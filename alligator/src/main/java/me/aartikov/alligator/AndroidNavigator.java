@@ -197,7 +197,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	/**
-	 * Finishes a current activity. Implemented with {@link FinishCommand}.
+	 * Finishes a current flow or a current top-level screen (represented by activity). Implemented with {@link FinishCommand}.
 	 */
 	@Override
 	public void finish() {
@@ -206,13 +206,11 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void finish(@Nullable AnimationData animationData) {
-		executeCommand(new FinishCommand(null, animationData));
+		executeCommand(new FinishCommand(null, false, animationData));
 	}
 
 	/**
-	 * Finishes a current activity with result. Implemented with {@link FinishCommand}.
-	 * <p>
-	 * A screen result can be handled in {@code onActivityResult} method of a previous activity with {@link ActivityResultHandler}.
+	 * Finishes a current flow or a current top-level screen (represented by activity) with result. Implemented with {@link FinishCommand}.
 	 *
 	 * @param screenResult screen result that will be returned
 	 */
@@ -223,7 +221,35 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 
 	@Override
 	public void finishWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
-		executeCommand(new FinishCommand(screenResult, animationData));
+		executeCommand(new FinishCommand(screenResult, false, animationData));
+	}
+
+	/**
+	 * Finishes a current top-level screen (represented by activity). Implemented with {@link FinishCommand}.
+	 */
+	@Override
+	public void finishTopLevel() {
+		finishTopLevel(null);
+	}
+
+	@Override
+	public void finishTopLevel(@Nullable AnimationData animationData) {
+		executeCommand(new FinishCommand(null, true, animationData));
+	}
+
+	/**
+	 * Finishes a current top-level screen (represented by activity) with result. Implemented with {@link FinishCommand}.
+	 *
+	 * @param screenResult screen result that will be returned
+	 */
+	@Override
+	public void finishTopLevelWithResult(@NonNull ScreenResult screenResult) {
+		finishTopLevelWithResult(screenResult, null);
+	}
+
+	@Override
+	public void finishTopLevelWithResult(@NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
+		executeCommand(new FinishCommand(screenResult, true, animationData));
 	}
 
 	/**

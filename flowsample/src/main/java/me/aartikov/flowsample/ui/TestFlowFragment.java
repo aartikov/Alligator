@@ -80,10 +80,14 @@ public class TestFlowFragment extends Fragment implements ContainerIdProvider {
 	}
 
 	private void setInitialFragmentIfRequired() {
-		boolean hasFragment = getChildFragmentManager().findFragmentById(R.id.flow_fragment_container) != null;
-		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
+		if (getCurrentFragment() == null && mNavigator.canExecuteCommandImmediately()) {
 			mNavigator.reset(new TestSmallScreen(1));
 		}
+	}
+
+	@Nullable
+	private Fragment getCurrentFragment() {
+		return getChildFragmentManager().findFragmentById(R.id.fragment_container);
 	}
 
 	@Override

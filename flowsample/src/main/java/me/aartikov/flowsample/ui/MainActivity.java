@@ -1,11 +1,9 @@
 package me.aartikov.flowsample.ui;
 
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.transitionListener(((transitionType, destinationType, screenClassFrom, screenClassTo) -> {
 					if (destinationType == DestinationType.FLOW_FRAGMENT) {
-						bindNavigationContext();    // rebind NavigationContext because we need to set another container id and another child fragment manager.
+						bindNavigationContext();    // rebind NavigationContext because a current flow fragment has been changed.
 					}
 				}));
 
@@ -53,19 +51,14 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setInitialFragmentIfRequired() {
-		boolean hasFragment = getSupportFragmentManager().findFragmentById(R.id.flow_fragment_container) != null;
-		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
+		if (getCurrentFlowFragment() == null && mNavigator.canExecuteCommandImmediately()) {
 			mNavigator.reset(new TestFlowScreen(1));
 		}
 	}
 
 	@Nullable
 	private Fragment getCurrentFlowFragment() {
-		if (mNavigationContextBinder.getNavigationContext() != null && mNavigationContextBinder.getNavigationContext().getFlowFragmentNavigator() != null) {
-			return mNavigationContextBinder.getNavigationContext().getFlowFragmentNavigator().getCurrentFragment();
-		} else {
-			return null;
-		}
+		return getSupportFragmentManager().findFragmentById(R.id.flow_fragment_container);
 	}
 
 	@Override

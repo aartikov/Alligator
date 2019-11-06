@@ -6,18 +6,14 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.OneWayIntentConverter;
 import me.aartikov.alligator.converters.OneWayScreenResultConverter;
 
-/**
- * Date: 3/17/2017
- * Time: 10:33
- *
- * @author Artur Artikov
- */
+
 public class ImagePickerScreen implements Screen {
 
 	// Screen result

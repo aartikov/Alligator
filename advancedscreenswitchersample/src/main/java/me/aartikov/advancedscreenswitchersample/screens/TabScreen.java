@@ -4,12 +4,6 @@ import java.io.Serializable;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 11.02.2017
- * Time: 14:15
- *
- * @author Artur Artikov
- */
 
 // Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden.
 

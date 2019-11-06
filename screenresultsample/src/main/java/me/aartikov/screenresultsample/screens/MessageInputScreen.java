@@ -5,12 +5,7 @@ import java.io.Serializable;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 
-/**
- * Date: 12.03.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 public class MessageInputScreen implements Screen {
 
 	// It is convenient to declare a result as a static inner class.

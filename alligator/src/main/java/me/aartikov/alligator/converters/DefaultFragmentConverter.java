@@ -3,19 +3,14 @@ package me.aartikov.alligator.converters;
 import android.os.Bundle;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.io.Serializable;
+
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 15.09.2018
- * Time: 10:18
- *
- * @author Artur Artikov
- */
 
 /**
  * Creates a fragment of the given class. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.

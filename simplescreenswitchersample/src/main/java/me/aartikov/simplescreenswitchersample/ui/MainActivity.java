@@ -1,17 +1,18 @@
 package me.aartikov.simplescreenswitchersample.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
@@ -26,12 +27,7 @@ import me.aartikov.simplescreenswitchersample.SampleApplication;
 import me.aartikov.simplescreenswitchersample.screens.MainScreen;
 import me.aartikov.simplescreenswitchersample.screens.TabScreen;
 
-/**
- * Date: 21.01.2016
- * Time: 23:30
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
 	@BindView(R.id.bottom_bar)
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
 				.screenSwitcher(mScreenSwitcher)
 				.screenSwitchingListener(this)
 				.build();

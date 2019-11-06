@@ -3,6 +3,7 @@ package me.aartikov.simplenavigationsample.ui;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -13,12 +14,7 @@ import me.aartikov.simplenavigationsample.SampleTransitionAnimationProvider;
 import me.aartikov.simplenavigationsample.screens.ScreenB;
 import me.aartikov.simplenavigationsample.screens.ScreenC;
 
-/**
- * Date: 22.01.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(ScreenB.class)
 public class ActivityB extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
@@ -37,8 +33,8 @@ public class ActivityB extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this)       // Same as in ActivityA but we also set a containerId for fragments there.
-				.containerId(R.id.fragment_container)
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
+				.fragmentNavigation(getSupportFragmentManager(), R.id.fragment_container)
 				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
 				.build();
 		mNavigationContextBinder.bind(navigationContext);

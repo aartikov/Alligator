@@ -5,18 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.io.Serializable;
+
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 15.09.2018
- * Time: 10:18
- *
- * @author Artur Artikov
- */
 
 /**
  * Creates an intent that starts an activity of the given class. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.

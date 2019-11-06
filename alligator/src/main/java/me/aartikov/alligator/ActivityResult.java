@@ -3,14 +3,9 @@ package me.aartikov.alligator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
-/**
- * Date: 12.03.2017
- * Time: 10:59
- *
- * @author Artur Artikov
- */
 
 /**
  * Wrapper for an activity result. It contains a result code and an intent.

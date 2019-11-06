@@ -4,12 +4,6 @@ import androidx.annotation.NonNull;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 12.03.2017
- * Time: 15:43
- *
- * @author Artur Artikov
- */
 
 /**
  * Exception thrown when an implicit intent can't be resolved.

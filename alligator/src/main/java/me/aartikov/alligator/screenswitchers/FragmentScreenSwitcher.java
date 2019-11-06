@@ -1,30 +1,25 @@
 package me.aartikov.alligator.screenswitchers;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResolver;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.animations.TransitionAnimation;
+import me.aartikov.alligator.destinations.Destination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.exceptions.NavigationException;
 import me.aartikov.alligator.exceptions.ScreenRegistrationException;
 import me.aartikov.alligator.helpers.FragmentSwitcher;
 import me.aartikov.alligator.listeners.ScreenSwitchingListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
-/**
- * Date: 01/30/2016
- * Time: 10:13
- *
- * @author Artur Artikov
- */
 
 /**
  * Screen switcher that switches fragments in a container. It uses {@link NavigationFactory} to create fragments and get screens back from it.
@@ -32,7 +27,8 @@ import me.aartikov.alligator.screenimplementations.ScreenImplementation;
  */
 public class FragmentScreenSwitcher implements ScreenSwitcher {
 	public interface AnimationProvider {
-		TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData);
+		@NonNull
+		TransitionAnimation getAnimation(@NonNull Screen screenFrom, @NonNull Screen screenTo, @Nullable AnimationData animationData);
 	}
 
 	private FragmentSwitcher fragmentSwitcher;
@@ -71,9 +67,9 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 			return;
 		}
 
-		ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screen.getClass());
-		if (screenImplementation instanceof FragmentScreenImplementation) {
-			Fragment fragment = getOrCreateFragment(screen, (FragmentScreenImplementation) screenImplementation);
+		Destination destination = mNavigationFactory.getDestination(screen.getClass());
+		if (destination instanceof FragmentDestination) {
+			Fragment fragment = getOrCreateFragment(screen, (FragmentDestination) destination);
 			TransitionAnimation animation = currentScreen != null ? mAnimationProvider.getAnimation(currentScreen, screen, animationData) : TransitionAnimation.DEFAULT;
 			fragmentSwitcher.switchTo(fragment, animation);
 			listener.onScreenSwitched(currentScreen, screen);
@@ -101,7 +97,8 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 	private static AnimationProvider createDefaultAnimationProvider() {
 		return new AnimationProvider() {
 			@Override
-			public TransitionAnimation getAnimation(Screen screenFrom, Screen screenTo, AnimationData animationData) {
+			@NonNull
+			public TransitionAnimation getAnimation(@NonNull Screen screenFrom, @NonNull Screen screenTo, @Nullable AnimationData animationData) {
 				return TransitionAnimation.DEFAULT;
 			}
 		};
@@ -123,10 +120,10 @@ public class FragmentScreenSwitcher implements ScreenSwitcher {
 		return null;
 	}
 
-	private Fragment getOrCreateFragment(Screen screen, FragmentScreenImplementation screenImplementation) throws NavigationException {
+	private Fragment getOrCreateFragment(Screen screen, FragmentDestination destination) throws NavigationException {
 		Fragment fragment = mFragmentMap.get(screen);
 		if (fragment == null) {
-			fragment = screenImplementation.createFragment(screen);
+			fragment = destination.createFragment(screen);
 			try {
 				mScreenResolver.getScreen(fragment);  // Check that the screen has a valid screen getting function
 			} catch (Exception e) {

@@ -1,14 +1,15 @@
 package me.aartikov.alligator.navigationfactories;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.DefaultDialogFragmentConverter;
@@ -21,32 +22,26 @@ import me.aartikov.alligator.converters.IntentConverter;
 import me.aartikov.alligator.converters.OneWayIntentConverter;
 import me.aartikov.alligator.converters.OneWayScreenResultConverter;
 import me.aartikov.alligator.converters.ScreenResultConverter;
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.Destination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
-/**
- * Date: 11.02.2017
- * Time: 11:41
- *
- * @author Artur Artikov
- */
 
 /**
  * Navigation factory with screen registration methods.
  */
 
 public class RegistryNavigationFactory implements NavigationFactory {
-	private Map<Class<? extends Screen>, ScreenImplementation> mImplementations = new LinkedHashMap<>();
+	private Map<Class<? extends Screen>, Destination> mDestinations = new LinkedHashMap<>();
 	private ScreenClassHelper mScreenClassHelper = new ScreenClassHelper();
 	private int mRequestCode = 1000;
 
 	@Override
 	@Nullable
-	public ScreenImplementation getScreenImplementation(@NonNull Class<? extends Screen> screenClass) {
-		return mImplementations.get(screenClass);
+	public Destination getDestination(@NonNull Class<? extends Screen> screenClass) {
+		return mDestinations.get(screenClass);
 	}
 
 	@Override
@@ -82,9 +77,11 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param <ScreenT>     screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerActivity(@NonNull Class<ScreenT> screenClass, @NonNull Class<? extends Activity> activityClass, @NonNull IntentConverter<ScreenT> converter) {
-		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, activityClass, converter, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+	public <ScreenT extends Screen> void registerActivity(@NonNull Class<ScreenT> screenClass,
+														  @NonNull Class<? extends Activity> activityClass,
+														  @NonNull IntentConverter<ScreenT> converter) {
+		ActivityDestination destination = new ActivityDestination(screenClass, activityClass, converter, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 		mScreenClassHelper.addActivityClass(activityClass, screenClass);
 	}
 
@@ -110,8 +107,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerActivity(@NonNull Class<ScreenT> screenClass, @NonNull OneWayIntentConverter<ScreenT> converter) {
-		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+		ActivityDestination destination = new ActivityDestination(screenClass, null, converter, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 	}
 
 	/**
@@ -132,8 +129,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                                                                   @NonNull IntentConverter<ScreenT> converter,
 	                                                                                                   @NonNull ScreenResultConverter<ScreenResultT> screenResultConverter) {
 
-		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, activityClass, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+		ActivityDestination destination = new ActivityDestination(screenClass, activityClass, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 		mScreenClassHelper.addActivityClass(activityClass, screenClass);
 		mScreenClassHelper.addRequestCode(mRequestCode, screenClass);
 		mRequestCode++;
@@ -174,8 +171,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	                                                                                                   @NonNull OneWayIntentConverter<ScreenT> converter,
 	                                                                                                   @NonNull OneWayScreenResultConverter<ScreenResultT> screenResultConverter) {
 
-		ActivityScreenImplementation implementation = new ActivityScreenImplementation(screenClass, null, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+		ActivityDestination destination = new ActivityDestination(screenClass, null, converter, screenResultClass, screenResultConverter, mRequestCode, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 		mScreenClassHelper.addRequestCode(mRequestCode, screenClass);
 		mRequestCode++;
 	}
@@ -189,8 +186,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(@NonNull Class<ScreenT> screenClass, @NonNull FragmentConverter<ScreenT> converter) {
-		FragmentScreenImplementation implementation = new FragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+		FragmentDestination destination = new FragmentDestination(screenClass, converter, null, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 	}
 
 	/**
@@ -202,7 +199,7 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerFragment(@NonNull Class<ScreenT> screenClass, @NonNull Class<? extends Fragment> fragmentClass) {
-		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<ScreenT>(screenClass, fragmentClass);
+		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<>(screenClass, fragmentClass);
 		registerFragment(screenClass, converter);
 	}
 
@@ -215,9 +212,11 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param <ScreenT>         screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerFragmentForResult(@NonNull Class<ScreenT> screenClass, @NonNull FragmentConverter<ScreenT> converter, @NonNull Class<? extends ScreenResult> screenResultClass) {
-		FragmentScreenImplementation implementation = new FragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+	public <ScreenT extends Screen> void registerFragmentForResult(@NonNull Class<ScreenT> screenClass,
+																   @NonNull FragmentConverter<ScreenT> converter,
+																   @NonNull Class<? extends ScreenResult> screenResultClass) {
+		FragmentDestination destination = new FragmentDestination(screenClass, converter, screenResultClass, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 	}
 
 	/**
@@ -229,7 +228,9 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param <ScreenT>         screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerFragmentForResult(@NonNull Class<ScreenT> screenClass, @NonNull Class<? extends Fragment> fragmentClass, @NonNull Class<? extends ScreenResult> screenResultClass) {
+	public <ScreenT extends Screen> void registerFragmentForResult(@NonNull Class<ScreenT> screenClass,
+																   @NonNull Class<? extends Fragment> fragmentClass,
+																   @NonNull Class<? extends ScreenResult> screenResultClass) {
 		FragmentConverter<ScreenT> converter = new DefaultFragmentConverter<>(screenClass, fragmentClass);
 		registerFragmentForResult(screenClass, converter, screenResultClass);
 	}
@@ -243,8 +244,8 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
 	public <ScreenT extends Screen> void registerDialogFragment(@NonNull Class<ScreenT> screenClass, @NonNull DialogFragmentConverter<ScreenT> converter) {
-		DialogFragmentScreenImplementation implementation = new DialogFragmentScreenImplementation(screenClass, converter, null, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+		DialogFragmentDestination destination = new DialogFragmentDestination(screenClass, converter, null, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 	}
 
 	/**
@@ -269,9 +270,11 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param <ScreenT>         screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerDialogFragmentForResult(@NonNull Class<ScreenT> screenClass, @NonNull DialogFragmentConverter<ScreenT> converter, @NonNull Class<? extends ScreenResult> screenResultClass) {
-		DialogFragmentScreenImplementation implementation = new DialogFragmentScreenImplementation(screenClass, converter, screenResultClass, mScreenClassHelper);
-		registerScreenImplementation(screenClass, implementation);
+	public <ScreenT extends Screen> void registerDialogFragmentForResult(@NonNull Class<ScreenT> screenClass,
+																		 @NonNull DialogFragmentConverter<ScreenT> converter,
+																		 @NonNull Class<? extends ScreenResult> screenResultClass) {
+		DialogFragmentDestination destination = new DialogFragmentDestination(screenClass, converter, screenResultClass, mScreenClassHelper);
+		registerDestination(screenClass, destination);
 	}
 
 	/**
@@ -283,16 +286,18 @@ public class RegistryNavigationFactory implements NavigationFactory {
 	 * @param <ScreenT>           screen type
 	 * @throws IllegalArgumentException if the screen is already registered
 	 */
-	public <ScreenT extends Screen> void registerDialogFragmentForResult(@NonNull Class<ScreenT> screenClass, @NonNull Class<? extends DialogFragment> dialogFragmentClass, @NonNull Class<? extends ScreenResult> screenResultClass) {
+	public <ScreenT extends Screen> void registerDialogFragmentForResult(@NonNull Class<ScreenT> screenClass,
+																		 @NonNull Class<? extends DialogFragment> dialogFragmentClass,
+																		 @NonNull Class<? extends ScreenResult> screenResultClass) {
 		DialogFragmentConverter<ScreenT> converter = new DefaultDialogFragmentConverter<ScreenT>(screenClass, dialogFragmentClass);
 		registerDialogFragmentForResult(screenClass, converter, screenResultClass);
 	}
 
 
-	protected void registerScreenImplementation(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenImplementation screenImplementation) {
-		if (getScreenImplementation(screenClass) != null) {
+	protected void registerDestination(@NonNull Class<? extends Screen> screenClass, @NonNull Destination destination) {
+		if (getDestination(screenClass) != null) {
 			throw new IllegalArgumentException("Screen " + screenClass.getSimpleName() + " is already registered.");
 		}
-		mImplementations.put(screenClass, screenImplementation);
+		mDestinations.put(screenClass, destination);
 	}
 }

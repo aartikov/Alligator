@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "me.aartikov.navigationsample"
+        applicationId "me.aartikov.navigationmethodssample"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1

@@ -2,12 +2,7 @@ package me.aartikov.sharedelementanimation.ui;
 
 import me.aartikov.alligator.animations.AnimationData;
 
-/**
- * Date: 4/19/2017
- * Time: 16:58
- *
- * @author Artur Artikov
- */
+
 public class KittenAnimationData implements AnimationData {
 	private int mKittenIndex;
 

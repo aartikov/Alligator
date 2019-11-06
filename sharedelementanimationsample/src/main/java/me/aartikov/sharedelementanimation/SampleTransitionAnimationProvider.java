@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.TransitionType;
 import me.aartikov.alligator.animations.AnimationData;
@@ -21,12 +23,7 @@ import me.aartikov.alligator.animations.TransitionAnimation;
 import me.aartikov.alligator.animations.providers.TransitionAnimationProvider;
 import me.aartikov.sharedelementanimation.ui.SharedElementProvider;
 
-/**
- * Date: 08.05.2017
- * Time: 01:47
- *
- * @author Artur Artikov
- */
+
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	private AppCompatActivity mActivity;
 
@@ -36,8 +33,12 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 
 	@Override
 	@NonNull
-	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType, @NonNull Class<? extends Screen> screenClassFrom, @NonNull Class<? extends Screen> screenClassTo,
-	                                        boolean isActivity, @Nullable AnimationData animationData) {
+	public TransitionAnimation getAnimation(@NonNull TransitionType transitionType,
+											@NonNull DestinationType destinationType,
+											@NonNull Class<? extends Screen> screenClassFrom,
+											@NonNull Class<? extends Screen> screenClassTo,
+											@Nullable AnimationData animationData) {
+
 		if (transitionType == TransitionType.FORWARD) {
 			return createSlideAnimation(true, animationData);
 		} else if (transitionType == TransitionType.BACK) {

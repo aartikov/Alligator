@@ -2,17 +2,12 @@ package me.aartikov.alligator.converters;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 15.10.2017
- * Time: 11:37
- *
- * @author Artur Artikov
- */
 
 /**
  * Converts a screen to an activity intent and vice versa.

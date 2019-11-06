@@ -1,4 +1,4 @@
-package me.aartikov.alligator.screenimplementations;
+package me.aartikov.alligator.destinations;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,24 +9,18 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.FragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
-/**
- * Date: 15.10.2017
- * Time: 11:35
- *
- * @author Artur Artikov
- */
 
-public class FragmentScreenImplementation implements ScreenImplementation {
+public class FragmentDestination implements Destination {
 	private Class<? extends Screen> mScreenClass;
 	private FragmentConverter<? extends Screen> mFragmentConverter;
 	@Nullable
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private ScreenClassHelper mScreenClassHelper;
 
-	public FragmentScreenImplementation(@NonNull Class<? extends Screen> screenClass,
-	                                    @NonNull FragmentConverter<? extends Screen> fragmentConverter,
-	                                    @Nullable Class<? extends ScreenResult> screenResultClass,
-	                                    @NonNull ScreenClassHelper screenClassHelper) {
+	public FragmentDestination(@NonNull Class<? extends Screen> screenClass,
+							   @NonNull FragmentConverter<? extends Screen> fragmentConverter,
+							   @Nullable Class<? extends ScreenResult> screenResultClass,
+							   @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mFragmentConverter = fragmentConverter;
 		mScreenResultClass = screenResultClass;

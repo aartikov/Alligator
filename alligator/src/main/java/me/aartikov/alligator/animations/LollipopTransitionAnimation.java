@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.transition.Transition;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -18,12 +15,8 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-/**
- * Date: 16.04.2017
- * Time: 13:59
- *
- * @author Artur Artikov
- */
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Transition animation that uses activity and fragment transitions introduced in Lollipop (API 21).

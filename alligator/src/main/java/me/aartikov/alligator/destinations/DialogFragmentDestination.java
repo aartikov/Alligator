@@ -1,4 +1,4 @@
-package me.aartikov.alligator.screenimplementations;
+package me.aartikov.alligator.destinations;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,24 +9,18 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.converters.DialogFragmentConverter;
 import me.aartikov.alligator.helpers.ScreenClassHelper;
 
-/**
- * Date: 15.10.2017
- * Time: 11:35
- *
- * @author Artur Artikov
- */
 
-public class DialogFragmentScreenImplementation implements ScreenImplementation {
+public class DialogFragmentDestination implements Destination {
 	private Class<? extends Screen> mScreenClass;
 	private DialogFragmentConverter<? extends Screen> mDialogFragmentConverter;
 	@Nullable
 	private Class<? extends ScreenResult> mScreenResultClass;
 	private ScreenClassHelper mScreenClassHelper;
 
-	public DialogFragmentScreenImplementation(@NonNull Class<? extends Screen> screenClass,
-	                                          @NonNull DialogFragmentConverter<? extends Screen> fragmentConverter,
-	                                          @Nullable Class<? extends ScreenResult> screenResultClass,
-	                                          @NonNull ScreenClassHelper screenClassHelper) {
+	public DialogFragmentDestination(@NonNull Class<? extends Screen> screenClass,
+									 @NonNull DialogFragmentConverter<? extends Screen> fragmentConverter,
+									 @Nullable Class<? extends ScreenResult> screenResultClass,
+									 @NonNull ScreenClassHelper screenClassHelper) {
 		mScreenClass = screenClass;
 		mDialogFragmentConverter = fragmentConverter;
 		mScreenResultClass = screenResultClass;
@@ -42,7 +36,6 @@ public class DialogFragmentScreenImplementation implements ScreenImplementation 
 		return dialogFragment;
 	}
 
-	@SuppressWarnings("unchecked")
 	@NonNull
 	public Screen getScreen(@NonNull DialogFragment dialogFragment) {
 		return mDialogFragmentConverter.getScreen(dialogFragment);

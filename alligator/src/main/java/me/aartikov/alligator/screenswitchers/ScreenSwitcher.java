@@ -1,11 +1,5 @@
 package me.aartikov.alligator.screenswitchers;
 
-/**
- * Date: 22.01.2017
- * Time: 22:46
- *
- * @author Artur Artikov
- */
 
 import androidx.annotation.Nullable;
 

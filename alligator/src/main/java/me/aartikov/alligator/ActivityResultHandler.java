@@ -1,21 +1,16 @@
 package me.aartikov.alligator;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.Destination;
 import me.aartikov.alligator.helpers.ScreenResultHelper;
 import me.aartikov.alligator.listeners.ScreenResultListener;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
-/**
- * Date: 12.03.2017
- * Time: 11:06
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for handling a screen result.
@@ -48,9 +43,9 @@ public class ActivityResultHandler {
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(requestCode);
 		if (screenClass != null) {
-			ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
-			if (screenImplementation instanceof ActivityScreenImplementation) {
-				ScreenResult screenResult = ((ActivityScreenImplementation) screenImplementation).getScreenResult(new ActivityResult(resultCode, data));
+			Destination destination = mNavigationFactory.getDestination(screenClass);
+			if (destination instanceof ActivityDestination) {
+				ScreenResult screenResult = ((ActivityDestination) destination).getScreenResult(new ActivityResult(resultCode, data));
 				if (mPendingScreenResultPair == null || mPendingScreenResultPair.mScreenResult == null) {
 					mPendingScreenResultPair = new ScreenResultPair(screenClass, screenResult);
 				}

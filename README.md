@@ -152,21 +152,21 @@ String message = screen.getMessage();
 Create `TransitionAnimationProvider` and set it to `NavigationContext`.
 ```java
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
-	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType,
-    										DestinationType destinationType,
+    @Override
+    public TransitionAnimation getAnimation(TransitionType transitionType,
+                                            DestinationType destinationType,
                                             Class<? extends Screen> screenClassFrom,
                                             Class<? extends Screen> screenClassTo,
                                             @Nullable AnimationData animationData) {
-		switch (transitionType) {
-			case FORWARD:
-				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
-			case BACK:
-				return new SimpleTransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
-			default:
-				return TransitionAnimation.DEFAULT;
-		}
-	}
+        switch (transitionType) {
+            case FORWARD:
+                return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
+            case BACK:
+                return new SimpleTransitionAnimation(R.anim.slide_in_left, R.anim.slide_out_right);
+            default:
+                return TransitionAnimation.DEFAULT;
+        }
+    }
 }
 ```
 ```java
@@ -204,17 +204,17 @@ These types of listeners can be set to `NavigationContext`
 To use an external activity (for example a phone dialer) extend `GeneratedNavigationFactory` and register a screen with a custom intent converter.
 ```java
 public class PhoneDialerConverter extends OneWayIntentConverter<PhoneDialerScreen> {
-	@Override
-	public Intent createIntent(Context context, PhoneDialerScreen screen) {
-		return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber()));
-	}
+    @Override
+    public Intent createIntent(Context context, PhoneDialerScreen screen) {
+        return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + screen.getPhoneNumber()));
+    }
 }
 ```
 ```java
 public class SampleNavigationFactory extends GeneratedNavigationFactory {
-	public SampleNavigationFactory() {
-		registerActivity(PhoneDialerScreen.class, new PhoneDialerConverter());
-	}
+    public SampleNavigationFactory() {
+        registerActivity(PhoneDialerScreen.class, new PhoneDialerConverter());
+    }
 }
 ```
 

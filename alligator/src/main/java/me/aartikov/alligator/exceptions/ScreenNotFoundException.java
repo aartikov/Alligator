@@ -1,11 +1,5 @@
 package me.aartikov.alligator.exceptions;
 
-/**
- * Date: 01.02.2017
- * Time: 11:44
- *
- * @author Artur Artikov
- */
 
 import androidx.annotation.NonNull;
 

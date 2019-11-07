@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 21.10.2017
- * Time: 11:38
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for storing screen class information in activities and fragments.

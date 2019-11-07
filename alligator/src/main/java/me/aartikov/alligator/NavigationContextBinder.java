@@ -1,13 +1,8 @@
 package me.aartikov.alligator;
 
-/**
- * Date: 11.02.2017
- * Time: 11:27
- *
- * @author Artur Artikov
- */
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -15,6 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
  * Interface for binding and unbinding of a {@link NavigationContext}.
  */
 public interface NavigationContextBinder {
+
+	/**
+	 * Returns bound navigation context
+	 *
+	 * @return navigation context if it is bound or null otherwise
+	 */
+	@Nullable
+	NavigationContext getNavigationContext();
 
 	/**
 	 * Returns if a navigation context is bound.

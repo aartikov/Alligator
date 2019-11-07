@@ -4,12 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 
-/**
- * Date: 26.03.2017
- * Time: 12:39
- *
- * @author Artur Artikov
- */
 
 /**
  * Dialog animation that uses a window animation style resource.

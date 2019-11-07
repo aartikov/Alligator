@@ -1,23 +1,18 @@
 package me.aartikov.alligator;
 
 import android.app.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import me.aartikov.alligator.destinations.ActivityDestination;
+import me.aartikov.alligator.destinations.Destination;
+import me.aartikov.alligator.destinations.DialogFragmentDestination;
+import me.aartikov.alligator.destinations.FragmentDestination;
 import me.aartikov.alligator.navigationfactories.NavigationFactory;
-import me.aartikov.alligator.screenimplementations.ActivityScreenImplementation;
-import me.aartikov.alligator.screenimplementations.DialogFragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.FragmentScreenImplementation;
-import me.aartikov.alligator.screenimplementations.ScreenImplementation;
 
-/**
- * Date: 22.10.2017
- * Time: 10:34
- *
- * @author Artur Artikov
- */
 
 /**
  * Helps to get screens from activities and fragments.
@@ -40,7 +35,7 @@ public class ScreenResolver {
 	@SuppressWarnings("unchecked")
 	@NonNull
 	public <ScreenT extends Screen> ScreenT getScreen(@NonNull Activity activity) {
-		ScreenT screen = (ScreenT) getScreenImplementation(activity).getScreen(activity);
+		ScreenT screen = (ScreenT) getDestination(activity).getScreen(activity);
 		if (screen != null) {
 			return screen;
 		} else {
@@ -59,7 +54,7 @@ public class ScreenResolver {
 	@SuppressWarnings("unchecked")
 	@Nullable
 	public <ScreenT extends Screen> ScreenT getScreenOrNull(@NonNull Activity activity) {
-		return (ScreenT) getScreenImplementation(activity).getScreen(activity);
+		return (ScreenT) getDestination(activity).getScreen(activity);
 	}
 
 	/**
@@ -73,7 +68,7 @@ public class ScreenResolver {
 	@SuppressWarnings("unchecked")
 	@NonNull
 	public <ScreenT extends Screen> ScreenT getScreen(@NonNull Fragment fragment) {
-		return (ScreenT) getScreenImplementation(fragment).getScreen(fragment);
+		return (ScreenT) getDestination(fragment).getScreen(fragment);
 	}
 
 	/**
@@ -87,51 +82,51 @@ public class ScreenResolver {
 	@SuppressWarnings("unchecked")
 	@NonNull
 	public <ScreenT extends Screen> ScreenT getScreen(@NonNull DialogFragment dialogFragment) {
-		return (ScreenT) getScreenImplementation(dialogFragment).getScreen(dialogFragment);
+		return (ScreenT) getDestination(dialogFragment).getScreen(dialogFragment);
 	}
 
 	@NonNull
-	private ActivityScreenImplementation getScreenImplementation(@NonNull Activity activity) {
+	private ActivityDestination getDestination(@NonNull Activity activity) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(activity);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + activity.getClass().getSimpleName());
 		}
 
-		ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
-		if (!(screenImplementation instanceof ActivityScreenImplementation)) {
-			throw new IllegalArgumentException("Failed to get screen implementation from " + activity.getClass().getSimpleName());
+		Destination destination = mNavigationFactory.getDestination(screenClass);
+		if (!(destination instanceof ActivityDestination)) {
+			throw new IllegalArgumentException("Failed to get destination from " + activity.getClass().getSimpleName());
 		}
 
-		return (ActivityScreenImplementation) screenImplementation;
+		return (ActivityDestination) destination;
 	}
 
 	@NonNull
-	private FragmentScreenImplementation getScreenImplementation(@NonNull Fragment fragment) {
+	private FragmentDestination getDestination(@NonNull Fragment fragment) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(fragment);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + fragment.getClass().getSimpleName());
 		}
 
-		ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
-		if (!(screenImplementation instanceof FragmentScreenImplementation)) {
-			throw new IllegalArgumentException("Failed to get screen implementation from " + fragment.getClass().getSimpleName());
+		Destination destination = mNavigationFactory.getDestination(screenClass);
+		if (!(destination instanceof FragmentDestination)) {
+			throw new IllegalArgumentException("Failed to get destination from " + fragment.getClass().getSimpleName());
 		}
 
-		return (FragmentScreenImplementation) screenImplementation;
+		return (FragmentDestination) destination;
 	}
 
 	@NonNull
-	private DialogFragmentScreenImplementation getScreenImplementation(@NonNull DialogFragment dialogFragment) {
+	private DialogFragmentDestination getDestination(@NonNull DialogFragment dialogFragment) {
 		Class<? extends Screen> screenClass = mNavigationFactory.getScreenClass(dialogFragment);
 		if (screenClass == null) {
 			throw new IllegalArgumentException("Failed to get screen class from " + dialogFragment.getClass().getSimpleName());
 		}
 
-		ScreenImplementation screenImplementation = mNavigationFactory.getScreenImplementation(screenClass);
-		if (!(screenImplementation instanceof DialogFragmentScreenImplementation)) {
-			throw new IllegalArgumentException("Failed to get screen implementation from " + dialogFragment.getClass().getSimpleName());
+		Destination destination = mNavigationFactory.getDestination(screenClass);
+		if (!(destination instanceof DialogFragmentDestination)) {
+			throw new IllegalArgumentException("Failed to get destination from " + dialogFragment.getClass().getSimpleName());
 		}
 
-		return (DialogFragmentScreenImplementation) screenImplementation;
+		return (DialogFragmentDestination) destination;
 	}
 }

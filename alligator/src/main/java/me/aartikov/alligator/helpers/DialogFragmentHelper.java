@@ -7,12 +7,6 @@ import androidx.fragment.app.FragmentManager;
 
 import me.aartikov.alligator.animations.DialogAnimation;
 
-/**
- * Date: 25.03.2017
- * Time: 15:19
- *
- * @author Artur Artikov
- */
 
 /**
  * Helper class for showing and hiding a dialog fragment.

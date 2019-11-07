@@ -4,12 +4,7 @@ import java.io.Serializable;
 
 import me.aartikov.alligator.Screen;
 
-/**
- * Date: 22.01.2016
- * Time: 0:38
- *
- * @author Artur Artikov
- */
+
 public class InnerScreen implements Screen, Serializable {
 	private int mCounter;
 

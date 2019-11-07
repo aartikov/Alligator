@@ -4,12 +4,12 @@
 Alligator is a modern Android navigation library that will help to organize your navigation code in clean and testable way.
 
 ## Features
-- Screens based on activities, fragments and dialog fragments.
+- Any approach you want: activity per screen, activity per flow, single activity.
 - Simple yet powerful navigation methods.
-- Independence from activity lifecycle (navigation is available even when an application is in background).
+- Lifecycle-safe (navigation is available even when an application is in background).
 - Passing screen arguments without boilerplate code.
 - Handling screen result in object oriented style.
-- Screen switching with nested navigation.
+- Bottom navigation with separate back stack history.
 - Flexible animation configuring.
 
 ## Gradle Setup
@@ -26,30 +26,30 @@ Add the dependencies in module level build.gradle:
 
 ```gradle
 dependencies {
-    implementation 'com.github.aartikov.Alligator:alligator:3.0.0'
-    annotationProcessor 'com.github.aartikov.Alligator:alligator-compiler:3.0.0'
+    implementation 'com.github.aartikov.Alligator:alligator:4.0.0'
+    annotationProcessor 'com.github.aartikov.Alligator:alligator-compiler:4.0.0'
 }
 ```
 Starting from version 3.0.0 Alligator requires AndroidX.
 
 ## Components to know
-[AndroidNavigator](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/AndroidNavigator.html) - the main library object. It implements `Navigator` and `NavigationContextBinder` interfaces and uses a command queue internally to execute navigation commands.
+[AndroidNavigator](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/AndroidNavigator.html) - the main library object. It implements `Navigator` and `NavigationContextBinder` interfaces and uses a command queue internally to execute navigation commands.
 
-[Navigator](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/Navigator.html) - has navigation methods such as `goForward`, `goBack`, `replace` and so on. It does not depend on Android SDK, so code that uses it can be tested easily. `Navigator` operates with `Screen`s.
+[Navigator](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/Navigator.html) - has navigation methods such as `goForward`, `goBack`, `replace` and so on. It does not depend on Android SDK, so code that uses it can be tested easily. `Navigator` operates with `Screen`s.
 
-[Screen](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/Screen.html) - a logical representation of an application screen. It is used to indicate a screen type and pass screen arguments.
+[Screen](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/Screen.html) - a logical representation of an application screen. It is used to indicate a screen type and pass screen arguments.
 
-[NavigationContextBinder](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/NavigationContextBinder.html) - binds and unbinds `NavigationContext` to `AndroidNavigator`.
+[NavigationContextBinder](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/NavigationContextBinder.html) - binds and unbinds `NavigationContext` to `AndroidNavigator`.
 
-[NavigationContext](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/NavigationContext.html) -  is used to configure `AndroidNavigator`. It contains a reference to the current activity and all the other things needed for command execution.
+[NavigationContext](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/NavigationContext.html) -  is used to configure `AndroidNavigator`. It contains a reference to the current activity and all the other things needed for command execution.
 
-[Command](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/commands/Command.html) - a command executed by `AndroidNavigator`. The library has a bunch of implemented commands corresponding to navigation methods. You don’t need to create a command manually, `AndroidNavigator` creates it when a navigation method is called.
+[Command](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/commands/Command.html) - a command executed by `AndroidNavigator`. The library has a bunch of implemented commands corresponding to navigation methods. You don’t need to create a command manually, `AndroidNavigator` creates it when a navigation method is called.
 
-[NavigationFactory](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/navigationfactories/NavigationFactory.html) - associates `Screen`s with theirs Android implementation. Alligator generates a navigation factory for you with annotation processor, but you can extend it if needed.
+[NavigationFactory](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/navigationfactories/NavigationFactory.html) - associates `Screen`s with theirs Android implementation. Alligator generates a navigation factory for you with annotation processor, but you can extend it if needed.
 
-[ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/screenswitchers/ScreenSwitcher.html) - an object for switching between several screens without theirs recreation. There are ready to use implementations of `ScreenSwitcher` - [FragmentScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/screenswitchers/FragmentScreenSwitcher.html).
+[ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/screenswitchers/ScreenSwitcher.html) - an object for switching between several screens without theirs recreation. There are ready to use implementations of `ScreenSwitcher` - [FragmentScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/screenswitchers/FragmentScreenSwitcher.html).
 
-[TransitionAnimation](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/animations/TransitionAnimation.html), [TransitionAnimationProvider](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/animations/providers/TransitionAnimationProvider.html) - are used to configure animations.
+[TransitionAnimation](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/animations/TransitionAnimation.html), [TransitionAnimationProvider](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/animations/providers/TransitionAnimationProvider.html) - are used to configure animations.
 
 ## Quick start
 ### 1. Declare screens
@@ -88,11 +88,11 @@ public class FragmentD extends Fragment
 ### 3. Create AndroidNavigator
 It should be a single instance in your application.
 ```java
-sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
+androidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
 ```
 
 ### 4. Set NavigationContext
-Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also set a fragment container, a fragment manager (which by default is taken from an activity), a [screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
+Use `NavigationContext.Builder` to create `NavigationContext`. In the simplest case just pass a current activity to it. You can also configure fragment navigation, a [screen switcher](https://github.com/aartikov/Alligator#switch-screens), [animation providers](https://github.com/aartikov/Alligator#configure-animations) and [listeners](https://github.com/aartikov/Alligator#listen-navigation).
 
 Activities are responsible to bind and unbind `NavigationContext`. Bind it in `onResumeFragments` (when state of an activity and its fragments is restored) and unbind in `onPause` (when an activity becomes inactive).
 
@@ -100,8 +100,8 @@ Activities are responsible to bind and unbind `NavigationContext`. Bind it in `o
 @Override
 protected void onResumeFragments() {
     super.onResumeFragments();
-    NavigationContext navigationContext = new NavigationContext.Builder(this)
-            .containerId(R.id.fragment_container)
+    NavigationContext navigationContext = new NavigationContext.Builder(this, androidNavigator.getNavigationFactory())
+            .fragmentNavigation(getSupportFragmentManager(), R.id.fragment_container)
             .build();
     mNavigationContextBinder.bind(navigationContext);
 }
@@ -124,21 +124,23 @@ mNavigator.goBack();
 `Navigator` provides these navigation methods:
 1. `goForward(screen)` - adds a new screen and goes to it.
 2. `goBack()` - removes the current screen and goes back to the previous screen.
-3. `goBackWithResult(screenResult)` - goes back with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
+3. `goBackWithResult(screenResult)` - goes back with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
 4. `goBackTo(screenClass)` - goes back to a given screen.
-5. `goBackToWithResult(screenResult)` - goes back to a given screen with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
+5. `goBackToWithResult(screenClass, screenResult)` - goes back to a given screen with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
 6. `replace(screen)` - replaces the last screen with a new screen.
 7. `reset(screen)` - removes all other screens and adds a new screen.
-8. `finish()` - finishes the last screen or the group of screens executing some common task (implemented as finishing of the current activity).
-9. `finishWithResult(screenResult)` - finishes with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
-10. `switchTo(screen)` - switches a screen using a [ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/screenswitchers/ScreenSwitcher.html).
+8. `finish()` - finishes a current [flow](https://github.com/aartikov/Alligator#flows) or a current top-level screen.
+9. `finishWithResult(screenResult)` - finishes with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
+10. `finishTopLevel()` - finishes a current top-level screen (that is represented by activity).
+11. `finishTopLevelWithResult(screenResult)` -  finishes a current top-level screen with [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResult.html).
+12. `switchTo(screen)` - switches a screen using a [ScreenSwitcher](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/screenswitchers/ScreenSwitcher.html).
 
 Navigation methods can be called at any moment, even when a `NavigationContext` is not bound. When a navigation method is called an appropriate `Command` is created and placed to a command queue. `AndroidNavigator` can execute commands only when a `NavigationContext` is bound to it, in other case a command will be postponed. You can combine navigation methods arbitrarily (for example call two `goBack()` one by one). This works for activities too because `AndroidNavigator` unbinds a `NavigationContext` by itself after activity finishing or starting.
 
 See how navigation methods work in [simple navigation sample](https://github.com/aartikov/Alligator/tree/master/simplenavigationsample) an [navigation methods sample](https://github.com/aartikov/Alligator/tree/master/navigationmethodssample).
 
 ### 6. Get screen arguments
-To get screen arguments from an activity or a fragment use [ScreenResolver](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ScreenResolver.html). 
+To get screen arguments from an activity or a fragment use [ScreenResolver](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResolver.html). 
 ```java
 mScreenResolver = SampleApplication.sAndroidNavigator.getScreenResolver();
 ScreenD screen = mScreenResolver.getScreen(this); // 'this' is Activity or Fragment
@@ -151,8 +153,11 @@ Create `TransitionAnimationProvider` and set it to `NavigationContext`.
 ```java
 public class SampleTransitionAnimationProvider implements TransitionAnimationProvider {
 	@Override
-	public TransitionAnimation getAnimation(TransitionType transitionType, Class<? extends Screen> screenClassFrom,
-    					Class<? extends Screen> screenClassTo, boolean isActivity, @Nullable AnimationData animationData) {
+	public TransitionAnimation getAnimation(TransitionType transitionType,
+    										DestinationType destinationType,
+                                            Class<? extends Screen> screenClassFrom,
+                                            Class<? extends Screen> screenClassTo,
+                                            @Nullable AnimationData animationData) {
 		switch (transitionType) {
 			case FORWARD:
 				return new SimpleTransitionAnimation(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -165,7 +170,7 @@ public class SampleTransitionAnimationProvider implements TransitionAnimationPro
 }
 ```
 ```java
-    NavigationContext navigationContext = new NavigationContext.Builder(this)
+    NavigationContext navigationContext = new NavigationContext.Builder(this, navigationFactory)
             .transitionAnimationProvider(new SampleTransitionAnimationProvider())
             .build();
 ```
@@ -179,16 +184,21 @@ To make screen switching posible a special object `ScreenSwitcher` should be cre
 
  See how screen switching works in [simple screen switcher sample](https://github.com/aartikov/Alligator/tree/master/simplescreenswitchersample) an [advanced screen switcher sample](https://github.com/aartikov/Alligator/tree/master/advancedscreenswitchersample).
 
+### Flows
+Flow is a group of screen executing some common task. There are two ways to create flows. The first one is to use activities for flows and fragments for nested screens. There is nothing special here. The second way is to use [FlowScreen](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/FlowScreen.html)s. It allows to create fragment-based flows with nested child fragments. Screens marked with `FlowScreen` interface are considered to be flows. You can configure this type of navigation using `flowFragmentNavigation` and `fragmentNavigation` methods of `NavigationContext.Builder`.
+
+For more details see [flow sample](https://github.com/aartikov/Alligator/tree/master/flowsample).
+
 ### Open dialogs
 To open a dialog register screen implemented by a dialog fragment and start it with `goForward` method.
 
 ### Listen navigation
 These types of listeners can be set to `NavigationContext`
-- [TransitionListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/TransitionListener.html) - is called when usual screen transition (not screen switching and not dialog showing) has been executed.
-- [DialogShowingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/DialogShowingListener.html) - is called when a dialog fragment has been shown.
-- [ScreenSwitchingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/ScreenSwitchingListener.html) - is called when a screen has been switched with a screen switcher.
-- [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) - is called when a screen that can return a result has finished.
-- [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) - is called when a navigation error has occurred.
+- [TransitionListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/TransitionListener.html) - is called when usual screen transition (not screen switching and not dialog showing) has been executed.
+- [DialogShowingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/DialogShowingListener.html) - is called when a dialog fragment has been shown.
+- [ScreenSwitchingListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/ScreenSwitchingListener.html) - is called when a screen has been switched with a screen switcher.
+- [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) - is called when a screen that can return a result has finished.
+- [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) - is called when a navigation error has occurred.
 
 ### Start external activity
 To use an external activity (for example a phone dialer) extend `GeneratedNavigationFactory` and register a screen with a custom intent converter.
@@ -208,12 +218,12 @@ public class SampleNavigationFactory extends GeneratedNavigationFactory {
 }
 ```
 
-Start it with `goForward` method. Use [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) to check that an activity has been succesfully resolved.
+Start it with `goForward` method. Use [NavigationErrorListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/NavigationErrorListener.html) to check that an activity has been succesfully resolved.
 
 ### Handle screen result
-A screen can return [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ScreenResult.html) to a previous screen. It is like `startActivityForResult`, but with Alligator there are no needs to declare request codes and handle `onActivityResult` manually. Alligator defines unique request codes for screens implemented by activities that can return results. For screens implemented by fragments Alligator uses usual listeners.
+A screen can return [ScreenResult](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ScreenResult.html) to a previous screen. It is like `startActivityForResult`, but with Alligator there are no needs to declare request codes and handle `onActivityResult` manually. Alligator defines unique request codes for screens implemented by activities that can return results. For screens implemented by fragments Alligator uses usual listeners.
 
-Declare and register screen result classes. Return a result with `goBackWithResult` or `finishWithResult` methods of `Navigator`. Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/3.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
+Declare and register screen result classes. Return a result with `goBackWithResult` or `finishWithResult` methods of `Navigator`. Use [ActivityResultHandler](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/ActivityResultHandler.html) and [ScreenResultListener](https://jitpack.io/com/github/aartikov/Alligator/alligator/4.0.0/javadoc/me/aartikov/alligator/listeners/ScreenResultListener.html) to handle screen result.
 
 See how to do it in [screen result sample](https://github.com/aartikov/Alligator/tree/master/screenresultsample).
 

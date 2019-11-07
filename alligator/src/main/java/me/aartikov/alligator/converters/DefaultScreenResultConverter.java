@@ -4,19 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.io.Serializable;
+
 import me.aartikov.alligator.ActivityResult;
 import me.aartikov.alligator.ScreenResult;
 
-/**
- * Date: 15.09.2018
- * Time: 10:18
- *
- * @author Artur Artikov
- */
 
 /**
  * Creates {@code ActivityResult(Activity.RESULT_OK, data)} (where {@code data} contains a serialized screen result) if a screen result is not {@code null},

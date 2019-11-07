@@ -1,11 +1,5 @@
 package me.aartikov.alligator.animations;
 
-/**
- * Date: 3/2/2017
- * Time: 09:57
- *
- * @author Artur Artikov
- */
 
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.animations.providers.DialogAnimationProvider;

@@ -3,17 +3,12 @@ package me.aartikov.alligator.animations;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-/**
- * Date: 26.03.2017
- * Time: 12:01
- *
- * @author Artur Artikov
- */
 
 /**
  * Transition animation that leaves a default animation behavior for activities and fragments.

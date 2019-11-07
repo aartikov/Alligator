@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
@@ -15,12 +16,7 @@ import me.aartikov.screenresultsample.R;
 import me.aartikov.screenresultsample.SampleApplication;
 import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
-/**
- * Date: 12.03.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 @RegisterScreen(value = MessageInputScreen.class, screenResult = MessageInputScreen.Result.class)
 public class MessageInputActivity extends AppCompatActivity {
 	private Navigator mNavigator = SampleApplication.getNavigator();
@@ -47,7 +43,8 @@ public class MessageInputActivity extends AppCompatActivity {
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this).build();
+		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
+				.build();
 		mNavigationContextBinder.bind(navigationContext);
 	}
 

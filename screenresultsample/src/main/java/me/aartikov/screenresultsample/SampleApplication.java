@@ -6,13 +6,9 @@ import me.aartikov.alligator.ActivityResultHandler;
 import me.aartikov.alligator.AndroidNavigator;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
+import me.aartikov.alligator.navigationfactories.NavigationFactory;
 
-/**
- * Date: 12.03.2016
- * Time: 15:53
- *
- * @author Artur Artikov
- */
+
 public class SampleApplication extends Application {
 	private static AndroidNavigator sAndroidNavigator;
 
@@ -24,6 +20,10 @@ public class SampleApplication extends Application {
 
 	public static Navigator getNavigator() {
 		return sAndroidNavigator;
+	}
+
+	public static NavigationFactory getNavigationFactory() {
+		return sAndroidNavigator.getNavigationFactory();
 	}
 
 	public static NavigationContextBinder getNavigationContextBinder() {

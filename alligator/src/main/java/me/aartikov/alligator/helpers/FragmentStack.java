@@ -130,7 +130,7 @@ public class FragmentStack {
 
 		FragmentTransaction transaction = mFragmentManager.beginTransaction();
 		if (currentFragment != null) {
-			animation.applyBeforeFragmentTransactionExecuted(transaction, currentFragment, fragment);
+			animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, currentFragment);
 			transaction.remove(currentFragment);
 		}
 

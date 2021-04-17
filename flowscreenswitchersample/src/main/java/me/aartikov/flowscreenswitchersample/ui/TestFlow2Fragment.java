@@ -74,8 +74,6 @@ public class TestFlow2Fragment extends Fragment implements ContainerIdProvider, 
         super.onViewCreated(view, savedInstanceState);
         mButterKnifeUnbinder = ButterKnife.bind(this, view);
 
-
-
         bottomBarSecond.setOnNavigationItemSelectedListener(menuItem -> {
             Screen screen = getTabScreen(menuItem.getItemId());
             mNavigator.switchTo(screen);

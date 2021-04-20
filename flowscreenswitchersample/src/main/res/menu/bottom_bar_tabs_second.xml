@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab1_3d"
+        android:icon="@drawable/ic_baseline_3d_rotation_24"
+        android:title="@string/tab_3d" />
+    <item
+        android:id="@+id/tab2_4k"
+        android:icon="@drawable/ic_baseline_4k_24"
+        android:title="@string/tab_4k" />
+    <item
+        android:id="@+id/tab3_360"
+        android:icon="@drawable/ic_baseline_360_24"
+        android:title="@string/tab_360" />
+</menu>

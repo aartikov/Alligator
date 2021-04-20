@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Flow Screen Switcher Sample</string>
+    <string name="forward">Forward</string>
+    <string name="replace">Replace</string>
+    <string name="reset">Reset</string>
+    <string name="finish">Finish</string>
+    <string name="finish_all">Finish all</string>
+    <string name="back">Back</string>
+    <string name="double_back">Back x 2</string>
+    <string name="counter_template">"Counter: %d"</string>
+
+    <string name="tab_android">Android</string>
+    <string name="tab_bug">Bug</string>
+    <string name="tab_dog">Dog</string>
+
+    <string name="tab_3d">3d</string>
+    <string name="tab_4k">4k</string>
+    <string name="tab_360">360</string>
+</resources>

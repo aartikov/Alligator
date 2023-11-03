@@ -1,7 +1,7 @@
 # Alligator
 [![Release](https://jitpack.io/v/aartikov/Alligator.svg)](https://jitpack.io/#aartikov/Alligator) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Alligator is a modern Android navigation library that will help to organize your navigation code in clean and testable way.
+Alligator is Android navigation library that will help to organize your navigation code in clean and testable way.
 
 ## Features
 - Any approach you want: activity per screen, activity per flow, single activity.

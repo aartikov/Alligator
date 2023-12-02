@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 group = 'com.github.aartikov'
-version = '4.2.1'
+version = '4.3.0'
 
 android {
 	compileSdk 34

@@ -25,9 +25,9 @@ public class BackToScreenCommand extends BaseCommand{
     @Nullable
     private AnimationData mAnimationData;
 
-    public BackToScreenCommand(@NonNull Screen screenClass, @Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
-        super(screenClass.getClass());
-        mScreen = screenClass;
+    public BackToScreenCommand(@NonNull Screen screen, @Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
+        super(screen.getClass());
+        mScreen = screen;
         mScreenResult = screenResult;
         mAnimationData = animationData;
     }

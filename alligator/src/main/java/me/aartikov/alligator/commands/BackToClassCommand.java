@@ -19,14 +19,14 @@ import me.aartikov.alligator.navigators.FragmentNavigator;
 /**
  * Command implementation for {@code goBackTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
  */
-public class BackToCommand extends BaseCommand {
+public class BackToClassCommand extends BaseCommand {
 	private Class<? extends Screen> mScreenClass;
 	@Nullable
 	private ScreenResult mScreenResult;
 	@Nullable
 	private AnimationData mAnimationData;
 
-	public BackToCommand(@NonNull Class<? extends Screen> screenClass, @Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
+	public BackToClassCommand(@NonNull Class<? extends Screen> screenClass, @Nullable ScreenResult screenResult, @Nullable AnimationData animationData) {
 		super(screenClass);
 		mScreenClass = screenClass;
 		mScreenResult = screenResult;
@@ -45,6 +45,6 @@ public class BackToCommand extends BaseCommand {
 
 	@Override
 	protected void executeForDialogFragment(@NonNull DialogFragmentDestination destination, @NonNull DialogFragmentNavigator dialogFragmentNavigator) throws NavigationException {
-		throw new NotSupportedOperationException("BackTo command is not supported for dialog fragments.");
+		throw new NotSupportedOperationException("BackToClass command is not supported for dialog fragments.");
 	}
 }

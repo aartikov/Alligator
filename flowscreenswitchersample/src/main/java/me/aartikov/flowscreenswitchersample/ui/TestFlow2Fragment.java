@@ -16,9 +16,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.Screen;
 import me.aartikov.alligator.annotations.RegisterScreen;
@@ -31,18 +28,15 @@ import me.aartikov.flowscreenswitchersample.screens.TestFlow2Screen;
 
 @RegisterScreen(TestFlow2Screen.class)
 public class TestFlow2Fragment extends Fragment implements ContainerIdProvider, ScreenSwitcherProvider {
-    @BindView(R.id.root_view2)
+
     View mRootView;
 
-    @BindView(R.id.bottomBarSecond)
     BottomNavigationView bottomBarSecond;
 
-    private Unbinder mButterKnifeUnbinder;
-
-    private Navigator mNavigator = SampleApplication.getNavigator();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
     private FragmentScreenSwitcher mScreenSwitcher;
 
-    private Map<Integer, Screen> mTabScreenMap = new LinkedHashMap<>();
+    private final Map<Integer, Screen> mTabScreenMap = new LinkedHashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +66,10 @@ public class TestFlow2Fragment extends Fragment implements ContainerIdProvider, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mButterKnifeUnbinder = ButterKnife.bind(this, view);
+        mRootView = view.findViewById(R.id.root_view2);
+        bottomBarSecond = view.findViewById(R.id.bottomBarSecond);
 
-        bottomBarSecond.setOnNavigationItemSelectedListener(menuItem -> {
+        bottomBarSecond.setOnItemSelectedListener(menuItem -> {
             Screen screen = getTabScreen(menuItem.getItemId());
             mNavigator.switchTo(screen);
             return true;
@@ -95,12 +90,6 @@ public class TestFlow2Fragment extends Fragment implements ContainerIdProvider, 
 
     private Screen getTabScreen(int tabId) {
         return mTabScreenMap.get(tabId);
-    }
-
-    @Override
-    public void onDestroyView() {
-        mButterKnifeUnbinder.unbind();
-        super.onDestroyView();
     }
 
     private static int getRandomColor() {

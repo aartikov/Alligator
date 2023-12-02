@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import butterknife.BindViews;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.annotations.RegisterScreen;
@@ -24,12 +21,10 @@ import me.aartikov.sharedelementanimation.screens.SecondScreen;
 
 @RegisterScreen(FirstScreen.class)
 public class FirstFragment extends Fragment implements SharedElementProvider {
-	@BindViews({R.id.kitten_image_view_0, R.id.kitten_image_view_1})
+
 	ImageView[] mKittenImageViews;
 
-	private Unbinder mButterKnifeUnbinder;
-
-	private Navigator mNavigator = SampleApplication.getNavigator();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,22 +33,20 @@ public class FirstFragment extends Fragment implements SharedElementProvider {
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		mButterKnifeUnbinder = ButterKnife.bind(this, view);
+        super.onViewCreated(view, savedInstanceState);
 
-		for (int i = 0; i < mKittenImageViews.length; i++) {
-			int kittenIndex = i;
-			mKittenImageViews[i].setOnClickListener(v -> {
-				mNavigator.goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
-			});
-		}
-	}
+        mKittenImageViews = new ImageView[]{
+                view.findViewById(R.id.kitten_image_view_0),
+                view.findViewById(R.id.kitten_image_view_1)
+        };
 
-	@Override
-	public void onDestroyView() {
-		mButterKnifeUnbinder.unbind();
-		super.onDestroyView();
-	}
+        for (int i = 0; i < mKittenImageViews.length; i++) {
+            int kittenIndex = i;
+            mKittenImageViews[i].setOnClickListener(v -> {
+                mNavigator.goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
+            });
+        }
+    }
 
 	@Override
 	public View getSharedElement(AnimationData animationData) {

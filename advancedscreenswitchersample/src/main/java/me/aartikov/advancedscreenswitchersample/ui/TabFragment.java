@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
@@ -23,12 +20,10 @@ import me.aartikov.alligator.annotations.RegisterScreen;
 
 @RegisterScreen(TabScreen.class)
 public class TabFragment extends Fragment implements ContainerIdProvider {
-	@BindView(R.id.name_text_view)
+
 	TextView mNameTextView;
 
-	private Unbinder mButterKnifeUnbinder;
-
-	private Navigator mNavigator = SampleApplication.getNavigator();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,8 +32,8 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		mButterKnifeUnbinder = ButterKnife.bind(this, view);
+        super.onViewCreated(view, savedInstanceState);
+        mNameTextView = view.findViewById(R.id.name_text_view);
 
 		TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
 		mNameTextView.setText(screen.getName());
@@ -55,12 +50,6 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
 		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
 			mNavigator.reset(new InnerScreen(1));
 		}
-	}
-
-	@Override
-	public void onDestroyView() {
-		mButterKnifeUnbinder.unbind();
-		super.onDestroyView();
 	}
 
 	@Override

@@ -13,18 +13,18 @@ import me.aartikov.sharedelementanimation.SampleTransitionAnimationProvider;
 import me.aartikov.sharedelementanimation.screens.FirstScreen;
 
 public class MainActivity extends AppCompatActivity {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		if (savedInstanceState == null) {
-			mNavigator.reset(new FirstScreen());
-		}
-	}
+        if (savedInstanceState == null) {
+            mNavigator.reset(new FirstScreen());
+        }
+    }
 
 	@Override
 	protected void onResumeFragments() {

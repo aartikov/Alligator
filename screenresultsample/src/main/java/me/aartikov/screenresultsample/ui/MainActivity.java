@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.ActivityResultHandler;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
@@ -31,32 +29,29 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements ScreenResultListener {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-	private ActivityResultHandler mActivityResultHandler = SampleApplication.getActivityResultHandler();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private final ActivityResultHandler mActivityResultHandler = SampleApplication.getActivityResultHandler();
 
-	@BindView(R.id.input_message_button)
-	Button mInputMessageButton;
+    Button mInputMessageButton;
+    Button mPickImageButton;
+    TextView mMessageTextView;
+    ImageView mImageView;
 
-	@BindView(R.id.pick_image_button)
-	Button mPickImageButton;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-	@BindView(R.id.message_text_view)
-	TextView mMessageTextView;
+        mInputMessageButton = findViewById(R.id.input_message_button);
+        mPickImageButton = findViewById(R.id.pick_image_button);
+        mMessageTextView = findViewById(R.id.message_text_view);
+        mImageView = findViewById(R.id.image_view);
 
-	@BindView(R.id.image_view)
-	ImageView mImageView;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
-
-		// goForward works as startActivityForResult here
-		mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
-		mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
-	}
+        // goForward works as startActivityForResult here
+        mInputMessageButton.setOnClickListener(v -> mNavigator.goForward(new MessageInputScreen()));
+        mPickImageButton.setOnClickListener(v -> mNavigator.goForward(new ImagePickerScreen()));
+    }
 
 	private void onMessageInputted(MessageInputScreen.Result messageInputResult) {
 		mMessageTextView.setText(getString(R.string.inputted_message_template, messageInputResult.getMessage()));

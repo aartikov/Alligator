@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -25,41 +23,37 @@ import me.aartikov.navigationmethodssample.screens.TestSmallScreen;
 
 @RegisterScreen(TestScreen.class)
 public class TestActivity extends AppCompatActivity {
-	@BindView(R.id.root_view)
-	View mRootView;
 
-	@BindView(R.id.counter_text_view)
-	TextView mCounterTextView;
+    View mRootView;
+    TextView mCounterTextView;
+    Button mForwardButton;
+    Button mReplaceButton;
+    Button mResetButton;
+    Button mFinishButton;
 
-	@BindView(R.id.forward_button)
-	Button mForwardButton;
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-	@BindView(R.id.replace_button)
-	Button mReplaceButton;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test);
 
-	@BindView(R.id.reset_button)
-	Button mResetButton;
+        mRootView = findViewById(R.id.root_view);
+        mCounterTextView = findViewById(R.id.counter_text_view);
+        mForwardButton = findViewById(R.id.forward_button);
+        mReplaceButton = findViewById(R.id.replace_button);
+        mResetButton = findViewById(R.id.reset_button);
+        mFinishButton = findViewById(R.id.finish_button);
 
-	@BindView(R.id.finish_button)
-	Button mFinishButton;
+        TestScreen screen = SampleApplication.getScreenResolver().getScreenOrNull(this);
+        int counter = screen != null ? screen.getCounter() : 1;
+        mCounterTextView.setText(getString(R.string.counter_template, counter));
 
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_test);
-		ButterKnife.bind(this);
-
-		TestScreen screen = SampleApplication.getScreenResolver().getScreenOrNull(this);
-		int counter = screen != null ? screen.getCounter() : 1;
-		mCounterTextView.setText(getString(R.string.counter_template, counter));
-
-		mForwardButton.setOnClickListener(view -> mNavigator.goForward(new TestScreen(counter + 1)));
-		mReplaceButton.setOnClickListener(view -> mNavigator.replace(new TestScreen(counter)));
-		mResetButton.setOnClickListener(view -> mNavigator.reset(new TestScreen(1)));
-		mFinishButton.setOnClickListener(view -> mNavigator.finish());
+        mForwardButton.setOnClickListener(view -> mNavigator.goForward(new TestScreen(counter + 1)));
+        mReplaceButton.setOnClickListener(view -> mNavigator.replace(new TestScreen(counter)));
+        mResetButton.setOnClickListener(view -> mNavigator.reset(new TestScreen(1)));
+        mFinishButton.setOnClickListener(view -> mNavigator.finish());
 
 		mRootView.setBackgroundColor(getRandomColor());
 	}

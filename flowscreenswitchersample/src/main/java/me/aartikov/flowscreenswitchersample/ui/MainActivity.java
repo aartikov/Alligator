@@ -1,5 +1,6 @@
 package me.aartikov.flowscreenswitchersample.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,8 +17,8 @@ import me.aartikov.flowscreenswitchersample.SampleApplication;
 import me.aartikov.flowscreenswitchersample.screens.TestFlowScreen;
 
 public class MainActivity extends AppCompatActivity {
-    private Navigator mNavigator = SampleApplication.getNavigator();
-    private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         mNavigator.goBack();

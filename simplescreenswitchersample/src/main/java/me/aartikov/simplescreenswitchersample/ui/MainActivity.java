@@ -13,8 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -27,84 +25,84 @@ import me.aartikov.simplescreenswitchersample.SampleApplication;
 import me.aartikov.simplescreenswitchersample.screens.MainScreen;
 import me.aartikov.simplescreenswitchersample.screens.TabScreen;
 
-
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
-	@BindView(R.id.bottom_bar)
-	BottomNavigationView mBottomBar;
 
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-	private FragmentScreenSwitcher mScreenSwitcher;
+    BottomNavigationView mBottomBar;
 
-	@SuppressLint("UseSparseArrays")
-	private Map<Integer, Screen> mTabScreenMap = new HashMap<>();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private FragmentScreenSwitcher mScreenSwitcher;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
+    @SuppressLint("UseSparseArrays")
+    private Map<Integer, Screen> mTabScreenMap = new HashMap<>();
 
-		initTabScreenMap();
-		mBottomBar.setOnNavigationItemSelectedListener(this);
-		mScreenSwitcher = new FragmentScreenSwitcher(SampleApplication.getNavigationFactory(), getSupportFragmentManager(), R.id.main_container);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mBottomBar = findViewById(R.id.bottom_bar);
 
-		if (savedInstanceState == null) {
-			mNavigator.switchTo(getTabScreen(R.id.tab_android));
-		}
-	}
+        initTabScreenMap();
+        mBottomBar.setOnItemSelectedListener(this);
+        mScreenSwitcher = new FragmentScreenSwitcher(SampleApplication.getNavigationFactory(), getSupportFragmentManager(), R.id.main_container);
 
-	private void initTabScreenMap() {
-		mTabScreenMap.put(R.id.tab_android, new TabScreen.Android());
-		mTabScreenMap.put(R.id.tab_bug, new TabScreen.Bug());
-		mTabScreenMap.put(R.id.tab_dog, new TabScreen.Dog());
-	}
+        if (savedInstanceState == null) {
+            mNavigator.switchTo(getTabScreen(R.id.tab_android));
+        }
+    }
 
-	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-		NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
-				.screenSwitcher(mScreenSwitcher)
-				.screenSwitchingListener(this)
-				.build();
-		mNavigationContextBinder.bind(navigationContext);
-	}
+    private void initTabScreenMap() {
+        mTabScreenMap.put(R.id.tab_android, new TabScreen.Android());
+        mTabScreenMap.put(R.id.tab_bug, new TabScreen.Bug());
+        mTabScreenMap.put(R.id.tab_dog, new TabScreen.Dog());
+    }
 
-	@Override
-	protected void onPause() {
-		mNavigationContextBinder.unbind(this);
-		super.onPause();
-	}
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        NavigationContext navigationContext = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
+                .screenSwitcher(mScreenSwitcher)
+                .screenSwitchingListener(this)
+                .build();
+        mNavigationContextBinder.bind(navigationContext);
+    }
 
-	@Override
-	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		Screen screen = getTabScreen(item.getItemId());
-		mNavigator.switchTo(screen);
-		return true;
-	}
+    @Override
+    protected void onPause() {
+        mNavigationContextBinder.unbind(this);
+        super.onPause();
+    }
 
-	@Override
-	public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
-		int tabId = getTabId(screenTo);
-		mBottomBar.getMenu().findItem(tabId).setChecked(true);
-	}
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Screen screen = getTabScreen(item.getItemId());
+        mNavigator.switchTo(screen);
+        return true;
+    }
 
-	@Override
-	public void onBackPressed() {
-		mNavigator.goBack();
-	}
+    @Override
+    public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
+        int tabId = getTabId(screenTo);
+        mBottomBar.getMenu().findItem(tabId).setChecked(true);
+    }
 
-	private Screen getTabScreen(int tabId) {
-		return mTabScreenMap.get(tabId);
-	}
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        mNavigator.goBack();
+    }
 
-	private int getTabId(Screen tabScreen) {
-		for (Map.Entry<Integer, Screen> entry : mTabScreenMap.entrySet()) {
-			if (tabScreen.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		return -1;
-	}
+    private Screen getTabScreen(int tabId) {
+        return mTabScreenMap.get(tabId);
+    }
+
+    private int getTabId(Screen tabScreen) {
+        for (Map.Entry<Integer, Screen> entry : mTabScreenMap.entrySet()) {
+            if (tabScreen.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return -1;
+    }
 }

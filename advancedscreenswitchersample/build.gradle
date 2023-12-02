@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdk 34
+    namespace 'me.aartikov.advancedscreenswitchersample'
 
     defaultConfig {
         applicationId "me.aartikov.advancedscreenswitchersample"
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -31,13 +31,10 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'androidx.annotation', module: 'annotation'
     })
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
     testImplementation 'junit:junit:4.12'
 
-    implementation project (':alligator')
+    implementation project(':alligator')
     annotationProcessor project(':alligator-compiler')
-
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 }

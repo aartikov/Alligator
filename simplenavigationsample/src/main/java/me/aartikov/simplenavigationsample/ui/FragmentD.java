@@ -22,8 +22,8 @@ import me.aartikov.simplenavigationsample.screens.ScreenD;
 
 @RegisterScreen(ScreenD.class)
 public class FragmentD extends Fragment {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private ScreenResolver mScreenResolver = SampleApplication.getScreenResolver();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
+	private final ScreenResolver mScreenResolver = SampleApplication.getScreenResolver();
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

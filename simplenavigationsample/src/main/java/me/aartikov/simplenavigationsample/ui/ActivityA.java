@@ -18,8 +18,8 @@ import me.aartikov.simplenavigationsample.screens.ScreenB;
 
 @RegisterScreen(ScreenA.class)
 public class ActivityA extends AppCompatActivity {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
+	private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 
 	@Override

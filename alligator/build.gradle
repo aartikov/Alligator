@@ -1,11 +1,12 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
 group = 'com.github.aartikov'
+version = '4.2.0'
 
 android {
-	compileSdkVersion 28
-	buildToolsVersion "28.0.3"
+	compileSdk 34
+	namespace 'me.aartikov.alligator'
 
 	defaultConfig {
 		minSdkVersion 14
@@ -16,31 +17,26 @@ android {
 		sourceCompatibility = JavaVersion.VERSION_1_7
 		targetCompatibility = JavaVersion.VERSION_1_7
 	}
+
+	publishing {
+		singleVariant('release') {
+			withSourcesJar()
+			withJavadocJar()
+		}
+	}
 }
 
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
-	implementation 'androidx.appcompat:appcompat:1.0.2'
+	implementation 'androidx.appcompat:appcompat:1.6.1'
 }
 
-task sourcesJar(type: Jar) {
-	from android.sourceSets.main.java.srcDirs
-	classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-	failOnError false
-	source = android.sourceSets.main.java.sourceFiles
-	classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-	classpath += configurations.compile
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
-}
-
-artifacts {
-	archives javadocJar
-	archives sourcesJar
+afterEvaluate {
+	publishing {
+		publications {
+			release(MavenPublication) {
+				from components.release
+			}
+		}
+	}
 }

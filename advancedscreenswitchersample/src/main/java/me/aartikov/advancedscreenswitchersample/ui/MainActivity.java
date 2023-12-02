@@ -16,8 +16,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.advancedscreenswitchersample.R;
 import me.aartikov.advancedscreenswitchersample.SampleApplication;
 import me.aartikov.advancedscreenswitchersample.SampleScreenSwitcherAnimationProvider;
@@ -35,11 +33,11 @@ import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
 @RegisterScreen(MainScreen.class)
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
-	@BindView(R.id.bottom_bar)
+
 	BottomNavigationView mBottomBar;
 
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
+	private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 	private FragmentScreenSwitcher mScreenSwitcher;
 
 	@SuppressLint("UseSparseArrays")
@@ -49,10 +47,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		ButterKnife.bind(this);
+		mBottomBar = findViewById(R.id.bottom_bar);
 
 		initTabScreenMap();
-		mBottomBar.setOnNavigationItemSelectedListener(this);
+		mBottomBar.setOnItemSelectedListener(this);
 		mScreenSwitcher = new FragmentScreenSwitcher(SampleApplication.getNavigationFactory(), getSupportFragmentManager(),
 				R.id.main_container, new SampleScreenSwitcherAnimationProvider(getTabScreens()));
 
@@ -93,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 		mNavigationContextBinder.bind(builder.build());
 	}
 
+	@SuppressLint("MissingSuperCall")
 	@Override
 	public void onBackPressed() {
 		mNavigator.goBack();

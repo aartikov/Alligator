@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view2"
     android:layout_width="match_parent"
@@ -9,19 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:title="Flow 2" />
+        app:title="Flow 2"/>
 
     <FrameLayout
         android:id="@+id/fragment_container2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#EEEEEE" />
+        android:background="#EEEEEE"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomBarSecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_bar_tabs_second" />
+        android:background="@android:color/white"
+        app:menu="@menu/bottom_bar_tabs_second"/>
 
 </LinearLayout>

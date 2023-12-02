@@ -1,18 +1,24 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group = 'com.github.aartikov'
+version = '4.2.0'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.squareup:javapoet:1.8.0'
+    implementation 'com.squareup:javapoet:1.10.0'
 }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier = 'sources'
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
 }
 
-artifacts {
-    archives sourcesJar
+publishing {
+    publications {
+        release(MavenPublication) {
+            from components.java
+        }
+    }
 }

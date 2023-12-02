@@ -6,8 +6,6 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
 import me.aartikov.alligator.Navigator;
@@ -19,26 +17,25 @@ import me.aartikov.screenresultsample.screens.MessageInputScreen;
 
 @RegisterScreen(value = MessageInputScreen.class, screenResult = MessageInputScreen.Result.class)
 public class MessageInputActivity extends AppCompatActivity {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
+    private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
-	@BindView(R.id.message_edit_text)
-	EditText mMessageEditText;
+    EditText mMessageEditText;
+    Button mOkButton;
 
-	@BindView(R.id.ok_button)
-	Button mOkButton;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_message_input);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_message_input);
-		ButterKnife.bind(this);
+        mMessageEditText = findViewById(R.id.message_edit_text);
+        mOkButton = findViewById(R.id.ok_button);
 
-		mOkButton.setOnClickListener(v -> {
-			String message = mMessageEditText.getText().toString();
-			mNavigator.goBackWithResult(new MessageInputScreen.Result(message));    // Easy-peasy!
-		});
-	}
+        mOkButton.setOnClickListener(v -> {
+            String message = mMessageEditText.getText().toString();
+            mNavigator.goBackWithResult(new MessageInputScreen.Result(message));    // Easy-peasy!
+        });
+    }
 
 	@Override
 	protected void onResumeFragments() {

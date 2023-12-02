@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import me.aartikov.alligator.Navigator;
 import me.aartikov.alligator.annotations.RegisterScreen;
 import me.aartikov.flowscreenswitchersample.R;
@@ -22,12 +19,10 @@ import me.aartikov.flowscreenswitchersample.screens.TabScreen;
 
 @RegisterScreen(TabScreen.class)
 public class TabFragment extends Fragment implements ContainerIdProvider {
-    @BindView(R.id.name_text_view)
+
     TextView mNameTextView;
 
-    private Unbinder mButterKnifeUnbinder;
-
-    private Navigator mNavigator = SampleApplication.getNavigator();
+    private final Navigator mNavigator = SampleApplication.getNavigator();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,16 +40,10 @@ public class TabFragment extends Fragment implements ContainerIdProvider {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mButterKnifeUnbinder = ButterKnife.bind(this, view);
+        mNameTextView = view.findViewById(R.id.name_text_view);
 
         TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
         mNameTextView.setText(screen.getName());
-    }
-
-    @Override
-    public void onDestroyView() {
-        mButterKnifeUnbinder.unbind();
-        super.onDestroyView();
     }
 
     @Override

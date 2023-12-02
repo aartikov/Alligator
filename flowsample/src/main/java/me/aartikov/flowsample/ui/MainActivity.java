@@ -1,9 +1,11 @@
 package me.aartikov.flowsample.ui;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import me.aartikov.alligator.DestinationType;
 import me.aartikov.alligator.NavigationContext;
 import me.aartikov.alligator.NavigationContextBinder;
@@ -15,8 +17,8 @@ import me.aartikov.flowsample.screens.TestFlowScreen;
 
 
 public class MainActivity extends AppCompatActivity {
-	private Navigator mNavigator = SampleApplication.getNavigator();
-	private NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
+	private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

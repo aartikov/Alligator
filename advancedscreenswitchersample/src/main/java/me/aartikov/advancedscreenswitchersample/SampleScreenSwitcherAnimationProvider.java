@@ -13,7 +13,7 @@ import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
 
 
 public class SampleScreenSwitcherAnimationProvider implements FragmentScreenSwitcher.AnimationProvider {
-	private List<Screen> mTabScreens;
+	private final List<Screen> mTabScreens;
 
 	public SampleScreenSwitcherAnimationProvider(List<Screen> tabScreens) {
 		mTabScreens = tabScreens;

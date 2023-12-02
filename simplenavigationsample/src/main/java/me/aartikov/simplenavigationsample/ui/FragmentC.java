@@ -20,7 +20,7 @@ import me.aartikov.simplenavigationsample.screens.ScreenD;
 
 @RegisterScreen(ScreenC.class)
 public class FragmentC extends Fragment {
-	private Navigator mNavigator = SampleApplication.getNavigator();
+	private final Navigator mNavigator = SampleApplication.getNavigator();
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

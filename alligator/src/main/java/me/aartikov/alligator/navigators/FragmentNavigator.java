@@ -34,6 +34,11 @@ public interface FragmentNavigator {
 				  @Nullable ScreenResult screenResult,
 				  @Nullable AnimationData animationData) throws NavigationException;
 
+	void goBackTo(@NonNull Screen screen,
+				  @NonNull FragmentDestination destination,
+				  @Nullable ScreenResult screenResult,
+				  @Nullable AnimationData animationData) throws NavigationException;
+
 	@Nullable
 	Fragment getCurrentFragment();
 }

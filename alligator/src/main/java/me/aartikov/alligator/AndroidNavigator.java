@@ -11,7 +11,8 @@ import java.util.Queue;
 
 import me.aartikov.alligator.animations.AnimationData;
 import me.aartikov.alligator.commands.BackCommand;
-import me.aartikov.alligator.commands.BackToCommand;
+import me.aartikov.alligator.commands.BackToClassCommand;
+import me.aartikov.alligator.commands.BackToScreenCommand;
 import me.aartikov.alligator.commands.Command;
 import me.aartikov.alligator.commands.FinishCommand;
 import me.aartikov.alligator.commands.ForwardCommand;
@@ -136,7 +137,7 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 	}
 
 	/**
-	 * Goes back to a screen with the given class. Implemented with {@link BackToCommand}.
+	 * Goes back to a screen with the given class. Implemented with {@link BackToClassCommand}.
 	 *
 	 * @param screenClass screen class for going back
 	 */
@@ -145,13 +146,28 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		goBackTo(screenClass, null);
 	}
 
+	/**
+	 * Goes back to a screen with the given screen object. Implemented with {@link BackToScreenCommand}.
+	 *
+	 * @param screen screen for going back
+	 */
+	@Override
+	public void goBackTo(@NonNull Screen screen) {
+		goBackTo(screen, null);
+	}
+
 	@Override
 	public void goBackTo(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData) {
-		executeCommand(new BackToCommand(screenClass, null, animationData));
+		executeCommand(new BackToClassCommand(screenClass, null, animationData));
+	}
+
+	@Override
+	public void goBackTo(@NonNull Screen screen, @Nullable AnimationData animationData) {
+		executeCommand(new BackToScreenCommand(screen, null, animationData));
 	}
 
 	/**
-	 * Goes back to a screen with the given class and returns result to it. Implemented with {@link BackToCommand}.
+	 * Goes back to a screen with the given class and returns result to it. Implemented with {@link BackToClassCommand}.
 	 *
 	 * @param screenClass  screen class for going back
 	 * @param screenResult screen result that will be returned
@@ -161,9 +177,25 @@ public class AndroidNavigator implements NavigationContextBinder, Navigator {
 		goBackToWithResult(screenClass, screenResult, null);
 	}
 
+	/**
+	 * Goes back to a screen with the given object screen and returns result to it. Implemented with {@link BackToScreenCommand}.
+	 *
+	 * @param screen       screen class for going back
+	 * @param screenResult screen result that will be returned
+	 */
+	@Override
+	public void goBackToWithResult(@NonNull Screen screen, @NonNull ScreenResult screenResult) {
+		goBackToWithResult(screen, screenResult, null);
+	}
+
 	@Override
 	public void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
-		executeCommand(new BackToCommand(screenClass, screenResult, animationData));
+		executeCommand(new BackToClassCommand(screenClass, screenResult, animationData));
+	}
+
+	@Override
+	public void goBackToWithResult(@NonNull Screen screen, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData) {
+		executeCommand(new BackToScreenCommand(screen, screenResult, animationData));
 	}
 
 	/**

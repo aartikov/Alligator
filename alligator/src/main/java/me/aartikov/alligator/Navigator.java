@@ -74,12 +74,27 @@ public interface Navigator {
 	void goBackTo(@NonNull Class<? extends Screen> screenClass);
 
 	/**
+	 * Goes back to a screen with the given screen object.
+	 *
+	 * @param screen screen class for going back
+	 */
+	void goBackTo(@NonNull Screen screen);
+
+	/**
 	 * {@code goBackTo} with an animation data.
 	 *
 	 * @param screenClass   screen class for going back
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void goBackTo(@NonNull Class<? extends Screen> screenClass, @Nullable AnimationData animationData);
+
+	/**
+	 * {@code goBackTo} with an animation data.
+	 *
+	 * @param screen        screen class for going back
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackTo(@NonNull Screen screen, @Nullable AnimationData animationData);
 
 	/**
 	 * Goes back to a screen with the given class and returns result to it.
@@ -90,6 +105,14 @@ public interface Navigator {
 	void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult);
 
 	/**
+	 * Goes back to a screen with the given class and returns result to it.
+	 *
+	 * @param screen       screen object for going back
+	 * @param screenResult screen result that will be returned
+	 */
+	void goBackToWithResult(@NonNull Screen screen, @NonNull ScreenResult screenResult);
+
+	/**
 	 * {@code goBackToWithResult} with an animation data.
 	 *
 	 * @param screenClass   screen class for going back
@@ -97,6 +120,15 @@ public interface Navigator {
 	 * @param animationData animation data for an additional animation configuring
 	 */
 	void goBackToWithResult(@NonNull Class<? extends Screen> screenClass, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
+
+	/**
+	 * {@code goBackToWithResult} with an animation data.
+	 *
+	 * @param screen        screen object for going back
+	 * @param screenResult  screen result that will be returned
+	 * @param animationData animation data for an additional animation configuring
+	 */
+	void goBackToWithResult(@NonNull Screen screen, @NonNull ScreenResult screenResult, @Nullable AnimationData animationData);
 
 	/**
 	 * Replaces the last screen with a new screen.

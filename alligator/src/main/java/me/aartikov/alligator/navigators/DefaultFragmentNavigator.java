@@ -168,6 +168,37 @@ public class DefaultFragmentNavigator implements FragmentNavigator {
 		}
 	}
 
+	@Override
+	public void goBackTo(@NonNull Screen screen,
+						 @NonNull FragmentDestination destination,
+						 @Nullable ScreenResult screenResult,
+						 @Nullable AnimationData animationData) throws NavigationException {
+		List<Fragment> fragments = mFragmentStack.getFragments();
+		Fragment requiredFragment = null;
+		boolean toPrevious = false;
+		for (int i = fragments.size() - 1; i >= 0; i--) {
+			if (screen == destination.getScreen(fragments.get(i))) {
+				requiredFragment = fragments.get(i);
+				toPrevious = i == fragments.size() - 2;
+				break;
+			}
+		}
+
+		if (requiredFragment == null) {
+			throw new ScreenNotFoundException(screen.getClass());
+		}
+
+		Fragment currentFragment = fragments.get(fragments.size() - 1);
+		Class<? extends Screen> screenClassFrom = mNavigationFactory.getScreenClass(currentFragment);
+		TransitionAnimation animation = getAnimation(TransitionType.BACK, screenClassFrom, screen.getClass(), animationData);
+
+		mFragmentStack.popUntil(requiredFragment, animation);
+		callTransitionListener(TransitionType.BACK, screenClassFrom, screen.getClass());
+		if (screenResult != null || toPrevious) {
+			mScreenResultHelper.callScreenResultListener(currentFragment, screenResult, mScreenResultListener);
+		}
+	}
+
 	@Nullable
 	@Override
 	public Fragment getCurrentFragment() {

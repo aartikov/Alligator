@@ -1,14 +1,8 @@
-package me.aartikov.alligator.exceptions;
-
-
-import androidx.fragment.app.FragmentManager;
+package me.aartikov.alligator.exceptions
 
 /**
  * Exception thrown when fragment navigation was requested but it was not configured
- * with method {@link me.aartikov.alligator.NavigationContext.Builder#fragmentNavigation(FragmentManager, int)}.
+ * with method [me.aartikov.alligator.NavigationContext.Builder.fragmentNavigation].
  */
-public class MissingFragmentNavigatorException extends NavigationException {
-	public MissingFragmentNavigatorException() {
-		super("Fragment navigation is not configured. Do you forget to call fragmentNavigation method of NavigationContext.Builder?");
-	}
-}
+class MissingFragmentNavigatorException :
+    NavigationException("Fragment navigation is not configured. Do you forget to call fragmentNavigation method of NavigationContext.Builder?")

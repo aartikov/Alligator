@@ -1,75 +1,52 @@
-package me.aartikov.alligator.animations;
+package me.aartikov.alligator.animations
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.AnimRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import androidx.annotation.AnimRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 /**
  * Transition animation that uses anim resources.
+ *
+ * @param enterAnimation animation resource that will be used for an appearing activity/fragment
+ * @param exitAnimation  animation resource that will be used for a disappearing activity/fragment
  */
-public class SimpleTransitionAnimation implements TransitionAnimation {
-	private int mEnterAnimation;
-	private int mExitAnimation;
+class SimpleTransitionAnimation(
+    @param:AnimRes val enterAnimation: Int,
+    @param:AnimRes val exitAnimation: Int
+) : TransitionAnimation {
 
-	/**
-	 * @param enterAnimation animation resource that will be used for an appearing activity/fragment
-	 * @param exitAnimation  animation resource that will be used for a disappearing activity/fragment
-	 */
-	public SimpleTransitionAnimation(@AnimRes int enterAnimation, @AnimRes int exitAnimation) {
-		mEnterAnimation = enterAnimation;
-		mExitAnimation = exitAnimation;
-	}
+    override fun getActivityOptionsBundle(activity: Activity): Bundle? {
+        return null
+    }
 
-	public int getEnterAnimation() {
-		return mEnterAnimation;
-	}
+    override fun needDelayActivityFinish(): Boolean {
+        return false
+    }
 
-	public int getExitAnimation() {
-		return mExitAnimation;
-	}
+    override fun applyBeforeActivityStarted(currentActivity: Activity, intent: Intent) {}
+    override fun applyAfterActivityStarted(currentActivity: Activity) {
+        currentActivity.overridePendingTransition(enterAnimation, exitAnimation)
+    }
 
-	@Override
-	@Nullable
-	public Bundle getActivityOptionsBundle(@NonNull Activity activity) {
-		return null;
-	}
+    override fun applyBeforeActivityFinished(activity: Activity) {}
+    override fun applyAfterActivityFinished(activity: Activity) {
+        activity.overridePendingTransition(enterAnimation, exitAnimation)
+    }
 
-	@Override
-	public boolean needDelayActivityFinish() {
-		return false;
-	}
+    override fun applyBeforeFragmentTransactionExecuted(
+        transaction: FragmentTransaction,
+        enteringFragment: Fragment,
+        exitingFragment: Fragment
+    ) {
+        transaction.setCustomAnimations(enterAnimation, exitAnimation)
+    }
 
-	@Override
-	public void applyBeforeActivityStarted(@NonNull Activity currentActivity, @NonNull Intent intent) {
-	}
-
-	@Override
-	public void applyAfterActivityStarted(@NonNull Activity currentActivity) {
-		currentActivity.overridePendingTransition(mEnterAnimation, mExitAnimation);
-	}
-
-	@Override
-	public void applyBeforeActivityFinished(@NonNull Activity activity) {
-	}
-
-	@Override
-	public void applyAfterActivityFinished(@NonNull Activity activity) {
-		activity.overridePendingTransition(mEnterAnimation, mExitAnimation);
-	}
-
-	@Override
-	public void applyBeforeFragmentTransactionExecuted(@NonNull FragmentTransaction transaction, @NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
-		transaction.setCustomAnimations(mEnterAnimation, mExitAnimation);
-	}
-
-	@Override
-	public void applyAfterFragmentTransactionExecuted(@NonNull Fragment enteringFragment, @NonNull Fragment exitingFragment) {
-	}
+    override fun applyAfterFragmentTransactionExecuted(
+        enteringFragment: Fragment,
+        exitingFragment: Fragment
+    ) {
+    }
 }

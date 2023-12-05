@@ -1,37 +1,24 @@
-package me.aartikov.alligator.commands;
+package me.aartikov.alligator.commands
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.exceptions.MissingScreenSwitcherException;
-import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
-
+import me.aartikov.alligator.NavigationContext
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.animations.AnimationData
+import me.aartikov.alligator.exceptions.MissingScreenSwitcherException
+import me.aartikov.alligator.exceptions.NavigationException
 
 /**
- * Command implementation for {@code switchTo} method of {@link me.aartikov.alligator.AndroidNavigator}.
+ * Command implementation for `switchTo` method of [me.aartikov.alligator.AndroidNavigator].
  */
-public class SwitchToCommand implements Command {
-	private Screen mScreen;
-	@Nullable
-	private AnimationData mAnimationData;
+class SwitchToCommand(
+    private val mScreen: Screen,
+    private val mAnimationData: AnimationData?
+) : Command {
 
-	public SwitchToCommand(@NonNull Screen screen, @Nullable AnimationData animationData) {
-		mScreen = screen;
-		mAnimationData = animationData;
-	}
-
-	@Override
-	public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
-		ScreenSwitcher screenSwitcher = navigationContext.getScreenSwitcher();
-		if (screenSwitcher == null) {
-			throw new MissingScreenSwitcherException("ScreenSwitcher is not set.");
-		}
-
-		screenSwitcher.switchTo(mScreen, navigationContext.getScreenSwitchingListener(), mAnimationData);
-		return true;
-	}
+    @Throws(NavigationException::class)
+    override fun execute(navigationContext: NavigationContext): Boolean {
+        val screenSwitcher = navigationContext.screenSwitcher
+            ?: throw MissingScreenSwitcherException("ScreenSwitcher is not set.")
+        screenSwitcher.switchTo(mScreen, navigationContext.screenSwitchingListener, mAnimationData)
+        return true
+    }
 }

@@ -1,64 +1,73 @@
-package me.aartikov.alligator.commands;
+package me.aartikov.alligator.commands
 
-import androidx.annotation.NonNull;
+import me.aartikov.alligator.FlowScreen
+import me.aartikov.alligator.NavigationContext
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.destinations.ActivityDestination
+import me.aartikov.alligator.destinations.DialogFragmentDestination
+import me.aartikov.alligator.destinations.FragmentDestination
+import me.aartikov.alligator.exceptions.MissingFlowFragmentNavigatorException
+import me.aartikov.alligator.exceptions.MissingFragmentNavigatorException
+import me.aartikov.alligator.exceptions.NavigationException
+import me.aartikov.alligator.exceptions.ScreenRegistrationException
+import me.aartikov.alligator.navigators.ActivityNavigator
+import me.aartikov.alligator.navigators.DialogFragmentNavigator
+import me.aartikov.alligator.navigators.FragmentNavigator
 
-import me.aartikov.alligator.FlowScreen;
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.destinations.ActivityDestination;
-import me.aartikov.alligator.destinations.Destination;
-import me.aartikov.alligator.destinations.DialogFragmentDestination;
-import me.aartikov.alligator.destinations.FragmentDestination;
-import me.aartikov.alligator.exceptions.MissingFlowFragmentNavigatorException;
-import me.aartikov.alligator.exceptions.MissingFragmentNavigatorException;
-import me.aartikov.alligator.exceptions.NavigationException;
-import me.aartikov.alligator.exceptions.ScreenRegistrationException;
-import me.aartikov.alligator.navigators.ActivityNavigator;
-import me.aartikov.alligator.navigators.DialogFragmentNavigator;
-import me.aartikov.alligator.navigators.FragmentNavigator;
+abstract class BaseCommand(private val mScreenClass: Class<out Screen?>) : Command {
 
+    @Throws(NavigationException::class)
+    protected abstract fun executeForActivity(
+        destination: ActivityDestination,
+        activityNavigator: ActivityNavigator
+    )
 
-abstract class BaseCommand implements Command {
-	private Class<? extends Screen> mScreenClass;
+    @Throws(NavigationException::class)
+    protected abstract fun executeForFragment(
+        destination: FragmentDestination,
+        fragmentNavigator: FragmentNavigator
+    )
 
-	BaseCommand(@NonNull Class<? extends Screen> screenClass) {
-		mScreenClass = screenClass;
-	}
+    @Throws(NavigationException::class)
+    protected abstract fun executeForDialogFragment(
+        destination: DialogFragmentDestination,
+        dialogFragmentNavigator: DialogFragmentNavigator
+    )
 
-	abstract protected void executeForActivity(@NonNull ActivityDestination destination, @NonNull ActivityNavigator activityNavigator) throws NavigationException;
-
-	abstract protected void executeForFragment(@NonNull FragmentDestination destination, @NonNull FragmentNavigator fragmentNavigator) throws NavigationException;
-
-	abstract protected void executeForDialogFragment(@NonNull DialogFragmentDestination destination, @NonNull DialogFragmentNavigator dialogFragmentNavigator) throws NavigationException;
-
-	@Override
-	final public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
-		Destination destination = navigationContext.getNavigationFactory().getDestination(mScreenClass);
-		if (destination == null) {
-			throw new ScreenRegistrationException("Screen " + mScreenClass.getSimpleName() + " is not registered.");
-		}
-
-		if (destination instanceof ActivityDestination) {
-			executeForActivity((ActivityDestination) destination, navigationContext.getActivityNavigator());
-			return false;
-		} else if (destination instanceof FragmentDestination) {
-			if (FlowScreen.class.isAssignableFrom(mScreenClass)) {
-				if (navigationContext.getFlowFragmentNavigator() == null) {
-					throw new MissingFlowFragmentNavigatorException();
-				}
-				executeForFragment((FragmentDestination) destination, navigationContext.getFlowFragmentNavigator());
-			} else {
-				if (navigationContext.getFragmentNavigator() == null) {
-					throw new MissingFragmentNavigatorException();
-				}
-				executeForFragment((FragmentDestination) destination, navigationContext.getFragmentNavigator());
-			}
-			return true;
-		} else if (destination instanceof DialogFragmentDestination) {
-			executeForDialogFragment((DialogFragmentDestination) destination, navigationContext.getDialogFragmentNavigator());
-			return true;
-		} else {
-			throw new UnsupportedOperationException("Unsupported destination type " + destination);
-		}
-	}
+    @Throws(NavigationException::class)
+    override fun execute(navigationContext: NavigationContext): Boolean {
+        val destination = navigationContext.navigationFactory.getDestination(mScreenClass)
+            ?: throw ScreenRegistrationException("Screen " + mScreenClass.simpleName + " is not registered.")
+        return if (destination is ActivityDestination) {
+            executeForActivity(destination, navigationContext.activityNavigator)
+            false
+        } else if (destination is FragmentDestination) {
+            if (FlowScreen::class.java.isAssignableFrom(mScreenClass)) {
+                if (navigationContext.flowFragmentNavigator == null) {
+                    throw MissingFlowFragmentNavigatorException()
+                }
+                executeForFragment(
+                    destination,
+                    navigationContext.flowFragmentNavigator!!
+                )
+            } else {
+                if (navigationContext.fragmentNavigator == null) {
+                    throw MissingFragmentNavigatorException()
+                }
+                executeForFragment(
+                    destination,
+                    navigationContext.fragmentNavigator!!
+                )
+            }
+            true
+        } else if (destination is DialogFragmentDestination) {
+            executeForDialogFragment(
+                destination,
+                navigationContext.dialogFragmentNavigator
+            )
+            true
+        } else {
+            throw UnsupportedOperationException("Unsupported destination type $destination")
+        }
+    }
 }

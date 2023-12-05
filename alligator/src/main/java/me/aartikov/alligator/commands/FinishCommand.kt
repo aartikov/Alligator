@@ -1,40 +1,29 @@
-package me.aartikov.alligator.commands;
+package me.aartikov.alligator.commands
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.exceptions.NavigationException;
-
+import me.aartikov.alligator.NavigationContext
+import me.aartikov.alligator.ScreenResult
+import me.aartikov.alligator.animations.AnimationData
+import me.aartikov.alligator.exceptions.NavigationException
 
 /**
- * Command implementation for {@code finish} method and {@code finishWithResult} method of {@link me.aartikov.alligator.AndroidNavigator}.
+ * Command implementation for `finish` method and `finishWithResult` method of [me.aartikov.alligator.AndroidNavigator].
  */
-public class FinishCommand implements Command {
-	@Nullable
-	private ScreenResult mScreenResult;
+class FinishCommand(
+    private val mScreenResult: ScreenResult?,
+    private val mForTopLevel: Boolean,
+    private val mAnimationData: AnimationData?
+) : Command {
 
-	private boolean mForTopLevel;
-
-	@Nullable
-	private AnimationData mAnimationData;
-
-	public FinishCommand(@Nullable ScreenResult screenResult, boolean forTopLevel, @Nullable AnimationData animationData) {
-		mScreenResult = screenResult;
-		mForTopLevel = forTopLevel;
-		mAnimationData = animationData;
-	}
-
-	@Override
-	public boolean execute(@NonNull NavigationContext navigationContext) throws NavigationException {
-		if (!mForTopLevel && navigationContext.getFlowFragmentNavigator() != null && navigationContext.getFlowFragmentNavigator().canGoBack()) {
-			navigationContext.getFlowFragmentNavigator().goBack(mScreenResult, mAnimationData);
-			return true;
-		} else {
-			navigationContext.getActivityNavigator().goBack(mScreenResult, mAnimationData);
-			return false;
-		}
-	}
+    @Throws(NavigationException::class)
+    override fun execute(navigationContext: NavigationContext): Boolean {
+        return if (!mForTopLevel && navigationContext.flowFragmentNavigator != null && navigationContext.flowFragmentNavigator!!
+                .canGoBack()
+        ) {
+            navigationContext.flowFragmentNavigator!!.goBack(mScreenResult, mAnimationData)
+            true
+        } else {
+            navigationContext.activityNavigator.goBack(mScreenResult, mAnimationData)
+            false
+        }
+    }
 }

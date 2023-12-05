@@ -1,8 +1,6 @@
-package me.aartikov.alligator;
-
+package me.aartikov.alligator
 
 /**
  * Logical representation of an application screen.
  */
-public interface Screen {
-}
+interface Screen 

@@ -1,33 +1,37 @@
-package me.aartikov.alligator.navigators;
+package me.aartikov.alligator.navigators
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.DialogFragment
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.ScreenResult
+import me.aartikov.alligator.animations.AnimationData
+import me.aartikov.alligator.destinations.DialogFragmentDestination
+import me.aartikov.alligator.exceptions.NavigationException
 
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.destinations.DialogFragmentDestination;
-import me.aartikov.alligator.exceptions.NavigationException;
+interface DialogFragmentNavigator {
+    @Throws(NavigationException::class)
+    fun goForward(
+        screen: Screen,
+        destination: DialogFragmentDestination,
+        animationData: AnimationData?
+    )
 
-public interface DialogFragmentNavigator {
+    @Throws(NavigationException::class)
+    fun replace(
+        screen: Screen,
+        destination: DialogFragmentDestination,
+        animationData: AnimationData?
+    )
 
-	void goForward(@NonNull Screen screen,
-				   @NonNull DialogFragmentDestination destination,
-				   @Nullable AnimationData animationData) throws NavigationException;
+    @Throws(NavigationException::class)
+    fun reset(
+        screen: Screen,
+        destination: DialogFragmentDestination,
+        animationData: AnimationData?
+    )
 
-	void replace(@NonNull Screen screen,
-				 @NonNull DialogFragmentDestination destination,
-				 @Nullable AnimationData animationData) throws NavigationException;
+    fun canGoBack(): Boolean
 
-	void reset(@NonNull Screen screen,
-			   @NonNull DialogFragmentDestination destination,
-			   @Nullable AnimationData animationData) throws NavigationException;
-
-	boolean canGoBack();
-
-	void goBack(@Nullable ScreenResult screenResult) throws NavigationException;
-
-	@Nullable
-	DialogFragment getCurrentDialogFragment();
+    @Throws(NavigationException::class)
+    fun goBack(screenResult: ScreenResult?)
+    val currentDialogFragment: DialogFragment?
 }

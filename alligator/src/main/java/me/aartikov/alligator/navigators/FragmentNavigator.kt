@@ -1,44 +1,57 @@
-package me.aartikov.alligator.navigators;
+package me.aartikov.alligator.navigators
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.ScreenResult
+import me.aartikov.alligator.animations.AnimationData
+import me.aartikov.alligator.destinations.FragmentDestination
+import me.aartikov.alligator.exceptions.NavigationException
 
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.ScreenResult;
-import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.destinations.FragmentDestination;
-import me.aartikov.alligator.exceptions.NavigationException;
+interface FragmentNavigator {
+    @Throws(NavigationException::class)
+    fun goForward(
+        screen: Screen,
+        destination: FragmentDestination,
+        animationData: AnimationData?
+    )
 
-public interface FragmentNavigator {
+    @Throws(NavigationException::class)
+    fun replace(
+        screen: Screen,
+        destination: FragmentDestination,
+        animationData: AnimationData?
+    )
 
-	void goForward(@NonNull Screen screen,
-				   @NonNull FragmentDestination destination,
-				   @Nullable AnimationData animationData) throws NavigationException;
+    @Throws(NavigationException::class)
+    fun reset(
+        screen: Screen,
+        destination: FragmentDestination,
+        animationData: AnimationData?
+    )
 
-	void replace(@NonNull Screen screen,
-				 @NonNull FragmentDestination destination,
-				 @Nullable AnimationData animationData) throws NavigationException;
+    fun canGoBack(): Boolean
 
-	void reset(@NonNull Screen screen,
-			   @NonNull FragmentDestination destination,
-			   @Nullable AnimationData animationData) throws NavigationException;
+    @Throws(NavigationException::class)
+    fun goBack(
+        screenResult: ScreenResult?,
+        animationData: AnimationData?
+    )
 
-	boolean canGoBack();
+    @Throws(NavigationException::class)
+    fun goBackTo(
+        screenClass: Class<out Screen?>,
+        destination: FragmentDestination,
+        screenResult: ScreenResult?,
+        animationData: AnimationData?
+    )
 
-	void goBack(@Nullable ScreenResult screenResult,
-				@Nullable AnimationData animationData) throws NavigationException;
+    @Throws(NavigationException::class)
+    fun goBackTo(
+        screen: Screen,
+        destination: FragmentDestination,
+        screenResult: ScreenResult?,
+        animationData: AnimationData?
+    )
 
-	void goBackTo(@NonNull Class<? extends Screen> screenClass,
-				  @NonNull FragmentDestination destination,
-				  @Nullable ScreenResult screenResult,
-				  @Nullable AnimationData animationData) throws NavigationException;
-
-	void goBackTo(@NonNull Screen screen,
-				  @NonNull FragmentDestination destination,
-				  @Nullable ScreenResult screenResult,
-				  @Nullable AnimationData animationData) throws NavigationException;
-
-	@Nullable
-	Fragment getCurrentFragment();
+    val currentFragment: Fragment?
 }

@@ -1,56 +1,42 @@
-package me.aartikov.alligator.converters;
+package me.aartikov.alligator.converters
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import java.io.Serializable;
-
-import me.aartikov.alligator.Screen;
-
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Parcelable
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
 /**
- * Creates an intent that starts an activity of the given class. It also puts a screen to the intent's extra if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+ * Creates an intent that starts an activity of the given class. It also puts a screen to the intent's extra if `ScreenT` is `Serializable` or `Parcelable`.
  *
  * @param <ScreenT> screen type
- */
-public class DefaultIntentConverter<ScreenT extends Screen> implements IntentConverter<ScreenT> {
-	private static final String KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN";
+</ScreenT> */
+class DefaultIntentConverter<ScreenT : Screen?>(
+    private val mScreenClass: Class<ScreenT>,
+    private val mActivityClass: Class<out Activity?>
+) : IntentConverter<ScreenT> {
+    override fun createIntent(context: Context, screen: ScreenT): Intent {
+        val intent = Intent(context, mActivityClass)
+        if (screen is Serializable) {
+            intent.putExtra(KEY_SCREEN, screen as Serializable)
+        } else if (screen is Parcelable) {
+            intent.putExtra(KEY_SCREEN, screen as Parcelable)
+        }
+        return intent
+    }
 
-	private Class<ScreenT> mScreenClass;
-	private Class<? extends Activity> mActivityClass;
+    override fun getScreen(intent: Intent): ScreenT? {
+        return if (Serializable::class.java.isAssignableFrom(mScreenClass)) {
+            intent.getSerializableExtra(KEY_SCREEN) as ScreenT?
+        } else if (Parcelable::class.java.isAssignableFrom(mScreenClass)) {
+            intent.getParcelableExtra<Parcelable>(KEY_SCREEN) as ScreenT?
+        } else {
+            throw IllegalArgumentException("Screen " + mScreenClass.simpleName + " should be Serializable or Parcelable.")
+        }
+    }
 
-	public DefaultIntentConverter(Class<ScreenT> screenClass, Class<? extends Activity> activityClass) {
-		mScreenClass = screenClass;
-		mActivityClass = activityClass;
-	}
-
-	@Override
-	@NonNull
-	public Intent createIntent(@NonNull Context context, @NonNull ScreenT screen) {
-		Intent intent = new Intent(context, mActivityClass);
-		if (screen instanceof Serializable) {
-			intent.putExtra(KEY_SCREEN, (Serializable) screen);
-		} else if (screen instanceof Parcelable) {
-			intent.putExtra(KEY_SCREEN, (Parcelable) screen);
-		}
-		return intent;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Nullable
-	public ScreenT getScreen(@NonNull Intent intent) {
-		if (Serializable.class.isAssignableFrom(mScreenClass)) {
-			return (ScreenT) intent.getSerializableExtra(KEY_SCREEN);
-		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {
-			return (ScreenT) intent.getParcelableExtra(KEY_SCREEN);
-		} else {
-			throw new IllegalArgumentException("Screen " + mScreenClass.getSimpleName() + " should be Serializable or Parcelable.");
-		}
-	}
+    companion object {
+        private const val KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN"
+    }
 }

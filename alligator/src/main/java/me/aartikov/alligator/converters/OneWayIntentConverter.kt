@@ -1,20 +1,15 @@
-package me.aartikov.alligator.converters;
+package me.aartikov.alligator.converters
 
-import android.content.Intent;
-
-import androidx.annotation.NonNull;
-
-import me.aartikov.alligator.Screen;
-
+import android.content.Intent
+import me.aartikov.alligator.Screen
 
 /**
- * {@link IntentConverter} that doesn't require to implement {@code getScreen} method. Should be used for external activities only.
+ * [IntentConverter] that doesn't require to implement `getScreen` method. Should be used for external activities only.
  *
  * @param <ScreenT> screen type
- */
-public abstract class OneWayIntentConverter<ScreenT extends Screen> implements IntentConverter<ScreenT> {
-
-	final public ScreenT getScreen(@NonNull Intent intent) {
-		throw new UnsupportedOperationException();
-	}
+</ScreenT> */
+abstract class OneWayIntentConverter<ScreenT : Screen?> : IntentConverter<ScreenT> {
+    override fun getScreen(intent: Intent): ScreenT? {
+        throw UnsupportedOperationException()
+    }
 }

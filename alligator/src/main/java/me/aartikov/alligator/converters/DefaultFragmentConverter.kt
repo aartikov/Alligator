@@ -1,75 +1,60 @@
-package me.aartikov.alligator.converters;
+package me.aartikov.alligator.converters
 
-import android.os.Bundle;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import java.io.Serializable;
-
-import me.aartikov.alligator.Screen;
-
+import android.os.Bundle
+import android.os.Parcelable
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
 /**
- * Creates a fragment of the given class. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+ * Creates a fragment of the given class. It also puts a screen to the fragment's arguments if `ScreenT` is `Serializable` or `Parcelable`.
  *
  * @param <ScreenT> screen type
- */
+</ScreenT> */
+class DefaultFragmentConverter<ScreenT : Screen?>(
+    private val mScreenClass: Class<ScreenT>,
+    private val mFragmentClass: Class<out Fragment>
+) : FragmentConverter<ScreenT> {
+    override fun createFragment(screen: ScreenT): Fragment {
+        return try {
+            val fragment = mFragmentClass.newInstance()
+            if (screen is Serializable) {
+                val arguments = Bundle()
+                arguments.putSerializable(KEY_SCREEN, screen as Serializable)
+                fragment.arguments = arguments
+            } else if (screen is Parcelable) {
+                val arguments = Bundle()
+                arguments.putParcelable(KEY_SCREEN, screen as Parcelable)
+                fragment.arguments = arguments
+            }
+            fragment
+        } catch (e: InstantiationException) {
+            throw RuntimeException("Failed to create a fragment", e)
+        } catch (e: IllegalAccessException) {
+            throw RuntimeException("Failed to create a fragment", e)
+        }
+    }
 
-public class DefaultFragmentConverter<ScreenT extends Screen> implements FragmentConverter<ScreenT> {
-	private static final String KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN";
+    override fun getScreen(fragment: Fragment): ScreenT {
+        return if (fragment.arguments == null) {
+            throw IllegalArgumentException("Fragment has no arguments.")
+        } else if (Serializable::class.java.isAssignableFrom(mScreenClass)) {
+            checkNotNull(fragment.requireArguments().getSerializable(KEY_SCREEN) as ScreenT?)
+        } else if (Parcelable::class.java.isAssignableFrom(mScreenClass)) {
+            checkNotNull(
+                fragment.requireArguments().getParcelable<Parcelable>(KEY_SCREEN) as ScreenT?
+            )
+        } else {
+            throw IllegalArgumentException("Screen " + mScreenClass.simpleName + " should be Serializable or Parcelable.")
+        }
+    }
 
-	private Class<ScreenT> mScreenClass;
-	private Class<? extends Fragment> mFragmentClass;
+    private fun checkNotNull(screen: ScreenT?): ScreenT {
+        requireNotNull(screen) { "Failed to get screen from arguments of fragment." }
+        return screen
+    }
 
-	public DefaultFragmentConverter(Class<ScreenT> screenClass, Class<? extends Fragment> fragmentClass) {
-		mScreenClass = screenClass;
-		mFragmentClass = fragmentClass;
-	}
-
-	@Override
-	@NonNull
-	public Fragment createFragment(@NonNull ScreenT screen) {
-		try {
-			Fragment fragment = mFragmentClass.newInstance();
-			if (screen instanceof Serializable) {
-				Bundle arguments = new Bundle();
-				arguments.putSerializable(KEY_SCREEN, (Serializable) screen);
-				fragment.setArguments(arguments);
-			} else if (screen instanceof Parcelable) {
-				Bundle arguments = new Bundle();
-				arguments.putParcelable(KEY_SCREEN, (Parcelable) screen);
-				fragment.setArguments(arguments);
-			}
-			return fragment;
-		} catch (InstantiationException e) {
-			throw new RuntimeException("Failed to create a fragment", e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException("Failed to create a fragment", e);
-		}
-	}
-
-	@Override
-	@NonNull
-	@SuppressWarnings("unchecked")
-	public ScreenT getScreen(@NonNull Fragment fragment) {
-		if (fragment.getArguments() == null) {
-			throw new IllegalArgumentException("Fragment has no arguments.");
-		} else if (Serializable.class.isAssignableFrom(mScreenClass)) {
-			return checkNotNull((ScreenT) (fragment.getArguments().getSerializable(KEY_SCREEN)));
-		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {
-			return checkNotNull((ScreenT) fragment.getArguments().getParcelable(KEY_SCREEN));
-		} else {
-			throw new IllegalArgumentException("Screen " + mScreenClass.getSimpleName() + " should be Serializable or Parcelable.");
-		}
-	}
-
-	private ScreenT checkNotNull(@Nullable ScreenT screen) {
-		if (screen == null) {
-			throw new IllegalArgumentException("Failed to get screen from arguments of fragment.");
-		}
-		return screen;
-	}
+    companion object {
+        private const val KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN"
+    }
 }

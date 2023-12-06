@@ -1,75 +1,62 @@
-package me.aartikov.alligator.converters;
+package me.aartikov.alligator.converters
 
-
-import android.os.Bundle;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-
-import java.io.Serializable;
-
-import me.aartikov.alligator.Screen;
+import android.os.Bundle
+import android.os.Parcelable
+import androidx.fragment.app.DialogFragment
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
 /**
- * Creates a dialog fragment of the given class. It also puts a screen to the fragment's arguments if {@code ScreenT} is {@code Serializable} or {@code Parcelable}.
+ * Creates a dialog fragment of the given class. It also puts a screen to the fragment's arguments if `ScreenT` is `Serializable` or `Parcelable`.
  *
  * @param <ScreenT> screen type
- */
+</ScreenT> */
+class DefaultDialogFragmentConverter<ScreenT : Screen?>(
+    private val mScreenClass: Class<ScreenT>,
+    private val mDialogFragmentClass: Class<out DialogFragment>
+) : DialogFragmentConverter<ScreenT> {
+    override fun createDialogFragment(screen: ScreenT): DialogFragment {
+        return try {
+            val dialogFragment = mDialogFragmentClass.newInstance()
+            if (screen is Serializable) {
+                val arguments = Bundle()
+                arguments.putSerializable(KEY_SCREEN, screen as Serializable)
+                dialogFragment.arguments = arguments
+            } else if (screen is Parcelable) {
+                val arguments = Bundle()
+                arguments.putParcelable(KEY_SCREEN, screen as Parcelable)
+                dialogFragment.arguments = arguments
+            }
+            dialogFragment
+        } catch (e: InstantiationException) {
+            throw RuntimeException("Failed to create a dialog fragment", e)
+        } catch (e: IllegalAccessException) {
+            throw RuntimeException("Failed to create a dialog fragment", e)
+        }
+    }
 
-public class DefaultDialogFragmentConverter<ScreenT extends Screen> implements DialogFragmentConverter<ScreenT> {
-	private static final String KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN";
+    override fun getScreen(dialogFragment: DialogFragment): ScreenT {
+        return if (dialogFragment.arguments == null) {
+            throw IllegalArgumentException("Fragment has no arguments.")
+        } else if (Serializable::class.java.isAssignableFrom(mScreenClass)) {
+            checkNotNull(dialogFragment.requireArguments().getSerializable(KEY_SCREEN) as ScreenT?)
+        } else if (Parcelable::class.java.isAssignableFrom(mScreenClass)) {
+            checkNotNull(
+                dialogFragment.requireArguments().getParcelable<Parcelable>(
+                    KEY_SCREEN
+                ) as ScreenT?
+            )
+        } else {
+            throw IllegalArgumentException("Screen " + mScreenClass.simpleName + " should be Serializable or Parcelable.")
+        }
+    }
 
-	private Class<ScreenT> mScreenClass;
-	private Class<? extends DialogFragment> mDialogFragmentClass;
+    private fun checkNotNull(screen: ScreenT?): ScreenT {
+        requireNotNull(screen) { "Failed to get screen from arguments of fragment." }
+        return screen
+    }
 
-	public DefaultDialogFragmentConverter(Class<ScreenT> screenClass, Class<? extends DialogFragment> dialogFragmentClass) {
-		mScreenClass = screenClass;
-		mDialogFragmentClass = dialogFragmentClass;
-	}
-
-	@Override
-	@NonNull
-	public DialogFragment createDialogFragment(@NonNull ScreenT screen) {
-		try {
-			DialogFragment dialogFragment = mDialogFragmentClass.newInstance();
-			if (screen instanceof Serializable) {
-				Bundle arguments = new Bundle();
-				arguments.putSerializable(KEY_SCREEN, (Serializable) screen);
-				dialogFragment.setArguments(arguments);
-			} else if (screen instanceof Parcelable) {
-				Bundle arguments = new Bundle();
-				arguments.putParcelable(KEY_SCREEN, (Parcelable) screen);
-				dialogFragment.setArguments(arguments);
-			}
-			return dialogFragment;
-		} catch (InstantiationException e) {
-			throw new RuntimeException("Failed to create a dialog fragment", e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException("Failed to create a dialog fragment", e);
-		}
-	}
-
-	@Override
-	@NonNull
-	@SuppressWarnings("unchecked")
-	public ScreenT getScreen(@NonNull DialogFragment dialogFragment) {
-		if (dialogFragment.getArguments() == null) {
-			throw new IllegalArgumentException("Fragment has no arguments.");
-		} else if (Serializable.class.isAssignableFrom(mScreenClass)) {
-			return checkNotNull((ScreenT) dialogFragment.getArguments().getSerializable(KEY_SCREEN));
-		} else if (Parcelable.class.isAssignableFrom(mScreenClass)) {
-			return checkNotNull((ScreenT) dialogFragment.getArguments().getParcelable(KEY_SCREEN));
-		} else {
-			throw new IllegalArgumentException("Screen " + mScreenClass.getSimpleName() + " should be Serializable or Parcelable.");
-		}
-	}
-
-	private ScreenT checkNotNull(@Nullable ScreenT screen) {
-		if (screen == null) {
-			throw new IllegalArgumentException("Failed to get screen from arguments of fragment.");
-		}
-		return screen;
-	}
+    companion object {
+        private const val KEY_SCREEN = "me.aartikov.alligator.KEY_SCREEN"
+    }
 }

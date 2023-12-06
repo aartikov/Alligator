@@ -32,13 +32,9 @@ class FragmentStack(fragmentManager: FragmentManager, containerId: Int) {
             return result
         }
 
-    fun getFragmentCount(): Int {
-        return fragments.size
-    }
+    val fragmentCount get() = fragments.size
 
-    fun getCurrentFragment(): Fragment? {
-        return mFragmentManager.findFragmentById(mContainerId)
-    }
+    val currentFragment get() = mFragmentManager.findFragmentById(mContainerId)
 
     fun pop(animation: TransitionAnimation) {
         val fragments = fragments
@@ -89,13 +85,13 @@ class FragmentStack(fragmentManager: FragmentManager, containerId: Int) {
     }
 
     fun push(fragment: Fragment, animation: TransitionAnimation) {
-        val currentFragment = getCurrentFragment()
+        val currentFragment = this.currentFragment
         val transaction = mFragmentManager.beginTransaction()
         if (currentFragment != null) {
             animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, currentFragment)
             transaction.detach(currentFragment)
         }
-        val index = getFragmentCount()
+        val index = this.fragmentCount
         transaction.add(mContainerId, fragment, getFragmentTag(index))
         transaction.commitNow()
         if (currentFragment != null) {
@@ -104,13 +100,13 @@ class FragmentStack(fragmentManager: FragmentManager, containerId: Int) {
     }
 
     fun replace(fragment: Fragment, animation: TransitionAnimation) {
-        val currentFragment = getCurrentFragment()
+        val currentFragment = this.currentFragment
         val transaction = mFragmentManager.beginTransaction()
         if (currentFragment != null) {
             animation.applyBeforeFragmentTransactionExecuted(transaction, fragment, currentFragment)
             transaction.remove(currentFragment)
         }
-        val count = getFragmentCount()
+        val count = this.fragmentCount
         val index = if (count == 0) 0 else count - 1
         transaction.add(mContainerId, fragment, getFragmentTag(index))
         transaction.commitNow()

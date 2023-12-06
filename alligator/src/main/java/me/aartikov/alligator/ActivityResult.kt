@@ -1,44 +1,18 @@
-package me.aartikov.alligator;
+package me.aartikov.alligator
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-
-import androidx.annotation.Nullable;
-
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 
 /**
  * Wrapper for an activity result. It contains a result code and an intent.
  */
-public class ActivityResult {
-	private int mResultCode;
-	@Nullable
-	private Intent mIntent;
+class ActivityResult(val resultCode: Int, val intent: Intent?) {
 
-	public ActivityResult(int resultCode, @Nullable Intent intent) {
-		mResultCode = resultCode;
-		mIntent = intent;
-	}
-
-	public int getResultCode() {
-		return mResultCode;
-	}
-
-	@Nullable
-	public Intent getIntent() {
-		return mIntent;
-	}
-
-	@Nullable
-	public Uri getDataUri() {
-		return mIntent != null ? mIntent.getData() : null;
-	}
-
-	public boolean isOk() {
-		return mResultCode == Activity.RESULT_OK;
-	}
-
-	public boolean isCanceled() {
-		return mResultCode == Activity.RESULT_CANCELED;
-	}
+    val dataUri: Uri?
+        get() = intent?.data
+    val isOk: Boolean
+        get() = resultCode == Activity.RESULT_OK
+    val isCanceled: Boolean
+        get() = resultCode == Activity.RESULT_CANCELED
 }

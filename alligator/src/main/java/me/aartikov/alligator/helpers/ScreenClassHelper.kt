@@ -1,101 +1,84 @@
-package me.aartikov.alligator.helpers;
+package me.aartikov.alligator.helpers
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import me.aartikov.alligator.Screen;
-
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Screen
 
 /**
  * Helper class for storing screen class information in activities and fragments.
  */
-public class ScreenClassHelper {
-	private static final String KEY_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_SCREEN_CLASS_NAME";
-	private static final String KEY_PREVIOUS_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_PREVIOUS_SCREEN_CLASS_NAME";
+class ScreenClassHelper {
+    private val mActivityMap: MutableMap<Class<out Activity?>, Class<out Screen?>> =
+        HashMap() // this map is used when there are no screen class information in an activity intent
+    private val mRequestCodeMap: MutableMap<Int, Class<out Screen?>> = LinkedHashMap()
+    fun putScreenClass(intent: Intent, screenClass: Class<out Screen?>) {
+        intent.putExtra(KEY_SCREEN_CLASS_NAME, screenClass.name)
+    }
 
-	private Map<Class<? extends Activity>, Class<? extends Screen>> mActivityMap = new HashMap<>();     // this map is used when there are no screen class information in an activity intent
-	private Map<Integer, Class<? extends Screen>> mRequestCodeMap = new LinkedHashMap<>();
+    fun getScreenClass(activity: Activity): Class<out Screen?>? {
+        val className = activity.intent.getStringExtra(KEY_SCREEN_CLASS_NAME)
+        val screenClass: Class<out Screen?>? = getClassByName(className) as? Class<out Screen?>
+        return screenClass ?: mActivityMap[activity.javaClass]
+    }
 
-	public void putScreenClass(@NonNull Intent intent, @NonNull Class<? extends Screen> screenClass) {
-		intent.putExtra(KEY_SCREEN_CLASS_NAME, screenClass.getName());
-	}
+    fun putScreenClass(fragment: Fragment, screenClass: Class<out Screen?>) {
+        var arguments = fragment.arguments
+        if (arguments == null) {
+            arguments = Bundle()
+            fragment.arguments = arguments
+        }
+        arguments.putString(KEY_SCREEN_CLASS_NAME, screenClass.name)
+    }
 
-	@SuppressWarnings("unchecked")
-	@Nullable
-	public Class<? extends Screen> getScreenClass(@NonNull Activity activity) {
-		String className = activity.getIntent().getStringExtra(KEY_SCREEN_CLASS_NAME);
-		Class<? extends Screen> screenClass = getClassByName(className);
-		return screenClass != null ? screenClass : mActivityMap.get(activity.getClass());
-	}
+    fun getScreenClass(fragment: Fragment): Class<out Screen?>? {
+        if (fragment.arguments == null) {
+            return null
+        }
+        val className = fragment.requireArguments().getString(KEY_SCREEN_CLASS_NAME)
+        return getClassByName(className) as Class<out Screen?>?
+    }
 
-	public void putScreenClass(@NonNull Fragment fragment, @NonNull Class<? extends Screen> screenClass) {
-		Bundle arguments = fragment.getArguments();
-		if (arguments == null) {
-			arguments = new Bundle();
-			fragment.setArguments(arguments);
-		}
-		arguments.putString(KEY_SCREEN_CLASS_NAME, screenClass.getName());
-	}
+    fun putPreviousScreenClass(intent: Intent, screenClass: Class<out Screen?>) {
+        intent.putExtra(KEY_PREVIOUS_SCREEN_CLASS_NAME, screenClass.name)
+    }
 
-	@SuppressWarnings("unchecked")
-	@Nullable
-	public Class<? extends Screen> getScreenClass(@NonNull Fragment fragment) {
-		if (fragment.getArguments() == null) {
-			return null;
-		}
+    fun getPreviousScreenClass(activity: Activity): Class<out Screen?>? {
+        val className = activity.intent.getStringExtra(KEY_PREVIOUS_SCREEN_CLASS_NAME)
+        return getClassByName(className) as? Class<out Screen?>
+    }
 
-		String className = fragment.getArguments().getString(KEY_SCREEN_CLASS_NAME);
-		return (Class<? extends Screen>) getClassByName(className);
-	}
+    fun getScreenClass(requestCode: Int): Class<out Screen?>? {
+        return mRequestCodeMap[requestCode]
+    }
 
-	public void putPreviousScreenClass(@NonNull Intent intent, @NonNull Class<? extends Screen> screenClass) {
-		intent.putExtra(KEY_PREVIOUS_SCREEN_CLASS_NAME, screenClass.getName());
-	}
+    fun addActivityClass(activityClass: Class<out Activity?>, screenClass: Class<out Screen?>) {
+        if (!mActivityMap.containsKey(activityClass)) {
+            mActivityMap[activityClass] = screenClass
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	@Nullable
-	public Class<? extends Screen> getPreviousScreenClass(@NonNull Activity activity) {
-		String className = activity.getIntent().getStringExtra(KEY_PREVIOUS_SCREEN_CLASS_NAME);
-		return getClassByName(className);
-	}
+    fun addRequestCode(requestCode: Int, screenClass: Class<out Screen?>) {
+        if (!mRequestCodeMap.containsKey(requestCode)) {
+            mRequestCodeMap[requestCode] = screenClass
+        }
+    }
 
-	@Nullable
-	public Class<? extends Screen> getScreenClass(int requestCode) {
-		return mRequestCodeMap.get(requestCode);
-	}
+    companion object {
+        private const val KEY_SCREEN_CLASS_NAME = "me.aartikov.alligator.KEY_SCREEN_CLASS_NAME"
+        private const val KEY_PREVIOUS_SCREEN_CLASS_NAME =
+            "me.aartikov.alligator.KEY_PREVIOUS_SCREEN_CLASS_NAME"
 
-	public void addActivityClass(@NonNull Class<? extends Activity> activityClass, @NonNull Class<? extends Screen> screenClass) {
-		if (!mActivityMap.containsKey(activityClass)) {
-			mActivityMap.put(activityClass, screenClass);
-		}
-	}
-
-	public void addRequestCode(int requestCode, @NonNull Class<? extends Screen> screenClass) {
-		if (!mRequestCodeMap.containsKey(requestCode)) {
-			mRequestCodeMap.put(requestCode, screenClass);
-		}
-	}
-
-	@Nullable
-	private static Class getClassByName(@Nullable String className) {
-		if (className == null || className.isEmpty()) {
-			return null;
-		}
-
-		try {
-			return Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+        private fun getClassByName(className: String?): Class<*>? {
+            return if (className.isNullOrEmpty()) {
+                null
+            } else try {
+                Class.forName(className)
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
 }

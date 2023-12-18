@@ -19,6 +19,7 @@ class ActivityDestination(
     val requestCode: Int,
     private val mScreenClassHelper: ScreenClassHelper
 ) : Destination {
+
     constructor(
         screenClass: Class<out Screen>,
         activityClass: Class<out Activity>?,

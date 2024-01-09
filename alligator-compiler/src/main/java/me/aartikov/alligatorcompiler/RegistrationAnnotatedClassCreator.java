@@ -11,7 +11,7 @@ import me.aartikov.alligator.ScreenResult;
 import me.aartikov.alligator.annotations.RegisterScreen;
 
 public class RegistrationAnnotatedClassCreator {
-	private ProcessingUtils utils;
+	private final ProcessingUtils utils;
 
 	public RegistrationAnnotatedClassCreator(ProcessingUtils utils) {
 		this.utils = utils;

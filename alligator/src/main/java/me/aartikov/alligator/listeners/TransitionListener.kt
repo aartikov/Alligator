@@ -19,7 +19,7 @@ interface TransitionListener {
     fun onScreenTransition(
         transitionType: TransitionType,
         destinationType: DestinationType,
-        screenClassFrom: Class<out Screen?>?,
-        screenClassTo: Class<out Screen?>?
+        screenClassFrom: Class<out Screen>?,
+        screenClassTo: Class<out Screen>?
     )
 }

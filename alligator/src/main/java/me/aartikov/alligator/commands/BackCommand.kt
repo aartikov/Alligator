@@ -17,15 +17,11 @@ class BackCommand(
         return if (navigationContext.dialogFragmentNavigator.canGoBack()) {
             navigationContext.dialogFragmentNavigator.goBack(mScreenResult)
             true
-        } else if (navigationContext.fragmentNavigator != null && navigationContext.fragmentNavigator!!
-                .canGoBack()
-        ) {
-            navigationContext.fragmentNavigator!!.goBack(mScreenResult, mAnimationData)
+        } else if (navigationContext.fragmentNavigator != null && navigationContext.fragmentNavigator.canGoBack()) {
+            navigationContext.fragmentNavigator.goBack(mScreenResult, mAnimationData)
             true
-        } else if (navigationContext.flowFragmentNavigator != null && navigationContext.flowFragmentNavigator!!
-                .canGoBack()
-        ) {
-            navigationContext.flowFragmentNavigator!!.goBack(mScreenResult, mAnimationData)
+        } else if (navigationContext.flowFragmentNavigator != null && navigationContext.flowFragmentNavigator.canGoBack()) {
+            navigationContext.flowFragmentNavigator.goBack(mScreenResult, mAnimationData)
             true
         } else {
             navigationContext.activityNavigator.goBack(mScreenResult, mAnimationData)

@@ -10,8 +10,10 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory
  * Helper class for handling a screen result.
  */
 class ActivityResultHandler internal constructor(private val mNavigationFactory: NavigationFactory) {
+
     private var mScreenResultListener: ScreenResultListener? = null
     private var mPendingScreenResultPair: ScreenResultPair? = null
+
     fun setScreenResultListener(screenResultListener: ScreenResultListener) {
         mScreenResultListener = screenResultListener
         handlePendingScreenResult()
@@ -65,8 +67,8 @@ class ActivityResultHandler internal constructor(private val mNavigationFactory:
         }
     }
 
-    private inner class ScreenResultPair internal constructor(
-        var mScreenClass: Class<out Screen?>,
-        var mScreenResult: ScreenResult?
+    private inner class ScreenResultPair(
+        val mScreenClass: Class<out Screen>,
+        val mScreenResult: ScreenResult?
     )
 }

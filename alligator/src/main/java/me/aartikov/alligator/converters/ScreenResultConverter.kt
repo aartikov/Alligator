@@ -8,7 +8,7 @@ import me.aartikov.alligator.ScreenResult
  *
  * @param <ScreenResultT> screen result type
 </ScreenResultT> */
-interface ScreenResultConverter<ScreenResultT : ScreenResult?> {
+interface ScreenResultConverter<ScreenResultT : ScreenResult> {
     fun createActivityResult(screenResult: ScreenResultT): ActivityResult
     fun getScreenResult(activityResult: ActivityResult): ScreenResultT?
 }

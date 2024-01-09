@@ -11,10 +11,11 @@ import java.io.Serializable
  *
  * @param <ScreenT> screen type
 </ScreenT> */
-class DefaultDialogFragmentConverter<ScreenT : Screen?>(
+class DefaultDialogFragmentConverter<ScreenT : Screen>(
     private val mScreenClass: Class<ScreenT>,
     private val mDialogFragmentClass: Class<out DialogFragment>
 ) : DialogFragmentConverter<ScreenT> {
+
     override fun createDialogFragment(screen: ScreenT): DialogFragment {
         return try {
             val dialogFragment = mDialogFragmentClass.newInstance()
@@ -35,16 +36,17 @@ class DefaultDialogFragmentConverter<ScreenT : Screen?>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun getScreen(dialogFragment: DialogFragment): ScreenT {
         return if (dialogFragment.arguments == null) {
             throw IllegalArgumentException("Fragment has no arguments.")
         } else if (Serializable::class.java.isAssignableFrom(mScreenClass)) {
-            checkNotNull(dialogFragment.requireArguments().getSerializable(KEY_SCREEN) as ScreenT?)
+            checkNotNull(
+                dialogFragment.requireArguments().getSerializable(KEY_SCREEN) as? ScreenT
+            )
         } else if (Parcelable::class.java.isAssignableFrom(mScreenClass)) {
             checkNotNull(
-                dialogFragment.requireArguments().getParcelable<Parcelable>(
-                    KEY_SCREEN
-                ) as ScreenT?
+                dialogFragment.requireArguments().getParcelable<Parcelable>(KEY_SCREEN) as? ScreenT
             )
         } else {
             throw IllegalArgumentException("Screen " + mScreenClass.simpleName + " should be Serializable or Parcelable.")

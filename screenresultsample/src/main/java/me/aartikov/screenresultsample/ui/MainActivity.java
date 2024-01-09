@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ScreenResultListe
 	}
 
 	@Override
-	public void onScreenResult(Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
+	public void onScreenResult(@NonNull Class<? extends Screen> screenClass, @Nullable ScreenResult result) {
 		if (result == null) {
 			Toast.makeText(MainActivity.this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
 			return;

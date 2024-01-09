@@ -30,7 +30,7 @@ class ActivityDestination(
     fun createIntent(
         context: Context,
         screen: Screen,
-        previousScreenClass: Class<out Screen?>?
+        previousScreenClass: Class<out Screen>?
     ): Intent {
         checkScreenClass(screen.javaClass)
         val intent = (mIntentConverter as IntentConverter<Screen>).createIntent(context, screen)
@@ -41,7 +41,7 @@ class ActivityDestination(
         return intent
     }
 
-    fun createEmptyIntent(context: Context, screenClass: Class<out Screen?>): Intent? {
+    fun createEmptyIntent(context: Context, screenClass: Class<out Screen>): Intent? {
         if (mActivityClass == null) {
             return null
         }
@@ -64,23 +64,25 @@ class ActivityDestination(
         return mIntentConverter.getScreen(activity.intent)
     }
 
-    fun getScreenResult(activityResult: ActivityResult?): ScreenResult? {
+    fun getScreenResult(activityResult: ActivityResult): ScreenResult? {
         if (mScreenResultConverter == null) {
             throw RuntimeException("mScreenResultConverter is null")
         }
-        return (mScreenResultConverter as ScreenResultConverter<ScreenResult>).getScreenResult(
-            activityResult!!
-        )
+        return (mScreenResultConverter as ScreenResultConverter<ScreenResult>).getScreenResult(activityResult)
     }
 
     private fun checkScreenClass(screenClass: Class<out Screen>) {
-        require(mScreenClass.isAssignableFrom(screenClass)) { "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName }
+        require(mScreenClass.isAssignableFrom(screenClass)) {
+            "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName
+        }
     }
 
     private fun checkScreenResultClass(screenResultClass: Class<out ScreenResult>) {
         if (this.screenResultClass == null) {
             throw RuntimeException("mScreenResultClass is null")
         }
-        require(screenResultClass.isAssignableFrom(screenResultClass)) { "Invalid screen result class " + screenResultClass.canonicalName + ". Expected " + screenResultClass.canonicalName }
+        require(this.screenResultClass.isAssignableFrom(screenResultClass)) {
+            "Invalid screen result class " + screenResultClass.canonicalName + ". Expected " + this.screenResultClass.canonicalName
+        }
     }
 }

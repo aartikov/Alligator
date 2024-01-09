@@ -3,10 +3,10 @@ package me.aartikov.alligatorcompiler;
 import javax.lang.model.element.TypeElement;
 
 public class RegistrationAnnotatedClass {
-	private TypeElement classElement;
-	private ScreenType screenType;
-	private String screenClassName;
-	private String screenResultClassName;
+	private final TypeElement classElement;
+	private final ScreenType screenType;
+	private final String screenClassName;
+	private final String screenResultClassName;
 
 	public RegistrationAnnotatedClass(TypeElement classElement, ScreenType screenType, String screenClassName, String screenResultClassName) {
 		this.classElement = classElement;

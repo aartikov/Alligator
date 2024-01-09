@@ -18,6 +18,7 @@ import me.aartikov.alligator.navigationfactories.NavigationFactory
  * Helps to return a screen result from activities and fragments.
  */
 class ScreenResultHelper(private val mNavigationFactory: NavigationFactory) {
+
     @Throws(NavigationException::class)
     fun setActivityResult(activity: Activity, screenResult: ScreenResult) {
         val activityDestination = getAndValidateActivityDestination(activity, screenResult)
@@ -45,7 +46,7 @@ class ScreenResultHelper(private val mNavigationFactory: NavigationFactory) {
         val screenClass = mNavigationFactory.getScreenClass(activity)
             ?: throw ScreenRegistrationException("Failed to get a screen class for " + activity.javaClass.simpleName)
         val activityDestination =
-            mNavigationFactory.getDestination(screenClass) as ActivityDestination
+            mNavigationFactory.getDestination(screenClass) as? ActivityDestination
                 ?: throw ScreenRegistrationException("Failed to get a destination for " + screenClass.simpleName)
         if (activityDestination.screenResultClass == null) {
             throw InvalidScreenResultException("Screen " + screenClass.simpleName + " can't return a result.")
@@ -54,7 +55,7 @@ class ScreenResultHelper(private val mNavigationFactory: NavigationFactory) {
         if (!supportedScreenResultClass.isAssignableFrom(screenResult.javaClass)) {
             throw InvalidScreenResultException(
                 "Screen " + screenClass.simpleName + " can't return a result of class " + screenResult.javaClass.canonicalName +
-                        ". It returns a result of class " + supportedScreenResultClass.canonicalName
+                            ". It returns a result of class " + supportedScreenResultClass.canonicalName
             )
         }
         return activityDestination
@@ -69,18 +70,21 @@ class ScreenResultHelper(private val mNavigationFactory: NavigationFactory) {
         val screenClass = mNavigationFactory.getScreenClass(fragment)
             ?: throw ScreenRegistrationException("Failed to get a screen class for " + fragment.javaClass.simpleName)
         val fragmentDestination =
-            mNavigationFactory.getDestination(screenClass) as FragmentDestination?
+            mNavigationFactory.getDestination(screenClass) as? FragmentDestination
                 ?: throw ScreenRegistrationException("Failed to get a destination for " + screenClass.simpleName)
         val supportedScreenResultClass = fragmentDestination.screenResultClass
-            ?: if (screenResult == null) {
+        if (supportedScreenResultClass == null) {
+            if (screenResult == null) {
                 return
             } else {
                 throw InvalidScreenResultException("Screen " + screenClass.simpleName + " can't return a result.")
             }
+        }
+
         if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.javaClass)) {
             throw InvalidScreenResultException(
                 "Screen " + screenClass.simpleName + " can't return a result of class " + screenResult.javaClass.canonicalName +
-                        ". It returns a result of class " + supportedScreenResultClass.canonicalName
+                            ". It returns a result of class " + supportedScreenResultClass.canonicalName
             )
         }
         screenResultListener.onScreenResult(screenClass, screenResult)
@@ -94,21 +98,26 @@ class ScreenResultHelper(private val mNavigationFactory: NavigationFactory) {
     ) {
         val screenClass = mNavigationFactory.getScreenClass(dialogFragment)
             ?: throw ScreenRegistrationException("Failed to get a screen class for " + dialogFragment.javaClass.simpleName)
-        val dialogFragmentDestination =
-            mNavigationFactory.getDestination(screenClass) as DialogFragmentDestination?
+
+        val dialogFragmentDestination = mNavigationFactory.getDestination(screenClass) as DialogFragmentDestination?
                 ?: throw ScreenRegistrationException("Failed to get a destination for " + screenClass.simpleName)
+
         val supportedScreenResultClass = dialogFragmentDestination.screenResultClass
-            ?: if (screenResult == null) {
+        if (supportedScreenResultClass == null) {
+            if (screenResult == null) {
                 return
             } else {
                 throw InvalidScreenResultException("Screen " + screenClass.simpleName + " can't return a result.")
             }
+        }
+
         if (screenResult != null && !supportedScreenResultClass.isAssignableFrom(screenResult.javaClass)) {
             throw InvalidScreenResultException(
                 "Screen " + screenClass.simpleName + " can't return a result of class " + screenResult.javaClass.canonicalName +
-                        ". It returns a result of class " + supportedScreenResultClass.canonicalName
+                            ". It returns a result of class " + supportedScreenResultClass.canonicalName
             )
         }
+
         screenResultListener.onScreenResult(screenClass, screenResult)
     }
 

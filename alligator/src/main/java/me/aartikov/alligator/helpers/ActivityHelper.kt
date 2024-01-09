@@ -9,6 +9,7 @@ import me.aartikov.alligator.animations.TransitionAnimation
  * Helper class for starting and finishing an activity with animation.
  */
 class ActivityHelper(private val mActivity: AppCompatActivity) {
+
     fun resolve(intent: Intent): Boolean {
         return intent.resolveActivity(mActivity.packageManager) != null
     }

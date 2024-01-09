@@ -9,7 +9,7 @@ import me.aartikov.alligator.animations.DialogAnimation
  */
 class DefaultDialogAnimationProvider : DialogAnimationProvider {
     override fun getAnimation(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         animationData: AnimationData?
     ): DialogAnimation {
         return DialogAnimation.DEFAULT

@@ -20,8 +20,9 @@ class ScreenResolver(private val mNavigationFactory: NavigationFactory) {
      * @return a screen gotten from the activity intent
      * @throws IllegalArgumentException if screen getting failed
     </ScreenT> */
-    fun <ScreenT : Screen?> getScreen(activity: Activity): ScreenT {
-        val screen = getDestination(activity).getScreen(activity) as ScreenT
+    @Suppress("UNCHECKED_CAST")
+    fun <ScreenT : Screen> getScreen(activity: Activity): ScreenT {
+        val screen = getDestination(activity).getScreen(activity) as? ScreenT
         return screen
             ?: throw IllegalArgumentException("IntentConverter returns null for " + activity.javaClass.canonicalName)
     }
@@ -34,8 +35,9 @@ class ScreenResolver(private val mNavigationFactory: NavigationFactory) {
      * @return a screen gotten from the activity intent or null if there are no screen data in the activity.
      * @throws IllegalArgumentException if there are no screens registered for this activity.
     </ScreenT> */
-    fun <ScreenT : Screen?> getScreenOrNull(activity: Activity): ScreenT? {
-        return getDestination(activity).getScreen(activity) as ScreenT?
+    @Suppress("UNCHECKED_CAST")
+    fun <ScreenT : Screen> getScreenOrNull(activity: Activity): ScreenT? {
+        return getDestination(activity).getScreen(activity) as? ScreenT
     }
 
     /**
@@ -46,7 +48,8 @@ class ScreenResolver(private val mNavigationFactory: NavigationFactory) {
      * @return a screen gotten from the fragment
      * @throws IllegalArgumentException if screen getting failed
     </ScreenT> */
-    fun <ScreenT : Screen?> getScreen(fragment: Fragment): ScreenT {
+    @Suppress("UNCHECKED_CAST")
+    fun <ScreenT : Screen> getScreen(fragment: Fragment): ScreenT {
         return getDestination(fragment).getScreen(fragment) as ScreenT
     }
 
@@ -58,7 +61,8 @@ class ScreenResolver(private val mNavigationFactory: NavigationFactory) {
      * @return a screen gotten from the dialog fragment
      * @throws IllegalArgumentException if screen getting failed
     </ScreenT> */
-    fun <ScreenT : Screen?> getScreen(dialogFragment: DialogFragment): ScreenT {
+    @Suppress("UNCHECKED_CAST")
+    fun <ScreenT : Screen> getScreen(dialogFragment: DialogFragment): ScreenT {
         return getDestination(dialogFragment).getScreen(dialogFragment) as ScreenT
     }
 

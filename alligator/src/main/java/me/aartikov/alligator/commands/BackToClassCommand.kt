@@ -16,7 +16,7 @@ import me.aartikov.alligator.navigators.FragmentNavigator
  * Command implementation for `goBackTo` method of [me.aartikov.alligator.AndroidNavigator].
  */
 class BackToClassCommand(
-    private val mScreenClass: Class<out Screen?>,
+    private val mScreenClass: Class<out Screen>,
     private val mScreenResult: ScreenResult?,
     private val mAnimationData: AnimationData?
 ) : BaseCommand(mScreenClass) {

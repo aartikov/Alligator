@@ -8,6 +8,7 @@ import me.aartikov.alligator.animations.TransitionAnimation
  * Helper class for fragment switching.
  */
 class FragmentSwitcher(fragmentManager: FragmentManager, containerId: Int) {
+
     private val mFragmentManager: FragmentManager
     private val mContainerId: Int
 

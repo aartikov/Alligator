@@ -8,7 +8,7 @@ import me.aartikov.alligator.Screen
  *
  * @param <ScreenT> screen type
 </ScreenT> */
-abstract class OneWayIntentConverter<ScreenT : Screen?> : IntentConverter<ScreenT> {
+abstract class OneWayIntentConverter<ScreenT : Screen> : IntentConverter<ScreenT> {
     override fun getScreen(intent: Intent): ScreenT? {
         throw UnsupportedOperationException()
     }

@@ -16,7 +16,7 @@ interface DialogAnimationProvider {
      * @return an animation that will be used to show a dialog fragment
      */
     fun getAnimation(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         animationData: AnimationData?
     ): DialogAnimation
 }

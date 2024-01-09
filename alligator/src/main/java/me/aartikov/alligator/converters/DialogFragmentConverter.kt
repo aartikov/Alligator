@@ -8,7 +8,7 @@ import me.aartikov.alligator.Screen
  *
  * @param <ScreenT> screen type
 </ScreenT> */
-interface DialogFragmentConverter<ScreenT : Screen?> {
+interface DialogFragmentConverter<ScreenT : Screen> {
     fun createDialogFragment(screen: ScreenT): DialogFragment
-    fun getScreen(fragment: DialogFragment): ScreenT
+    fun getScreen(dialogFragment: DialogFragment): ScreenT
 }

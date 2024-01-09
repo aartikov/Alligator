@@ -13,5 +13,5 @@ interface ScreenResultListener {
      * @param screenClass class of a finished screen
      * @param result      returned screen result. Can be null if a screen has finished without no result.
      */
-    fun onScreenResult(screenClass: Class<out Screen?>?, result: ScreenResult?)
+    fun onScreenResult(screenClass: Class<out Screen>, result: ScreenResult?)
 }

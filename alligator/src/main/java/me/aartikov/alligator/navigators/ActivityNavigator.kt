@@ -36,7 +36,7 @@ interface ActivityNavigator {
 
     @Throws(NavigationException::class)
     fun goBackTo(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         destination: ActivityDestination,
         screenResult: ScreenResult?,
         animationData: AnimationData?

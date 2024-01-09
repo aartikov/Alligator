@@ -11,5 +11,5 @@ interface DialogShowingListener {
      *
      * @param screenClass class of a screen that represents a dialog.
      */
-    fun onDialogShown(screenClass: Class<out Screen?>)
+    fun onDialogShown(screenClass: Class<out Screen>)
 }

@@ -16,10 +16,8 @@ class FinishCommand(
 
     @Throws(NavigationException::class)
     override fun execute(navigationContext: NavigationContext): Boolean {
-        return if (!mForTopLevel && navigationContext.flowFragmentNavigator != null && navigationContext.flowFragmentNavigator!!
-                .canGoBack()
-        ) {
-            navigationContext.flowFragmentNavigator!!.goBack(mScreenResult, mAnimationData)
+        return if (!mForTopLevel && navigationContext.flowFragmentNavigator != null && navigationContext.flowFragmentNavigator.canGoBack()) {
+            navigationContext.flowFragmentNavigator.goBack(mScreenResult, mAnimationData)
             true
         } else {
             navigationContext.activityNavigator.goBack(mScreenResult, mAnimationData)

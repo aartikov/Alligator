@@ -34,8 +34,8 @@ import me.aartikov.alligator.helpers.ScreenClassHelper;
  */
 
 public class RegistryNavigationFactory implements NavigationFactory {
-	private Map<Class<? extends Screen>, Destination> mDestinations = new LinkedHashMap<>();
-	private ScreenClassHelper mScreenClassHelper = new ScreenClassHelper();
+	private final Map<Class<? extends Screen>, Destination> mDestinations = new LinkedHashMap<>();
+	private final ScreenClassHelper mScreenClassHelper = new ScreenClassHelper();
 	private int mRequestCode = 1000;
 
 	@Override

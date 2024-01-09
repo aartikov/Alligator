@@ -13,8 +13,8 @@ class DefaultTransitionAnimationProvider : TransitionAnimationProvider {
     override fun getAnimation(
         transitionType: TransitionType,
         destinationType: DestinationType,
-        screenClassFrom: Class<out Screen?>,
-        screenClassTo: Class<out Screen?>,
+        screenClassFrom: Class<out Screen>,
+        screenClassTo: Class<out Screen>,
         animationData: AnimationData?
     ): TransitionAnimation {
         return TransitionAnimation.DEFAULT

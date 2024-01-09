@@ -39,7 +39,7 @@ interface FragmentNavigator {
 
     @Throws(NavigationException::class)
     fun goBackTo(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         destination: FragmentDestination,
         screenResult: ScreenResult?,
         animationData: AnimationData?

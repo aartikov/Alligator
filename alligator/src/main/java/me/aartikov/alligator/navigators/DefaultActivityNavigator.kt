@@ -41,7 +41,7 @@ class DefaultActivityNavigator(
         animationData: AnimationData?
     ) {
         val screenClassFrom = mNavigationFactory.getScreenClass(mActivity)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val intent = destination.createIntent(mActivity, screen, screenClassFrom)
         if (!mActivityHelper.resolve(intent)) {
             throw ActivityResolvingException(screen)
@@ -68,7 +68,7 @@ class DefaultActivityNavigator(
             throw ActivityResolvingException(screen)
         }
         val screenClassFrom = mNavigationFactory.getScreenClass(mActivity)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val animation =
             getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, animationData)
         mActivityHelper.start(intent, animation)
@@ -88,7 +88,7 @@ class DefaultActivityNavigator(
             throw ActivityResolvingException(screen)
         }
         val screenClassFrom = mNavigationFactory.getScreenClass(mActivity)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val animation =
             getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, animationData)
         mActivityHelper.start(intent, animation)
@@ -113,7 +113,7 @@ class DefaultActivityNavigator(
 
     @Throws(NavigationException::class)
     override fun goBackTo(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         destination: ActivityDestination,
         screenResult: ScreenResult?,
         animationData: AnimationData?
@@ -133,8 +133,8 @@ class DefaultActivityNavigator(
 
     private fun getAnimation(
         transitionType: TransitionType,
-        screenClassFrom: Class<out Screen?>?,
-        screenClassTo: Class<out Screen?>?,
+        screenClassFrom: Class<out Screen>?,
+        screenClassTo: Class<out Screen>?,
         animationData: AnimationData?
     ): TransitionAnimation {
         return if (screenClassFrom == null || screenClassTo == null) {
@@ -152,8 +152,8 @@ class DefaultActivityNavigator(
 
     private fun callTransitionListener(
         transitionType: TransitionType,
-        screenClassFrom: Class<out Screen?>?,
-        screenClassTo: Class<out Screen?>?
+        screenClassFrom: Class<out Screen>?,
+        screenClassTo: Class<out Screen>?
     ) {
         mTransitionListener.onScreenTransition(
             transitionType,

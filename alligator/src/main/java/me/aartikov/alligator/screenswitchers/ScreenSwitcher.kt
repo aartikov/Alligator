@@ -18,5 +18,5 @@ interface ScreenSwitcher {
      * @throws me.aartikov.alligator.exceptions.NavigationException on fail
      */
     @Throws(NavigationException::class)
-    fun switchTo(screen: Screen?, listener: ScreenSwitchingListener?, animationData: AnimationData?)
+    fun switchTo(screen: Screen, listener: ScreenSwitchingListener, animationData: AnimationData?)
 }

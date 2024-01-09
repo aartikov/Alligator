@@ -67,7 +67,7 @@ interface Navigator {
      *
      * @param screenClass screen class for going back
      */
-    fun goBackTo(screenClass: Class<out Screen?>)
+    fun goBackTo(screenClass: Class<out Screen>)
 
     /**
      * Goes back to a screen with the given screen object.
@@ -82,7 +82,7 @@ interface Navigator {
      * @param screenClass   screen class for going back
      * @param animationData animation data for an additional animation configuring
      */
-    fun goBackTo(screenClass: Class<out Screen?>, animationData: AnimationData?)
+    fun goBackTo(screenClass: Class<out Screen>, animationData: AnimationData?)
 
     /**
      * `goBackTo` with an animation data.
@@ -98,7 +98,7 @@ interface Navigator {
      * @param screenClass  screen class for going back
      * @param screenResult screen result that will be returned
      */
-    fun goBackToWithResult(screenClass: Class<out Screen?>, screenResult: ScreenResult)
+    fun goBackToWithResult(screenClass: Class<out Screen>, screenResult: ScreenResult)
 
     /**
      * Goes back to a screen with the given class and returns result to it.
@@ -116,7 +116,7 @@ interface Navigator {
      * @param animationData animation data for an additional animation configuring
      */
     fun goBackToWithResult(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         screenResult: ScreenResult,
         animationData: AnimationData?
     )

@@ -23,7 +23,7 @@ import me.aartikov.alligator.ScreenResult;
 public class DefaultScreenResultConverter<ScreenResultT extends ScreenResult> implements ScreenResultConverter<ScreenResultT> {
 	private static final String KEY_SCREEN_RESULT = "me.aartikov.alligator.KEY_SCREEN_RESULT";
 
-	private Class<ScreenResultT> mScreenResultClass;
+	private final Class<ScreenResultT> mScreenResultClass;
 
 	public DefaultScreenResultConverter(Class<ScreenResultT> screenResultClass) {
 		mScreenResultClass = screenResultClass;

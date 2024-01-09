@@ -9,15 +9,13 @@ import me.aartikov.alligator.helpers.ScreenClassHelper
 class DialogFragmentDestination(
     private val mScreenClass: Class<out Screen>,
     private val mDialogFragmentConverter: DialogFragmentConverter<out Screen>,
-    val screenResultClass: Class<out ScreenResult?>?,
+    val screenResultClass: Class<out ScreenResult>?,
     private val mScreenClassHelper: ScreenClassHelper
 ) : Destination {
     fun createDialogFragment(screen: Screen): DialogFragment {
         checkScreenClass(screen.javaClass)
         val dialogFragment =
-            (mDialogFragmentConverter as DialogFragmentConverter<Screen>).createDialogFragment(
-                screen
-            )
+            (mDialogFragmentConverter as DialogFragmentConverter<Screen>).createDialogFragment(screen)
         mScreenClassHelper.putScreenClass(dialogFragment, screen.javaClass)
         return dialogFragment
     }
@@ -27,6 +25,8 @@ class DialogFragmentDestination(
     }
 
     private fun checkScreenClass(screenClass: Class<out Screen>) {
-        require(mScreenClass.isAssignableFrom(screenClass)) { "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName }
+        require(mScreenClass.isAssignableFrom(screenClass)) {
+            "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName
+        }
     }
 }

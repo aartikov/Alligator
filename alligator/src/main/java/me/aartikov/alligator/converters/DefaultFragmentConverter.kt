@@ -11,7 +11,7 @@ import java.io.Serializable
  *
  * @param <ScreenT> screen type
 </ScreenT> */
-class DefaultFragmentConverter<ScreenT : Screen?>(
+class DefaultFragmentConverter<ScreenT : Screen>(
     private val mScreenClass: Class<ScreenT>,
     private val mFragmentClass: Class<out Fragment>
 ) : FragmentConverter<ScreenT> {
@@ -35,14 +35,17 @@ class DefaultFragmentConverter<ScreenT : Screen?>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun getScreen(fragment: Fragment): ScreenT {
         return if (fragment.arguments == null) {
             throw IllegalArgumentException("Fragment has no arguments.")
         } else if (Serializable::class.java.isAssignableFrom(mScreenClass)) {
-            checkNotNull(fragment.requireArguments().getSerializable(KEY_SCREEN) as ScreenT?)
+            checkNotNull(
+                fragment.requireArguments().getSerializable(KEY_SCREEN) as? ScreenT
+            )
         } else if (Parcelable::class.java.isAssignableFrom(mScreenClass)) {
             checkNotNull(
-                fragment.requireArguments().getParcelable<Parcelable>(KEY_SCREEN) as ScreenT?
+                fragment.requireArguments().getParcelable<Parcelable>(KEY_SCREEN) as? ScreenT
             )
         } else {
             throw IllegalArgumentException("Screen " + mScreenClass.simpleName + " should be Serializable or Parcelable.")

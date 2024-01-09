@@ -8,6 +8,7 @@ import me.aartikov.alligator.animations.TransitionAnimation
  * Custom implementation of a fragment backstack with flexible animation control.
  */
 class FragmentStack(fragmentManager: FragmentManager, containerId: Int) {
+
     private val mFragmentManager: FragmentManager
     private val mContainerId: Int
 

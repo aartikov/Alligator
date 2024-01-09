@@ -8,7 +8,7 @@ import me.aartikov.alligator.ScreenResult
  *
  * @param <ScreenResultT> screen result type
 </ScreenResultT> */
-abstract class OneWayScreenResultConverter<ScreenResultT : ScreenResult?> :
+abstract class OneWayScreenResultConverter<ScreenResultT : ScreenResult> :
     ScreenResultConverter<ScreenResultT> {
     override fun createActivityResult(screenResult: ScreenResultT): ActivityResult {
         throw UnsupportedOperationException()

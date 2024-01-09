@@ -8,7 +8,7 @@ import me.aartikov.alligator.Screen
  *
  * @param <ScreenT> screen type
 </ScreenT> */
-interface FragmentConverter<ScreenT : Screen?> {
+interface FragmentConverter<ScreenT : Screen> {
     fun createFragment(screen: ScreenT): Fragment
     fun getScreen(fragment: Fragment): ScreenT
 }

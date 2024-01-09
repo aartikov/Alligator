@@ -21,11 +21,11 @@ import java.util.Queue
  * Main library object. It translates calls of navigation methods to commands and puts them to a command queue.
  * Commands can be executed if a [NavigationContext] is bound, otherwise command execution will be delayed until a [NavigationContext] will be bound.
  */
-class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationContextBinder,
-    Navigator {
+class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationContextBinder, Navigator {
 
     override var navigationContext: NavigationContext? = null
         private set
+
     private val commandQueue: Queue<Command> = LinkedList()
     private var isExecutingCommands = false
 
@@ -38,20 +38,22 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
     override fun bind(navigationContext: NavigationContext) {
         checkThatMainThread()
         if (this.navigationContext != null
-            && navigationContext.activity !== navigationContext.activity
+            && this.navigationContext!!.activity !== navigationContext.activity
         ) {
             return
         }
+
         this.navigationContext = navigationContext
         activityResultHandler.setScreenResultListener(navigationContext.screenResultListener)
         executeQueuedCommands()
     }
 
-    override fun unbind(activity: AppCompatActivity?) {
+    override fun unbind(activity: AppCompatActivity) {
         checkThatMainThread()
         if (navigationContext != null && navigationContext!!.activity !== activity) {
             return
         }
+
         activityResultHandler.resetScreenResultListener()
         navigationContext = null
     }
@@ -104,7 +106,7 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
      *
      * @param screenClass screen class for going back
      */
-    override fun goBackTo(screenClass: Class<out Screen?>) {
+    override fun goBackTo(screenClass: Class<out Screen>) {
         goBackTo(screenClass, null)
     }
 
@@ -117,7 +119,7 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
         goBackTo(screen, null)
     }
 
-    override fun goBackTo(screenClass: Class<out Screen?>, animationData: AnimationData?) {
+    override fun goBackTo(screenClass: Class<out Screen>, animationData: AnimationData?) {
         executeCommand(BackToClassCommand(screenClass, null, animationData))
     }
 
@@ -131,7 +133,7 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
      * @param screenClass  screen class for going back
      * @param screenResult screen result that will be returned
      */
-    override fun goBackToWithResult(screenClass: Class<out Screen?>, screenResult: ScreenResult) {
+    override fun goBackToWithResult(screenClass: Class<out Screen>, screenResult: ScreenResult) {
         goBackToWithResult(screenClass, screenResult, null)
     }
 
@@ -146,7 +148,7 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
     }
 
     override fun goBackToWithResult(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         screenResult: ScreenResult,
         animationData: AnimationData?
     ) {
@@ -251,7 +253,7 @@ class AndroidNavigator(val navigationFactory: NavigationFactory) : NavigationCon
         executeCommand(SwitchToCommand(screen, animationData))
     }
 
-    protected fun executeCommand(command: Command) {
+    private fun executeCommand(command: Command) {
         checkThatMainThread()
         commandQueue.add(command)
         executeQueuedCommands()

@@ -9,7 +9,7 @@ import me.aartikov.alligator.helpers.ScreenClassHelper
 class FragmentDestination(
     private val mScreenClass: Class<out Screen>,
     private val mFragmentConverter: FragmentConverter<out Screen>,
-    val screenResultClass: Class<out ScreenResult?>?,
+    val screenResultClass: Class<out ScreenResult>?,
     private val mScreenClassHelper: ScreenClassHelper
 ) : Destination {
     fun createFragment(screen: Screen): Fragment {
@@ -24,6 +24,8 @@ class FragmentDestination(
     }
 
     private fun checkScreenClass(screenClass: Class<out Screen>) {
-        require(mScreenClass.isAssignableFrom(screenClass)) { "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName }
+        require(mScreenClass.isAssignableFrom(screenClass)) {
+            "Invalid screen class " + screenClass.simpleName + ". Expected " + mScreenClass.simpleName
+        }
     }
 }

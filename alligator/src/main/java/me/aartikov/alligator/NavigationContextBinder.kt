@@ -34,5 +34,5 @@ interface NavigationContextBinder {
      *
      * @param activity activity that initiates unbinding
      */
-    fun unbind(activity: AppCompatActivity?)
+    fun unbind(activity: AppCompatActivity)
 }

@@ -11,8 +11,10 @@ class ActivityResult(val resultCode: Int, val intent: Intent?) {
 
     val dataUri: Uri?
         get() = intent?.data
+
     val isOk: Boolean
         get() = resultCode == Activity.RESULT_OK
+
     val isCanceled: Boolean
         get() = resultCode == Activity.RESULT_CANCELED
 }

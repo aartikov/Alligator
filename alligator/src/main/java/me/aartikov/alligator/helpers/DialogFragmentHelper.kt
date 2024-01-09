@@ -8,9 +8,10 @@ import me.aartikov.alligator.animations.DialogAnimation
  * Helper class for showing and hiding a dialog fragment.
  */
 class DialogFragmentHelper(private val mFragmentManager: FragmentManager) {
+
     val dialogFragment: DialogFragment?
         get() {
-            val dialogFragment = mFragmentManager.findFragmentByTag(TAG) as DialogFragment?
+            val dialogFragment = mFragmentManager.findFragmentByTag(TAG) as? DialogFragment
             return if (dialogFragment == null || dialogFragment.isRemoving) {
                 null
             } else {
@@ -28,7 +29,7 @@ class DialogFragmentHelper(private val mFragmentManager: FragmentManager) {
     }
 
     fun hideDialog() {
-        val dialogFragment = mFragmentManager.findFragmentByTag(TAG) as DialogFragment?
+        val dialogFragment = mFragmentManager.findFragmentByTag(TAG) as? DialogFragment
             ?: throw IllegalStateException("Dialog is not visible.")
         dialogFragment.dismiss()
         mFragmentManager.executePendingTransactions()

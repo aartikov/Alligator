@@ -55,7 +55,7 @@ class DefaultFragmentNavigator(
         val currentFragment = mFragmentStack.currentFragment
         val screenClassFrom =
             if (currentFragment == null) null else mNavigationFactory.getScreenClass(currentFragment)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val fragment = destination.createFragment(screen)
         if (fragment is DialogFragment) {
             throw ScreenRegistrationException("DialogFragment is used as usual Fragment.")
@@ -76,7 +76,7 @@ class DefaultFragmentNavigator(
         val currentFragment = mFragmentStack.currentFragment
         val screenClassFrom =
             if (currentFragment == null) null else mNavigationFactory.getScreenClass(currentFragment)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val animation =
             getAnimation(TransitionType.REPLACE, screenClassFrom, screenClassTo, animationData)
         mFragmentStack.replace(fragment, animation)
@@ -93,7 +93,7 @@ class DefaultFragmentNavigator(
         val currentFragment = mFragmentStack.currentFragment
         val screenClassFrom =
             if (currentFragment == null) null else mNavigationFactory.getScreenClass(currentFragment)
-        val screenClassTo: Class<out Screen?> = screen.javaClass
+        val screenClassTo: Class<out Screen> = screen.javaClass
         val animation =
             getAnimation(TransitionType.RESET, screenClassFrom, screenClassTo, animationData)
         mFragmentStack.reset(fragment, animation)
@@ -127,7 +127,7 @@ class DefaultFragmentNavigator(
 
     @Throws(NavigationException::class)
     override fun goBackTo(
-        screenClass: Class<out Screen?>,
+        screenClass: Class<out Screen>,
         destination: FragmentDestination,
         screenResult: ScreenResult?,
         animationData: AnimationData?
@@ -200,8 +200,8 @@ class DefaultFragmentNavigator(
 
     private fun getAnimation(
         transitionType: TransitionType,
-        screenClassFrom: Class<out Screen?>?,
-        screenClassTo: Class<out Screen?>?,
+        screenClassFrom: Class<out Screen>?,
+        screenClassTo: Class<out Screen>?,
         animationData: AnimationData?
     ): TransitionAnimation {
         return if (screenClassFrom == null || screenClassTo == null) {
@@ -221,8 +221,8 @@ class DefaultFragmentNavigator(
 
     private fun callTransitionListener(
         transitionType: TransitionType,
-        screenClassFrom: Class<out Screen?>?,
-        screenClassTo: Class<out Screen?>?
+        screenClassFrom: Class<out Screen>?,
+        screenClassTo: Class<out Screen>?
     ) {
         val destinationType =
             if (mFlowNavigation) DestinationType.FLOW_FRAGMENT else DestinationType.FRAGMENT

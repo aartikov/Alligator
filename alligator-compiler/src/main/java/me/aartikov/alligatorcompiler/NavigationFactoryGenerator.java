@@ -14,7 +14,7 @@ public class NavigationFactoryGenerator {
 	private static final String CLASS_NAME = "GeneratedNavigationFactory";
 	private static final String SUPERCLASS_NAME = "RegistryNavigationFactory";
 
-	private ProcessingUtils utils;
+	private final ProcessingUtils utils;
 
 	public NavigationFactoryGenerator(ProcessingUtils utils) {
 		this.utils = utils;

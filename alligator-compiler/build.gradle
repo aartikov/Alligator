@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group = 'com.github.aartikov'
-version = '4.3.0'
+version = '4.4.0'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

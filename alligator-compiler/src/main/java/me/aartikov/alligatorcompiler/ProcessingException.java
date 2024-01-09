@@ -3,7 +3,7 @@ package me.aartikov.alligatorcompiler;
 import javax.lang.model.element.Element;
 
 public class ProcessingException extends Exception {
-	private Element element;
+	private final Element element;
 
 	public ProcessingException(Element element, String message, Object... args) {
 		super(String.format(message, args));

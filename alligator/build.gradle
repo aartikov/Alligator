@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
+apply plugin: 'kotlin-android'
 
 group = 'com.github.aartikov'
-version = '4.3.0'
+version = '4.4.0'
 
 android {
 	compileSdk 34
@@ -14,8 +15,11 @@ android {
 	}
 
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_7
-		targetCompatibility = JavaVersion.VERSION_1_7
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
+	}
+	kotlinOptions {
+		jvmTarget = JavaVersion.VERSION_17.toString()
 	}
 
 	publishing {
@@ -29,6 +33,7 @@ android {
 dependencies {
 	implementation fileTree(include: ['*.jar'], dir: 'libs')
 	implementation 'androidx.appcompat:appcompat:1.6.1'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21"
 }
 
 afterEvaluate {

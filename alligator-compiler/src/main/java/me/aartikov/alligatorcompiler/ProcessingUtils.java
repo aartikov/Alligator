@@ -7,7 +7,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 
 public class ProcessingUtils {
-	private Types typeUtils;
+	private final Types typeUtils;
 
 	public ProcessingUtils(ProcessingEnvironment processingEnv) {
 		typeUtils = processingEnv.getTypeUtils();

@@ -5,7 +5,7 @@ import me.aartikov.alligator.Screen
 /**
  * Interface for listening of dialog showing.
  */
-interface DialogShowingListener {
+fun interface DialogShowingListener {
     /**
      * Is called when a dialog was shown.
      *

@@ -5,7 +5,7 @@ import me.aartikov.alligator.exceptions.NavigationException
 /**
  * Interface for navigation error handling.
  */
-interface NavigationErrorListener {
+fun interface NavigationErrorListener {
     /**
      * Is called when an error has occurred during [Command] execution.
      *

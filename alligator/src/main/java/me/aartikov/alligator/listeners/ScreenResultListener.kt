@@ -6,7 +6,7 @@ import me.aartikov.alligator.ScreenResult
 /**
  * Interface for screen result handling.
  */
-interface ScreenResultListener {
+fun interface ScreenResultListener {
     /**
      * Is called when a screen that can return a result has finished.
      *

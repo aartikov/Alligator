@@ -5,7 +5,7 @@ import me.aartikov.alligator.Screen
 /**
  * Interface for listening of screen switching.
  */
-interface ScreenSwitchingListener {
+fun interface ScreenSwitchingListener {
     /**
      * Is called after a screen has been switched using [ScreenSwitcher].
      *

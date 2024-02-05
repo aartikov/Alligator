@@ -7,7 +7,7 @@ import me.aartikov.alligator.TransitionType
 /**
  * Interface for listening of screen transition.
  */
-interface TransitionListener {
+fun interface TransitionListener {
     /**
      * Is called when an usual screen transition (not screen switching and not dialog showing) has been executed.
      *

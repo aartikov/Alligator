@@ -1,61 +1,52 @@
-package me.aartikov.sharedelementanimation.ui;
+package me.aartikov.sharedelementanimation.ui
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.animations.AnimationData
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.sharedelementanimation.R
+import me.aartikov.sharedelementanimation.SampleApplication
+import me.aartikov.sharedelementanimation.screens.FirstScreen
+import me.aartikov.sharedelementanimation.screens.SecondScreen
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(FirstScreen::class)
+class FirstFragment : Fragment(), SharedElementProvider {
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.animations.AnimationData;
-import me.aartikov.alligator.annotations.RegisterScreen;
-import me.aartikov.sharedelementanimation.R;
-import me.aartikov.sharedelementanimation.SampleApplication;
-import me.aartikov.sharedelementanimation.screens.FirstScreen;
-import me.aartikov.sharedelementanimation.screens.SecondScreen;
+    private lateinit var mKittenImageViews: Array<ImageView>
 
+    private val mNavigator: Navigator = SampleApplication.navigator
 
-@RegisterScreen(FirstScreen.class)
-public class FirstFragment extends Fragment implements SharedElementProvider {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_first, container, false)
+    }
 
-	ImageView[] mKittenImageViews;
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-	private final Navigator mNavigator = SampleApplication.getNavigator();
+        mKittenImageViews = arrayOf(
+            view.findViewById(R.id.kitten_image_view_0),
+            view.findViewById(R.id.kitten_image_view_1)
+        )
 
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_first, container, false);
-	}
-
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mKittenImageViews = new ImageView[]{
-                view.findViewById(R.id.kitten_image_view_0),
-                view.findViewById(R.id.kitten_image_view_1)
-        };
-
-        for (int i = 0; i < mKittenImageViews.length; i++) {
-            int kittenIndex = i;
-            mKittenImageViews[i].setOnClickListener(v -> {
-                mNavigator.goForward(new SecondScreen(kittenIndex), new KittenAnimationData(kittenIndex));
-            });
+        for (i in mKittenImageViews.indices) {
+            val kittenIndex = i
+            mKittenImageViews[i].setOnClickListener {
+                mNavigator.goForward(SecondScreen(kittenIndex), KittenAnimationData(kittenIndex))
+            }
         }
     }
 
-	@Override
-	public View getSharedElement(AnimationData animationData) {
-		KittenAnimationData kittenAnimationData = (KittenAnimationData) animationData;
-		return mKittenImageViews[kittenAnimationData.getKittenIndex()];
-	}
+    override fun getSharedElement(animationData: AnimationData?): View {
+        val kittenAnimationData = animationData as KittenAnimationData
+        return mKittenImageViews[kittenAnimationData.kittenIndex]
+    }
 
-	@Override
-	public String getSharedElementName(AnimationData animationData) {
-		return "kitten";
-	}
+    override fun getSharedElementName(animationData: AnimationData?): String {
+        return "kitten"
+    }
 }

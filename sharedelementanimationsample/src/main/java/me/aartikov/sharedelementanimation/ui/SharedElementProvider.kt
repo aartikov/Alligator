@@ -1,12 +1,10 @@
-package me.aartikov.sharedelementanimation.ui;
+package me.aartikov.sharedelementanimation.ui
 
-import android.view.View;
+import android.view.View
+import me.aartikov.alligator.animations.AnimationData
 
-import me.aartikov.alligator.animations.AnimationData;
+interface SharedElementProvider {
+    fun getSharedElement(animationData: AnimationData?): View
 
-
-public interface SharedElementProvider {
-	View getSharedElement(AnimationData animationData);
-
-	String getSharedElementName(AnimationData animationData);
+    fun getSharedElementName(animationData: AnimationData?): String
 }

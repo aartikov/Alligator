@@ -1,7 +1,5 @@
-package me.aartikov.sharedelementanimation.screens;
+package me.aartikov.sharedelementanimation.screens
 
-import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.Screen
 
-
-public class FirstScreen implements Screen {
-}
+class FirstScreen : Screen

@@ -1,130 +1,119 @@
-package me.aartikov.advancedscreenswitchersample.ui;
+package me.aartikov.advancedscreenswitchersample.ui
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.MenuItem;
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import me.aartikov.advancedscreenswitchersample.R
+import me.aartikov.advancedscreenswitchersample.SampleApplication
+import me.aartikov.advancedscreenswitchersample.SampleScreenSwitcherAnimationProvider
+import me.aartikov.advancedscreenswitchersample.SampleTransitionAnimationProvider
+import me.aartikov.advancedscreenswitchersample.screens.MainScreen
+import me.aartikov.advancedscreenswitchersample.screens.TabScreen
+import me.aartikov.alligator.NavigationContext
+import me.aartikov.alligator.NavigationContextBinder
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.alligator.listeners.ScreenSwitchingListener
+import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(MainScreen::class)
+class MainActivity : AppCompatActivity(),
+    BottomNavigationView.OnNavigationItemSelectedListener,
+    ScreenSwitchingListener {
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+    private lateinit var mBottomBar: BottomNavigationView
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+    private val mNavigator: Navigator = SampleApplication.navigator
+    private val mNavigationContextBinder: NavigationContextBinder = SampleApplication.navigationContextBinder
+    private lateinit var mScreenSwitcher: FragmentScreenSwitcher
 
-import me.aartikov.advancedscreenswitchersample.R;
-import me.aartikov.advancedscreenswitchersample.SampleApplication;
-import me.aartikov.advancedscreenswitchersample.SampleScreenSwitcherAnimationProvider;
-import me.aartikov.advancedscreenswitchersample.SampleTransitionAnimationProvider;
-import me.aartikov.advancedscreenswitchersample.screens.MainScreen;
-import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.annotations.RegisterScreen;
-import me.aartikov.alligator.listeners.ScreenSwitchingListener;
-import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
+    @SuppressLint("UseSparseArrays")
+    private val mTabScreenMap: MutableMap<Int, Screen> = LinkedHashMap()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        mBottomBar = findViewById(R.id.bottom_bar)
 
-@RegisterScreen(MainScreen.class)
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ScreenSwitchingListener {
+        initTabScreenMap()
+        mBottomBar.setOnItemSelectedListener(this)
+        mScreenSwitcher = FragmentScreenSwitcher(
+            SampleApplication.navigationFactory,
+            supportFragmentManager,
+            R.id.main_container, SampleScreenSwitcherAnimationProvider(tabScreens)
+        )
 
-	BottomNavigationView mBottomBar;
+        if (savedInstanceState == null) {
+            mNavigator.switchTo(getTabScreen(R.id.tab_android))
+        }
+    }
 
-	private final Navigator mNavigator = SampleApplication.getNavigator();
-	private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
-	private FragmentScreenSwitcher mScreenSwitcher;
+    private fun initTabScreenMap() {
+        mTabScreenMap[R.id.tab_android] = TabScreen(getString(R.string.tab_android))
+        mTabScreenMap[R.id.tab_bug] = TabScreen(getString(R.string.tab_bug))
+        mTabScreenMap[R.id.tab_dog] = TabScreen(getString(R.string.tab_dog))
+    }
 
-	@SuppressLint("UseSparseArrays")
-	private Map<Integer, Screen> mTabScreenMap = new LinkedHashMap<>();
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        bindNavigationContext()
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		mBottomBar = findViewById(R.id.bottom_bar);
+    override fun onPause() {
+        mNavigationContextBinder.unbind(this)
+        super.onPause()
+    }
 
-		initTabScreenMap();
-		mBottomBar.setOnItemSelectedListener(this);
-		mScreenSwitcher = new FragmentScreenSwitcher(SampleApplication.getNavigationFactory(), getSupportFragmentManager(),
-				R.id.main_container, new SampleScreenSwitcherAnimationProvider(getTabScreens()));
+    private fun bindNavigationContext() {
+        val builder = NavigationContext.Builder(this, SampleApplication.navigationFactory)
+            .screenSwitcher(mScreenSwitcher)
+            .screenSwitchingListener(this)
+            .transitionAnimationProvider(SampleTransitionAnimationProvider())
 
-		if (savedInstanceState == null) {
-			mNavigator.switchTo(getTabScreen(R.id.tab_android));
-		}
-	}
+        val fragment = mScreenSwitcher.currentFragment
+        if (fragment is ContainerIdProvider) {
+            builder.fragmentNavigation(
+                fragment.childFragmentManager,
+                (fragment as ContainerIdProvider).containerId
+            ) // Use child fragment manager for nested navigation
+        }
 
-	private void initTabScreenMap() {
-		mTabScreenMap.put(R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
-		mTabScreenMap.put(R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
-		mTabScreenMap.put(R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
-	}
+        mNavigationContextBinder.bind(builder.build())
+    }
 
-	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-		bindNavigationContext();
-	}
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        mNavigator.goBack()
+    }
 
-	@Override
-	protected void onPause() {
-		mNavigationContextBinder.unbind(this);
-		super.onPause();
-	}
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val screen = getTabScreen(item.itemId)
+        mNavigator.switchTo(screen)
+        return false
+    }
 
-	private void bindNavigationContext() {
-		NavigationContext.Builder builder = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory())
-				.screenSwitcher(mScreenSwitcher)
-				.screenSwitchingListener(this)
-				.transitionAnimationProvider(new SampleTransitionAnimationProvider());
+    override fun onScreenSwitched(screenFrom: Screen?, screenTo: Screen) {
+        val tabId = getTabId(screenTo)
+        mBottomBar.menu.findItem(tabId).setChecked(true)
+        bindNavigationContext() // rebind NavigationContext because we need to set another container id and another child fragment manager.
+    }
 
-		Fragment fragment = mScreenSwitcher.getCurrentFragment();
-		if (fragment instanceof ContainerIdProvider) {
-			builder.fragmentNavigation(fragment.getChildFragmentManager(), ((ContainerIdProvider) fragment).getContainerId());  // Use child fragment manager for nested navigation
-		}
+    private fun getTabScreen(tabId: Int): Screen {
+        return mTabScreenMap.getValue(tabId)
+    }
 
-		mNavigationContextBinder.bind(builder.build());
-	}
+    private fun getTabId(tabScreen: Screen): Int {
+        for ((key, value) in mTabScreenMap) {
+            if (tabScreen == value) {
+                return key
+            }
+        }
+        return -1
+    }
 
-	@SuppressLint("MissingSuperCall")
-	@Override
-	public void onBackPressed() {
-		mNavigator.goBack();
-	}
-
-	@Override
-	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		Screen screen = getTabScreen(item.getItemId());
-		mNavigator.switchTo(screen);
-		return false;
-	}
-
-	@Override
-	public void onScreenSwitched(@Nullable Screen screenFrom, @NonNull Screen screenTo) {
-		int tabId = getTabId(screenTo);
-		mBottomBar.getMenu().findItem(tabId).setChecked(true);
-		bindNavigationContext();    // rebind NavigationContext because we need to set another container id and another child fragment manager.
-	}
-
-	private Screen getTabScreen(int tabId) {
-		return mTabScreenMap.get(tabId);
-	}
-
-	private int getTabId(Screen tabScreen) {
-		for (Map.Entry<Integer, Screen> entry : mTabScreenMap.entrySet()) {
-			if (tabScreen.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		return -1;
-	}
-
-	private List<Screen> getTabScreens() {
-		return new ArrayList<>(mTabScreenMap.values());
-	}
+    private val tabScreens: List<Screen>
+        get() = ArrayList(mTabScreenMap.values)
 }

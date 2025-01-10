@@ -1,59 +1,49 @@
-package me.aartikov.advancedscreenswitchersample.ui;
+package me.aartikov.advancedscreenswitchersample.ui
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import me.aartikov.advancedscreenswitchersample.R
+import me.aartikov.advancedscreenswitchersample.SampleApplication
+import me.aartikov.advancedscreenswitchersample.screens.InnerScreen
+import me.aartikov.advancedscreenswitchersample.screens.TabScreen
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.annotations.RegisterScreen
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(TabScreen::class)
+class TabFragment : Fragment(), ContainerIdProvider {
 
-import me.aartikov.advancedscreenswitchersample.R;
-import me.aartikov.advancedscreenswitchersample.SampleApplication;
-import me.aartikov.advancedscreenswitchersample.screens.InnerScreen;
-import me.aartikov.advancedscreenswitchersample.screens.TabScreen;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.annotations.RegisterScreen;
+    private lateinit var mNameTextView: TextView
 
+    private val mNavigator: Navigator = SampleApplication.navigator
 
-@RegisterScreen(TabScreen.class)
-public class TabFragment extends Fragment implements ContainerIdProvider {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_tab, container, false)
+    }
 
-	TextView mNameTextView;
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mNameTextView = view.findViewById(R.id.name_text_view)
 
-	private final Navigator mNavigator = SampleApplication.getNavigator();
+        val screen = SampleApplication.screenResolver.getScreen<TabScreen>(this)
+        mNameTextView.text = screen.name
+    }
 
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_tab, container, false);
-	}
+    override fun onResume() {
+        super.onResume()
+        setInitialFragmentIfRequired()
+    }
 
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mNameTextView = view.findViewById(R.id.name_text_view);
+    private fun setInitialFragmentIfRequired() {
+        val hasFragment = childFragmentManager.findFragmentById(R.id.inner_container) != null
+        if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
+            mNavigator.reset(InnerScreen(1))
+        }
+    }
 
-		TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
-		mNameTextView.setText(screen.getName());
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		setInitialFragmentIfRequired();
-	}
-
-	private void setInitialFragmentIfRequired() {
-		boolean hasFragment = getChildFragmentManager().findFragmentById(R.id.inner_container) != null;
-		if (!hasFragment && mNavigator.canExecuteCommandImmediately()) {
-			mNavigator.reset(new InnerScreen(1));
-		}
-	}
-
-	@Override
-	public int getContainerId() {
-		return R.id.inner_container;
-	}
+    override val containerId: Int
+        get() = R.id.inner_container
 }

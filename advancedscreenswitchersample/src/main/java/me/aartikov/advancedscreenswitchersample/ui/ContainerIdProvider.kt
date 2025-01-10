@@ -1,6 +1,5 @@
-package me.aartikov.advancedscreenswitchersample.ui;
+package me.aartikov.advancedscreenswitchersample.ui
 
-
-public interface ContainerIdProvider {
-	int getContainerId();
+interface ContainerIdProvider {
+    val containerId: Int
 }

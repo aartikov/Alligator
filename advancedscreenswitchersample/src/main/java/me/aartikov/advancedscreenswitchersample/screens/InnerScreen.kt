@@ -1,19 +1,7 @@
-package me.aartikov.advancedscreenswitchersample.screens;
+package me.aartikov.advancedscreenswitchersample.screens
 
-import java.io.Serializable;
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
-import me.aartikov.alligator.Screen;
-
-
-public class InnerScreen implements Screen, Serializable {
-	private int mCounter;
-
-	public InnerScreen(int counter) {
-		mCounter = counter;
-	}
-
-	public int getCounter() {
-		return mCounter;
-	}
-}
+class InnerScreen(val counter: Int) : Screen, Serializable
 

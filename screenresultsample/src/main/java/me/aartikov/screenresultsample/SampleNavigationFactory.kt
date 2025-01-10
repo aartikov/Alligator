@@ -1,12 +1,15 @@
-package me.aartikov.screenresultsample;
+package me.aartikov.screenresultsample
 
-import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
-import me.aartikov.screenresultsample.screens.ImagePickerScreen;
+import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory
+import me.aartikov.screenresultsample.screens.ImagePickerScreen
 
+// extends GeneratedNavigationFactory to register custom converters
+class SampleNavigationFactory : GeneratedNavigationFactory() {
 
-public class SampleNavigationFactory extends GeneratedNavigationFactory {   // extends GeneratedNavigationFactory to register custom converters
-
-	public SampleNavigationFactory() {
-		registerActivityForResult(ImagePickerScreen.class, ImagePickerScreen.Result.class, new ImagePickerScreen.Converter(), new ImagePickerScreen.ResultConverter());
-	}
+    init {
+        registerActivityForResult(
+            ImagePickerScreen::class.java,
+            ImagePickerScreen.Result::class.java, ImagePickerScreen.Converter(), ImagePickerScreen.ResultConverter()
+        )
+    }
 }

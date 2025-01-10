@@ -1,36 +1,31 @@
-package me.aartikov.screenresultsample;
+package me.aartikov.screenresultsample
 
-import android.app.Application;
+import android.app.Application
+import me.aartikov.alligator.ActivityResultHandler
+import me.aartikov.alligator.AndroidNavigator
+import me.aartikov.alligator.NavigationContextBinder
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.navigationfactories.NavigationFactory
 
-import me.aartikov.alligator.ActivityResultHandler;
-import me.aartikov.alligator.AndroidNavigator;
-import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
+class SampleApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        sAndroidNavigator = AndroidNavigator(SampleNavigationFactory())
+    }
 
+    companion object {
+        private lateinit var sAndroidNavigator: AndroidNavigator
 
-public class SampleApplication extends Application {
-	private static AndroidNavigator sAndroidNavigator;
+        val navigator: Navigator
+            get() = sAndroidNavigator
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		sAndroidNavigator = new AndroidNavigator(new SampleNavigationFactory());
-	}
+        val navigationFactory: NavigationFactory
+            get() = sAndroidNavigator.navigationFactory
 
-	public static Navigator getNavigator() {
-		return sAndroidNavigator;
-	}
+        val navigationContextBinder: NavigationContextBinder
+            get() = sAndroidNavigator
 
-	public static NavigationFactory getNavigationFactory() {
-		return sAndroidNavigator.getNavigationFactory();
-	}
-
-	public static NavigationContextBinder getNavigationContextBinder() {
-		return sAndroidNavigator;
-	}
-
-	public static ActivityResultHandler getActivityResultHandler() {
-		return sAndroidNavigator.getActivityResultHandler();
-	}
+        val activityResultHandler: ActivityResultHandler
+            get() = sAndroidNavigator.activityResultHandler
+    }
 }

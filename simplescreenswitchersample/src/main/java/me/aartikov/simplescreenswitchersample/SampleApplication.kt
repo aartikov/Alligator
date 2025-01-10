@@ -1,37 +1,28 @@
-package me.aartikov.simplescreenswitchersample;
+package me.aartikov.simplescreenswitchersample
 
-import android.app.Application;
+import android.app.Application
+import me.aartikov.alligator.AndroidNavigator
+import me.aartikov.alligator.NavigationContextBinder
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory
+import me.aartikov.alligator.navigationfactories.NavigationFactory
 
-import me.aartikov.alligator.AndroidNavigator;
-import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
-import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
+class SampleApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        sAndroidNavigator = AndroidNavigator(GeneratedNavigationFactory())
+    }
 
+    companion object {
+        private lateinit var sAndroidNavigator: AndroidNavigator
 
-public class SampleApplication extends Application {
-	private static AndroidNavigator sAndroidNavigator;
+        val navigator: Navigator
+            get() = sAndroidNavigator
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
-	}
+        val navigationFactory: NavigationFactory
+            get() = sAndroidNavigator.navigationFactory
 
-	public static Navigator getNavigator() {
-		return sAndroidNavigator;
-	}
-
-	public static NavigationFactory getNavigationFactory() {
-		return sAndroidNavigator.getNavigationFactory();
-	}
-
-	public static NavigationContextBinder getNavigationContextBinder() {
-		return sAndroidNavigator;
-	}
-
-	public static ScreenResolver getScreenResolver() {
-		return sAndroidNavigator.getScreenResolver();
-	}
+        val navigationContextBinder: NavigationContextBinder
+            get() = sAndroidNavigator
+    }
 }

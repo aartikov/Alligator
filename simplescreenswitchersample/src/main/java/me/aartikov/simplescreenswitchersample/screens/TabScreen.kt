@@ -1,30 +1,22 @@
-package me.aartikov.simplescreenswitchersample.screens;
+package me.aartikov.simplescreenswitchersample.screens
 
-import java.io.Serializable;
-
-import me.aartikov.alligator.Screen;
-
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
 // Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden.
+abstract class TabScreen : Screen, Serializable {
 
-public abstract class TabScreen implements Screen, Serializable {
+    override fun equals(other: Any?): Boolean {
+        return other != null && this.javaClass == other.javaClass
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		return obj != null && this.getClass() == obj.getClass();
-	}
+    override fun hashCode(): Int {
+        return javaClass.hashCode()
+    }
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+    class Android : TabScreen()
 
-	public static class Android extends TabScreen {
-	}
+    class Bug : TabScreen()
 
-	public static class Bug extends TabScreen {
-	}
-
-	public static class Dog extends TabScreen {
-	}
+    class Dog : TabScreen()
 }

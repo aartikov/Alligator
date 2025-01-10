@@ -171,7 +171,7 @@ class DefaultFragmentNavigator(
         var requiredFragment: Fragment? = null
         var toPrevious = false
         for (i in fragments.indices.reversed()) {
-            if (screen === destination.getScreen(fragments[i])) {
+            if (screen == destination.getScreen(fragments[i])) {
                 requiredFragment = fragments[i]
                 toPrevious = i == fragments.size - 2
                 break

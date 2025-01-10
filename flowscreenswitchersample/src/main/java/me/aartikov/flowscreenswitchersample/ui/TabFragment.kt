@@ -1,53 +1,44 @@
-package me.aartikov.flowscreenswitchersample.ui;
+package me.aartikov.flowscreenswitchersample.ui
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.flowscreenswitchersample.R
+import me.aartikov.flowscreenswitchersample.SampleApplication
+import me.aartikov.flowscreenswitchersample.screens.InnerScreen
+import me.aartikov.flowscreenswitchersample.screens.TabScreen
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(TabScreen::class)
+class TabFragment : Fragment(), ContainerIdProvider {
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.annotations.RegisterScreen;
-import me.aartikov.flowscreenswitchersample.R;
-import me.aartikov.flowscreenswitchersample.SampleApplication;
-import me.aartikov.flowscreenswitchersample.screens.InnerScreen;
-import me.aartikov.flowscreenswitchersample.screens.TabScreen;
+    private lateinit var mNameTextView: TextView
 
-@RegisterScreen(TabScreen.class)
-public class TabFragment extends Fragment implements ContainerIdProvider {
+    private val mNavigator: Navigator = SampleApplication.navigator
 
-    TextView mNameTextView;
-
-    private final Navigator mNavigator = SampleApplication.getNavigator();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            mNavigator.reset(new InnerScreen(1));
+            mNavigator.reset(InnerScreen(counter = 1))
         }
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tab, container, false);
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_tab, container, false)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mNameTextView = view.findViewById(R.id.name_text_view);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mNameTextView = view.findViewById(R.id.name_text_view)
 
-        TabScreen screen = SampleApplication.getScreenResolver().getScreen(this);
-        mNameTextView.setText(screen.getName());
+        val screen = SampleApplication.screenResolver.getScreen<TabScreen>(this)
+        mNameTextView.text = screen.name
     }
 
-    @Override
-    public int getContainerId() {
-        return R.id.inner_container;
-    }
+    override val containerId: Int
+        get() = R.id.inner_container
 }

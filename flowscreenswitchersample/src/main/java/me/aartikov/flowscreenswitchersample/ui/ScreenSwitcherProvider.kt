@@ -1,7 +1,7 @@
-package me.aartikov.flowscreenswitchersample.ui;
+package me.aartikov.flowscreenswitchersample.ui
 
-import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher
 
-public interface ScreenSwitcherProvider {
-    ScreenSwitcher getScreenSwitcher();
+interface ScreenSwitcherProvider {
+    val screenSwitcher: ScreenSwitcher
 }

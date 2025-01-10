@@ -1,5 +1,5 @@
-package me.aartikov.flowscreenswitchersample.ui;
+package me.aartikov.flowscreenswitchersample.ui
 
-public interface ContainerIdProvider {
-	int getContainerId();
+interface ContainerIdProvider {
+    val containerId: Int
 }

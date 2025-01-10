@@ -1,38 +1,25 @@
-package me.aartikov.flowscreenswitchersample.screens;
+package me.aartikov.flowscreenswitchersample.screens
 
-import java.io.Serializable;
-
-import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.Screen
+import java.io.Serializable
 
 // Screens used by FragmentScreenSwitcher must have equals and hashCode methods correctly overridden.
+class TabScreen(val name: String) : Screen, Serializable {
 
-public class TabScreen implements Screen, Serializable {
-    private String mName;
-
-    public TabScreen(String name) {
-        mName = name;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+        if (other == null || javaClass != other.javaClass) {
+            return false
         }
 
-        TabScreen tabScreen = (TabScreen) o;
+        val tabScreen = other as TabScreen
 
-        return mName.equals(tabScreen.mName);
+        return name == tabScreen.name
     }
 
-    @Override
-    public int hashCode() {
-        return mName.hashCode();
+    override fun hashCode(): Int {
+        return name.hashCode()
     }
 }

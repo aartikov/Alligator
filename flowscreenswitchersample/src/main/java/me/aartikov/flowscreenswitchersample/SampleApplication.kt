@@ -1,36 +1,32 @@
-package me.aartikov.flowscreenswitchersample;
+package me.aartikov.flowscreenswitchersample
 
-import android.app.Application;
+import android.app.Application
+import me.aartikov.alligator.AndroidNavigator
+import me.aartikov.alligator.NavigationContextBinder
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.ScreenResolver
+import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory
+import me.aartikov.alligator.navigationfactories.NavigationFactory
 
-import me.aartikov.alligator.AndroidNavigator;
-import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.ScreenResolver;
-import me.aartikov.alligator.navigationfactories.GeneratedNavigationFactory;
-import me.aartikov.alligator.navigationfactories.NavigationFactory;
-
-public class SampleApplication extends Application {
-    private static AndroidNavigator sAndroidNavigator;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        sAndroidNavigator = new AndroidNavigator(new GeneratedNavigationFactory());
+class SampleApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        sAndroidNavigator = AndroidNavigator(GeneratedNavigationFactory())
     }
 
-    public static Navigator getNavigator() {
-        return sAndroidNavigator;
-    }
+    companion object {
+        private lateinit var sAndroidNavigator: AndroidNavigator
 
-    public static NavigationFactory getNavigationFactory() {
-        return sAndroidNavigator.getNavigationFactory();
-    }
+        val navigator: Navigator
+            get() = sAndroidNavigator
 
-    public static NavigationContextBinder getNavigationContextBinder() {
-        return sAndroidNavigator;
-    }
+        val navigationFactory: NavigationFactory
+            get() = sAndroidNavigator.navigationFactory
 
-    public static ScreenResolver getScreenResolver() {
-        return sAndroidNavigator.getScreenResolver();
+        val navigationContextBinder: NavigationContextBinder
+            get() = sAndroidNavigator
+
+        val screenResolver: ScreenResolver
+            get() = sAndroidNavigator.screenResolver
     }
 }

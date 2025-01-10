@@ -1,6 +1,5 @@
-package me.aartikov.flowscreenswitchersample.screens;
+package me.aartikov.flowscreenswitchersample.screens
 
-import me.aartikov.alligator.FlowScreen;
+import me.aartikov.alligator.FlowScreen
 
-public class TestFlowScreen implements FlowScreen {
-}
+class TestFlowScreen : FlowScreen

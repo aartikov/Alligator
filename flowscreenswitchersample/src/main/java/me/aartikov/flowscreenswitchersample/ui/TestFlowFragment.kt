@@ -1,99 +1,90 @@
-package me.aartikov.flowscreenswitchersample.ui;
+package me.aartikov.flowscreenswitchersample.ui
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher
+import me.aartikov.alligator.screenswitchers.ScreenSwitcher
+import me.aartikov.flowscreenswitchersample.R
+import me.aartikov.flowscreenswitchersample.SampleApplication
+import me.aartikov.flowscreenswitchersample.screens.TabScreen
+import me.aartikov.flowscreenswitchersample.screens.TestFlowScreen
+import java.util.Random
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(TestFlowScreen::class)
+class TestFlowFragment : Fragment(),
+    ContainerIdProvider,
+    ScreenSwitcherProvider {
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+    private lateinit var mRootView: View
+    private lateinit var bottomBarFirst: BottomNavigationView
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
+    private val mNavigator: Navigator = SampleApplication.navigator
+    private lateinit var mScreenSwitcher: FragmentScreenSwitcher
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.Screen;
-import me.aartikov.alligator.annotations.RegisterScreen;
-import me.aartikov.alligator.screenswitchers.FragmentScreenSwitcher;
-import me.aartikov.alligator.screenswitchers.ScreenSwitcher;
-import me.aartikov.flowscreenswitchersample.R;
-import me.aartikov.flowscreenswitchersample.SampleApplication;
-import me.aartikov.flowscreenswitchersample.screens.TabScreen;
-import me.aartikov.flowscreenswitchersample.screens.TestFlowScreen;
+    private val mTabScreenMap: MutableMap<Int, Screen> = LinkedHashMap()
 
-@RegisterScreen(TestFlowScreen.class)
-public class TestFlowFragment extends Fragment implements ContainerIdProvider, ScreenSwitcherProvider {
-
-    View mRootView;
-    BottomNavigationView bottomBarFirst;
-
-    private final Navigator mNavigator = SampleApplication.getNavigator();
-    private FragmentScreenSwitcher mScreenSwitcher;
-
-    private final Map<Integer, Screen> mTabScreenMap = new LinkedHashMap<>();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initTabScreenMap();
-        mScreenSwitcher = new FragmentScreenSwitcher(
-                SampleApplication.getNavigationFactory(),
-                getChildFragmentManager(),
-                R.id.fragment_container);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initTabScreenMap()
+        mScreenSwitcher = FragmentScreenSwitcher(
+            SampleApplication.navigationFactory,
+            childFragmentManager,
+            R.id.fragment_container
+        )
 
         if (savedInstanceState == null) {
-            mNavigator.switchTo(getTabScreen(R.id.tab_android));
+            mNavigator.switchTo(getTabScreen(R.id.tab_android))
         }
     }
 
-    private void initTabScreenMap() {
-        mTabScreenMap.put(R.id.tab_android, new TabScreen(getString(R.string.tab_android)));
-        mTabScreenMap.put(R.id.tab_bug, new TabScreen(getString(R.string.tab_bug)));
-        mTabScreenMap.put(R.id.tab_dog, new TabScreen(getString(R.string.tab_dog)));
+    private fun initTabScreenMap() {
+        mTabScreenMap[R.id.tab_android] = TabScreen(getString(R.string.tab_android))
+        mTabScreenMap[R.id.tab_bug] = TabScreen(getString(R.string.tab_bug))
+        mTabScreenMap[R.id.tab_dog] = TabScreen(getString(R.string.tab_dog))
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_flow, container, false);
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_flow, container, false)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mRootView = view.findViewById(R.id.root_view);
-        bottomBarFirst = view.findViewById(R.id.bottomBarFirst);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mRootView = view.findViewById(R.id.root_view)
+        bottomBarFirst = view.findViewById(R.id.bottomBarFirst)
 
-        bottomBarFirst.setOnItemSelectedListener(menuItem -> {
-            Screen screen = getTabScreen(menuItem.getItemId());
-            mNavigator.switchTo(screen);
-            return true;
-        });
+        bottomBarFirst.setOnItemSelectedListener { menuItem: MenuItem ->
+            val screen = getTabScreen(menuItem.itemId)
+            mNavigator.switchTo(screen)
+            true
+        }
 
-        mRootView.setBackgroundColor(getRandomColor());
+        mRootView.setBackgroundColor(randomColor)
     }
 
-    @Override
-    public int getContainerId() {
-        return R.id.fragment_container;
+    override val containerId: Int
+        get() = R.id.fragment_container
+
+    override val screenSwitcher: ScreenSwitcher
+        get() = mScreenSwitcher
+
+    private fun getTabScreen(tabId: Int): Screen {
+        return mTabScreenMap.getValue(tabId)
     }
 
-    @Override
-    public ScreenSwitcher getScreenSwitcher() {
-        return mScreenSwitcher;
-    }
-
-    private Screen getTabScreen(int tabId) {
-        return mTabScreenMap.get(tabId);
-    }
-
-
-    private static int getRandomColor() {
-        Random random = new Random();
-        return Color.HSVToColor(new float[]{random.nextInt(360), 0.1f, 1.0f});
+    companion object {
+        private val randomColor: Int
+            get() {
+                val random = Random()
+                return Color.HSVToColor(floatArrayOf(random.nextInt(360).toFloat(), 0.1f, 1.0f))
+            }
     }
 }

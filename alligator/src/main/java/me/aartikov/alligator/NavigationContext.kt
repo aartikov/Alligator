@@ -44,14 +44,13 @@ class NavigationContext private constructor(
 
     /**
      * Builder for a [NavigationContext].
-     */
-    class Builder
-    /**
+     *
      * Creates with the given activity.
      *
-     * @param activity          activity that should be current when the navigation context is bound.
-     * @param navigationFactory navigation factory that was used to create [AndroidNavigator]
-     */(
+     * @param mActivity          activity that should be current when the navigation context is bound.
+     * @param mNavigationFactory navigation factory that was used to create [AndroidNavigator]
+     */
+    class Builder(
         private val mActivity: AppCompatActivity,
         private val mNavigationFactory: NavigationFactory
     ) {
@@ -109,9 +108,9 @@ class NavigationContext private constructor(
         }
 
         /**
-         * Sets a provider of [TransitionAnimation]s.
+         * Sets a provider of [me.aartikov.alligator.animations.TransitionAnimation]s.
          *
-         * @param transitionAnimationProvider provider of [TransitionAnimation]s. By default a provider that returns `TransitionAnimation.DEFAULT` is used.
+         * @param transitionAnimationProvider provider of [me.aartikov.alligator.animations.TransitionAnimation]s. By default a provider that returns `TransitionAnimation.DEFAULT` is used.
          * @return this object
          */
         fun transitionAnimationProvider(transitionAnimationProvider: TransitionAnimationProvider?): Builder {
@@ -120,9 +119,9 @@ class NavigationContext private constructor(
         }
 
         /**
-         * Sets a provider of [DialogAnimation]s.
+         * Sets a provider of [me.aartikov.alligator.animations.DialogAnimation]s.
          *
-         * @param dialogAnimationProvider provider of [DialogAnimation]s. By default a provider that returns `DialogAnimation.DEFAULT` is used.
+         * @param dialogAnimationProvider provider of [me.aartikov.alligator.animations.DialogAnimation]s. By default a provider that returns `DialogAnimation.DEFAULT` is used.
          * @return this object
          */
         fun dialogAnimationProvider(dialogAnimationProvider: DialogAnimationProvider?): Builder {
@@ -175,7 +174,7 @@ class NavigationContext private constructor(
         }
 
         /**
-         * Sets a navigation error listener. This listener is called when an error has occurred during [Command] execution.
+         * Sets a navigation error listener. This listener is called when an error has occurred during [me.aartikov.alligator.commands.Command] execution.
          *
          * @param navigationErrorListener navigation error listener. By default a listener that wraps errors to `RuntimeException` and throws it is used.
          * @return this object

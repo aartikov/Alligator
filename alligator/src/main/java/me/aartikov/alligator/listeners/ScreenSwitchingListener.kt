@@ -7,7 +7,7 @@ import me.aartikov.alligator.Screen
  */
 fun interface ScreenSwitchingListener {
     /**
-     * Is called after a screen has been switched using [ScreenSwitcher].
+     * Is called after a screen has been switched using [me.aartikov.alligator.screenswitchers.ScreenSwitcher].
      *
      * @param screenFrom screen that disappears during a switching or `null` if there was no current screen before switching
      * @param screenTo   screen that appears during a switching

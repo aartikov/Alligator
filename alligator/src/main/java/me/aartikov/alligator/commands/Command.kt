@@ -4,7 +4,7 @@ import me.aartikov.alligator.NavigationContext
 import me.aartikov.alligator.exceptions.NavigationException
 
 /**
- * Command executed by a [AndroidNavigator].
+ * Command executed by a [me.aartikov.alligator.AndroidNavigator].
  */
 interface Command {
     /**

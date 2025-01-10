@@ -1,7 +1,5 @@
-package me.aartikov.simplenavigationsample.screens;
+package me.aartikov.simplenavigationsample.screens
 
-import me.aartikov.alligator.Screen;
+import me.aartikov.alligator.Screen
 
-
-public class ScreenC implements Screen {
-}
+class ScreenC : Screen

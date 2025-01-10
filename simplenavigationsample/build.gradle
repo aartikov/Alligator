@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdk 34
@@ -24,6 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -31,9 +36,10 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'androidx.annotation', module: 'annotation'
     })
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.12'
 
-    implementation project (':alligator')
-    annotationProcessor project(':alligator-compiler')
+    implementation project(':alligator')
+    kapt project(':alligator-compiler')
 }

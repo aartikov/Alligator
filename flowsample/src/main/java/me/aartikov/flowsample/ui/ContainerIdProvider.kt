@@ -1,5 +1,5 @@
-package me.aartikov.flowsample.ui;
+package me.aartikov.flowsample.ui
 
-public interface ContainerIdProvider {
-	int getContainerId();
+interface ContainerIdProvider {
+    val containerId: Int
 }

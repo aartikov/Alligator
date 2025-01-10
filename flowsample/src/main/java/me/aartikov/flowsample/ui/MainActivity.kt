@@ -1,77 +1,72 @@
-package me.aartikov.flowsample.ui;
+package me.aartikov.flowsample.ui
 
-import android.os.Bundle;
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.DestinationType
+import me.aartikov.alligator.NavigationContext
+import me.aartikov.alligator.NavigationContextBinder
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.Screen
+import me.aartikov.alligator.TransitionType
+import me.aartikov.alligator.listeners.TransitionListener
+import me.aartikov.flowsample.R
+import me.aartikov.flowsample.SampleApplication
+import me.aartikov.flowsample.SampleTransitionAnimationProvider
+import me.aartikov.flowsample.screens.TestFlowScreen
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+class MainActivity : AppCompatActivity() {
+    private val mNavigator: Navigator = SampleApplication.navigator
+    private val mNavigationContextBinder: NavigationContextBinder = SampleApplication.navigationContextBinder
 
-import me.aartikov.alligator.DestinationType;
-import me.aartikov.alligator.NavigationContext;
-import me.aartikov.alligator.NavigationContextBinder;
-import me.aartikov.alligator.Navigator;
-import me.aartikov.flowsample.R;
-import me.aartikov.flowsample.SampleApplication;
-import me.aartikov.flowsample.SampleTransitionAnimationProvider;
-import me.aartikov.flowsample.screens.TestFlowScreen;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
 
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        bindNavigationContext()
+        setInitialFragmentIfRequired()
+    }
 
-public class MainActivity extends AppCompatActivity {
-	private final Navigator mNavigator = SampleApplication.getNavigator();
-	private final NavigationContextBinder mNavigationContextBinder = SampleApplication.getNavigationContextBinder();
+    private fun bindNavigationContext() {
+        val builder = NavigationContext.Builder(this, SampleApplication.navigationFactory)
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-	}
+        val currentFlowFragment = currentFlowFragment
+        if (currentFlowFragment is ContainerIdProvider) {
+            builder.fragmentNavigation(
+                currentFlowFragment.childFragmentManager,
+                (currentFlowFragment as ContainerIdProvider).containerId
+            )
+        }
 
-	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-		bindNavigationContext();
-		setInitialFragmentIfRequired();
-	}
+        builder.flowFragmentNavigation(supportFragmentManager, R.id.flow_fragment_container)
+            .transitionAnimationProvider(SampleTransitionAnimationProvider())
+            .transitionListener { _: TransitionType?, destinationType: DestinationType, _: Class<out Screen?>?, _: Class<out Screen?>? ->
+                if (destinationType == DestinationType.FLOW_FRAGMENT) {
+                    bindNavigationContext() // rebind NavigationContext because a current flow fragment has been changed.
+                }
+            }
 
-	private void bindNavigationContext() {
-		NavigationContext.Builder builder = new NavigationContext.Builder(this, SampleApplication.getNavigationFactory());
+        mNavigationContextBinder.bind(builder.build())
+    }
 
-		Fragment currentFlowFragment = getCurrentFlowFragment();
-		if (currentFlowFragment instanceof ContainerIdProvider) {
-			builder.fragmentNavigation(currentFlowFragment.getChildFragmentManager(), ((ContainerIdProvider) currentFlowFragment).getContainerId());
-		}
+    private fun setInitialFragmentIfRequired() {
+        if (currentFlowFragment == null && mNavigator.canExecuteCommandImmediately()) {
+            mNavigator.reset(TestFlowScreen(1))
+        }
+    }
 
-		builder.flowFragmentNavigation(getSupportFragmentManager(), R.id.flow_fragment_container)
-				.transitionAnimationProvider(new SampleTransitionAnimationProvider())
-				.transitionListener(((transitionType, destinationType, screenClassFrom, screenClassTo) -> {
-					if (destinationType == DestinationType.FLOW_FRAGMENT) {
-						bindNavigationContext();    // rebind NavigationContext because a current flow fragment has been changed.
-					}
-				}));
+    private val currentFlowFragment: Fragment?
+        get() = supportFragmentManager.findFragmentById(R.id.flow_fragment_container)
 
-		mNavigationContextBinder.bind(builder.build());
-	}
+    override fun onPause() {
+        mNavigationContextBinder.unbind(this)
+        super.onPause()
+    }
 
-	private void setInitialFragmentIfRequired() {
-		if (getCurrentFlowFragment() == null && mNavigator.canExecuteCommandImmediately()) {
-			mNavigator.reset(new TestFlowScreen(1));
-		}
-	}
-
-	@Nullable
-	private Fragment getCurrentFlowFragment() {
-		return getSupportFragmentManager().findFragmentById(R.id.flow_fragment_container);
-	}
-
-	@Override
-	protected void onPause() {
-		mNavigationContextBinder.unbind(this);
-		super.onPause();
-	}
-
-	@Override
-	public void onBackPressed() {
-		mNavigator.goBack();
-	}
-
+    override fun onBackPressed() {
+        mNavigator.goBack()
+    }
 }

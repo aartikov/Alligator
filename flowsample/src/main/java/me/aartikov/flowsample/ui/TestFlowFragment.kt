@@ -1,92 +1,84 @@
-package me.aartikov.flowsample.ui;
+package me.aartikov.flowsample.ui
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import me.aartikov.alligator.Navigator
+import me.aartikov.alligator.annotations.RegisterScreen
+import me.aartikov.flowsample.R
+import me.aartikov.flowsample.SampleApplication
+import me.aartikov.flowsample.screens.TestFlowScreen
+import me.aartikov.flowsample.screens.TestSmallScreen
+import java.util.Random
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+@RegisterScreen(TestFlowScreen::class)
+class TestFlowFragment : Fragment(), ContainerIdProvider {
 
-import java.util.Random;
+    private lateinit var mRootView: View
+    private lateinit var mCounterTextView: TextView
+    private lateinit var mForwardButton: Button
+    private lateinit var mReplaceButton: Button
+    private lateinit var mResetButton: Button
+    private lateinit var mFinishButton: Button
+    private lateinit var mFinishAllButton: Button
 
-import me.aartikov.alligator.Navigator;
-import me.aartikov.alligator.annotations.RegisterScreen;
-import me.aartikov.flowsample.R;
-import me.aartikov.flowsample.SampleApplication;
-import me.aartikov.flowsample.screens.TestFlowScreen;
-import me.aartikov.flowsample.screens.TestSmallScreen;
+    private val mNavigator: Navigator = SampleApplication.navigator
 
-@RegisterScreen(TestFlowScreen.class)
-public class TestFlowFragment extends Fragment implements ContainerIdProvider {
-	View mRootView;
-	TextView mCounterTextView;
-	Button mForwardButton;
-	Button mReplaceButton;
-	Button mResetButton;
-	Button mFinishButton;
-	Button mFinishAllButton;
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_flow, container, false)
+    }
 
-	private final Navigator mNavigator = SampleApplication.getNavigator();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_flow, container, false);
-	}
+        mRootView = view.findViewById(R.id.root_view)
+        mCounterTextView = view.findViewById(R.id.counter_text_view)
+        mForwardButton = view.findViewById(R.id.forward_button)
+        mReplaceButton = view.findViewById(R.id.replace_button)
+        mResetButton = view.findViewById(R.id.reset_button)
+        mFinishButton = view.findViewById(R.id.finish_button)
+        mFinishAllButton = view.findViewById(R.id.finish_all_button)
 
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        val screen = SampleApplication.screenResolver.getScreen<TestFlowScreen>(this)
+        val counter = screen.counter
+        mCounterTextView.text = getString(R.string.counter_template, counter)
 
-        mRootView = view.findViewById(R.id.root_view);
-        mCounterTextView = view.findViewById(R.id.counter_text_view);
-        mForwardButton = view.findViewById(R.id.forward_button);
-        mReplaceButton = view.findViewById(R.id.replace_button);
-        mResetButton = view.findViewById(R.id.reset_button);
-        mFinishButton = view.findViewById(R.id.finish_button);
-        mFinishAllButton = view.findViewById(R.id.finish_all_button);
+        mForwardButton.setOnClickListener { mNavigator.goForward(TestFlowScreen(counter + 1)) }
+        mReplaceButton.setOnClickListener { mNavigator.replace(TestFlowScreen(counter)) }
+        mResetButton.setOnClickListener { mNavigator.reset(TestFlowScreen(1)) }
+        mFinishButton.setOnClickListener { mNavigator.finish() }
+        mFinishAllButton.setOnClickListener { mNavigator.finishTopLevel() }
 
-        TestFlowScreen screen = SampleApplication.getScreenResolver().getScreen(this);
-        int counter = screen.getCounter();
-        mCounterTextView.setText(getString(R.string.counter_template, counter));
+        mRootView.setBackgroundColor(randomColor)
+    }
 
-        mForwardButton.setOnClickListener(v -> mNavigator.goForward(new TestFlowScreen(counter + 1)));
-        mReplaceButton.setOnClickListener(v -> mNavigator.replace(new TestFlowScreen(counter)));
-        mResetButton.setOnClickListener(v -> mNavigator.reset(new TestFlowScreen(1)));
-        mFinishButton.setOnClickListener(v -> mNavigator.finish());
-        mFinishAllButton.setOnClickListener(v -> mNavigator.finishTopLevel());
+    override fun onResume() {
+        super.onResume()
+        setInitialFragmentIfRequired()
+    }
 
-		mRootView.setBackgroundColor(getRandomColor());
-	}
+    private fun setInitialFragmentIfRequired() {
+        if (currentFragment == null && mNavigator.canExecuteCommandImmediately()) {
+            mNavigator.reset(TestSmallScreen(1))
+        }
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		setInitialFragmentIfRequired();
-	}
+    private val currentFragment: Fragment?
+        get() = childFragmentManager.findFragmentById(R.id.fragment_container)
 
-	private void setInitialFragmentIfRequired() {
-		if (getCurrentFragment() == null && mNavigator.canExecuteCommandImmediately()) {
-			mNavigator.reset(new TestSmallScreen(1));
-		}
-	}
+    override val containerId: Int
+        get() = R.id.fragment_container
 
-	@Nullable
-	private Fragment getCurrentFragment() {
-		return getChildFragmentManager().findFragmentById(R.id.fragment_container);
-	}
-
-	@Override
-	public int getContainerId() {
-		return R.id.fragment_container;
-	}
-
-	private static int getRandomColor() {
-		Random random = new Random();
-		return Color.HSVToColor(new float[]{random.nextInt(360), 0.1f, 1.0f});
-	}
+    companion object {
+        private val randomColor: Int
+            get() {
+                val random = Random()
+                return Color.HSVToColor(floatArrayOf(random.nextInt(360).toFloat(), 0.1f, 1.0f))
+            }
+    }
 }

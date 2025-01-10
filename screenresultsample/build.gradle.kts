@@ -44,4 +44,6 @@ dependencies {
 
     implementation(project(":alligator"))
     kapt(project(":alligator-compiler"))
+
+    implementation("com.squareup.picasso:picasso:2.5.2")
 }

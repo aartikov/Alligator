@@ -1,5 +1,6 @@
 # Alligator
 [![Release](https://jitpack.io/v/aartikov/Alligator.svg)](https://jitpack.io/#aartikov/Alligator) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![libs.tech recommends](https://libs.tech/project/82198753/badge.svg)](https://libs.tech/project/82198753/alligator)
 
 Alligator is Android navigation library that will help to organize your navigation code in clean and
 testable way. The library has a own new [Telegram's Community Group](https://t.me/+atfYhDAA4-84NmIy)

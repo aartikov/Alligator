@@ -17,7 +17,7 @@ class SwitchToCommand(
     @Throws(NavigationException::class)
     override fun execute(navigationContext: NavigationContext): Boolean {
         val screenSwitcher = navigationContext.screenSwitcher
-            ?: throw MissingScreenSwitcherException("ScreenSwitcher is not set.")
+            ?: throw MissingScreenSwitcherException("ScreenSwitcher is not set. The screen to switch: $mScreen")
         screenSwitcher.switchTo(mScreen, navigationContext.screenSwitchingListener, mAnimationData)
         return true
     }

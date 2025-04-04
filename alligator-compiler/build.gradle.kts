@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.github.aartikov"
-version = "4.4.0"
+version = "4.7.0"
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
